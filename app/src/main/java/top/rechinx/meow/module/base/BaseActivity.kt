@@ -18,7 +18,22 @@ abstract class BaseActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
         ButterKnife.bind(this)
+        initPresenter()
+        initToolbar()
+        initView()
+        initData()
+    }
+
+    protected abstract fun initData()
+
+    protected abstract fun initView()
+
+    protected open fun initToolbar() {
+        setSupportActionBar(mToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     protected abstract fun getLayoutId(): Int
+
+    protected abstract fun initPresenter()
 }

@@ -4,11 +4,11 @@ import io.reactivex.disposables.CompositeDisposable
 
 abstract class BasePresenter <T: BaseView> {
 
-    protected var mBaseView: T? = null
+    protected var mView: T? = null
     protected lateinit var mCompositeDisposable: CompositeDisposable
 
     fun attachView(view: T) {
-        this.mBaseView = view
+        this.mView = view
         onViewAttach()
         mCompositeDisposable = CompositeDisposable()
         initSubscription()
@@ -22,6 +22,6 @@ abstract class BasePresenter <T: BaseView> {
         if(mCompositeDisposable != null) {
             mCompositeDisposable.dispose()
         }
-        mBaseView = null
+        mView = null
     }
 }

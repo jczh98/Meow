@@ -1,0 +1,88 @@
+package top.rechinx.meow.module.result
+
+import android.content.Context
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import butterknife.BindView
+import butterknife.ButterKnife
+import com.bumptech.glide.Glide
+import top.rechinx.meow.R
+import top.rechinx.meow.model.Comic
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
+
+
+class ResultAdapter: RecyclerView.Adapter<ResultAdapter.ViewHolder> {
+
+    private var mContext: Context
+    private var mData: ArrayList<Comic>
+    private var mInflater: LayoutInflater
+
+    constructor(context: Context, list: ArrayList<Comic>) {
+        this.mContext = context
+        this.mData = list
+        this.mInflater = LayoutInflater.from(mContext)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(mInflater.inflate(R.layout.item_result, parent, false))
+    }
+
+    override fun getItemCount(): Int = mData.size
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val comic = mData[position]
+        holder.comicTitle.text = comic.title
+        holder.comicAuthor.text = comic.author
+        holder.comicUpdate.text = comic.update
+        val glideUrl = GlideUrl(comic.image, LazyHeaders.Builder()
+                .addHeader("Referer", "http://images.dmzj.com/")
+                .build())
+        Glide.with(mContext).load(glideUrl).into(holder.comicImage)
+    }
+
+    fun add(data: Comic) {
+        if (mData.add(data)) {
+            notifyItemInserted(mData.size)
+        }
+    }
+
+    fun add(location: Int, data: Comic) {
+        mData.add(location, data)
+        notifyItemInserted(location)
+    }
+
+    fun addAll(collection: Collection<Comic>) {
+        addAll(mData.size, collection)
+    }
+
+    fun addAll(location: Int, collection: Collection<Comic>) {
+        if (mData.addAll(location, collection)) {
+            notifyItemRangeInserted(location, location + collection.size)
+        }
+    }
+
+    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+
+        @BindView(R.id.result_comic_image)
+        lateinit var comicImage: ImageView
+        @BindView(R.id.result_comic_title)
+        lateinit var comicTitle: TextView
+        @BindView(R.id.result_comic_author)
+        lateinit var comicAuthor: TextView
+        @BindView(R.id.result_comic_update)
+        lateinit var comicUpdate: TextView
+        @BindView(R.id.result_comic_source)
+        lateinit var comicSource: TextView
+
+        init {
+            ButterKnife.bind(this, view)
+        }
+    }
+
+}

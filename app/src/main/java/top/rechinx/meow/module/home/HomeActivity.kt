@@ -9,6 +9,7 @@ import android.view.View
 import butterknife.BindView
 import top.rechinx.meow.R
 import top.rechinx.meow.module.base.BaseActivity
+import top.rechinx.meow.module.search.SearchFragment
 
 class HomeActivity : BaseActivity() {
 
@@ -21,6 +22,7 @@ class HomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initDrawer()
+        supportFragmentManager.beginTransaction().replace(R.id.container_fragment, SearchFragment()).commit()
     }
 
     private fun initDrawer() {
@@ -29,6 +31,17 @@ class HomeActivity : BaseActivity() {
         mDrawerLayout.setDrawerListener(drawerToggle)
     }
 
+    override fun initView() {
+
+    }
+
+    override fun initPresenter() {
+
+    }
+
+    override fun initData() {
+
+    }
 
     override fun getLayoutId(): Int = R.layout.activity_home
 }
