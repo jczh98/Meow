@@ -9,6 +9,7 @@ import okhttp3.Response
 import top.rechinx.meow.App
 import top.rechinx.meow.core.Parser
 import top.rechinx.meow.model.Comic
+import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.support.relog.ReLog
 import java.nio.charset.Charset
 import java.util.*
@@ -62,5 +63,22 @@ object  Api {
         throw NetworkErrorException()
     }
 
+    fun getChapterImage(parser: Parser, cid: String, image: String): Observable<List<ImageUrl>> {
+        return Observable.create(ObservableOnSubscribe<List<ImageUrl>> {
+            try {
+                var request = parser.getImageRequest(cid, image)
+                var html = getResponseBody(App.getHttpClient()!!, request!!)
+                var list = parser.parseImage(html)
+                if(list.isEmpty()) {
+                    throw Exception()
+                } else {
+                    it.onNext(list)
+                    it.onComplete()
+                }
+            } catch (e: Exception) {
+                it.onError(e)
+            }
+        }).subscribeOn(Schedulers.io())
+    }
     class NetworkErrorException : Exception()
 }

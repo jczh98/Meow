@@ -5,4 +5,5 @@
     <string name="empty_for_search">keyword cannot be empty</string>
     <string name="result_source">Source</string>
     <string name="result_update">Update Time</string>
+    <string name="reader_picture_loading">Now loading...</string>
 </resources>

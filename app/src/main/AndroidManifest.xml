@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".module.result.ResultActivity"></activity>
+        <activity android:name=".module.result.ResultActivity" />
+        <activity android:name=".module.reader.ReaderActivity"></activity>
     </application>
 
 </manifest>
