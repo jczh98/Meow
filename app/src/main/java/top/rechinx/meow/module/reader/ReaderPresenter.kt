@@ -1,7 +1,6 @@
 package top.rechinx.meow.module.reader
 
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.ImageUrl
@@ -27,7 +26,7 @@ class ReaderPresenter: BasePresenter<ReaderView>() {
 
     fun loadInit(cid: String, array: Array<Chapter>) {
         for (item in array) {
-            images(Api.getChapterImage(Dmzj(), cid, item.image))
+            images(Api.getChapterImage(Dmzj(), cid, item.chapter_id!!))
         }
     }
 

@@ -17,11 +17,12 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import butterknife.BindView
 import top.rechinx.meow.model.Comic
+import top.rechinx.meow.module.detail.DetailActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ResultActivity : BaseActivity(), ResultView {
+class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickListener {
 
     @BindView(R.id.result_recycler_view) lateinit var mResultList: RecyclerView
     @BindView(R.id.custom_progress_bar) lateinit var mProgressBar: ProgressBar
@@ -52,8 +53,15 @@ class ResultActivity : BaseActivity(), ResultView {
     override fun initView() {
         mLayoutManager = LinearLayoutManager(this)
         mResultAdapter = ResultAdapter(this, ArrayList())
+        mResultAdapter.setOnItemClickListener(this)
         mResultList.layoutManager = mLayoutManager
         mResultList.adapter = mResultAdapter
+    }
+
+    override fun onItemClick(view: View, position: Int) {
+        val comic = mResultAdapter.getItem(position)
+        val intent = DetailActivity.createIntent(this, comic.source!!, comic.cid!!)
+        startActivity(intent)
     }
 
     override fun initData() {

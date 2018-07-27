@@ -8,6 +8,7 @@ import okhttp3.Request
 import okhttp3.Response
 import top.rechinx.meow.App
 import top.rechinx.meow.core.Parser
+import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.support.relog.ReLog
@@ -69,16 +70,43 @@ object  Api {
                 var request = parser.getImageRequest(cid, image)
                 var html = getResponseBody(App.getHttpClient()!!, request!!)
                 var list = parser.parseImage(html)
-                if(list.isEmpty()) {
-                    throw Exception()
-                } else {
-                    it.onNext(list)
-                    it.onComplete()
+                if(list != null) {
+                    if(list.isEmpty()) {
+                        throw Exception()
+                    } else {
+                        it.onNext(list)
+                        it.onComplete()
+                    }
                 }
             } catch (e: Exception) {
                 it.onError(e)
             }
         }).subscribeOn(Schedulers.io())
     }
+
+    fun getComicInfo(parser: Parser, comic: Comic): Observable<List<Chapter>> {
+        return Observable.create(ObservableOnSubscribe<List<Chapter>> {
+            try {
+                var request = parser.getInfoRequest(comic.cid!!)
+                var html = getResponseBody(App.getHttpClient()!!, request!!)
+                parser.parserInto(html, comic)
+                val list = parser.parseChapter(html)
+                if (list != null) {
+                    ReLog.d(list.isEmpty().toString())
+                    if(!list.isEmpty()) {
+                        it.onNext(list)
+                        it.onComplete()
+                    } else {
+                        throw ParseErrorException()
+                    }
+                }
+            } catch (e: Exception) {
+                it.onError(e)
+            }
+        }).subscribeOn(Schedulers.io())
+    }
+
+
+    class ParseErrorException : Exception()
     class NetworkErrorException : Exception()
 }

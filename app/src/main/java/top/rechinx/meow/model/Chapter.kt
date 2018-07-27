@@ -3,9 +3,11 @@ package top.rechinx.meow.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class Chapter(var title: String,
-                   var image: String,
+data class Chapter(var title: String?,
+                   var chapter_id: String?,
                    var count: Int) : Parcelable {
+
+    constructor(title: String, chapter_id: String) : this(title, chapter_id, 0)
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),
@@ -14,7 +16,7 @@ data class Chapter(var title: String,
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
         dest?.writeString(title)
-        dest?.writeString(image)
+        dest?.writeString(chapter_id)
         dest?.writeInt(count)
     }
 

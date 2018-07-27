@@ -1,6 +1,7 @@
 package top.rechinx.meow.core
 
 import okhttp3.Request
+import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
 import java.io.UnsupportedEncodingException
@@ -13,11 +14,13 @@ interface Parser {
     fun getInfoRequest(cid: String): Request?
 
     @Throws(UnsupportedEncodingException::class)
-    fun parserInto(html: String): Comic?
+    fun parserInto(html: String, comic: Comic)
 
     fun getSearchIterator(html: String, page: Int): SearchIterator?
 
     fun getImageRequest(cid: String, image: String): Request?
 
-    fun parseImage(html: String): List<ImageUrl>
+    fun parseImage(html: String): List<ImageUrl>?
+
+    fun parseChapter(html: String): List<Chapter>?
 }

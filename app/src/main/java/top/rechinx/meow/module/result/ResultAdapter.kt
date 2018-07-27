@@ -23,6 +23,8 @@ class ResultAdapter: RecyclerView.Adapter<ResultAdapter.ViewHolder> {
     private var mData: ArrayList<Comic>
     private var mInflater: LayoutInflater
 
+    private lateinit var mClickListener: OnItemClickListener
+
     constructor(context: Context, list: ArrayList<Comic>) {
         this.mContext = context
         this.mData = list
@@ -37,6 +39,13 @@ class ResultAdapter: RecyclerView.Adapter<ResultAdapter.ViewHolder> {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val comic = mData[position]
+
+        holder.itemView.setOnClickListener { v ->
+            if (mClickListener != null) {
+                mClickListener.onItemClick(v, holder.adapterPosition)
+            }
+        }
+
         holder.comicTitle.text = comic.title
         holder.comicAuthor.text = comic.author
         holder.comicUpdate.text = comic.update
@@ -65,6 +74,18 @@ class ResultAdapter: RecyclerView.Adapter<ResultAdapter.ViewHolder> {
         if (mData.addAll(location, collection)) {
             notifyItemRangeInserted(location, location + collection.size)
         }
+    }
+
+    fun getItem(position: Int) : Comic {
+        return mData[position]
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
+        mClickListener = onItemClickListener
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(view: View, position: Int)
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {

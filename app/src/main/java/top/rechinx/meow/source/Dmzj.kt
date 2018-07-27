@@ -7,8 +7,10 @@ import org.json.JSONObject
 import top.rechinx.meow.core.JsonIterator
 import top.rechinx.meow.core.Parser
 import top.rechinx.meow.core.SearchIterator
+import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
-import top.rechinx.meow.support.relog.ReLog
+import top.rechinx.meow.model.ImageUrl
+import java.util.*
 
 open class Dmzj: Parser {
 
@@ -24,11 +26,59 @@ open class Dmzj: Parser {
     }
 
     override fun getInfoRequest(cid: String): Request? {
+        val url = "http://v2.api.dmzj.com/comic/$cid.json"
+        return Request.Builder().url(url).build()
+    }
+
+    override fun parserInto(html: String, comic: Comic) {
+        try {
+            val obj = JSONObject(html)
+            val title = obj.getString("title")
+            val cover = obj.getString("cover")
+            val time = if (obj.has("last_updatetime")) obj.getLong("last_updatetime") * 1000 else null
+            val update = time
+            val intro = obj.optString("description")
+            val sb = StringBuilder()
+            val array = obj.getJSONArray("authors")
+            for (i in 0 until array.length()) {
+                sb.append(array.getJSONObject(i).getString("tag_name")).append(" ")
+            }
+            val author = sb.toString()
+            val status = obj.getJSONArray("status").getJSONObject(0).getInt("tag_id") == 2310
+            comic.setInfo(title, cover, update.toString(), intro, author, status)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun getImageRequest(cid: String, image: String): Request? {
+        val url = "http://m.dmzj.com/view/$cid/$image.html"
+        return Request.Builder().url(url).build()
+    }
+
+    override fun parseImage(html: String): List<ImageUrl>? {
         return null
     }
 
-    override fun parserInto(html: String): Comic? {
-        return null
+
+    override fun parseChapter(html: String): List<Chapter>? {
+        val list = LinkedList<Chapter>()
+        try {
+            val obj = JSONObject(html)
+            val array = obj.getJSONArray("chapters")
+            for (i in 0 until array.length()) {
+                val data = array.getJSONObject(i).getJSONArray("data")
+                for (j in 0 until data.length()) {
+                    val chapter = data.getJSONObject(j)
+                    val title = chapter.getString("chapter_title")
+                    val chapterId = chapter.getString("chapter_id")
+                    list.add(Chapter(title, chapterId))
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return list
     }
 
     override fun getSearchIterator(html: String, page: Int): SearchIterator? {

@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".module.result.ResultActivity" />
-        <activity android:name=".module.reader.ReaderActivity"></activity>
+        <activity android:name=".module.reader.ReaderActivity" />
+        <activity android:name=".module.detail.DetailActivity"></activity>
     </application>
 
 </manifest>
