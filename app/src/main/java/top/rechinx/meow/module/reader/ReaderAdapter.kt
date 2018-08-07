@@ -12,6 +12,7 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.github.chrisbanes.photoview.PhotoView
 import top.rechinx.meow.R
+import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
 
@@ -47,6 +48,8 @@ class ReaderAdapter: RecyclerView.Adapter<ReaderAdapter.ViewHolder> {
             notifyItemRangeInserted(location, location + collection.size)
         }
     }
+
+    fun getItem(position: Int): ImageUrl = mData[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(mInflater.inflate(R.layout.item_picture, parent, false))

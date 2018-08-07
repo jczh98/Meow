@@ -64,16 +64,19 @@ object  Api {
         throw NetworkErrorException()
     }
 
-    fun getChapterImage(parser: Parser, cid: String, image: String): Observable<List<ImageUrl>> {
+    fun getChapterImage(parser: Parser, cid: String, chapterId: String): Observable<List<ImageUrl>> {
         return Observable.create(ObservableOnSubscribe<List<ImageUrl>> {
             try {
-                var request = parser.getImageRequest(cid, image)
+                var request = parser.getImageRequest(cid, chapterId)
                 var html = getResponseBody(App.getHttpClient()!!, request!!)
                 var list = parser.parseImage(html)
                 if(list != null) {
                     if(list.isEmpty()) {
                         throw Exception()
                     } else {
+                        for(imageUrl in list) {
+                            imageUrl.chapter = chapterId
+                        }
                         it.onNext(list)
                         it.onComplete()
                     }
