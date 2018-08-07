@@ -2,6 +2,7 @@ package top.rechinx.meow.module.detail
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
@@ -38,6 +39,17 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
     override fun initView() {
         mRecyclerView.layoutManager = GridLayoutManager(this, 4)
         mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
+                val position = parent.getChildLayoutPosition(view)
+                if (position == 0) {
+                    outRect.set(0, 0, 0, 10)
+                } else {
+                    val offset = parent.width / 40
+                    outRect.set(offset, 0, offset, (offset * 1.5).toInt())
+                }
+            }
+        })
         mAdapter = DetailAdapter(this, ArrayList())
         mAdapter.setOnItemClickListener(this)
         mRecyclerView.adapter = mAdapter
