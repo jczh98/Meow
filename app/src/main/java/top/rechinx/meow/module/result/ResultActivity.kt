@@ -47,7 +47,7 @@ class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickList
 
     override fun initToolbar() {
         super.initToolbar()
-        mToolbar.setNavigationOnClickListener { finish() }
+        mToolbar?.setNavigationOnClickListener { finish() }
     }
 
     override fun initView() {

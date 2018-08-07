@@ -33,7 +33,8 @@ class ReaderActivity : BaseActivity(), ReaderView {
     override fun initData() {
         val cid = intent.getStringExtra(EXTRA_ID)
         val list = intent.getParcelableArrayListExtra<Chapter>(EXTRA_CHAPTER)
-        mPresenter.loadInit(cid, list.toArray(arrayOfNulls<Chapter>(list.size)))
+        val chapterId = intent.getStringExtra(EXTRA_CHAPTER_ID)
+        mPresenter.loadInit(cid, chapterId, list.toArray(arrayOfNulls<Chapter>(list.size)))
     }
 
     override fun initView() {
@@ -51,6 +52,8 @@ class ReaderActivity : BaseActivity(), ReaderView {
 
     override fun onInitLoadSuccess(it: List<ImageUrl>) {
         mAdapter.addAll(it)
+        mLoadingText.visibility = View.GONE
+        mRecyclerView.visibility = View.VISIBLE
     }
 
     override fun onPrevLoadSuccess(it: List<ImageUrl>) {
@@ -69,11 +72,13 @@ class ReaderActivity : BaseActivity(), ReaderView {
 
         private val EXTRA_ID = "extra_id"
         private val EXTRA_CHAPTER = "extra_chapter"
+        private val EXTRA_CHAPTER_ID = "extra_chapter_id"
 
-        fun createIntent(context: Context, cid: String, array: ArrayList<Chapter>): Intent {
+        fun createIntent(context: Context, cid: String, chapter_id: String, array: ArrayList<Chapter>): Intent {
             val intent = Intent(context, ReaderActivity::class.java)
             intent.putExtra(EXTRA_ID, cid)
             intent.putExtra(EXTRA_CHAPTER, array)
+            intent.putExtra(EXTRA_CHAPTER_ID, chapter_id)
             return intent
         }
 

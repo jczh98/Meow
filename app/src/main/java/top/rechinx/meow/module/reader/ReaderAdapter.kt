@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.github.chrisbanes.photoview.PhotoView
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Comic
@@ -52,7 +55,13 @@ class ReaderAdapter: RecyclerView.Adapter<ReaderAdapter.ViewHolder> {
     override fun getItemCount(): Int = mData.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        val images = mData[position]
+        for (url in images.urls) {
+            val glideUrl = GlideUrl(url, LazyHeaders.Builder()
+                    .addHeader("Referer", "http://images.dmzj.com/")
+                    .build())
+            Glide.with(mContext).load(glideUrl).into(holder.mImage)
+        }
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {

@@ -24,9 +24,11 @@ class ReaderPresenter: BasePresenter<ReaderView>() {
     override fun onViewAttach() {
     }
 
-    fun loadInit(cid: String, array: Array<Chapter>) {
+    fun loadInit(cid: String, chapter_id: String, array: Array<Chapter>) {
         for (item in array) {
-            images(Api.getChapterImage(Dmzj(), cid, item.chapter_id!!))
+            if(item.chapter_id == chapter_id) {
+                images(Api.getChapterImage(Dmzj(), cid, chapter_id))
+            }
         }
     }
 

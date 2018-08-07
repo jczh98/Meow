@@ -51,13 +51,24 @@ open class Dmzj: Parser {
         }
     }
 
-    override fun getImageRequest(cid: String, image: String): Request? {
-        val url = "http://m.dmzj.com/view/$cid/$image.html"
+    override fun getImageRequest(cid: String, chapter_id: String): Request? {
+        val url = "http://v2.api.dmzj.com/chapter/$cid/$chapter_id.json"
         return Request.Builder().url(url).build()
     }
 
     override fun parseImage(html: String): List<ImageUrl>? {
-        return null
+        val list = LinkedList<ImageUrl>()
+        try {
+            val obj = JSONObject(html)
+            val array = obj.getJSONArray("page_url")
+            for (i in 0 until array.length()) {
+                list.add(ImageUrl(i + 1, array.getString(i)))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return list
     }
 
 

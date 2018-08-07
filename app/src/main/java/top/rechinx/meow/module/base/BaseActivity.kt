@@ -3,6 +3,7 @@ package top.rechinx.meow.module.base
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.annotation.LayoutRes
+import android.support.annotation.Nullable
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import butterknife.BindView
@@ -12,7 +13,7 @@ import top.rechinx.meow.R
 
 abstract class BaseActivity: AppCompatActivity() {
 
-    @BindView(R.id.custom_toolbar) protected lateinit var mToolbar: Toolbar
+    @Nullable @JvmField @BindView(R.id.custom_toolbar) var mToolbar: Toolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +30,10 @@ abstract class BaseActivity: AppCompatActivity() {
     protected abstract fun initView()
 
     protected open fun initToolbar() {
-        setSupportActionBar(mToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        if(mToolbar != null) {
+            setSupportActionBar(mToolbar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
     }
 
     protected abstract fun getLayoutId(): Int

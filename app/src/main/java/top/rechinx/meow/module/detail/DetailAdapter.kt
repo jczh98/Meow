@@ -25,6 +25,10 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private var mInflater: LayoutInflater
     private var mComic: Comic? = null
 
+    private var last: String? = null
+
+    private lateinit var mClickListener: OnItemClickListener
+
     constructor(context: Context, list: ArrayList<Chapter>) {
         this.mContext = context
         this.mData = list
@@ -52,9 +56,17 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    fun getItem(position: Int) : Chapter {
+        return mData[position]
+    }
+
+    fun getDataSet(): ArrayList<Chapter> = mData
+
     fun setComic(comic: Comic) {
         this.mComic = comic
     }
+
+    fun getComic(): Comic? = mComic
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == 0) {
@@ -69,6 +81,13 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
     override fun getItemCount(): Int = mData.size + 1
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        holder.itemView.setOnClickListener { v ->
+            if (mClickListener != null) {
+                mClickListener.onItemClick(v, holder.adapterPosition)
+            }
+        }
+
         if(position == 0) {
             var headerHolder = holder as HeaderViewHolder
             if(mComic != null) {
@@ -97,6 +116,14 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return if (position == 0) manager.spanCount else 1
             }
         }
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
+        mClickListener = onItemClickListener
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(view: View, position: Int)
     }
 
     class HeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

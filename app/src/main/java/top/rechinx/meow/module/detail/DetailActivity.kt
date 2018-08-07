@@ -17,8 +17,9 @@ import top.rechinx.meow.R
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseActivity
+import top.rechinx.meow.module.reader.ReaderActivity
 
-class DetailActivity : BaseActivity(), DetailView {
+class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickListener {
 
     @BindView(R.id.coordinator_action_button) lateinit var mActionButton: FloatingActionButton
     @BindView(R.id.coordinator_recycler_view) lateinit var mRecyclerView: RecyclerView
@@ -38,6 +39,7 @@ class DetailActivity : BaseActivity(), DetailView {
         mRecyclerView.layoutManager = GridLayoutManager(this, 4)
         mRecyclerView.setHasFixedSize(true)
         mAdapter = DetailAdapter(this, ArrayList())
+        mAdapter.setOnItemClickListener(this)
         mRecyclerView.adapter = mAdapter
     }
 
@@ -66,6 +68,14 @@ class DetailActivity : BaseActivity(), DetailView {
     override fun onParseError() {
         hideProgressBar()
         Snackbar.make(mLayoutView, "error", Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun onItemClick(view: View, position: Int) {
+        if(position != 0) {
+            val chapter = mAdapter.getItem(position - 1)
+            val intent = ReaderActivity.createIntent(this, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, mAdapter.getDataSet())
+            startActivity(intent)
+        }
     }
 
     companion object {
