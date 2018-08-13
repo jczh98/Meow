@@ -22,14 +22,11 @@ open class Dmzj(source: Source): Parser() {
     }
 
     override fun getSearchRequest(keyword: String, page: Int): Request? {
-        if(page == 1) {
-            val url = "http://v2.api.dmzj.com/search/show/0/$keyword/${page - 1}.json"
-            return Request.Builder()
-                    .url(url)
-                    .header("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AcooBrowser; .NET CLR 1.1.4322; .NET CLR 2.0.50727)")
-                    .build()
-        }
-        return null
+        val url = "http://v2.api.dmzj.com/search/show/0/$keyword/${page - 1}.json"
+        return Request.Builder()
+                .url(url)
+                .header("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AcooBrowser; .NET CLR 1.1.4322; .NET CLR 2.0.50727)")
+                .build()
     }
 
     override fun getInfoRequest(cid: String): Request? {

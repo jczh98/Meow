@@ -16,8 +16,12 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import butterknife.BindView
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.detail.DetailActivity
+import top.rechinx.meow.support.relog.ReLog
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -27,6 +31,7 @@ class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickList
     @BindView(R.id.result_recycler_view) lateinit var mResultList: RecyclerView
     @BindView(R.id.custom_progress_bar) lateinit var mProgressBar: ProgressBar
     @BindView(R.id.result_layout) lateinit var mLayoutView: FrameLayout
+    @BindView(R.id.result_refresh_layout) lateinit var mRefreshLayout: SmartRefreshLayout
 
     private lateinit var mLayoutManager: LinearLayoutManager
     private lateinit var mResultPresenter: ResultPresenter
@@ -56,6 +61,15 @@ class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickList
         mResultAdapter.setOnItemClickListener(this)
         mResultList.layoutManager = mLayoutManager
         mResultList.adapter = mResultAdapter
+        // RefreshLayout setup
+        mRefreshLayout.setRefreshFooter(ClassicsFooter(this))
+        mRefreshLayout.setOnLoadMoreListener({
+            mResultPresenter.loadSearch(true)
+        })
+        mRefreshLayout.setOnRefreshListener({
+            mResultAdapter.clearAll()
+            mResultPresenter.loadRefresh()
+        })
     }
 
     override fun onItemClick(view: View, position: Int) {
@@ -65,7 +79,7 @@ class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickList
     }
 
     override fun initData() {
-        mResultPresenter.loadSearch()
+        mResultPresenter.loadSearch(false)
     }
 
     override fun onSearchError() {
@@ -75,7 +89,17 @@ class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickList
 
     override fun onSearchSuccess(comic: Comic) {
         hideProgressBar()
+        mRefreshLayout.finishRefresh()
         mResultAdapter.add(comic)
+    }
+
+    override fun onLoadMoreSuccess() {
+        mRefreshLayout.finishLoadMore(500)
+    }
+
+    override fun onLoadMoreFailure() {
+        ReLog.d("LoadMoreFailure")
+        mRefreshLayout.finishLoadMore(1000,false, true)
     }
 
     private fun hideProgressBar() {

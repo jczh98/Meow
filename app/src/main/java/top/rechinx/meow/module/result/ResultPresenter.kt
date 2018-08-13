@@ -1,6 +1,8 @@
 package top.rechinx.meow.module.result
 
 import android.content.Context
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.api.RefreshLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import top.rechinx.meow.App
 import top.rechinx.meow.manager.SourceManager
@@ -25,6 +27,7 @@ class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultVi
 
     private var keyword: String = keyword
     private var error: Int = 0
+    private var source: IntArray = source
 
     init {
         this.keyword = keyword
@@ -58,7 +61,12 @@ class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultVi
         return arrayOf(1).toIntArray()
     }
 
-    public fun loadSearch() {
+    fun loadRefresh() {
+        initStateArray(source)
+        loadSearch(false)
+    }
+
+    fun loadSearch(isLoadMore: Boolean) {
         if(mStateArray.isEmpty()) {
             mView?.onSearchError()
             return
@@ -71,8 +79,10 @@ class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultVi
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             mView?.onSearchSuccess(it)
+                            if(isLoadMore) mView?.onLoadMoreSuccess()
                         }, {
                             it.printStackTrace()
+                            if(isLoadMore) mView?.onLoadMoreFailure()
                             if(obj.page == 1) {
                                 obj.state = STATE_DONE
                                 if(++error == mStateArray.size) {

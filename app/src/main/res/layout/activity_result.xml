@@ -10,11 +10,17 @@
         android:layout_height="match_parent">
         <include layout="@layout/custom_toolbar"/>
         <include layout="@layout/custom_progress_bar"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/result_recycler_view"
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/result_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:clipToPadding="false"/>
+            android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/result_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"/>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
     </LinearLayout>
 </FrameLayout>

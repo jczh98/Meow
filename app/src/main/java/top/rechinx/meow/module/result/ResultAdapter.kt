@@ -79,6 +79,11 @@ class ResultAdapter: RecyclerView.Adapter<ResultAdapter.ViewHolder> {
         }
     }
 
+    fun clearAll() {
+        mData.clear()
+        notifyDataSetChanged()
+    }
+
     fun getItem(position: Int) : Comic {
         return mData[position]
     }
