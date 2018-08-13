@@ -11,6 +11,7 @@ import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.model.Source
+import top.rechinx.meow.utils.Utility
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,7 +43,7 @@ open class Dmzj(source: Source): Parser() {
             val title = obj.getString("title")
             val cover = obj.getString("cover")
             val time = if (obj.has("last_updatetime")) obj.getLong("last_updatetime") * 1000 else null
-            val update = time
+            val update = time?.let { Utility.getFormatTime("yyyy-MM-dd", it) }
             val intro = obj.optString("description")
             val sb = StringBuilder()
             val array = obj.getJSONArray("authors")
