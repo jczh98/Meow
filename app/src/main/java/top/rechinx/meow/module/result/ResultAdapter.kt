@@ -15,6 +15,8 @@ import top.rechinx.meow.model.Comic
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import top.rechinx.meow.App
+import top.rechinx.meow.manager.SourceManager
 
 
 class ResultAdapter: RecyclerView.Adapter<ResultAdapter.ViewHolder> {
@@ -49,6 +51,7 @@ class ResultAdapter: RecyclerView.Adapter<ResultAdapter.ViewHolder> {
         holder.comicTitle.text = comic.title
         holder.comicAuthor.text = comic.author
         holder.comicUpdate.text = comic.update
+        holder.comicSource.text = comic.source?.let { SourceManager.getInstance().getTitle(it) }
         val glideUrl = GlideUrl(comic.image, LazyHeaders.Builder()
                 .addHeader("Referer", "http://images.dmzj.com/")
                 .build())

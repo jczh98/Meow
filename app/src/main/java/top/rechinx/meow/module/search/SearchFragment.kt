@@ -27,7 +27,7 @@ class SearchFragment: BaseFragment() {
         if (keyword.isEmpty()) {
             mInputLayout.error = getString(R.string.empty_for_search)
         } else {
-            startActivity(ResultActivity.createIntent(this!!.activity!!, keyword, intArrayOf(Dmzj.SOURCE_DMZJ)))
+            startActivity(ResultActivity.createIntent(this!!.activity!!, keyword, intArrayOf(Dmzj.TYPE)))
         }
     }
 

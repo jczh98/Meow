@@ -1,6 +1,9 @@
 package top.rechinx.meow.module.result
 
+import android.content.Context
 import io.reactivex.android.schedulers.AndroidSchedulers
+import top.rechinx.meow.App
+import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.module.base.BasePresenter
 import top.rechinx.meow.network.Api
 import top.rechinx.meow.source.Dmzj
@@ -18,6 +21,7 @@ class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultVi
     }
 
     private lateinit var mStateArray: Array<State?>
+    private lateinit var mSourceManager: SourceManager
 
     private var keyword: String = keyword
     private var error: Int = 0
@@ -34,6 +38,7 @@ class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultVi
     }
 
     override fun onViewAttach() {
+        mSourceManager = SourceManager.getInstance()
         if(mStateArray == null) {
             initStateArray(loadSource())
         }
@@ -60,9 +65,9 @@ class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultVi
         }
         for(obj in mStateArray) {
             if(obj?.state == STATE_NULL) {
-                var parser = Dmzj()
+                val parser = mSourceManager.getParser(obj.source)
                 obj.state = STATE_DOING
-                mCompositeDisposable.add(Api.getSearchResult(parser, keyword, ++obj.page)
+                mCompositeDisposable.add(Api.getSearchResult(parser!!, keyword, ++obj.page)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                             mView?.onSearchSuccess(it)

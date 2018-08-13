@@ -29,10 +29,12 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
 
     private lateinit var mAdapter: DetailAdapter
     private lateinit var mPresenter: DetailPresenter
+    private lateinit var mComic: Comic
 
     override fun initData() {
         val source = intent.getIntExtra(EXTRA_SOURCE, -1)
         val cid = intent.getStringExtra(EXTRA_CID)
+        mComic = Comic(source, cid)
         mPresenter.load(source, cid)
     }
 
@@ -85,7 +87,7 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
     override fun onItemClick(view: View, position: Int) {
         if(position != 0) {
             val chapter = mAdapter.getItem(position - 1)
-            val intent = ReaderActivity.createIntent(this, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, mAdapter.getDataSet())
+            val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, mAdapter.getDataSet())
             startActivity(intent)
         }
     }

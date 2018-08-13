@@ -4,23 +4,32 @@ import okhttp3.Request
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
+import top.rechinx.meow.model.Source
 import java.io.UnsupportedEncodingException
 
-interface Parser {
+abstract class Parser {
+
+    private var mTitle: String? = null
 
     @Throws(UnsupportedEncodingException::class)
-    fun getSearchRequest(keyword: String, page: Int): Request?
+    abstract fun getSearchRequest(keyword: String, page: Int): Request?
 
-    fun getInfoRequest(cid: String): Request?
+    abstract fun getInfoRequest(cid: String): Request?
 
     @Throws(UnsupportedEncodingException::class)
-    fun parserInto(html: String, comic: Comic)
+    abstract fun parserInto(html: String, comic: Comic)
 
-    fun getSearchIterator(html: String, page: Int): SearchIterator?
+    abstract fun getSearchIterator(html: String, page: Int): SearchIterator?
 
-    fun getImageRequest(cid: String, image: String): Request?
+    abstract fun getImageRequest(cid: String, image: String): Request?
 
-    fun parseImage(html: String): List<ImageUrl>?
+    abstract fun parseImage(html: String): List<ImageUrl>?
 
-    fun parseChapter(html: String): List<Chapter>?
+    abstract fun parseChapter(html: String): List<Chapter>?
+
+    fun init(source: Source) {
+        mTitle = source.title
+    }
+
+    fun getTitle(): String? = mTitle
 }

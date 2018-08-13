@@ -86,8 +86,8 @@ class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickList
 
     companion object {
 
-        private val EXTRA_KEYWORD = "extra_keyword"
-        private val EXTRA_SOURCE = "extra_source"
+        const val EXTRA_KEYWORD = "extra_keyword"
+        const val EXTRA_SOURCE = "extra_source"
 
         fun createIntent(context: Context, keyword: String, array: IntArray): Intent {
             val intent = Intent(context, ResultActivity::class.java)

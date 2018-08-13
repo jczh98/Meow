@@ -37,10 +37,11 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
     private var currentPage: Int = 1
 
     override fun initData() {
+        val source = intent.getIntExtra(EXTRA_SOURCE, 0)
         val cid = intent.getStringExtra(EXTRA_ID)
         val list = intent.getParcelableArrayListExtra<Chapter>(EXTRA_CHAPTER)
         val chapterId = intent.getStringExtra(EXTRA_CHAPTER_ID)
-        mPresenter.loadInit(cid, chapterId, list.toArray(arrayOfNulls<Chapter>(list.size)))
+        mPresenter.loadInit(source, cid, chapterId, list.toArray(arrayOfNulls<Chapter>(list.size)))
     }
 
     override fun initView() {
@@ -160,9 +161,11 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
         private val EXTRA_ID = "extra_id"
         private val EXTRA_CHAPTER = "extra_chapter"
         private val EXTRA_CHAPTER_ID = "extra_chapter_id"
+        private val EXTRA_SOURCE = "extra_source"
 
-        fun createIntent(context: Context, cid: String, chapter_id: String, array: ArrayList<Chapter>): Intent {
+        fun createIntent(context: Context, source: Int, cid: String, chapter_id: String, array: ArrayList<Chapter>): Intent {
             val intent = Intent(context, ReaderActivity::class.java)
+            intent.putExtra(EXTRA_SOURCE, source)
             intent.putExtra(EXTRA_ID, cid)
             intent.putExtra(EXTRA_CHAPTER, array)
             intent.putExtra(EXTRA_CHAPTER_ID, chapter_id)

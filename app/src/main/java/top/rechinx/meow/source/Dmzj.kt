@@ -10,9 +10,15 @@ import top.rechinx.meow.core.SearchIterator
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
+import top.rechinx.meow.model.Source
+import java.text.SimpleDateFormat
 import java.util.*
 
-open class Dmzj: Parser {
+open class Dmzj(source: Source): Parser() {
+
+    init {
+        init(source)
+    }
 
     override fun getSearchRequest(keyword: String, page: Int): Request? {
         if(page == 1) {
@@ -100,8 +106,9 @@ open class Dmzj: Parser {
                         val cid = obj.getString("id")
                         val title = obj.getString("title")
                         val cover = obj.getString("cover")
-                        val author = obj.optString("authors")
-                        return Comic(SOURCE_DMZJ, cid, title, cover, author)
+                        val author = obj.getString("authors")
+                        val update = obj.getString("last_name")
+                        return Comic(TYPE, cid, title, cover, author, update)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -115,6 +122,11 @@ open class Dmzj: Parser {
     }
 
     companion object {
-        val SOURCE_DMZJ = 1
+
+        const val TYPE = 1
+
+        const val DEFAULT_TITLE = "动漫之家"
+
+        fun getDefaultSource(): Source = Source(0, TYPE, DEFAULT_TITLE)
     }
 }

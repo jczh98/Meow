@@ -22,6 +22,16 @@ data class Comic(var cid: String?,
         this.author = author
     }
 
+    constructor(source: Int, cid: String, title: String, image: String, author: String, update: String) :
+            this(cid, source, image, title, author, null, null, null) {
+        this.cid = cid
+        this.source = source
+        this.title = title
+        this.image = image
+        this.author = author
+        this.update = update
+    }
+
     fun setInfo(title: String?, cover: String?, update: String?, intro: String, author: String?, finish: Boolean) {
         if (title != null) {
             this.title = title
