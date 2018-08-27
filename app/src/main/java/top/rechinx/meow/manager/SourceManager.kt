@@ -8,6 +8,7 @@ import top.rechinx.meow.dao.AppDatabase
 import top.rechinx.meow.dao.SourceDao
 import top.rechinx.meow.model.Source
 import top.rechinx.meow.source.Dmzj
+import top.rechinx.meow.source.Shuhui
 
 class SourceManager {
 
@@ -17,6 +18,7 @@ class SourceManager {
         return Completable.fromCallable({
             var list = ArrayList<Source>()
             list.add(Dmzj.getDefaultSource())
+            list.add(Shuhui.getDefaultSource())
             mDatabaseHelper.sourceDao().insert(list)
         })
     }
@@ -31,6 +33,7 @@ class SourceManager {
         val source = load(type)
         when(type) {
             Dmzj.TYPE -> return Dmzj(source)
+            Shuhui.TYPE -> return Shuhui(source)
             else -> return null
         }
     }

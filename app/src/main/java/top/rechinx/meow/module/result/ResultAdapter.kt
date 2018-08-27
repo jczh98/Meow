@@ -52,10 +52,7 @@ class ResultAdapter: RecyclerView.Adapter<ResultAdapter.ViewHolder> {
         holder.comicAuthor.text = comic.author
         holder.comicUpdate.text = comic.update
         holder.comicSource.text = comic.source?.let { SourceManager.getInstance().getTitle(it) }
-        val glideUrl = GlideUrl(comic.image, LazyHeaders.Builder()
-                .addHeader("Referer", "http://images.dmzj.com/")
-                .build())
-        Glide.with(mContext).load(glideUrl).into(holder.comicImage)
+        Glide.with(mContext).load(comic.glideCover).into(holder.comicImage)
     }
 
     fun add(data: Comic) {

@@ -1,5 +1,7 @@
 package top.rechinx.meow.source
 
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONException
@@ -39,6 +41,9 @@ open class Dmzj(source: Source): Parser() {
             val obj = JSONObject(html)
             val title = obj.getString("title")
             val cover = obj.getString("cover")
+            val glideCover = GlideUrl(cover, LazyHeaders.Builder()
+                    .addHeader("Referer", "http://images.dmzj.com/")
+                    .build())
             val time = if (obj.has("last_updatetime")) obj.getLong("last_updatetime") * 1000 else null
             val update = time?.let { Utility.getFormatTime("yyyy-MM-dd", it) }
             val intro = obj.optString("description")
@@ -49,7 +54,7 @@ open class Dmzj(source: Source): Parser() {
             }
             val author = sb.toString()
             val status = obj.getJSONArray("status").getJSONObject(0).getInt("tag_id") == 2310
-            comic.setInfo(title, cover, update.toString(), intro, author, status)
+            comic.setInfo(title, cover, update.toString(), intro, author, status, glideCover)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -66,7 +71,10 @@ open class Dmzj(source: Source): Parser() {
             val obj = JSONObject(html)
             val array = obj.getJSONArray("page_url")
             for (i in 0 until array.length()) {
-                list.add(ImageUrl(i + 1, array.getString(i)))
+            val glideUrl = GlideUrl(array.getString(i), LazyHeaders.Builder()
+                    .addHeader("Referer", "http://images.dmzj.com/")
+                    .build())
+                list.add(ImageUrl(i + 1, glideUrl))
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -106,7 +114,10 @@ open class Dmzj(source: Source): Parser() {
                         val cover = obj.getString("cover")
                         val author = obj.getString("authors")
                         val update = obj.getString("last_name")
-                        return Comic(TYPE, cid, title, cover, author, update)
+                        val glideCover = GlideUrl(cover, LazyHeaders.Builder()
+                                .addHeader("Referer", "http://images.dmzj.com/")
+                                .build())
+                        return Comic(TYPE, cid, title, cover, author, update, glideCover)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }

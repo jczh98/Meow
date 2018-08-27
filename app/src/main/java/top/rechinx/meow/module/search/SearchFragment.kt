@@ -13,6 +13,7 @@ import top.rechinx.meow.R
 import top.rechinx.meow.module.base.BaseFragment
 import top.rechinx.meow.module.result.ResultActivity
 import top.rechinx.meow.source.Dmzj
+import top.rechinx.meow.source.Shuhui
 
 class SearchFragment: BaseFragment() {
 
@@ -27,7 +28,7 @@ class SearchFragment: BaseFragment() {
         if (keyword.isEmpty()) {
             mInputLayout.error = getString(R.string.empty_for_search)
         } else {
-            startActivity(ResultActivity.createIntent(this!!.activity!!, keyword, intArrayOf(Dmzj.TYPE)))
+            startActivity(ResultActivity.createIntent(this!!.activity!!, keyword, intArrayOf(Dmzj.TYPE, Shuhui.TYPE)))
         }
     }
 

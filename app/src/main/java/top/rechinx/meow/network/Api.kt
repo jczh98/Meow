@@ -49,6 +49,7 @@ object  Api {
             if (response!!.isSuccessful) {
                 val bodybytes = response.body()!!.bytes()
                 var body = String(bodybytes)
+                ReLog.d(body)
                 if (body.indexOf("charset=gb2312") != -1) {
                     body = String(bodybytes, Charset.forName("GB2312"))
                 }

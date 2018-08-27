@@ -1,11 +1,11 @@
 package top.rechinx.meow.model
 
+import com.bumptech.glide.load.model.GlideUrl
+
 data class ImageUrl(var id: Int,
                     var page_number: Int,
-                    var urls: Array<String>,
+                    var chapterUrl: GlideUrl?,
                     var chapter: String?) {
 
-    constructor(number: Int, urls: Array<String>): this(0, number, urls, null)
-
-    constructor(number: Int, url: String): this(number, arrayOf(url))
+    constructor(number: Int, chapterUrl: GlideUrl): this(0, number, chapterUrl, null)
 }

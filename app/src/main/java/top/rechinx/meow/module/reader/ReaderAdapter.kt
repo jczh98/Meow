@@ -59,12 +59,12 @@ class ReaderAdapter: RecyclerView.Adapter<ReaderAdapter.ViewHolder> {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val images = mData[position]
-        for (url in images.urls) {
-            val glideUrl = GlideUrl(url, LazyHeaders.Builder()
-                    .addHeader("Referer", "http://images.dmzj.com/")
-                    .build())
-            Glide.with(mContext).load(glideUrl).into(holder.mImage)
-        }
+        //for (url in images.urls) {
+//            val glideUrl = GlideUrl(images.urls[0], LazyHeaders.Builder()
+//                    .addHeader("Referer", "http://images.dmzj.com/")
+//                    .build())
+            Glide.with(mContext).load(images.chapterUrl).into(holder.mImage)
+        //}
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {

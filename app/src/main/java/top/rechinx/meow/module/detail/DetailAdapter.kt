@@ -91,10 +91,7 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if(position == 0) {
             var headerHolder = holder as HeaderViewHolder
             if(mComic != null) {
-                val glideUrl = GlideUrl(mComic?.image, LazyHeaders.Builder()
-                        .addHeader("Referer", "http://images.dmzj.com/")
-                        .build())
-                Glide.with(mContext).load(glideUrl).into(headerHolder.mComicImage)
+                Glide.with(mContext).load(mComic?.glideCover).into(headerHolder.mComicImage)
                 headerHolder.mComicTitle.text = mComic?.title
                 headerHolder.mComicIntro.text = mComic?.description
                 headerHolder.mComicAuthor.text = mComic?.author
