@@ -9,12 +9,12 @@ import org.json.JSONObject
 import top.rechinx.meow.core.JsonIterator
 import top.rechinx.meow.core.Parser
 import top.rechinx.meow.core.SearchIterator
+import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.model.Source
 import top.rechinx.meow.utils.Utility
-import java.text.SimpleDateFormat
 import java.util.*
 
 open class Dmzj(source: Source): Parser() {
@@ -130,12 +130,24 @@ open class Dmzj(source: Source): Parser() {
         return null
     }
 
+    override fun constructCoverGlideUrl(url: String): GlideUrl? {
+        return GlideUrl(url, LazyHeaders.Builder()
+                .addHeader("Referer", "http://images.dmzj.com/")
+                .build())
+    }
+
+    override fun constructPicGlideUrl(url: String): GlideUrl? {
+        return GlideUrl(url, LazyHeaders.Builder()
+                .addHeader("Referer", "http://images.dmzj.com/")
+                .build())
+    }
+
     companion object {
 
         const val TYPE = 1
 
         const val DEFAULT_TITLE = "动漫之家"
 
-        fun getDefaultSource(): Source = Source(0, TYPE, DEFAULT_TITLE)
+        fun getDefaultSource(): Source = SourceManager.getInstance().identify(TYPE, DEFAULT_TITLE)
     }
 }

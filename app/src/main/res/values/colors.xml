@@ -6,4 +6,5 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="trans_light_black">#4F000000</color>
+    <color name="colorBackgroundTrans">#AAFAFAFA</color>
 </resources>

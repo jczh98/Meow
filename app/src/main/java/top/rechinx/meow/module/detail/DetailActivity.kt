@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ProgressBar
 import butterknife.BindView
+import butterknife.OnClick
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
@@ -72,6 +73,9 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
 
     override fun onComicLoadSuccess(comic: Comic) {
         mAdapter.setComic(comic)
+        val resId = if (comic.favorite != null) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
+        mActionButton.setImageResource(resId)
+        mActionButton.visibility = View.VISIBLE
     }
 
     override fun onChapterLoadSuccess(list: List<Chapter>) {
@@ -92,6 +96,16 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
         }
     }
 
+    @OnClick(R.id.coordinator_action_button)
+    fun onActionButtonClick() {
+        if(mPresenter.mComic?.favorite != null) {
+            mPresenter.unFavoriteComic()
+            mActionButton.setImageResource(R.drawable.ic_favorite_border_white_24dp)
+        }else {
+            mPresenter.favoriteComic()
+            mActionButton.setImageResource(R.drawable.ic_favorite_white_24dp)
+        }
+    }
     companion object {
 
         private val EXTRA_CID = "extra_keyword"

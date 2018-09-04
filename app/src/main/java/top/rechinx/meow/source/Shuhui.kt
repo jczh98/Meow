@@ -3,19 +3,17 @@ package top.rechinx.meow.source
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import okhttp3.Request
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import top.rechinx.meow.core.JsonIterator
 import top.rechinx.meow.core.Parser
 import top.rechinx.meow.core.SearchIterator
+import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.model.Source
 import top.rechinx.meow.soup.Node
-import top.rechinx.meow.support.relog.ReLog
-import top.rechinx.meow.utils.Utility
 import java.util.*
 
 class Shuhui(source: Source) : Parser() {
@@ -115,12 +113,22 @@ class Shuhui(source: Source) : Parser() {
         return list
     }
 
+    override fun constructCoverGlideUrl(url: String): GlideUrl? {
+        return GlideUrl(url, LazyHeaders.Builder()
+                .build())
+    }
+
+    override fun constructPicGlideUrl(url: String): GlideUrl? {
+        return GlideUrl(url, LazyHeaders.Builder()
+                .build())
+    }
+
     companion object {
 
         const val TYPE = 2
 
         const val DEFAULT_TITLE = "鼠绘"
 
-        fun getDefaultSource(): Source = Source(0, TYPE, DEFAULT_TITLE)
+        fun getDefaultSource(): Source = SourceManager.getInstance().identify(TYPE, DEFAULT_TITLE)
     }
 }

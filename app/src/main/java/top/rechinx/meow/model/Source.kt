@@ -6,9 +6,9 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity
 data class Source(
-        @PrimaryKey(autoGenerate = true) val id: Long,
-        @ColumnInfo val type: Int,
-        @ColumnInfo val title: String
+        @PrimaryKey(autoGenerate = true) var id: Long,
+        @ColumnInfo var type: Int,
+        @ColumnInfo var title: String
 )
 
 

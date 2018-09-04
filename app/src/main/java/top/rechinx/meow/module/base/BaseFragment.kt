@@ -14,6 +14,7 @@ abstract class BaseFragment: Fragment() {
         ButterKnife.bind(this, view)
         initPresenter()
         initView()
+        initData()
         return view
     }
 
@@ -22,4 +23,6 @@ abstract class BaseFragment: Fragment() {
     protected abstract fun initPresenter()
 
     protected abstract fun getLayoutId(): Int
+
+    protected abstract fun initData()
 }

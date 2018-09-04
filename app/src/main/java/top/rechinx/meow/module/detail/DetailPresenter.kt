@@ -2,16 +2,21 @@ package top.rechinx.meow.module.detail
 
 import android.content.Context
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import top.rechinx.meow.manager.ComicManager
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BasePresenter
 import top.rechinx.meow.network.Api
 import top.rechinx.meow.source.Dmzj
+import top.rechinx.meow.support.relog.ReLog
 
 class DetailPresenter(): BasePresenter<DetailView>() {
 
-    private var mComic: Comic? = null
+    var mComic: Comic? = null
+
     private lateinit var mSourceManager: SourceManager
+    private lateinit var mComicManager: ComicManager
 
     override fun initSubscription() {
 
@@ -19,10 +24,11 @@ class DetailPresenter(): BasePresenter<DetailView>() {
 
     override fun onViewAttach() {
         mSourceManager = SourceManager.getInstance()
+        mComicManager = ComicManager.getInstance()
     }
 
     fun load(source: Int, cid: String) {
-        mComic = Comic(source, cid)
+        mComic = mComicManager.identify(source, cid)
         mCompositeDisposable.add(Api.getComicInfo(mSourceManager.getParser(source)!!, mComic!!)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -32,5 +38,21 @@ class DetailPresenter(): BasePresenter<DetailView>() {
                     mView?.onComicLoadSuccess(mComic!!)
                     mView?.onParseError()
                 }))
+    }
+
+    fun favoriteComic() {
+        mComic?.favorite = true
+        mComicManager.updateOrInsert(mComic!!)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+    }
+
+    fun unFavoriteComic() {
+        mComic?.favorite = null
+        mComicManager.updateOrInsert(mComic!!)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
     }
 }

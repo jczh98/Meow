@@ -1,24 +1,34 @@
 package top.rechinx.meow.model
 
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
+import android.arch.persistence.room.PrimaryKey
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 
-data class Comic(var cid: String?,
-                 var source: Int?,
-                 var image: String?,
-                 var title: String?,
-                 var author: String?,
-                 var description: String?,
-                 var status: String?,
-                 var update: String?,
-                 var glideCover: GlideUrl?) {
+@Entity
+data class Comic(@PrimaryKey(autoGenerate = true) var id: Long,
+                 @ColumnInfo var cid: String?,
+                 @ColumnInfo var source: Int?,
+                 @ColumnInfo var image: String?,
+                 @ColumnInfo var title: String?,
+                 @ColumnInfo var author: String?,
+                 @ColumnInfo var description: String?,
+                 @ColumnInfo var status: String?,
+                 @ColumnInfo var update: String?,
+                 @ColumnInfo var favorite: Boolean?,
+                 @Ignore var glideCover: GlideUrl?) {
 
-    constructor(source: Int, cid: String) : this(source, cid, null, null, null) {
+    constructor(): this(0, null, null, null, null, null, null, null, null, null, null)
+
+    @Ignore constructor(source: Int, cid: String) : this(source, cid, null, null, null) {
         this.cid = cid
         this.source = source
     }
-    constructor(source: Int, cid: String, title: String?, image: String?, author: String?) :
-            this(cid, source, image, title, author, null, null, null, null) {
+
+    @Ignore constructor(source: Int, cid: String, title: String?, image: String?, author: String?) :
+            this(0, cid, source, image, title, author, null, null, null, null, null) {
         this.cid = cid
         this.source = source
         this.title = title
@@ -26,8 +36,8 @@ data class Comic(var cid: String?,
         this.author = author
     }
 
-    constructor(source: Int, cid: String, title: String, image: String, author: String, update: String, glideCover: GlideUrl?) :
-            this(cid, source, image, title, author, null, null, null, glideCover) {
+    @Ignore constructor(source: Int, cid: String, title: String, image: String, author: String, update: String, glideCover: GlideUrl?) :
+            this(0, cid, source, image, title, author, null, null, null, null, glideCover) {
         this.cid = cid
         this.source = source
         this.title = title

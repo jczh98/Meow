@@ -1,11 +1,8 @@
 package top.rechinx.meow.manager
 
-import android.content.Context
 import io.reactivex.Completable
-import top.rechinx.meow.App
 import top.rechinx.meow.core.Parser
 import top.rechinx.meow.dao.AppDatabase
-import top.rechinx.meow.dao.SourceDao
 import top.rechinx.meow.model.Source
 import top.rechinx.meow.source.Dmzj
 import top.rechinx.meow.source.Shuhui
@@ -15,15 +12,21 @@ class SourceManager {
     private var mDatabaseHelper: AppDatabase = AppDatabase.getInstance()
 
     fun initSource(): Completable {
-        return Completable.fromCallable({
-            var list = ArrayList<Source>()
-            list.add(Dmzj.getDefaultSource())
-            list.add(Shuhui.getDefaultSource())
-            mDatabaseHelper.sourceDao().insert(list)
-        })
+        return Completable.fromCallable {
+            mDatabaseHelper.sourceDao().insert(Dmzj.getDefaultSource(),
+                    Shuhui.getDefaultSource())
+        }
     }
 
     fun load(type: Int) = mDatabaseHelper.sourceDao().load(type)
+
+    fun identify(type: Int, title: String): Source {
+        var source = mDatabaseHelper.sourceDao().identify(type, title)
+        if(source == null) {
+            source = Source(0, type, title)
+        }
+        return source
+    }
 
     fun getTitle(type: Int): String {
         return getParser(type)?.getTitle()!!

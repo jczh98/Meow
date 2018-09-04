@@ -1,5 +1,6 @@
 package top.rechinx.meow.core
 
+import com.bumptech.glide.load.model.GlideUrl
 import okhttp3.Request
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
@@ -26,6 +27,10 @@ abstract class Parser {
     abstract fun parseImage(html: String): List<ImageUrl>?
 
     abstract fun parseChapter(html: String): List<Chapter>?
+
+    abstract fun constructCoverGlideUrl(url: String): GlideUrl?
+
+    abstract fun constructPicGlideUrl(url: String): GlideUrl?
 
     fun init(source: Source) {
         mTitle = source.title

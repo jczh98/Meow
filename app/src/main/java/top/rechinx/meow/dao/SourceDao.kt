@@ -12,6 +12,10 @@ interface SourceDao {
     @Query("SELECT * FROM Source WHERE type = :type")
     fun load(type: Int): Source
 
+    @Query("SELECT * FROM Source WHERE type = :type AND title = :title")
+    fun identify(type: Int, title: String): Source?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(list: ArrayList<Source>)
+    fun insert(vararg sources: Source)
+
 }
