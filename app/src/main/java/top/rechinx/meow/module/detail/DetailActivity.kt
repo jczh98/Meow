@@ -27,7 +27,7 @@ import top.rechinx.meow.support.relog.ReLog
 
 class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickListener {
 
-    @BindView(R.id.coordinator_action_button) lateinit var mActionButton: FloatingActionButton
+    @BindView(R.id.coordinator_fab) lateinit var mActionButton: FloatingActionButton
     @BindView(R.id.coordinator_recycler_view) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.coordinator_layout) lateinit var mLayoutView: CoordinatorLayout
     @BindView(R.id.custom_progress_bar) lateinit var mProgressBar: ProgressBar
@@ -98,6 +98,11 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
         mPresenter.attachView(this)
     }
 
+    override fun initToolbar() {
+        super.initToolbar()
+        mToolbar?.setNavigationOnClickListener { finish() }
+    }
+
     override fun onComicLoadSuccess(comic: Comic) {
         mAdapter.setComic(comic)
         val resId = if (comic.favorite != null) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
@@ -123,7 +128,7 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
         }
     }
 
-    @OnClick(R.id.coordinator_action_button)
+    @OnClick(R.id.coordinator_fab)
     fun onActionButtonClick() {
         if(mPresenter.mComic?.favorite != null) {
             mPresenter.unFavoriteComic()

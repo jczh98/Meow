@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">Meow</string>
-    <string name="drawer_main">Meow</string>
+    <string name="drawer_main">Home</string>
     <string name="hint_for_search">Please input comic name</string>
     <string name="empty_for_search">keyword cannot be empty</string>
     <string name="result_source">Source</string>
     <string name="result_update">Update Time</string>
     <string name="reader_picture_loading">Now loading...</string>
     <string name="drawer_favorite">Favorite</string>
+    <string name="drawer_history">History</string>
 </resources>

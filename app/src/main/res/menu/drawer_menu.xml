@@ -6,7 +6,7 @@
             android:id="@+id/drawer_main"
             android:title="@string/drawer_main"/>
         <item
-            android:id="@+id/drawer_favorite"
-            android:title="@string/drawer_favorite"/>
+            android:id="@+id/drawer_history"
+            android:title="@string/drawer_history"/>
     </group>
 </menu>

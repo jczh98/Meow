@@ -21,7 +21,6 @@ import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.favorite.FavoriteFragment
 import top.rechinx.meow.module.result.ResultActivity
-import top.rechinx.meow.module.search.SearchFragment
 import top.rechinx.meow.source.Dmzj
 import top.rechinx.meow.source.Shuhui
 
@@ -87,7 +86,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.drawer_main -> {
                 supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HomeFragment()).commit()
             }
-            R.id.drawer_favorite -> {
+            R.id.drawer_history -> {
                 supportFragmentManager.beginTransaction().replace(R.id.container_fragment, FavoriteFragment()).commit()
             }
         }
