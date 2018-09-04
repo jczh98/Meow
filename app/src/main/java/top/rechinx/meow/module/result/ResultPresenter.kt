@@ -85,9 +85,9 @@ class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultVi
                             if(isLoadMore) mView?.onLoadMoreFailure()
                             if(obj.page == 1) {
                                 obj.state = STATE_DONE
-                                if(++error == mStateArray.size) {
-                                    mView?.onSearchError()
-                                }
+                            }
+                            if(++error == mStateArray.size) {
+                                mView?.onSearchError()
                             }
                         }, {
                             obj.state = STATE_NULL

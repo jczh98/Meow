@@ -85,6 +85,7 @@ class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickList
     override fun onSearchError() {
         hideProgressBar()
         Snackbar.make(mLayoutView, "Result is empty", Snackbar.LENGTH_SHORT).show()
+        mRefreshLayout.finishLoadMore(1000,false, true)
     }
 
     override fun onSearchSuccess(comic: Comic) {
@@ -98,8 +99,7 @@ class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickList
     }
 
     override fun onLoadMoreFailure() {
-        ReLog.d("LoadMoreFailure")
-        mRefreshLayout.finishLoadMore(1000,false, true)
+        mRefreshLayout.finishLoadMore(500)
     }
 
     private fun hideProgressBar() {

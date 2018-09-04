@@ -29,7 +29,6 @@ object  Api {
                 while(iterator.hasNext()) {
                     var comic = iterator.next()
                     if(comic != null) {
-                        ReLog.d("cid is ${comic.cid}, title is ${comic.title}, cover is ${comic.image}")
                         it.onNext(comic)
                         Thread.sleep(Random().nextInt(200).toLong())
                     }
@@ -49,7 +48,6 @@ object  Api {
             if (response!!.isSuccessful) {
                 val bodybytes = response.body()!!.bytes()
                 var body = String(bodybytes)
-                ReLog.d(body)
                 if (body.indexOf("charset=gb2312") != -1) {
                     body = String(bodybytes, Charset.forName("GB2312"))
                 }
@@ -96,7 +94,6 @@ object  Api {
                 parser.parserInto(html, comic)
                 val list = parser.parseChapter(html)
                 if (list != null) {
-                    ReLog.d(list.isEmpty().toString())
                     if(!list.isEmpty()) {
                         it.onNext(list)
                         it.onComplete()

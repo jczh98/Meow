@@ -12,12 +12,26 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <include layout="@layout/custom_toolbar" />
+
+            <FrameLayout
+                android:id="@+id/toolbar_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/custom_toolbar"/>
+
+                <com.miguelcatalan.materialsearchview.MaterialSearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+
             <FrameLayout
                 android:id="@+id/container_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             </FrameLayout>
+
         </LinearLayout>
         <android.support.design.widget.NavigationView
             android:id="@+id/navigation_view"
