@@ -3,15 +3,17 @@ package top.rechinx.meow.module.favorite
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import butterknife.BindView
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseFragment
 import top.rechinx.meow.module.common.GridAdapter
+import top.rechinx.meow.module.detail.DetailActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
-class FavoriteFragment: BaseFragment(), FavoriteView {
+class FavoriteFragment: BaseFragment(), FavoriteView, GridAdapter.OnItemClickListener {
 
     @BindView(R.id.grid_action_button) lateinit var mActionButton: FloatingActionButton
     @BindView(R.id.recycler_view_content) lateinit var mRecyclerView: RecyclerView
@@ -22,6 +24,7 @@ class FavoriteFragment: BaseFragment(), FavoriteView {
     override fun initView() {
         mRecyclerView.layoutManager = GridLayoutManager(activity, 3)
         mAdapter = GridAdapter(activity!!, ArrayList<Comic>())
+        mAdapter.setOnItemClickListener(this)
         mRecyclerView.adapter = mAdapter
     }
 
@@ -37,9 +40,16 @@ class FavoriteFragment: BaseFragment(), FavoriteView {
     }
 
     override fun onComicLoadSuccess(list: List<Comic>) {
+        mAdapter.clearAll()
         mAdapter.addAll(list)
     }
 
     override fun onComicLoadFailure() {
+    }
+
+    override fun onItemClick(view: View, position: Int) {
+        val comic = mAdapter.getItem(position)
+        val intent = DetailActivity.createIntent(activity!!, comic.source!!, comic.cid!!)
+        startActivity(intent)
     }
 }

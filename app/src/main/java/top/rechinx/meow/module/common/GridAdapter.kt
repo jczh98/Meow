@@ -21,6 +21,8 @@ class GridAdapter: RecyclerView.Adapter<GridAdapter.ViewHolder> {
     private var mData: ArrayList<Comic>
     private var mInflater: LayoutInflater
 
+    private lateinit var mClickListener: GridAdapter.OnItemClickListener
+
     constructor(context: Context, list: ArrayList<Comic>) {
         this.mContext = context
         this.mData = list
@@ -57,6 +59,10 @@ class GridAdapter: RecyclerView.Adapter<GridAdapter.ViewHolder> {
         return mData[position]
     }
 
+    fun setOnItemClickListener(onItemClickListener: GridAdapter.OnItemClickListener) {
+        mClickListener = onItemClickListener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(mInflater.inflate(R.layout.item_grid, parent, false))
     }
@@ -68,11 +74,21 @@ class GridAdapter: RecyclerView.Adapter<GridAdapter.ViewHolder> {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val comic = mData[position]
 
+        holder.itemView.setOnClickListener { v ->
+            if (mClickListener != null) {
+                mClickListener.onItemClick(v, holder.adapterPosition)
+            }
+        }
+
         holder.comicTitle.text = comic.title
         holder.comicSource.text = SourceManager.getInstance().getTitle(comic.source!!)
         Glide.with(mContext)
                 .load(SourceManager.getInstance().getParser(comic.source!!)?.constructCoverGlideUrl(comic.image!!))
                 .into(holder.comicImage)
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(view: View, position: Int)
     }
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
