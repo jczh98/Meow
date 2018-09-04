@@ -15,6 +15,8 @@ class DetailPresenter(): BasePresenter<DetailView>() {
 
     var mComic: Comic? = null
 
+    private var page: Int = 1
+
     private lateinit var mSourceManager: SourceManager
     private lateinit var mComicManager: ComicManager
 
@@ -29,7 +31,7 @@ class DetailPresenter(): BasePresenter<DetailView>() {
 
     fun load(source: Int, cid: String) {
         mComic = mComicManager.identify(source, cid)
-        mCompositeDisposable.add(Api.getComicInfo(mSourceManager.getParser(source)!!, mComic!!)
+        mCompositeDisposable.add(Api.getComicInfo(mSourceManager.getParser(source)!!, mComic!!, page++)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     mView?.onComicLoadSuccess(mComic!!)
@@ -38,6 +40,23 @@ class DetailPresenter(): BasePresenter<DetailView>() {
                     mView?.onComicLoadSuccess(mComic!!)
                     mView?.onParseError()
                 }))
+    }
+
+    fun loadMore() {
+        mCompositeDisposable.add(Api.getComicInfo(mSourceManager.getParser(mComic?.source!!)!!, mComic!!, page++)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    mView?.onLoadMoreSuccess(it)
+                }, {
+                    mView?.onLoadMoreFailure()
+                }))
+    }
+
+    fun refresh() {
+        page = 1
+        load(mComic?.source!!, mComic?.cid!!)
+        mView?.onRefreshFinished()
     }
 
     fun favoriteComic() {

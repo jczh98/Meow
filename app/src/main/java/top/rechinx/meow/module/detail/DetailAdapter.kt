@@ -52,8 +52,13 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     fun addAll(location: Int, collection: Collection<Chapter>) {
         if (mData.addAll(location, collection)) {
-            notifyItemRangeInserted(location, location + collection.size)
+            notifyItemRangeInserted(location, collection.size)
         }
+    }
+
+    fun clearAll() {
+        mData.clear()
+        notifyDataSetChanged()
     }
 
     fun getItem(position: Int) : Chapter {

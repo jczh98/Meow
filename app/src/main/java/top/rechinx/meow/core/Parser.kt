@@ -15,7 +15,7 @@ abstract class Parser {
     @Throws(UnsupportedEncodingException::class)
     abstract fun getSearchRequest(keyword: String, page: Int): Request?
 
-    abstract fun getInfoRequest(cid: String): Request?
+    abstract fun getInfoRequest(cid: String, page: Int): Request?
 
     @Throws(UnsupportedEncodingException::class)
     abstract fun parserInto(html: String, comic: Comic)

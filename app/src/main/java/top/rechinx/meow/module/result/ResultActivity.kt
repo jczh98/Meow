@@ -63,13 +63,13 @@ class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickList
         mResultList.adapter = mResultAdapter
         // RefreshLayout setup
         mRefreshLayout.setRefreshFooter(ClassicsFooter(this))
-        mRefreshLayout.setOnLoadMoreListener({
+        mRefreshLayout.setOnLoadMoreListener {
             mResultPresenter.loadSearch(true)
-        })
-        mRefreshLayout.setOnRefreshListener({
+        }
+        mRefreshLayout.setOnRefreshListener {
             mResultAdapter.clearAll()
             mResultPresenter.loadRefresh()
-        })
+        }
     }
 
     override fun onItemClick(view: View, position: Int) {

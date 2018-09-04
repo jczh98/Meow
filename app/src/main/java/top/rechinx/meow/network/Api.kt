@@ -88,10 +88,10 @@ object  Api {
         }).subscribeOn(Schedulers.io())
     }
 
-    fun getComicInfo(parser: Parser, comic: Comic): Observable<List<Chapter>> {
+    fun getComicInfo(parser: Parser, comic: Comic, page: Int): Observable<List<Chapter>> {
         return Observable.create(ObservableOnSubscribe<List<Chapter>> {
             try {
-                var request = parser.getInfoRequest(comic.cid!!)
+                var request = parser.getInfoRequest(comic.cid!!, page)
                 var html = getResponseBody(App.getHttpClient()!!, request!!)
                 parser.parserInto(html, comic)
                 val list = parser.parseChapter(html)

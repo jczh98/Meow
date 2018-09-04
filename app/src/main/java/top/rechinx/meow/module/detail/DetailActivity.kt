@@ -15,11 +15,15 @@ import android.view.View
 import android.widget.ProgressBar
 import butterknife.BindView
 import butterknife.OnClick
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
+import com.scwang.smartrefresh.layout.api.RefreshLayout
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.reader.ReaderActivity
+import top.rechinx.meow.support.relog.ReLog
 
 class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickListener {
 
@@ -27,6 +31,7 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
     @BindView(R.id.coordinator_recycler_view) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.coordinator_layout) lateinit var mLayoutView: CoordinatorLayout
     @BindView(R.id.custom_progress_bar) lateinit var mProgressBar: ProgressBar
+    @BindView(R.id.coordinator_refresh_layout) lateinit var mRefreshLayout: SmartRefreshLayout
 
     private lateinit var mAdapter: DetailAdapter
     private lateinit var mPresenter: DetailPresenter
@@ -56,6 +61,28 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
         mAdapter = DetailAdapter(this, ArrayList())
         mAdapter.setOnItemClickListener(this)
         mRecyclerView.adapter = mAdapter
+        // Refresh layout setup
+        mRefreshLayout.setRefreshFooter(ClassicsFooter(this))
+        mRefreshLayout.setOnLoadMoreListener {
+            mPresenter.loadMore()
+        }
+        mRefreshLayout.setOnRefreshListener {
+            mAdapter.clearAll()
+            mPresenter.refresh()
+        }
+    }
+
+    override fun onLoadMoreSuccess(list: List<Chapter>) {
+        mAdapter.addAll(list)
+        mRefreshLayout.finishLoadMore(500)
+    }
+
+    override fun onLoadMoreFailure() {
+        mRefreshLayout.finishLoadMore(1000,false, true)
+    }
+
+    override fun onRefreshFinished() {
+        mRefreshLayout.finishRefresh()
     }
 
     private fun hideProgressBar() {

@@ -11,4 +11,10 @@ interface DetailView: BaseView {
     fun onChapterLoadSuccess(list: List<Chapter>)
 
     fun onParseError()
+
+    fun onLoadMoreSuccess(list: List<Chapter>)
+
+    fun onLoadMoreFailure()
+
+    fun onRefreshFinished()
 }

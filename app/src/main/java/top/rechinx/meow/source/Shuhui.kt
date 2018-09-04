@@ -30,8 +30,8 @@ class Shuhui(source: Source) : Parser() {
                 .build()
     }
 
-    override fun getInfoRequest(cid: String): Request? {
-        val url = "http://www.ishuhui.net/ComicBooks/GetChapterList?id=$cid&PageIndex=0"
+    override fun getInfoRequest(cid: String, page: Int): Request? {
+        val url = "http://www.ishuhui.net/ComicBooks/GetChapterList?id=$cid&PageIndex=${page - 1}"
         return Request.Builder().url(url).build()
     }
 

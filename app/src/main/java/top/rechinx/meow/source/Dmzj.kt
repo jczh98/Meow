@@ -31,9 +31,13 @@ open class Dmzj(source: Source): Parser() {
                 .build()
     }
 
-    override fun getInfoRequest(cid: String): Request? {
-        val url = "http://v2.api.dmzj.com/comic/$cid.json"
-        return Request.Builder().url(url).build()
+    override fun getInfoRequest(cid: String, page: Int): Request? {
+        return if(page == 1) {
+            val url = "http://v2.api.dmzj.com/comic/$cid.json"
+            Request.Builder().url(url).build()
+        } else {
+            null
+        }
     }
 
     override fun parserInto(html: String, comic: Comic) {
