@@ -5,7 +5,7 @@ import io.reactivex.schedulers.Schedulers
 import top.rechinx.meow.manager.ComicManager
 import top.rechinx.meow.module.base.BasePresenter
 
-class FavoritePresenter: BasePresenter<FavoriteView>() {
+class HistoryPresenter: BasePresenter<HistoryView>() {
 
     private lateinit var mComicManager: ComicManager
 
@@ -17,7 +17,7 @@ class FavoritePresenter: BasePresenter<FavoriteView>() {
     }
 
     fun load() {
-        mComicManager.listFavorite()
+        mComicManager.listHistory()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 
 @Entity
-data class Comic(@PrimaryKey(autoGenerate = true) var id: Long,
+data class Comic(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                  @ColumnInfo var cid: String?,
                  @ColumnInfo var source: Int?,
                  @ColumnInfo var image: String?,
@@ -18,9 +18,12 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long,
                  @ColumnInfo var status: String?,
                  @ColumnInfo var update: String?,
                  @ColumnInfo var favorite: Boolean?,
+                 @ColumnInfo var last_chapter: String?,
+                 @ColumnInfo var last_page: Int?,
+                 @ColumnInfo var history: Boolean?,
                  @Ignore var glideCover: GlideUrl?) {
 
-    constructor(): this(0, null, null, null, null, null, null, null, null, null, null)
+    constructor(): this(0, null, null, null, null, null, null, null, null, null, null, null, null, null)
 
     @Ignore constructor(source: Int, cid: String) : this(source, cid, null, null, null) {
         this.cid = cid
@@ -28,7 +31,7 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long,
     }
 
     @Ignore constructor(source: Int, cid: String, title: String?, image: String?, author: String?) :
-            this(0, cid, source, image, title, author, null, null, null, null, null) {
+            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, null) {
         this.cid = cid
         this.source = source
         this.title = title
@@ -37,7 +40,7 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long,
     }
 
     @Ignore constructor(source: Int, cid: String, title: String, image: String, author: String, update: String, glideCover: GlideUrl?) :
-            this(0, cid, source, image, title, author, null, null, null, null, glideCover) {
+            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, glideCover) {
         this.cid = cid
         this.source = source
         this.title = title

@@ -2,7 +2,10 @@ package top.rechinx.meow.module.reader
 
 import android.content.Context
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import top.rechinx.meow.manager.ComicManager
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
@@ -24,6 +27,7 @@ class ReaderPresenter(): BasePresenter<ReaderView>() {
     private lateinit var mChapterManger: ChapterManger
     private lateinit var mComic: Comic
     private lateinit var mSourceManger: SourceManager
+    private lateinit var mComicManager: ComicManager
 
     override fun initSubscription() {
 
@@ -31,10 +35,11 @@ class ReaderPresenter(): BasePresenter<ReaderView>() {
 
     override fun onViewAttach() {
         mSourceManger = SourceManager.getInstance()
+        mComicManager = ComicManager.getInstance()
     }
 
     fun loadInit(source: Int, cid: String, chapter_id: String, array: Array<Chapter>) {
-        mComic = Comic(source, cid)
+        mComic = mComicManager.identify(source, cid)
         for (index in array.indices) {
             val item = array[index]
             if(item.chapter_id == chapter_id) {
@@ -67,7 +72,6 @@ class ReaderPresenter(): BasePresenter<ReaderView>() {
     }
 
     fun toNextChapter() {
-        ReLog.d("Enter function toNextChapter()")
         val chapter = mChapterManger.nextChapter()
         if(chapter != null) {
             updateChapter(chapter, true)
@@ -75,11 +79,20 @@ class ReaderPresenter(): BasePresenter<ReaderView>() {
     }
 
     fun toPrevChapter() {
-        ReLog.d("Enter function toPrevChapter()")
         val chapter = mChapterManger.prevChapter()
         if(chapter != null) {
             updateChapter(chapter, false)
         }
+    }
+
+    fun updateLast(page: Int) {
+        mComic.last_chapter = mChapterManger.current()
+        mComic.last_page = page
+        mComic.history = true
+        mCompositeDisposable.add(mComicManager.updateOrInsert(mComic)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe())
     }
 
     private fun updateChapter(chapter: Chapter, isNext: Boolean) {
@@ -132,6 +145,10 @@ class ReaderPresenter(): BasePresenter<ReaderView>() {
 
         val nextChapter: Chapter?
             get() = if (next >= 0) array[next] else null
+
+        fun current(): String {
+            return array[index].chapter_id!!
+        }
 
         fun hasPrev(): Boolean {
             return prev < array.size

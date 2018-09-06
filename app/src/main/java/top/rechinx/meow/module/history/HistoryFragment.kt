@@ -12,13 +12,13 @@ import top.rechinx.meow.module.common.GridAdapter
 import top.rechinx.meow.module.detail.DetailActivity
 import kotlin.collections.ArrayList
 
-class FavoriteFragment: BaseFragment(), FavoriteView, GridAdapter.OnItemClickListener {
+class HistoryFragment: BaseFragment(), HistoryView, GridAdapter.OnItemClickListener {
 
     @BindView(R.id.grid_action_button) lateinit var mActionButton: FloatingActionButton
     @BindView(R.id.recycler_view_content) lateinit var mRecyclerView: RecyclerView
 
     private lateinit var mAdapter: GridAdapter
-    private lateinit var mPresenter: FavoritePresenter
+    private lateinit var mPresenter: HistoryPresenter
 
     override fun initView() {
         mRecyclerView.layoutManager = GridLayoutManager(activity, 3)
@@ -28,7 +28,7 @@ class FavoriteFragment: BaseFragment(), FavoriteView, GridAdapter.OnItemClickLis
     }
 
     override fun initPresenter() {
-        mPresenter = FavoritePresenter()
+        mPresenter = HistoryPresenter()
         mPresenter.attachView(this)
     }
 

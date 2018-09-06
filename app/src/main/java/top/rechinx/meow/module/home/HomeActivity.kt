@@ -1,17 +1,12 @@
 package top.rechinx.meow.module.home
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.TabLayout
 import android.support.v4.view.GravityCompat
-import android.support.v4.view.ViewPager
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import butterknife.BindView
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 import top.rechinx.meow.R
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.module.base.BaseActivity
-import top.rechinx.meow.module.favorite.FavoriteFragment
+import top.rechinx.meow.module.favorite.HistoryFragment
 import top.rechinx.meow.module.result.ResultActivity
 import top.rechinx.meow.source.Dmzj
 import top.rechinx.meow.source.Shuhui
@@ -87,7 +82,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HomeFragment()).commit()
             }
             R.id.drawer_history -> {
-                supportFragmentManager.beginTransaction().replace(R.id.container_fragment, FavoriteFragment()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HistoryFragment()).commit()
             }
         }
         mDrawerLayout.closeDrawer(GravityCompat.START)

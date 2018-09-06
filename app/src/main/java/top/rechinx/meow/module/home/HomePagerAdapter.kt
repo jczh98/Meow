@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import top.rechinx.meow.module.favorite.FavoriteFragment
+import top.rechinx.meow.module.favorite.HistoryFragment
 
 class HomePagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager) {
 

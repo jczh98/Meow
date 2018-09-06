@@ -19,13 +19,14 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import top.rechinx.meow.R
+import top.rechinx.meow.manager.ComicManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.reader.ReaderActivity
 import top.rechinx.meow.support.relog.ReLog
 
-class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickListener {
+class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickListener, DetailAdapter.OnClickCallback {
 
     @BindView(R.id.coordinator_fab) lateinit var mActionButton: FloatingActionButton
     @BindView(R.id.coordinator_recycler_view) lateinit var mRecyclerView: RecyclerView
@@ -40,7 +41,7 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
     override fun initData() {
         val source = intent.getIntExtra(EXTRA_SOURCE, -1)
         val cid = intent.getStringExtra(EXTRA_CID)
-        mComic = Comic(source, cid)
+        mComic = ComicManager.getInstance().identify(source, cid)
         mPresenter.load(source, cid)
     }
 
@@ -60,6 +61,7 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
         })
         mAdapter = DetailAdapter(this, ArrayList())
         mAdapter.setOnItemClickListener(this)
+        mAdapter.setOnClickCallback(this)
         mRecyclerView.adapter = mAdapter
         // Refresh layout setup
         mRefreshLayout.setRefreshFooter(ClassicsFooter(this))
@@ -104,6 +106,7 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
     }
 
     override fun onComicLoadSuccess(comic: Comic) {
+        mPresenter.updateComic()
         mAdapter.setComic(comic)
         val resId = if (comic.favorite != null) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
         mActionButton.setImageResource(resId)
@@ -123,9 +126,14 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
     override fun onItemClick(view: View, position: Int) {
         if(position != 0) {
             val chapter = mAdapter.getItem(position - 1)
-            val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, mAdapter.getDataSet())
+            val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, 1, mAdapter.getDataSet())
             startActivity(intent)
         }
+    }
+
+    override fun onClick(view: View) {
+        val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mComic.last_chapter!!, mComic.last_page!!, mAdapter.getDataSet())
+        startActivity(intent)
     }
 
     @OnClick(R.id.coordinator_fab)
@@ -138,6 +146,12 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
             mActionButton.setImageResource(R.drawable.ic_favorite_white_24dp)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        mComic = ComicManager.getInstance().identify(mComic.source!!, mComic.cid!!)
+    }
+
     companion object {
 
         private val EXTRA_CID = "extra_keyword"

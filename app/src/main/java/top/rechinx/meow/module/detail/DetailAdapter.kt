@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import butterknife.BindView
@@ -16,6 +17,7 @@ import com.bumptech.glide.load.model.LazyHeaders
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
+import top.rechinx.meow.module.reader.ReaderActivity
 import top.rechinx.meow.widget.ChapterButton
 
 class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -28,6 +30,7 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private var last: String? = null
 
     private lateinit var mClickListener: OnItemClickListener
+    private lateinit var mClickCallback: OnClickCallback
 
     constructor(context: Context, list: ArrayList<Chapter>) {
         this.mContext = context
@@ -87,14 +90,19 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        holder.itemView.setOnClickListener { v ->
+        holder.itemView.setOnClickListener {
             if (mClickListener != null) {
-                mClickListener.onItemClick(v, holder.adapterPosition)
+                mClickListener.onItemClick(it, holder.adapterPosition)
             }
         }
 
         if(position == 0) {
             var headerHolder = holder as HeaderViewHolder
+            holder.mContinueButton.setOnClickListener {
+                if(mClickCallback != null) {
+                    mClickCallback.onClick(it)
+                }
+            }
             if(mComic != null) {
                 Glide.with(mContext).load(mComic?.glideCover).into(headerHolder.mComicImage)
                 headerHolder.mComicTitle.text = mComic?.title
@@ -124,6 +132,14 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mClickListener = onItemClickListener
     }
 
+    fun setOnClickCallback(onClickCallback: OnClickCallback) {
+        mClickCallback = onClickCallback
+    }
+
+    interface OnClickCallback {
+        fun onClick(view: View)
+    }
+
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int)
     }
@@ -135,6 +151,7 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @BindView(R.id.item_header_comic_status) lateinit var mComicStatus: TextView
         @BindView(R.id.item_header_comic_update) lateinit var mComicUpdate: TextView
         @BindView(R.id.item_header_comic_author) lateinit var mComicAuthor: TextView
+        @BindView(R.id.item_header_comic_continue) lateinit var mContinueButton: Button
 
         init {
             ButterKnife.bind(this, itemView)

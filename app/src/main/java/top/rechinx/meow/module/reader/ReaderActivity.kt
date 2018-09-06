@@ -41,6 +41,7 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
         val cid = intent.getStringExtra(EXTRA_ID)
         val list = intent.getParcelableArrayListExtra<Chapter>(EXTRA_CHAPTER)
         val chapterId = intent.getStringExtra(EXTRA_CHAPTER_ID)
+        currentPage = intent.getIntExtra(EXTRA_PAGE, 1)
         mPresenter.loadInit(source, cid, chapterId, list.toArray(arrayOfNulls<Chapter>(list.size)))
     }
 
@@ -64,6 +65,7 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
         mAdapter.addAll(it)
         mLoadingText.visibility = View.GONE
         mRecyclerView.visibility = View.VISIBLE
+        mRecyclerView.scrollToPosition(currentPage - 1)
         updateProgress()
     }
 
@@ -109,6 +111,8 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
     override fun OnPageChanged(oldPosition: Int, newPosition: Int) {
         if(oldPosition < 0 || newPosition < 0) return
 
+        if(newPosition == oldPosition) return
+
         if(newPosition == 0) {
             mPresenter.loadPrev()
         }
@@ -134,7 +138,13 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
 
     override fun onPause() {
         super.onPause()
+        mPresenter.updateLast(currentPage)
         unregisterReceiver(batteryReceiver)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.updateLast(currentPage)
     }
 
     override fun onResume() {
@@ -162,13 +172,15 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
         private val EXTRA_CHAPTER = "extra_chapter"
         private val EXTRA_CHAPTER_ID = "extra_chapter_id"
         private val EXTRA_SOURCE = "extra_source"
+        private val EXTRA_PAGE = "extra_page"
 
-        fun createIntent(context: Context, source: Int, cid: String, chapter_id: String, array: ArrayList<Chapter>): Intent {
+        fun createIntent(context: Context, source: Int, cid: String, chapter_id: String, page: Int, array: ArrayList<Chapter>): Intent {
             val intent = Intent(context, ReaderActivity::class.java)
             intent.putExtra(EXTRA_SOURCE, source)
             intent.putExtra(EXTRA_ID, cid)
             intent.putExtra(EXTRA_CHAPTER, array)
             intent.putExtra(EXTRA_CHAPTER_ID, chapter_id)
+            intent.putExtra(EXTRA_PAGE, page)
             return intent
         }
 

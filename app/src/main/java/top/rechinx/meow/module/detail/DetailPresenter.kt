@@ -61,17 +61,25 @@ class DetailPresenter(): BasePresenter<DetailView>() {
 
     fun favoriteComic() {
         mComic?.favorite = true
-        mComicManager.updateOrInsert(mComic!!)
+        mCompositeDisposable.add(mComicManager.updateOrInsert(mComic!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                .subscribe{mComic = mComicManager.identify(mComic?.source!!, mComic?.cid!!)})
+
     }
 
     fun unFavoriteComic() {
         mComic?.favorite = null
-        mComicManager.updateOrInsert(mComic!!)
+        mCompositeDisposable.add(mComicManager.updateOrInsert(mComic!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                .subscribe{mComic = mComicManager.identify(mComic?.source!!, mComic?.cid!!)})
+    }
+
+    fun updateComic() {
+        mCompositeDisposable.add(mComicManager.updateOrInsert(mComic!!)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe{mComic = mComicManager.identify(mComic?.source!!, mComic?.cid!!)})
     }
 }

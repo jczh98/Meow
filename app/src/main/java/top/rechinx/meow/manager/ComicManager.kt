@@ -27,6 +27,10 @@ class ComicManager {
         return mDatabaseHelper.comicDao().listFavorite()
     }
 
+    fun listHistory(): Flowable<List<Comic>> {
+        return mDatabaseHelper.comicDao().listHistory()
+    }
+
     fun insert(comic: Comic){
         mDatabaseHelper.comicDao().insert(comic)
     }
