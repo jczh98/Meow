@@ -3,20 +3,16 @@ package top.rechinx.meow.module.detail
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ProgressBar
 import butterknife.BindView
 import butterknife.OnClick
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import top.rechinx.meow.R
 import top.rechinx.meow.manager.ComicManager
@@ -24,7 +20,6 @@ import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.reader.ReaderActivity
-import top.rechinx.meow.support.relog.ReLog
 
 class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickListener, DetailAdapter.OnClickCallback {
 
@@ -132,7 +127,11 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
     }
 
     override fun onClick(view: View) {
-        val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mComic.last_chapter!!, mComic.last_page!!, mAdapter.getDataSet())
+        val intent = if(mComic.last_chapter == null) {
+            ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mAdapter.getFirst().chapter_id!!, 1, mAdapter.getDataSet())
+        }else {
+            ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mComic.last_chapter!!, mComic.last_page!!, mAdapter.getDataSet())
+        }
         startActivity(intent)
     }
 

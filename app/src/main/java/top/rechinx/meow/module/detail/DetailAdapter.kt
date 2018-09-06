@@ -59,6 +59,10 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    fun getFirst(): Chapter {
+        return mData[mData.size - 1]
+    }
+
     fun clearAll() {
         mData.clear()
         notifyDataSetChanged()
