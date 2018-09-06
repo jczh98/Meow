@@ -14,10 +14,12 @@ import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import com.hippo.ripple.Ripple
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.reader.ReaderActivity
+import top.rechinx.meow.utils.Utility
 import top.rechinx.meow.widget.ChapterButton
 
 class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -103,6 +105,10 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if(position == 0) {
             var headerHolder = holder as HeaderViewHolder
+
+            Ripple.addRipple(headerHolder.mRead, false)
+            Ripple.addRipple(headerHolder.mFavorite, false)
+
             headerHolder.mRead.setOnClickListener {
                 if(mClickCallback != null) {
                     mClickCallback.onClick(it, 1)
