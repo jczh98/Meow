@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.OnClick
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -23,7 +24,6 @@ import top.rechinx.meow.module.reader.ReaderActivity
 
 class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickListener, DetailAdapter.OnClickCallback {
 
-    @BindView(R.id.coordinator_fab) lateinit var mActionButton: FloatingActionButton
     @BindView(R.id.coordinator_recycler_view) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.coordinator_layout) lateinit var mLayoutView: CoordinatorLayout
     @BindView(R.id.custom_progress_bar) lateinit var mProgressBar: ProgressBar
@@ -57,6 +57,7 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
         mAdapter = DetailAdapter(this, ArrayList())
         mAdapter.setOnItemClickListener(this)
         mAdapter.setOnClickCallback(this)
+        mAdapter.setOnFavoriteClickCallback(this)
         mRecyclerView.adapter = mAdapter
         // Refresh layout setup
         mRefreshLayout.setRefreshFooter(ClassicsFooter(this))
@@ -103,9 +104,9 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
     override fun onComicLoadSuccess(comic: Comic) {
         mPresenter.updateComic()
         mAdapter.setComic(comic)
-        val resId = if (comic.favorite != null) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
-        mActionButton.setImageResource(resId)
-        mActionButton.visibility = View.VISIBLE
+//        val resId = if (comic.favorite != null) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp
+////        mActionButton.setImageResource(resId)
+////        mActionButton.visibility = View.VISIBLE
     }
 
     override fun onChapterLoadSuccess(list: List<Chapter>) {
@@ -126,23 +127,25 @@ class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickList
         }
     }
 
-    override fun onClick(view: View) {
-        val intent = if(mComic.last_chapter == null) {
-            ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mAdapter.getFirst().chapter_id!!, 1, mAdapter.getDataSet())
-        }else {
-            ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mComic.last_chapter!!, mComic.last_page!!, mAdapter.getDataSet())
-        }
-        startActivity(intent)
-    }
-
-    @OnClick(R.id.coordinator_fab)
-    fun onActionButtonClick() {
-        if(mPresenter.mComic?.favorite != null) {
-            mPresenter.unFavoriteComic()
-            mActionButton.setImageResource(R.drawable.ic_favorite_border_white_24dp)
-        }else {
-            mPresenter.favoriteComic()
-            mActionButton.setImageResource(R.drawable.ic_favorite_white_24dp)
+    override fun onClick(view: View, type: Int) {
+        if(type == 1) {
+            val intent = if(mComic.last_chapter == null) {
+                ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mAdapter.getFirst().chapter_id!!, 1, mAdapter.getDataSet())
+            }else {
+                ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mComic.last_chapter!!, mComic.last_page!!, mAdapter.getDataSet())
+            }
+            (view as TextView).text = "Continue"
+            startActivity(intent)
+        } else {
+            if(mPresenter.mComic?.favorite != null) {
+                mPresenter.unFavoriteComic()
+                (view as TextView).text = "Favorite"
+                //mActionButton.setImageResource(R.drawable.ic_favorite_border_white_24dp)
+            }else {
+                mPresenter.favoriteComic()
+                (view as TextView).text = "Subscribed"
+                //mActionButton.setImageResource(R.drawable.ic_favorite_white_24dp)
+            }
         }
     }
 

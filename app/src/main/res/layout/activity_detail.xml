@@ -26,13 +26,5 @@
                     android:clipToPadding="false"/>
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
         </LinearLayout>
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/coordinator_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_gravity="bottom|end"
-            android:visibility="invisible"
-            app:layout_behavior="top.rechinx.meow.widget.ScrollAwareFABBehavior"/>
     </android.support.design.widget.CoordinatorLayout>
 </FrameLayout>

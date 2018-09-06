@@ -31,6 +31,7 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private lateinit var mClickListener: OnItemClickListener
     private lateinit var mClickCallback: OnClickCallback
+    private lateinit var mFavoriteClickCallback: OnClickCallback
 
     constructor(context: Context, list: ArrayList<Chapter>) {
         this.mContext = context
@@ -102,9 +103,14 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if(position == 0) {
             var headerHolder = holder as HeaderViewHolder
-            holder.mContinueButton.setOnClickListener {
+            headerHolder.mRead.setOnClickListener {
                 if(mClickCallback != null) {
-                    mClickCallback.onClick(it)
+                    mClickCallback.onClick(it, 1)
+                }
+            }
+            headerHolder.mFavorite.setOnClickListener {
+                if(mFavoriteClickCallback != null) {
+                    mFavoriteClickCallback.onClick(it, 2)
                 }
             }
             if(mComic != null) {
@@ -114,6 +120,8 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 headerHolder.mComicAuthor.text = mComic?.author
                 headerHolder.mComicStatus.text = mComic?.status
                 headerHolder.mComicUpdate.text = "最后更新： ${mComic?.update}"
+                headerHolder.mRead.text = if(mComic?.last_chapter == null) "Read" else "Continue"
+                headerHolder.mFavorite.text = if(mComic?.favorite == null) "Favorite" else "Subscribed"
             }
         } else {
             val chapter = mData[position - 1]
@@ -140,8 +148,12 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mClickCallback = onClickCallback
     }
 
+    fun setOnFavoriteClickCallback(onFavoriteClickCallback: OnClickCallback) {
+        mFavoriteClickCallback = onFavoriteClickCallback
+    }
+
     interface OnClickCallback {
-        fun onClick(view: View)
+        fun onClick(view: View, type: Int)
     }
 
     interface OnItemClickListener {
@@ -155,7 +167,8 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @BindView(R.id.item_header_comic_status) lateinit var mComicStatus: TextView
         @BindView(R.id.item_header_comic_update) lateinit var mComicUpdate: TextView
         @BindView(R.id.item_header_comic_author) lateinit var mComicAuthor: TextView
-        @BindView(R.id.item_header_comic_continue) lateinit var mContinueButton: Button
+        @BindView(R.id.favorite) lateinit var mFavorite: TextView
+        @BindView(R.id.read) lateinit var mRead: TextView
 
         init {
             ButterKnife.bind(this, itemView)
