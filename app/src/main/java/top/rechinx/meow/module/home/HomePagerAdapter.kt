@@ -12,7 +12,7 @@ class HomePagerAdapter(fragmentManager: FragmentManager): FragmentPagerAdapter(f
         return FavoriteFragment()
     }
 
-    override fun getCount(): Int = 2
+    override fun getCount(): Int = 1
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when(position) {
