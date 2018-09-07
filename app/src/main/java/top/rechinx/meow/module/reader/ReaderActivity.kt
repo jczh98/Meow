@@ -10,7 +10,9 @@ import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
+import butterknife.OnClick
 import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.ImageUrl
@@ -18,7 +20,7 @@ import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.support.relog.ReLog
 import top.rechinx.meow.widget.ReverseSeekBar
 
-class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChangedListener {
+class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChangedListener,  ReaderAdapter.OnTouchCallback, DiscreteSeekBar.OnProgressChangeListener {
 
     @BindView(R.id.reader_chapter_title) lateinit var mChapterTitle: TextView
     @BindView(R.id.reader_chapter_page) lateinit var mChapterPage: TextView
@@ -49,9 +51,14 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
         // Hidden status bar
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         mAdapter = ReaderAdapter(this, ArrayList())
+        mAdapter.setOnTouchCallback(this)
         mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         mRecyclerView.adapter = mAdapter
         mRecyclerView.addOnPageChangedListener(this)
+        // SeekBar listener
+        mSeekBar.setOnProgressChangeListener(this)
+        // Back button
+
     }
 
     override fun getLayoutId(): Int = R.layout.activity_reader
@@ -100,10 +107,12 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
     override fun onChapterChanged(chapter: Chapter) {
         max = chapter.count
         mChapterTitle.text = chapter.title
+        mSeekBar.max = max
     }
 
     private fun updateProgress() {
         mChapterPage.text = "$currentPage/$max"
+        mSeekBar.progress = currentPage
     }
     /**
      * chapter controller
@@ -165,6 +174,60 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
             }
         }
     }
+
+
+    /**
+     * PhotoView touch event
+     */
+
+    override fun onCenter() {
+        ReLog.d("Center")
+        switchControl()
+    }
+
+    override fun onPrev() {
+        ReLog.d("Prev")
+        val cur = mRecyclerView.currentPosition
+        if(cur - 1 >= 0) mRecyclerView.smoothScrollToPosition(cur - 1)
+    }
+
+    override fun onNext() {
+        ReLog.d("Next")
+        val cur = mRecyclerView.currentPosition
+        if(cur + 1 < mAdapter.itemCount) mRecyclerView.smoothScrollToPosition(cur + 1)
+    }
+
+    fun switchControl() {
+        if(mProgressLayout.isShown) {
+            mBackLayout.visibility = View.INVISIBLE
+            mProgressLayout.visibility = View.INVISIBLE
+            mInfoLayout.visibility = View.VISIBLE
+        }else {
+            mBackLayout.visibility = View.VISIBLE
+            mProgressLayout.visibility = View.VISIBLE
+            mInfoLayout.visibility = View.INVISIBLE
+        }
+    }
+
+    /**
+     * SeekBar progress changed
+     */
+    override fun onProgressChanged(seekBar: DiscreteSeekBar?, value: Int, fromUser: Boolean) {
+        if(fromUser) {
+            val current = mRecyclerView.currentPosition + value - currentPage
+            val pos = mAdapter.getPositionByNum(current, value, value < currentPage)
+            mRecyclerView.scrollToPosition(pos)
+        }
+    }
+
+    override fun onStartTrackingTouch(seekBar: DiscreteSeekBar?) {
+    }
+
+    override fun onStopTrackingTouch(seekBar: DiscreteSeekBar?) {
+    }
+
+
+    @OnClick(R.id.reader_back_btn) fun onBackClick() {finish()}
 
     companion object {
 
