@@ -13,6 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import top.rechinx.meow.R
 import top.rechinx.meow.manager.SourceManager
+import top.rechinx.meow.module.about.AboutActivity
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.favorite.HistoryFragment
 import top.rechinx.meow.module.result.ResultActivity
@@ -40,6 +41,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun initView() {
+        mNavigationView.setCheckedItem(R.id.drawer_main)
         mSearchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (query.isEmpty()) {
@@ -83,6 +85,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
             R.id.drawer_history -> {
                 supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HistoryFragment()).commit()
+            }
+            R.id.drawer_about -> {
+                startActivity(AboutActivity.createIntent(this))
             }
         }
         mDrawerLayout.closeDrawer(GravityCompat.START)

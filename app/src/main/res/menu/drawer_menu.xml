@@ -9,4 +9,18 @@
             android:id="@+id/drawer_history"
             android:title="@string/drawer_history"/>
     </group>
+    <item android:title="@string/item_group_other">
+
+        <menu>
+            <item android:id="@+id/drawer_settings"
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="@string/drawer_settings"/>
+
+            <item android:id="@+id/drawer_about"
+                android:icon="@drawable/ic_about_black_24dp"
+                android:title="@string/drawer_about"/>
+
+        </menu>
+
+    </item>
 </menu>
