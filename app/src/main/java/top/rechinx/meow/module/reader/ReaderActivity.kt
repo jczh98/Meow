@@ -11,13 +11,13 @@ import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.OnClick
-import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.support.relog.ReLog
+import top.rechinx.meow.support.rvp.RecyclerViewPager
 import top.rechinx.meow.widget.ReverseSeekBar
 
 class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChangedListener,  ReaderAdapter.OnTouchCallback, DiscreteSeekBar.OnProgressChangeListener {
@@ -54,7 +54,11 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
         mAdapter.setOnTouchCallback(this)
         mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         mRecyclerView.adapter = mAdapter
-        mRecyclerView.addOnPageChangedListener(this)
+        mRecyclerView.setTriggerOffset(0.01f * 10)
+        mRecyclerView.setScrollSpeed(0.02f)
+        mRecyclerView.itemAnimator = null
+        mRecyclerView.setItemViewCacheSize(2)
+        mRecyclerView.setOnPageChangedListener(this)
         // SeekBar listener
         mSeekBar.setOnProgressChangeListener(this)
         // Back button
@@ -132,7 +136,6 @@ class ReaderActivity : BaseActivity(), ReaderView, RecyclerViewPager.OnPageChang
 
         val newImage = mAdapter.getItem(newPosition)
         val oldImage = mAdapter.getItem(oldPosition)
-        ReLog.d("Old: ${oldImage.chapter}, New: ${newImage.chapter}")
         if(!oldImage.chapter.equals(newImage.chapter)) {
             if(newPosition > oldPosition) {
                 mPresenter.toNextChapter()
