@@ -17,6 +17,7 @@ import top.rechinx.meow.module.about.AboutActivity
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.favorite.HistoryFragment
 import top.rechinx.meow.module.result.ResultActivity
+import top.rechinx.meow.module.source.SourceFragment
 import top.rechinx.meow.source.Dmzj
 import top.rechinx.meow.source.Shuhui
 
@@ -82,9 +83,15 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         when(item.itemId) {
             R.id.drawer_main -> {
                 supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HomeFragment()).commit()
+                mToolbar?.title = getString(R.string.app_name)
+            }
+            R.id.drawer_source -> {
+                supportFragmentManager.beginTransaction().replace(R.id.container_fragment, SourceFragment()).commit()
+                mToolbar?.title = item.title
             }
             R.id.drawer_history -> {
                 supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HistoryFragment()).commit()
+                mToolbar?.title = item.title
             }
             R.id.drawer_about -> {
                 startActivity(AboutActivity.createIntent(this))

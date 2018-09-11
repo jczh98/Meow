@@ -4,7 +4,10 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
+import io.reactivex.Flowable
+import io.reactivex.Single
 import top.rechinx.meow.model.Source
+import java.util.*
 
 @Dao
 interface SourceDao {
@@ -18,4 +21,6 @@ interface SourceDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg sources: Source)
 
+    @Query("SELECT * FROM Source")
+    fun list(): Single<List<Source>>
 }

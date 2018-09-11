@@ -1,6 +1,8 @@
 package top.rechinx.meow.manager
 
 import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.Single
 import top.rechinx.meow.core.Parser
 import top.rechinx.meow.dao.AppDatabase
 import top.rechinx.meow.model.Source
@@ -17,6 +19,8 @@ class SourceManager {
                     Shuhui.getDefaultSource())
         }
     }
+
+    fun list(): Single<List<Source>> = mDatabaseHelper.sourceDao().list()
 
     fun load(type: Int) = mDatabaseHelper.sourceDao().load(type)
 
