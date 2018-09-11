@@ -33,6 +33,7 @@ class ResultAdapter: BaseAdapter<Comic> {
     override fun getItemCount(): Int = mData.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
         val comic = mData[position]
         val itemHolder = holder as ViewHolder
 

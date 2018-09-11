@@ -26,6 +26,8 @@ class SourceAdapter: BaseAdapter<Source> {
     override fun getItemCount(): Int = mData.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+
         val source = mData[position]
         val itemHolder = holder as ViewHolder
         itemHolder.sourceTitle.text = source.title

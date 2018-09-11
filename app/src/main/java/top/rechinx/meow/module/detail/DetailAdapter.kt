@@ -60,9 +60,12 @@ class DetailAdapter: BaseAdapter<Chapter> {
         return ChapterViewHolder(mInflater.inflate(R.layout.item_chapter, parent, false))
     }
 
+    override fun getItemCount(): Int = mData.size + 1
+
     override fun getItemViewType(position: Int): Int = if(position == 0) 0 else 1
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
 
         if(position == 0) {
             var headerHolder = holder as HeaderViewHolder

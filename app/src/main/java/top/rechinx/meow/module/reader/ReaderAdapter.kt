@@ -35,6 +35,8 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+
         val images = mData[position]
         val itemHolder = holder as ViewHolder
         itemHolder.mImage.setOnViewTapListener { view, x, y ->

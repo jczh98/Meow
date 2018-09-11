@@ -19,6 +19,7 @@ import top.rechinx.meow.module.favorite.HistoryFragment
 import top.rechinx.meow.module.result.ResultActivity
 import top.rechinx.meow.module.source.SourceFragment
 import top.rechinx.meow.source.Dmzj
+import top.rechinx.meow.source.Kuaikan
 import top.rechinx.meow.source.Shuhui
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -48,7 +49,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 if (query.isEmpty()) {
                     mSearchView.setHint(getString(R.string.empty_for_search))
                 } else {
-                    startActivity(ResultActivity.createIntent(this@HomeActivity, query, intArrayOf(Dmzj.TYPE, Shuhui.TYPE)))
+                    startActivity(ResultActivity.createIntent(this@HomeActivity, query, intArrayOf(Dmzj.TYPE, Shuhui.TYPE, Kuaikan.TYPE)))
                 }
                 return false
             }

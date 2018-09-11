@@ -34,5 +34,37 @@ class Node {
         }
     }
 
+    fun attr(cssQuery: String, attr: String): String? {
+        try {
+            return element.select(cssQuery).first().attr(attr).trim { it <= ' ' }
+        } catch (e: Exception) {
+            return null
+        }
+
+    }
+
+    fun text(): String? {
+        try {
+            return element.text().trim { it <= ' ' }
+        } catch (e: Exception) {
+            return null
+        }
+
+    }
+
+    fun text(cssQuery: String): String? {
+        try {
+            return element.select(cssQuery).first().text().trim { it <= ' ' }
+        } catch (e: Exception) {
+            return null
+        }
+
+    }
+
     fun src(): String? = attr("src")
+
+    fun src(cssQuery: String): String? {
+        return attr(cssQuery, "src")
+    }
+
 }

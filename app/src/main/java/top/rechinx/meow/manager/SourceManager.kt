@@ -7,6 +7,7 @@ import top.rechinx.meow.core.Parser
 import top.rechinx.meow.dao.AppDatabase
 import top.rechinx.meow.model.Source
 import top.rechinx.meow.source.Dmzj
+import top.rechinx.meow.source.Kuaikan
 import top.rechinx.meow.source.Shuhui
 
 class SourceManager {
@@ -16,7 +17,8 @@ class SourceManager {
     fun initSource(): Completable {
         return Completable.fromCallable {
             mDatabaseHelper.sourceDao().insert(Dmzj.getDefaultSource(),
-                    Shuhui.getDefaultSource())
+                    Shuhui.getDefaultSource(),
+                    Kuaikan.getDefaultSource())
         }
     }
 
@@ -41,6 +43,7 @@ class SourceManager {
         when(type) {
             Dmzj.TYPE -> return Dmzj(source)
             Shuhui.TYPE -> return Shuhui(source)
+            Kuaikan.TYPE -> return Kuaikan(source)
             else -> return null
         }
     }
