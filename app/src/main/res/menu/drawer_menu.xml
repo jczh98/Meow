@@ -4,9 +4,15 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/drawer_main"
+            android:icon="@drawable/ic_import_contacts_black_24dp"
             android:title="@string/drawer_main"/>
         <item
+            android:id="@+id/drawer_source"
+            android:icon="@drawable/ic_widgets_black_24dp"
+            android:title="@string/drawer_source"/>
+        <item
             android:id="@+id/drawer_history"
+            android:icon="@drawable/ic_history_black_24dp"
             android:title="@string/drawer_history"/>
     </group>
     <item android:title="@string/item_group_other">
