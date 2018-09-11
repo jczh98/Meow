@@ -20,13 +20,14 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import top.rechinx.meow.model.Comic
+import top.rechinx.meow.module.base.BaseAdapter
 import top.rechinx.meow.module.detail.DetailActivity
 import top.rechinx.meow.support.relog.ReLog
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickListener {
+class ResultActivity : BaseActivity(), ResultView, BaseAdapter.OnItemClickListener {
 
     @BindView(R.id.result_recycler_view) lateinit var mResultList: RecyclerView
     @BindView(R.id.custom_progress_bar) lateinit var mProgressBar: ProgressBar
@@ -67,7 +68,7 @@ class ResultActivity : BaseActivity(), ResultView, ResultAdapter.OnItemClickList
             mResultPresenter.loadSearch(true)
         }
         mRefreshLayout.setOnRefreshListener {
-            mResultAdapter.clearAll()
+            mResultAdapter.clear()
             mResultPresenter.loadRefresh()
         }
     }

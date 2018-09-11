@@ -7,12 +7,13 @@ import android.view.View
 import butterknife.BindView
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Comic
+import top.rechinx.meow.module.base.BaseAdapter
 import top.rechinx.meow.module.base.BaseFragment
 import top.rechinx.meow.module.common.GridAdapter
 import top.rechinx.meow.module.detail.DetailActivity
 import kotlin.collections.ArrayList
 
-class FavoriteFragment: BaseFragment(), FavoriteView, GridAdapter.OnItemClickListener {
+class FavoriteFragment: BaseFragment(), FavoriteView, BaseAdapter.OnItemClickListener {
 
     @BindView(R.id.grid_action_button) lateinit var mActionButton: FloatingActionButton
     @BindView(R.id.recycler_view_content) lateinit var mRecyclerView: RecyclerView
@@ -39,7 +40,7 @@ class FavoriteFragment: BaseFragment(), FavoriteView, GridAdapter.OnItemClickLis
     }
 
     override fun onComicLoadSuccess(list: List<Comic>) {
-        mAdapter.clearAll()
+        mAdapter.clear()
         mAdapter.addAll(list)
     }
 

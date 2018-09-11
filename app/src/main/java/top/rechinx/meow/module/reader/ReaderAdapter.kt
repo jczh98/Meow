@@ -13,45 +13,14 @@ import com.github.chrisbanes.photoview.PhotoView
 import top.rechinx.meow.R
 import top.rechinx.meow.model.ImageUrl
 import android.graphics.RectF
+import top.rechinx.meow.module.base.BaseAdapter
 
 
-
-class ReaderAdapter: RecyclerView.Adapter<ReaderAdapter.ViewHolder> {
-
-    private var mContext: Context
-    private var mData: ArrayList<ImageUrl>
-    private var mInflater: LayoutInflater
+class ReaderAdapter: BaseAdapter<ImageUrl> {
 
     private lateinit var mCallback: OnTouchCallback
 
-    constructor(context: Context, list: ArrayList<ImageUrl>) {
-        this.mContext = context
-        this.mData = list
-        this.mInflater = LayoutInflater.from(mContext)
-    }
-
-    fun add(data: ImageUrl) {
-        if (mData.add(data)) {
-            notifyItemInserted(mData.size)
-        }
-    }
-
-    fun add(location: Int, data: ImageUrl) {
-        mData.add(location, data)
-        notifyItemInserted(location)
-    }
-
-    fun addAll(collection: Collection<ImageUrl>) {
-        addAll(mData.size, collection)
-    }
-
-    fun addAll(location: Int, collection: Collection<ImageUrl>) {
-        if (mData.addAll(location, collection)) {
-            notifyItemRangeInserted(location, location + collection.size)
-        }
-    }
-
-    fun getItem(position: Int): ImageUrl = mData[position]
+    constructor(context: Context, list: ArrayList<ImageUrl>): super(context, list)
 
     fun getPositionByNum(current: Int, num: Int, reverse: Boolean): Int {
         var current = current
@@ -65,11 +34,10 @@ class ReaderAdapter: RecyclerView.Adapter<ReaderAdapter.ViewHolder> {
         return ViewHolder(mInflater.inflate(R.layout.item_picture, parent, false))
     }
 
-    override fun getItemCount(): Int = mData.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val images = mData[position]
-        holder.mImage.setOnViewTapListener { view, x, y ->
+        val itemHolder = holder as ViewHolder
+        itemHolder.mImage.setOnViewTapListener { view, x, y ->
             run {
                 val mViewWidth = view.width
                 val mViewHeight = view.height
@@ -100,8 +68,10 @@ class ReaderAdapter: RecyclerView.Adapter<ReaderAdapter.ViewHolder> {
                 }
             }
         }
-        Glide.with(mContext).load(images.chapterUrl).into(holder.mImage)
+        Glide.with(mContext).load(images.chapterUrl).into(itemHolder.mImage)
     }
+
+    override fun getItemDecoration(): RecyclerView.ItemDecoration? = null
 
     fun setOnTouchCallback(callback: OnTouchCallback) {
         mCallback = callback
@@ -116,11 +86,7 @@ class ReaderAdapter: RecyclerView.Adapter<ReaderAdapter.ViewHolder> {
         fun onNext()
     }
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View): BaseViewHolder(view) {
         @BindView(R.id.reader_image_view) lateinit var mImage: PhotoView
-
-        init {
-            ButterKnife.bind(this, view)
-        }
     }
 }

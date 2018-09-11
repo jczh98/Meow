@@ -1,6 +1,7 @@
 package top.rechinx.meow.module.detail
 
 import android.content.Context
+import android.graphics.Rect
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -18,49 +19,22 @@ import com.hippo.ripple.Ripple
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
+import top.rechinx.meow.module.base.BaseAdapter
 import top.rechinx.meow.module.reader.ReaderActivity
 import top.rechinx.meow.utils.Utility
 import top.rechinx.meow.widget.ChapterButton
 
-class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class DetailAdapter: BaseAdapter<Chapter> {
 
-    private var mContext: Context
-    private var mData: ArrayList<Chapter>
-    private var mInflater: LayoutInflater
     private var mComic: Comic? = null
 
     private var last: String? = null
 
-    private lateinit var mClickListener: OnItemClickListener
     private lateinit var mClickCallback: OnClickCallback
     private lateinit var mFavoriteClickCallback: OnClickCallback
 
-    constructor(context: Context, list: ArrayList<Chapter>) {
-        this.mContext = context
-        this.mData = list
-        this.mInflater = LayoutInflater.from(mContext)
-    }
+    constructor(context: Context, list: ArrayList<Chapter>): super(context, list)
 
-    fun add(data: Chapter) {
-        if (mData.add(data)) {
-            notifyItemInserted(mData.size)
-        }
-    }
-
-    fun add(location: Int, data: Chapter) {
-        mData.add(location, data)
-        notifyItemInserted(location)
-    }
-
-    fun addAll(collection: Collection<Chapter>) {
-        addAll(mData.size, collection)
-    }
-
-    fun addAll(location: Int, collection: Collection<Chapter>) {
-        if (mData.addAll(location, collection)) {
-            notifyItemRangeInserted(location, collection.size)
-        }
-    }
 
     fun getFirst(): Chapter {
         return mData[mData.size - 1]
@@ -69,10 +43,6 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
     fun clearAll() {
         mData.clear()
         notifyDataSetChanged()
-    }
-
-    fun getItem(position: Int) : Chapter {
-        return mData[position]
     }
 
     fun getDataSet(): ArrayList<Chapter> = mData
@@ -92,16 +62,7 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     override fun getItemViewType(position: Int): Int = if(position == 0) 0 else 1
 
-
-    override fun getItemCount(): Int = mData.size + 1
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-        holder.itemView.setOnClickListener {
-            if (mClickListener != null) {
-                mClickListener.onItemClick(it, holder.adapterPosition)
-            }
-        }
 
         if(position == 0) {
             var headerHolder = holder as HeaderViewHolder
@@ -146,10 +107,6 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
-        mClickListener = onItemClickListener
-    }
-
     fun setOnClickCallback(onClickCallback: OnClickCallback) {
         mClickCallback = onClickCallback
     }
@@ -158,15 +115,23 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mFavoriteClickCallback = onFavoriteClickCallback
     }
 
+    override fun getItemDecoration(): RecyclerView.ItemDecoration? = object : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
+            val position = parent.getChildLayoutPosition(view)
+            if (position == 0) {
+                outRect.set(0, 0, 0, 10)
+            } else {
+                val offset = parent.width / 40
+                outRect.set(offset, 0, offset, (offset * 1.5).toInt())
+            }
+        }
+    }
+
     interface OnClickCallback {
         fun onClick(view: View, type: Int)
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(view: View, position: Int)
-    }
-
-    class HeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class HeaderViewHolder(itemView: View): BaseViewHolder(itemView) {
         @BindView(R.id.item_header_comic_image) lateinit var mComicImage: ImageView
         @BindView(R.id.item_header_comic_title) lateinit var mComicTitle: TextView
         @BindView(R.id.item_header_comic_intro) lateinit var mComicIntro: TextView
@@ -175,17 +140,9 @@ class DetailAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @BindView(R.id.item_header_comic_author) lateinit var mComicAuthor: TextView
         @BindView(R.id.favorite) lateinit var mFavorite: TextView
         @BindView(R.id.read) lateinit var mRead: TextView
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
     }
 
-    class ChapterViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ChapterViewHolder(itemView: View): BaseViewHolder(itemView) {
         @BindView(R.id.item_chapter_button) lateinit var mChapterButton: ChapterButton
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
     }
 }

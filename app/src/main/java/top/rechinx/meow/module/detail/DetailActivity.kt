@@ -21,8 +21,9 @@ import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.reader.ReaderActivity
+import top.rechinx.meow.module.base.BaseAdapter
 
-class DetailActivity : BaseActivity(), DetailView, DetailAdapter.OnItemClickListener, DetailAdapter.OnClickCallback {
+class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListener, DetailAdapter.OnClickCallback {
 
     @BindView(R.id.coordinator_recycler_view) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.coordinator_layout) lateinit var mLayoutView: CoordinatorLayout
