@@ -123,7 +123,7 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     override fun onItemClick(view: View, position: Int) {
         if(position != 0) {
             val chapter = mAdapter.getItem(position - 1)
-            val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, 1, mAdapter.getDataSet())
+            val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, 1, mAdapter.getDataSet(), mAdapter.getReaderMode())
             startActivity(intent)
         }
     }
@@ -131,9 +131,9 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     override fun onClick(view: View, type: Int) {
         if(type == 1) {
             val intent = if(mComic.last_chapter == null) {
-                ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mAdapter.getFirst().chapter_id!!, 1, mAdapter.getDataSet())
+                ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mAdapter.getFirst().chapter_id!!, 1, mAdapter.getDataSet(), mAdapter.getReaderMode())
             }else {
-                ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mComic.last_chapter!!, mComic.last_page!!, mAdapter.getDataSet())
+                ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mComic.last_chapter!!, mComic.last_page!!, mAdapter.getDataSet(), mAdapter.getReaderMode())
             }
             (view as TextView).text = "Continue"
             startActivity(intent)

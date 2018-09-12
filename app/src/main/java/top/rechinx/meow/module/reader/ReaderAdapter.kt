@@ -13,12 +13,18 @@ import com.github.chrisbanes.photoview.PhotoView
 import top.rechinx.meow.R
 import top.rechinx.meow.model.ImageUrl
 import android.graphics.RectF
+import android.graphics.drawable.Drawable
+import android.widget.ImageView
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import top.rechinx.meow.module.base.BaseAdapter
 
 
 class ReaderAdapter: BaseAdapter<ImageUrl> {
 
     private lateinit var mCallback: OnTouchCallback
+
+    private var mMode: Int = 0
 
     constructor(context: Context, list: ArrayList<ImageUrl>): super(context, list)
 
@@ -30,50 +36,100 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
         return current
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(mInflater.inflate(R.layout.item_picture, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if(mMode == PAGE_READER_MODE)
+            PageViewHolder(mInflater.inflate(R.layout.item_picture, parent, false))
+        else
+            StreamViewHolder(mInflater.inflate(R.layout.item_picture_stream, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
 
         val images = mData[position]
-        val itemHolder = holder as ViewHolder
-        itemHolder.mImage.setOnViewTapListener { view, x, y ->
-            run {
-                val mViewWidth = view.width
-                val mViewHeight = view.height
-                val mCenterRect = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() / 3,
-                        mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() * 2 / 3)
-                val mLeftRect1 = RectF(0F, 0F,
-                        mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() / 3)
-                val mLeftRect2 = RectF(0F, mViewHeight.toFloat() / 3,
-                        mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3)
-                val mRightRect1 = RectF(mViewWidth.toFloat() * 2 / 3, 0F,
-                        mViewWidth.toFloat(), mViewHeight.toFloat() * 2 / 3)
-                val mRightRect2 = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3,
-                        mViewWidth.toFloat(), mViewHeight.toFloat())
-                if(mCenterRect.contains(x, y)) {
-                    if(mCallback != null) {
-                        mCallback.onCenter()
+
+        if(mMode == PAGE_READER_MODE) {
+            val itemHolder = holder as PageViewHolder
+            itemHolder.mImage.setOnViewTapListener { view, x, y ->
+                run {
+                    val mViewWidth = view.width
+                    val mViewHeight = view.height
+                    val mCenterRect = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() / 3,
+                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() * 2 / 3)
+                    val mLeftRect1 = RectF(0F, 0F,
+                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() / 3)
+                    val mLeftRect2 = RectF(0F, mViewHeight.toFloat() / 3,
+                            mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3)
+                    val mRightRect1 = RectF(mViewWidth.toFloat() * 2 / 3, 0F,
+                            mViewWidth.toFloat(), mViewHeight.toFloat() * 2 / 3)
+                    val mRightRect2 = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3,
+                            mViewWidth.toFloat(), mViewHeight.toFloat())
+                    if(mCenterRect.contains(x, y)) {
+                        if(mCallback != null) {
+                            mCallback.onCenter()
+                        }
                     }
-                }
-                if(mLeftRect1.contains(x, y) || mLeftRect2.contains(x, y)) {
-                    if(mCallback != null) {
-                        mCallback.onPrev()
+                    if(mLeftRect1.contains(x, y) || mLeftRect2.contains(x, y)) {
+                        if(mCallback != null) {
+                            mCallback.onPrev()
+                        }
                     }
-                }
-                if(mRightRect1.contains(x, y) || mRightRect2.contains(x, y)) {
-                    if(mCallback != null) {
-                        mCallback.onNext()
+                    if(mRightRect1.contains(x, y) || mRightRect2.contains(x, y)) {
+                        if(mCallback != null) {
+                            mCallback.onNext()
+                        }
                     }
                 }
             }
+            Glide.with(mContext).load(images.chapterUrl).into(itemHolder.mImage)
+        } else {
+            val itemHolder = holder as StreamViewHolder
+//            itemHolder.mImage.setOnViewTapListener { view, x, y ->
+//                run {
+//                    val mViewWidth = view.width
+//                    val mViewHeight = view.height
+//                    val mCenterRect = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() / 3,
+//                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() * 2 / 3)
+//                    val mLeftRect1 = RectF(0F, 0F,
+//                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() / 3)
+//                    val mLeftRect2 = RectF(0F, mViewHeight.toFloat() / 3,
+//                            mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3)
+//                    val mRightRect1 = RectF(mViewWidth.toFloat() * 2 / 3, 0F,
+//                            mViewWidth.toFloat(), mViewHeight.toFloat() * 2 / 3)
+//                    val mRightRect2 = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3,
+//                            mViewWidth.toFloat(), mViewHeight.toFloat())
+//                    if(mCenterRect.contains(x, y)) {
+//                        if(mCallback != null) {
+//                            mCallback.onCenter()
+//                        }
+//                    }
+//                    if(mLeftRect1.contains(x, y) || mLeftRect2.contains(x, y)) {
+//                        if(mCallback != null) {
+//                            mCallback.onPrev()
+//                        }
+//                    }
+//                    if(mRightRect1.contains(x, y) || mRightRect2.contains(x, y)) {
+//                        if(mCallback != null) {
+//                            mCallback.onNext()
+//                        }
+//                    }
+//                }
+//            }
+            Glide.with(mContext).load(images.chapterUrl).into(object : SimpleTarget<Drawable>() {
+                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    itemHolder.mImage.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                    itemHolder.mImage.setImageDrawable(resource)
+                }
+            })
         }
-        Glide.with(mContext).load(images.chapterUrl).into(itemHolder.mImage)
+
     }
 
     override fun getItemDecoration(): RecyclerView.ItemDecoration? = null
+
+    fun setReaderMode(mode: Int) {
+        this.mMode = mode
+    }
 
     fun setOnTouchCallback(callback: OnTouchCallback) {
         mCallback = callback
@@ -88,7 +144,18 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
         fun onNext()
     }
 
-    class ViewHolder(view: View): BaseViewHolder(view) {
+    class PageViewHolder(view: View): BaseViewHolder(view) {
         @BindView(R.id.reader_image_view) lateinit var mImage: PhotoView
+    }
+
+    class StreamViewHolder(view: View): BaseViewHolder(view) {
+        @BindView(R.id.reader_image_view) lateinit var mImage: ImageView
+    }
+
+    companion object {
+
+        const val PAGE_READER_MODE: Int = 0
+        const val STREAM_READER_MODE: Int = 1
+
     }
 }

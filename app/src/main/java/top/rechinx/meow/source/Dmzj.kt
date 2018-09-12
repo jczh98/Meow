@@ -58,7 +58,7 @@ open class Dmzj(source: Source): Parser() {
             }
             val author = sb.toString()
             val status = obj.getJSONArray("status").getJSONObject(0).getInt("tag_id") == 2310
-            comic.setInfo(title, cover, update.toString(), intro, author, status, glideCover)
+            comic.setInfo(title, cover, update.toString(), intro, author, status, true, glideCover)
         } catch (e: Exception) {
             e.printStackTrace()
         }

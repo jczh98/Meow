@@ -21,9 +21,10 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                  @ColumnInfo var last_chapter: String?,
                  @ColumnInfo var last_page: Int?,
                  @ColumnInfo var history: Boolean?,
+                 @ColumnInfo var isPageReader: Boolean?,
                  @Ignore var glideCover: GlideUrl?) {
 
-    constructor(): this(0, null, null, null, null, null, null, null, null, null, null, null, null, null)
+    constructor(): this(0, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 
     @Ignore constructor(source: Int, cid: String) : this(source, cid, null, null, null) {
         this.cid = cid
@@ -31,7 +32,7 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long = 0,
     }
 
     @Ignore constructor(source: Int, cid: String, title: String?, image: String?, author: String?) :
-            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, null) {
+            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, null, null) {
         this.cid = cid
         this.source = source
         this.title = title
@@ -40,7 +41,7 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long = 0,
     }
 
     @Ignore constructor(source: Int, cid: String, title: String, image: String, author: String, update: String, glideCover: GlideUrl?) :
-            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, glideCover) {
+            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, null, glideCover) {
         this.cid = cid
         this.source = source
         this.title = title
@@ -49,7 +50,7 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long = 0,
         this.update = update
     }
 
-    fun setInfo(title: String?, cover: String?, update: String?, intro: String, author: String?, finish: Boolean, glideCover: GlideUrl?) {
+    fun setInfo(title: String?, cover: String?, update: String?, intro: String, author: String?, finish: Boolean, isPage: Boolean, glideCover: GlideUrl?) {
         if (title != null) {
             this.title = title
         }
@@ -63,6 +64,7 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long = 0,
         if (author != null) {
             this.author = author
         }
+        this.isPageReader = isPage
         this.glideCover = glideCover
     }
 }

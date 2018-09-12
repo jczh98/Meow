@@ -53,6 +53,8 @@ class DetailAdapter: BaseAdapter<Chapter> {
 
     fun getComic(): Comic? = mComic
 
+    fun getReaderMode(): Int = if(mComic?.isPageReader!!) 0 else 1
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == 0) {
             return HeaderViewHolder(mInflater.inflate(R.layout.item_chapter_header, parent, false))
