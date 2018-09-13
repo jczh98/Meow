@@ -1,4 +1,4 @@
-package top.rechinx.meow.widget.zoomablerv;
+package top.rechinx.meow.widget.zoomablerv
 
 /**
  * ****************************************************************************
@@ -17,12 +17,12 @@ package top.rechinx.meow.widget.zoomablerv;
  * limitations under the License.
  * *****************************************************************************
  */
-public interface OnScaleDragGestureListener {
-    void onDrag(float dx, float dy);
+interface OnScaleDragGestureListener {
+    fun onDrag(dx: Float, dy: Float)
 
-    void onFling(float startX, float startY, float velocityX, float velocityY);
+    fun onFling(startX: Float, startY: Float, velocityX: Float, velocityY: Float)
 
-    void onScale(float scaleFactor, float focusX, float focusY);
+    fun onScale(scaleFactor: Float, focusX: Float, focusY: Float)
 
-    void onScaleEnd();
+    fun onScaleEnd()
 }

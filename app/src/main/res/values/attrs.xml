@@ -3,4 +3,11 @@
     <declare-styleable name="ChapterButton">
         <attr name="selected_color" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="ZoomRecyclerView">
+        <attr format="float" name="min_scale"/>
+        <attr format="float" name="max_scale"/>
+        <attr format="float" name="default_scale"/>
+        <attr format="integer" name="zoom_duration"/>
+    </declare-styleable>
 </resources>
