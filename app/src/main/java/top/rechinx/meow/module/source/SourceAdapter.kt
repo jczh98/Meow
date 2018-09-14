@@ -7,6 +7,7 @@ import android.support.v7.widget.SwitchCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -16,6 +17,8 @@ import top.rechinx.meow.model.Source
 import top.rechinx.meow.module.base.BaseAdapter
 
 class SourceAdapter: BaseAdapter<Source> {
+
+    private lateinit var mOnItemCheckedListener: OnItemCheckedListener
 
     constructor(context: Context, list: ArrayList<Source>): super(context, list)
 
@@ -31,7 +34,12 @@ class SourceAdapter: BaseAdapter<Source> {
         val source = mData[position]
         val itemHolder = holder as ViewHolder
         itemHolder.sourceTitle.text = source.title
-        itemHolder.sourceSwitch.isChecked = true
+        itemHolder.sourceSwitch.isChecked = source.isEnable
+        itemHolder.sourceSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (mOnItemCheckedListener != null) {
+                mOnItemCheckedListener.onItemCheckedListener(isChecked, itemHolder.adapterPosition)
+            }
+        }
     }
 
     override fun getItemDecoration(): RecyclerView.ItemDecoration {
@@ -41,6 +49,14 @@ class SourceAdapter: BaseAdapter<Source> {
                 outRect.set(offset, 0, offset, (offset * 1.5).toInt())
             }
         }
+    }
+
+    fun setOnItemCheckedlistener(listener: OnItemCheckedListener) {
+        this.mOnItemCheckedListener = listener
+    }
+
+    interface OnItemCheckedListener {
+        fun onItemCheckedListener(isChecked: Boolean, position: Int)
     }
 
     class ViewHolder(itemView: View): BaseViewHolder(itemView) {

@@ -8,7 +8,8 @@ import android.arch.persistence.room.PrimaryKey
 data class Source(
         @PrimaryKey(autoGenerate = true) var id: Long,
         @ColumnInfo var type: Int,
-        @ColumnInfo var title: String
+        @ColumnInfo var title: String,
+        @ColumnInfo var isEnable: Boolean
 )
 
 

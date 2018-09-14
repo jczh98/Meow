@@ -10,7 +10,7 @@ import top.rechinx.meow.R
 import top.rechinx.meow.model.Source
 import top.rechinx.meow.module.base.BaseFragment
 
-class SourceFragment: BaseFragment(), SourceView {
+class SourceFragment: BaseFragment(), SourceView, SourceAdapter.OnItemCheckedListener {
 
     @BindView(R.id.recycler_view_content) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.custom_progress_bar) lateinit var mProgressBar: ProgressBar
@@ -23,6 +23,7 @@ class SourceFragment: BaseFragment(), SourceView {
         mRecyclerView.itemAnimator = null
         mRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         mAdapter = SourceAdapter(activity!!, ArrayList())
+        mAdapter.setOnItemCheckedlistener(this)
         mRecyclerView.adapter = mAdapter
         mRecyclerView.addItemDecoration(mAdapter.getItemDecoration())
     }
@@ -44,6 +45,12 @@ class SourceFragment: BaseFragment(), SourceView {
     }
 
     override fun onSourceLoadFailure() {
+    }
+
+    override fun onItemCheckedListener(isChecked: Boolean, position: Int) {
+        var source = mAdapter.getItem(position)
+        source.isEnable = isChecked
+        mPresenter.update(source)
     }
 
     private fun hideProgressBar() {

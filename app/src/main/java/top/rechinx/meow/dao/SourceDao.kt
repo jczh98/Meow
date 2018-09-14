@@ -1,11 +1,9 @@
 package top.rechinx.meow.dao
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import io.reactivex.Flowable
 import io.reactivex.Single
+import org.intellij.lang.annotations.Flow
 import top.rechinx.meow.model.Source
 import java.util.*
 
@@ -21,6 +19,12 @@ interface SourceDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg sources: Source)
 
+    @Update
+    fun update(source: Source)
+
     @Query("SELECT * FROM Source")
     fun list(): Single<List<Source>>
+
+    @Query("SELECT * FROM Source WHERE isEnable = 1")
+    fun listEnable(): Flowable<List<Source>>
 }

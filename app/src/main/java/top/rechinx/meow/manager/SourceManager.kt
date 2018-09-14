@@ -1,6 +1,7 @@
 package top.rechinx.meow.manager
 
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import top.rechinx.meow.core.Parser
@@ -24,12 +25,21 @@ class SourceManager {
 
     fun list(): Single<List<Source>> = mDatabaseHelper.sourceDao().list()
 
+    fun listEnable(): Flowable<List<Source>> = mDatabaseHelper.sourceDao().listEnable()
+
+
+    fun update(source: Source): Completable {
+        return Completable.fromCallable {
+            mDatabaseHelper.sourceDao().update(source)
+        }
+    }
+
     fun load(type: Int) = mDatabaseHelper.sourceDao().load(type)
 
     fun identify(type: Int, title: String): Source {
         var source = mDatabaseHelper.sourceDao().identify(type, title)
         if(source == null) {
-            source = Source(0, type, title)
+            source = Source(0, type, title, true)
         }
         return source
     }
