@@ -9,10 +9,13 @@ import android.view.Menu
 import android.view.MenuItem
 import butterknife.BindView
 import com.miguelcatalan.materialsearchview.MaterialSearchView
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import top.rechinx.meow.R
 import top.rechinx.meow.manager.SourceManager
+import top.rechinx.meow.model.Source
 import top.rechinx.meow.module.about.AboutActivity
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.favorite.HistoryFragment
@@ -21,6 +24,7 @@ import top.rechinx.meow.module.source.SourceFragment
 import top.rechinx.meow.source.Dmzj
 import top.rechinx.meow.source.Kuaikan
 import top.rechinx.meow.source.Shuhui
+import top.rechinx.meow.support.relog.ReLog
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,7 +53,19 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 if (query.isEmpty()) {
                     mSearchView.setHint(getString(R.string.empty_for_search))
                 } else {
-                    startActivity(ResultActivity.createIntent(this@HomeActivity, query, intArrayOf(Dmzj.TYPE, Shuhui.TYPE, Kuaikan.TYPE)))
+                    SourceManager.getInstance().listEnable()
+                            .subscribeOn(Schedulers.io())
+                            .map { it ->
+                                var array = ArrayList<Int>()
+                                for (item in it) {
+                                    array.add(item.type)
+                                }
+                                ReLog.d(array.toString())
+                                array.toIntArray()
+                            }.observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                startActivity(ResultActivity.createIntent(this@HomeActivity, query, it))
+                            }, {})
                 }
                 return false
             }

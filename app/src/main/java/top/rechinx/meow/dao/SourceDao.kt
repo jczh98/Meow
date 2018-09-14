@@ -2,6 +2,7 @@ package top.rechinx.meow.dao
 
 import android.arch.persistence.room.*
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import org.intellij.lang.annotations.Flow
 import top.rechinx.meow.model.Source
@@ -26,5 +27,5 @@ interface SourceDao {
     fun list(): Single<List<Source>>
 
     @Query("SELECT * FROM Source WHERE isEnable = 1")
-    fun listEnable(): Flowable<List<Source>>
+    fun listEnable(): Single<List<Source>>
 }

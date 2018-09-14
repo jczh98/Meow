@@ -25,7 +25,7 @@ class SourceManager {
 
     fun list(): Single<List<Source>> = mDatabaseHelper.sourceDao().list()
 
-    fun listEnable(): Flowable<List<Source>> = mDatabaseHelper.sourceDao().listEnable()
+    fun listEnable(): Single<List<Source>> = mDatabaseHelper.sourceDao().listEnable()
 
 
     fun update(source: Source): Completable {

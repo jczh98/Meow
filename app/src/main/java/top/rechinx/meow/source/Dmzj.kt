@@ -152,9 +152,6 @@ open class Dmzj(source: Source): Parser() {
 
         const val DEFAULT_TITLE = "动漫之家"
 
-        fun getDefaultSource(): Source = SourceManager.getInstance().identify(TYPE, DEFAULT_TITLE).let{
-            it.isEnable = false
-            return it
-        }
+        fun getDefaultSource(): Source = SourceManager.getInstance().identify(TYPE, DEFAULT_TITLE)
     }
 }
