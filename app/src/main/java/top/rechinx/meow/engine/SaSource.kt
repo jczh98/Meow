@@ -41,8 +41,8 @@ class SaSource {
     private lateinit var searchNode: SaNode
     private lateinit var comicNode: SaNode
     private lateinit var chapterNode: SaNode
-    private lateinit var coverNode: SaNode
-    private lateinit var imageNode: SaNode
+    private var coverNode: SaNode? = null
+    private var imageNode: SaNode? = null
 
     constructor(app: Application, xml: String) {
         initSource(app, xml)
@@ -116,7 +116,7 @@ class SaSource {
                             while(iterator.hasNext()) {
                                 var comic = iterator.next()
                                 if(comic != null) {
-                                    comic.headers = coverNode.headers
+                                    comic.headers = coverNode?.headers
                                     comic.source = name
                                     comic.sourceName = title
                                     emitter.onNext(comic)
@@ -144,7 +144,7 @@ class SaSource {
                             val author = jsonObj.getString("author")
                             val update = jsonObj.getString("update")
                             val isPage = jsonObj.getBoolean("isPage")
-                            comic.setInfo(title, cover, update, intro, author, false, isPage, coverNode.headers, title)
+                            comic.setInfo(title, cover, update, intro, author, false, isPage, coverNode?.headers, title)
                             val jsonObj2 = jsonArr.getJSONObject(1)
                             val chapters = jsonObj2.getJSONArray("chapters")
                             val list = LinkedList<Chapter>()
@@ -171,7 +171,7 @@ class SaSource {
                             val array = JSONArray(it)
                             val list = LinkedList<ImageUrl>()
                             for(i in 0 until array.length()) {
-                                list.add(ImageUrl(i + 1, array.getString(i), chapterId, imageNode.headers))
+                                list.add(ImageUrl(i + 1, array.getString(i), chapterId, imageNode?.headers))
                             }
                             emitter.onNext(list)
                             emitter.onComplete()

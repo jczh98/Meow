@@ -32,8 +32,9 @@ object Helper {
         return builder.build()
     }
 
-    fun parseHeaders(headers: String): LazyHeaders {
+    fun parseHeaders(headers: String?): LazyHeaders {
         var lazyHeaders =  LazyHeaders.Builder()
+        if(headers == null) return lazyHeaders.build()
         for(kv in headers.split(";")) {
             val idx = kv.indexOf("=")
             val k = kv.substring(0, idx).trim()
@@ -42,6 +43,7 @@ object Helper {
         }
         return lazyHeaders.build()
     }
+
     fun getSearchRequest(node: SaNode, keyword: String, page: Int): Request? {
         var url = node.url
         url = url?.replace("@key", keyword)
