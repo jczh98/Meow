@@ -44,7 +44,7 @@ class Shuhui(source: Source) : Parser() {
             val intro = obj.optString("Explain")
             val author = obj.getString("Author")
             val glideCover = GlideUrl(cover, LazyHeaders.Builder().build())
-            comic.setInfo(title, cover, update.toString(), intro, author, false, true, glideCover)
+            //comic.setInfo(title, cover, update.toString(), intro, author, false, true, glideCover)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -64,7 +64,8 @@ class Shuhui(source: Source) : Parser() {
                         val author = obj.getString("Author")
                         val update = obj.getString("RefreshTimeStr")
                         val glideCover = GlideUrl(cover, LazyHeaders.Builder().build())
-                        return Comic(TYPE, cid, title, cover, author, update, glideCover)
+                        return null
+                        //return Comic(TYPE, cid, title, cover, author, update, glideCover)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         return null

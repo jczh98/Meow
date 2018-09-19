@@ -16,6 +16,7 @@ import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import top.rechinx.meow.App
+import top.rechinx.meow.engine.Helper
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.module.base.BaseAdapter
 import top.rechinx.meow.module.base.BaseView
@@ -40,8 +41,9 @@ class ResultAdapter: BaseAdapter<Comic> {
         itemHolder.comicTitle.text = comic.title
         itemHolder.comicAuthor.text = comic.author
         itemHolder.comicUpdate.text = comic.update
-        itemHolder.comicSource.text = comic.source?.let { SourceManager.getInstance().getTitle(it) }
-        Glide.with(mContext).load(comic.glideCover).into(itemHolder.comicImage)
+        itemHolder.comicSource.text = comic.sourceName
+        var glideUrl = GlideUrl(comic.image, Helper.parseHeaders(comic.headers!!))
+        Glide.with(mContext).load(glideUrl).into(itemHolder.comicImage)
     }
 
     override fun getItemDecoration(): RecyclerView.ItemDecoration? = null

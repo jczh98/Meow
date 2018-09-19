@@ -1,16 +1,19 @@
 package top.rechinx.meow.module.reader
 
 import android.content.Context
+import android.media.Image
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import top.rechinx.meow.engine.SaSource
 import top.rechinx.meow.manager.ComicManager
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.module.base.BasePresenter
+import io.reactivex.functions.Function
 import top.rechinx.meow.network.Api
 import top.rechinx.meow.source.Dmzj
 import top.rechinx.meow.support.relog.ReLog
@@ -38,13 +41,17 @@ class ReaderPresenter(): BasePresenter<ReaderView>() {
         mComicManager = ComicManager.getInstance()
     }
 
-    fun loadInit(source: Int, cid: String, chapter_id: String, array: Array<Chapter>) {
+    fun loadInit(source: String, cid: String, chapter_id: String, array: Array<Chapter>) {
         mComic = mComicManager.identify(source, cid)
         for (index in array.indices) {
             val item = array[index]
             if(item.chapter_id == chapter_id) {
                 mChapterManger = ChapterManger(array, index)
-                images(Api.getChapterImage(mSourceManger.getParser(mComic.source!!)!!, cid, chapter_id))
+                images(SourceManager.getInstance().rxGetSource(source)
+                        .flatMap(Function<SaSource, Observable<List<ImageUrl>>> {
+                            return@Function it.getChapterImage(cid, chapter_id)
+                        }))
+                //images(Api.getChapterImage(mSourceManger.getParser(mComic.source!!)!!, cid, chapter_id))
             }
         }
     }
@@ -53,7 +60,11 @@ class ReaderPresenter(): BasePresenter<ReaderView>() {
         if(status == LOAD_NULL && mChapterManger.hasPrev()) {
             val chapter = mChapterManger.prevChapter
             status = LOAD_PREV
-            images(Api.getChapterImage(mSourceManger.getParser(mComic.source!!)!!, mComic.cid!!, chapter?.chapter_id!!))
+            images(SourceManager.getInstance().rxGetSource(mComic.source!!)
+                    .flatMap(Function<SaSource, Observable<List<ImageUrl>>> {
+                        return@Function it.getChapterImage(mComic.cid!!, chapter?.chapter_id!!)
+                    }))
+            //images(Api.getChapterImage(mSourceManger.getParser(mComic.source!!)!!, mComic.cid!!, chapter?.chapter_id!!))
             mView?.onPrevLoading()
         }else {
             mView?.onPrevLoadNone()
@@ -64,7 +75,11 @@ class ReaderPresenter(): BasePresenter<ReaderView>() {
         if(status == LOAD_NULL && mChapterManger.hasNext()) {
             val chapter = mChapterManger.nextChapter
             status = LOAD_NEXT
-            images(Api.getChapterImage(mSourceManger.getParser(mComic.source!!)!!, mComic.cid!!, chapter?.chapter_id!!))
+            images(SourceManager.getInstance().rxGetSource(mComic.source!!)
+                    .flatMap(Function<SaSource, Observable<List<ImageUrl>>> {
+                        return@Function it.getChapterImage(mComic.cid!!, chapter?.chapter_id!!)
+                    }))
+            //images(Api.getChapterImage(mSourceManger.getParser(mComic.source!!)!!, mComic.cid!!, chapter?.chapter_id!!))
             mView?.onNextLoading()
         }else {
             mView?.onNextLoadNone()

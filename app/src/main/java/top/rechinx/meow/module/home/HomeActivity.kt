@@ -1,5 +1,6 @@
 package top.rechinx.meow.module.home
 
+import android.Manifest
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -9,11 +10,17 @@ import android.view.Menu
 import android.view.MenuItem
 import butterknife.BindView
 import com.miguelcatalan.materialsearchview.MaterialSearchView
+import com.tbruyelle.rxpermissions2.RxPermissions
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Publisher
 import top.rechinx.meow.R
+import top.rechinx.meow.engine.SaSource
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Source
 import top.rechinx.meow.module.about.AboutActivity
@@ -25,6 +32,13 @@ import top.rechinx.meow.source.Dmzj
 import top.rechinx.meow.source.Kuaikan
 import top.rechinx.meow.source.Shuhui
 import top.rechinx.meow.support.relog.ReLog
+import top.rechinx.meow.App
+import top.rechinx.meow.model.Comic
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.nio.charset.Charset
+
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -47,25 +61,15 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun initView() {
+        RxPermissions(this).request(Manifest.permission.READ_EXTERNAL_STORAGE).subscribe()
+        test()
         mNavigationView.setCheckedItem(R.id.drawer_main)
         mSearchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (query.isEmpty()) {
                     mSearchView.setHint(getString(R.string.empty_for_search))
                 } else {
-                    SourceManager.getInstance().listEnable()
-                            .subscribeOn(Schedulers.io())
-                            .map { it ->
-                                var array = ArrayList<Int>()
-                                for (item in it) {
-                                    array.add(item.type)
-                                }
-                                ReLog.d(array.toString())
-                                array.toIntArray()
-                            }.observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                startActivity(ResultActivity.createIntent(this@HomeActivity, query, it))
-                            }, {})
+                    startActivity(ResultActivity.createIntent(this@HomeActivity, query))
                 }
                 return false
             }
@@ -76,15 +80,30 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         })
     }
 
+
+    fun test() {
+        ReLog.d(SourceManager.getInstance().getSourceNames()[0])
+//        var iss = assets.open("dmzj.xml");
+//        var lenght = iss.available()
+//        var  buffer = ByteArray(lenght)
+//        iss.read(buffer)
+//        var source = String(buffer, Charset.forName("utf8"))
+//        var s = SaSource(App.instance, source)
+//        var comic = Comic()
+//        comic.cid = "21"
+//        CompositeDisposable().add(s.getSearchResult("akb", 0)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({
+//                    ReLog.d(it.title)
+//                }, {ReLog.d(it.message)}))
+
+    }
     override fun initPresenter() {
 
     }
 
     override fun initData() {
-        SourceManager.getInstance().initSource()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
     }
 
     override fun getLayoutId(): Int = R.layout.activity_home

@@ -15,8 +15,10 @@ import top.rechinx.meow.model.ImageUrl
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import top.rechinx.meow.engine.Helper
 import top.rechinx.meow.module.base.BaseAdapter
 
 
@@ -81,7 +83,8 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
                     }
                 }
             }
-            Glide.with(mContext).load(images.chapterUrl).into(itemHolder.mImage)
+            val glideUrl = GlideUrl(images.imageUrl, Helper.parseHeaders(images.headers!!))
+            Glide.with(mContext).load(glideUrl).into(itemHolder.mImage)
         } else {
             val itemHolder = holder as StreamViewHolder
 //            itemHolder.mImage.setOnViewTapListener { view, x, y ->
@@ -115,7 +118,8 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
 //                    }
 //                }
 //            }
-            Glide.with(mContext).load(images.chapterUrl).into(object : SimpleTarget<Drawable>() {
+            val glideUrl = GlideUrl(images.imageUrl, Helper.parseHeaders(images.headers!!))
+            Glide.with(mContext).load(glideUrl).into(object : SimpleTarget<Drawable>() {
                 override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                     itemHolder.mImage.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
                     itemHolder.mImage.setImageDrawable(resource)

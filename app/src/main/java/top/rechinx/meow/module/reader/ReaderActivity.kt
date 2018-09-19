@@ -40,7 +40,7 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, ReaderAdapter.OnTouc
     protected var currentPage: Int = 1
 
     override fun initData() {
-        val source = intent.getIntExtra(EXTRA_SOURCE, 0)
+        val source = intent.getStringExtra(EXTRA_SOURCE)
         val cid = intent.getStringExtra(EXTRA_ID)
         val list = intent.getParcelableArrayListExtra<Chapter>(EXTRA_CHAPTER)
         val chapterId = intent.getStringExtra(EXTRA_CHAPTER_ID)
@@ -179,7 +179,7 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, ReaderAdapter.OnTouc
         private val EXTRA_SOURCE = "extra_source"
         private val EXTRA_PAGE = "extra_page"
 
-        fun createIntent(context: Context, source: Int, cid: String, chapter_id: String, page: Int, array: ArrayList<Chapter>, mode: Int): Intent {
+        fun createIntent(context: Context, source: String, cid: String, chapter_id: String, page: Int, array: ArrayList<Chapter>, mode: Int): Intent {
             val intent = getIntent(context, mode)
             intent.putExtra(EXTRA_SOURCE, source)
             intent.putExtra(EXTRA_ID, cid)

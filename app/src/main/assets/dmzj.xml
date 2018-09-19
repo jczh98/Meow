@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<site ver="1">
+    <head>
+        <name>dmzj</name>
+        <title>动漫之家</title>
+        <intro>intro</intro>
+    </head>
+    <body>
+        <search ua="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AcooBrowser; .NET CLR 1.1.4322; .NET CLR 2.0.50727)"
+            parser="search_parser"
+            url="http://v2.api.dmzj.com/search/show/0/@key/@page.json" />
+        <comic parser="comic_parser"
+            url="http://v2.api.dmzj.com/comic/@key.json"/>
+        <chapter parser="chapter_parser"
+            url="http://v2.api.dmzj.com/chapter/@key/@skey.json"/>
+        <cover headers="Referer=http://images.dmzj.com/"/>
+        <image headers="Referer=http://images.dmzj.com/"/>
+    </body>
+    <jscript>
+        <require>
+            <item url="url" lib="lib"/>
+        </require>
+        <code>
+            <![CDATA[
+function search_parser(html) {
+var jList = JSON.parse(html);
+var list = [];
+jList.forEach(function(item){
+var bm = {};
+bm.cid = item.id
+bm.title = item.title
+bm.cover = item.cover
+bm.author = item.authors
+bm.update = item.last_name
+list.push(bm);
+});
+return JSON.stringify(list);
+}
+function dateFormat(longTypeDate){ 
+ var dateTypeDate = ""; 
+ var date = new Date(); 
+ date.setTime(longTypeDate); 
+ dateTypeDate += date.getFullYear(); //年 
+ dateTypeDate += "-" + getMonth(date); //月 
+ dateTypeDate += "-" + getDay(date); //日 
+ return dateTypeDate;
+} 
+//返回 01-12 的月份值 
+function getMonth(date){ 
+ var month = ""; 
+ month = date.getMonth() + 1; //getMonth()得到的月份是0-11 
+ if(month<10){ 
+  month = "0" + month; 
+ } 
+ return month; 
+} 
+//返回01-30的日期 
+function getDay(date){ 
+ var day = ""; 
+ day = date.getDate(); 
+ if(day<10){ 
+  day = "0" + day; 
+ } 
+ return day; 
+}
+ function comic_parser(html) {
+ var jobj = JSON.parse(html);
+ var jList = jobj.chapters[0].data
+ var json = [];
+   var bm = {};
+   bm.title = jobj.title;
+   bm.cover = jobj.cover;
+   bm.intro = jobj.description;
+   bm.update = dateFormat(jobj.last_updatetime*1000)
+   bm.author = jobj.authors[0].tag_name;
+   bm.isPage = true
+   json.push(bm)
+   var list = [];
+   jList.forEach(function(item){
+     var c = {};
+     c.title = item.chapter_title;
+     c.chapterId = item.chapter_id;
+     list.push(c)
+   })
+   var array = {};
+   array.chapters = list
+   json.push(array)
+   return JSON.stringify(json)
+ }
+  function chapter_parser(html) {
+ var jobj = JSON.parse(html);
+ var jList = jobj.page_url
+ var json = [];
+   jList.forEach(function(item){
+     json.push(item)
+   })
+   return JSON.stringify(json)
+ }
+            ]]>
+        </code>
+    </jscript>
+</site>

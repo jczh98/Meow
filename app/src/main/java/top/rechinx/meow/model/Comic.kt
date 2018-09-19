@@ -10,7 +10,8 @@ import com.bumptech.glide.load.model.GlideUrl
 @Entity
 data class Comic(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                  @ColumnInfo var cid: String?,
-                 @ColumnInfo var source: Int?,
+                 @ColumnInfo var source: String?,
+                 @ColumnInfo var sourceName: String?,
                  @ColumnInfo var image: String?,
                  @ColumnInfo var title: String?,
                  @ColumnInfo var author: String?,
@@ -22,35 +23,34 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                  @ColumnInfo var last_page: Int?,
                  @ColumnInfo var history: Boolean?,
                  @ColumnInfo var isPageReader: Boolean?,
-                 @Ignore var glideCover: GlideUrl?) {
+                 @ColumnInfo var headers: String?) {
 
-    constructor(): this(0, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+    constructor(): this(0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 
-    @Ignore constructor(source: Int, cid: String) : this(source, cid, null, null, null) {
-        this.cid = cid
-        this.source = source
-    }
+    @Ignore constructor(cid: String, title: String?, image: String?, author: String?, update: String?): this(0, cid, null, null, image, title, author, null, null, update, null, null, null, null, null, null)
 
-    @Ignore constructor(source: Int, cid: String, title: String?, image: String?, author: String?) :
-            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, null, null) {
-        this.cid = cid
-        this.source = source
-        this.title = title
-        this.image = image
-        this.author = author
-    }
+    @Ignore constructor(source: String, cid: String) : this(0, cid, source, null, null, null, null, null, null, null, null, null, null, null, null, null)
+//
+//    @Ignore constructor(source: Int, cid: String, title: String?, image: String?, author: String?) :
+//            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, null, null, null) {
+//        this.cid = cid
+//        this.source = source
+//        this.title = title
+//        this.image = image
+//        this.author = author
+//    }
+//
+//    @Ignore constructor(source: Int, cid: String, title: String, image: String, author: String, update: String, glideCover: GlideUrl?) :
+//            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, null, null, glideCover) {
+//        this.cid = cid
+//        this.source = source
+//        this.title = title
+//        this.image = image
+//        this.author = author
+//        this.update = update
+//    }
 
-    @Ignore constructor(source: Int, cid: String, title: String, image: String, author: String, update: String, glideCover: GlideUrl?) :
-            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, null, glideCover) {
-        this.cid = cid
-        this.source = source
-        this.title = title
-        this.image = image
-        this.author = author
-        this.update = update
-    }
-
-    fun setInfo(title: String?, cover: String?, update: String?, intro: String, author: String?, finish: Boolean, isPage: Boolean, glideCover: GlideUrl?) {
+    fun setInfo(title: String?, cover: String?, update: String?, intro: String, author: String?, finish: Boolean, isPage: Boolean, headers: String?, sourceName: String?) {
         if (title != null) {
             this.title = title
         }
@@ -65,6 +65,7 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long = 0,
             this.author = author
         }
         this.isPageReader = isPage
-        this.glideCover = glideCover
+        this.headers = headers
+        this.sourceName = sourceName
     }
 }

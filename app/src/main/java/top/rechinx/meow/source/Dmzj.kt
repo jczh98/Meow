@@ -58,7 +58,7 @@ open class Dmzj(source: Source): Parser() {
             }
             val author = sb.toString()
             val status = obj.getJSONArray("status").getJSONObject(0).getInt("tag_id") == 2310
-            comic.setInfo(title, cover, update.toString(), intro, author, status, true, glideCover)
+           // comic.setInfo(title, cover, update.toString(), intro, author, status, true, glideCover)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -121,7 +121,8 @@ open class Dmzj(source: Source): Parser() {
                         val glideCover = GlideUrl(cover, LazyHeaders.Builder()
                                 .addHeader("Referer", "http://images.dmzj.com/")
                                 .build())
-                        return Comic(TYPE, cid, title, cover, author, update, glideCover)
+                        return null
+                        //return Comic(TYPE, cid, title, cover, author, update, glideCover)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }

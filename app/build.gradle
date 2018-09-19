@@ -54,6 +54,8 @@ dependencies {
     implementation 'com.github.seven332:ripple:0.1.0'
     implementation 'me.drakeet.support:about:2.1.1'
     implementation 'me.drakeet.multitype:multitype:3.4.4'
+    implementation 'com.eclipsesource.j2v8:j2v8:3.1.6@aar'
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
     implementation 'com.facebook.stetho:stetho:1.5.0'
 }

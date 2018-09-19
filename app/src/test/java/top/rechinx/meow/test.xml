@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<site ver="1">
+    <head>
+        <title>DMZJ</title>
+        <intro>intro</intro>
+    </head>
+    <body>
+        <search method="get" parser="search_parser" url="http://comic.oacg.cn/index.php?m=Index&amp;a=searchlistdata&amp;tag=@key" />
+        <comic method="get" parser="comic_parser" />
+        <chapter method="get" parser="chapter_parser" />
+    </body>
+    <jscript>
+        <require>
+            <item url="url" lib="lib"/>
+        </require>
+        <code>
+            <![CDATA[
+function search_parser(html) {
+ var jObj = JSON.parse(html);
+var jList = jObj.comic_arr;
+var list = [];
+jList.forEach(function(item){
+var bm = {};
+bm.name = item.comic_name;
+bm.url = 'http://comic.oacg.cn/index.php?m=Index&a=comicinfo&comic_id=' + item.id;
+bm.logo = 'http://le.cdn.pc.comicq.cn' + item.comic_pic_240_320;
+bm.author = item.painter_user_nickname;
+bm.newSection = item.comic_last_orderidx;
+bm.updateTime = '';
+bm.status = '';
+list.push(bm);
+});
+            ]]>
+        </code>
+    </jscript>
+</site>

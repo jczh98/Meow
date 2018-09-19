@@ -17,6 +17,7 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.hippo.ripple.Ripple
 import top.rechinx.meow.R
+import top.rechinx.meow.engine.Helper
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseAdapter
@@ -86,7 +87,8 @@ class DetailAdapter: BaseAdapter<Chapter> {
                 }
             }
             if(mComic != null) {
-                Glide.with(mContext).load(mComic?.glideCover).into(headerHolder.mComicImage)
+                val glideUrl = GlideUrl(mComic?.image, Helper.parseHeaders(mComic?.headers!!))
+                Glide.with(mContext).load(glideUrl).into(headerHolder.mComicImage)
                 headerHolder.mComicTitle.text = mComic?.title
                 headerHolder.mComicIntro.text = mComic?.description
                 headerHolder.mComicAuthor.text = mComic?.author

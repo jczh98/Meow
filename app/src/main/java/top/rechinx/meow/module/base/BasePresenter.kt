@@ -9,8 +9,8 @@ abstract class BasePresenter <T: BaseView> {
 
     fun attachView(view: T) {
         this.mView = view
-        onViewAttach()
         mCompositeDisposable = CompositeDisposable()
+        onViewAttach()
         initSubscription()
     }
 

@@ -10,12 +10,12 @@ class ComicManager {
 
     private var mDatabaseHelper: AppDatabase = AppDatabase.getInstance()
 
-    fun loadOrCreate(source: Int, cid: String): Comic {
+    fun loadOrCreate(source: String, cid: String): Comic {
         var comic = mDatabaseHelper.comicDao().identify(source, cid)
         return comic ?: Comic(source, cid)
     }
 
-    fun identify(source: Int, cid: String): Comic {
+    fun identify(source: String, cid: String): Comic {
         var comic = mDatabaseHelper.comicDao().identify(source, cid)
         if(comic == null) {
             comic = Comic(source, cid)

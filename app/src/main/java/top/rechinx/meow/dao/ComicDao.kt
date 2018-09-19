@@ -20,7 +20,7 @@ interface ComicDao {
     fun load(id: Long): Comic
 
     @Query("SELECT * FROM Comic WHERE source = :source AND cid = :cid")
-    fun identify(source: Int, cid: String): Comic?
+    fun identify(source: String, cid: String): Comic?
 
     @Query("SELECT * FROM Comic WHERE history = 1")
     fun listHistory(): Flowable<List<Comic>>

@@ -3,37 +3,42 @@ package top.rechinx.meow.module.result
 import android.content.Context
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
+import io.reactivex.Flowable
+import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import org.reactivestreams.Publisher
 import top.rechinx.meow.App
+import top.rechinx.meow.engine.SaSource
 import top.rechinx.meow.manager.SourceManager
+import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BasePresenter
 import top.rechinx.meow.network.Api
-import top.rechinx.meow.source.Dmzj
+import io.reactivex.functions.Function
+import io.reactivex.schedulers.Schedulers
+import top.rechinx.meow.support.relog.ReLog
 
-class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultView>() {
+class ResultPresenter(keyword: String): BasePresenter<ResultView>() {
 
     private val STATE_NULL = 0
     private val STATE_DOING = 1
     private val STATE_DONE = 3
 
     private class State {
-        var source: Int = 0
+        var source: String? = null
         var page: Int = 0
         var state: Int = 0
     }
 
-    private lateinit var mStateArray: Array<State?>
+    private lateinit var mStateArray: ArrayList<State?>
     private lateinit var mSourceManager: SourceManager
 
     private var keyword: String = keyword
     private var error: Int = 0
-    private var source: IntArray = source
 
     init {
         this.keyword = keyword
-        if(source != null) {
-            initStateArray(source)
-        }
     }
 
     override fun initSubscription() {
@@ -42,27 +47,23 @@ class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultVi
 
     override fun onViewAttach() {
         mSourceManager = SourceManager.getInstance()
-        if(mStateArray == null) {
-            initStateArray(loadSource())
-        }
+        initStateArray()
     }
 
-    private fun initStateArray(source: IntArray) {
-        mStateArray = arrayOfNulls<State>(source.size)
-        for (i in mStateArray.indices) {
-            mStateArray[i] = State()
-            mStateArray[i]?.source  = source[i]
-            mStateArray[i]?.page = 0
-            mStateArray[i]?.state = STATE_NULL
+    private fun initStateArray() {
+        mStateArray = ArrayList()
+        val list = SourceManager.getInstance().getSourceNames()
+        for(item in list) {
+            var state = State()
+            state.state = STATE_NULL
+            state.source = item
+            state.page = 0
+            mStateArray.add(state)
         }
-    }
-
-    private fun loadSource(): IntArray {
-        return arrayOf(1).toIntArray()
     }
 
     fun loadRefresh() {
-        initStateArray(source)
+        initStateArray()
         loadSearch(false)
     }
 
@@ -73,11 +74,13 @@ class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultVi
         }
         for(obj in mStateArray) {
             if(obj?.state == STATE_NULL) {
-                val parser = mSourceManager.getParser(obj.source)
                 obj.state = STATE_DOING
-                mCompositeDisposable.add(Api.getSearchResult(parser!!, keyword, ++obj.page)
+                mCompositeDisposable.add(SourceManager.getInstance().rxGetSource(obj.source!!)
+                        .flatMap(Function<SaSource, Observable<Comic>> {
+                            return@Function it.getSearchResult(keyword, obj.page++)
+                        })
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
+                        .subscribe( {
                             mView?.onSearchSuccess(it)
                             if(isLoadMore) mView?.onLoadMoreSuccess()
                         }, {
@@ -91,7 +94,8 @@ class ResultPresenter(source: IntArray, keyword: String): BasePresenter<ResultVi
                             }
                         }, {
                             obj.state = STATE_NULL
-                        }))
+                        })
+                )
             }
         }
     }

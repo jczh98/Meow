@@ -22,6 +22,7 @@ import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.reader.ReaderActivity
 import top.rechinx.meow.module.base.BaseAdapter
+import top.rechinx.meow.support.relog.ReLog
 
 class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListener, DetailAdapter.OnClickCallback {
 
@@ -35,7 +36,7 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     private lateinit var mComic: Comic
 
     override fun initData() {
-        val source = intent.getIntExtra(EXTRA_SOURCE, -1)
+        val source = intent.getStringExtra(EXTRA_SOURCE)
         val cid = intent.getStringExtra(EXTRA_CID)
         mComic = ComicManager.getInstance().identify(source, cid)
         mPresenter.load(source, cid)
@@ -123,6 +124,7 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     override fun onItemClick(view: View, position: Int) {
         if(position != 0) {
             val chapter = mAdapter.getItem(position - 1)
+            ReLog.d(mAdapter.getReaderMode().toString())
             val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, 1, mAdapter.getDataSet(), mAdapter.getReaderMode())
             startActivity(intent)
         }
@@ -160,7 +162,7 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
         private val EXTRA_CID = "extra_keyword"
         private val EXTRA_SOURCE = "extra_source"
 
-        fun createIntent(context: Context, source: Int, cid: String): Intent {
+        fun createIntent(context: Context, source: String, cid: String): Intent {
             val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra(EXTRA_SOURCE, source)
             intent.putExtra(EXTRA_CID, cid)

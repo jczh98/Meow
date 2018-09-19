@@ -50,7 +50,7 @@ class Kuaikan(source: Source): Parser() {
         val intro = body.text("div.switch-content > p")
         val author = body.text("div.author-nickname")
         val glideCover = GlideUrl(cover, LazyHeaders.Builder().build())
-        comic.setInfo(title, cover, update, intro!!, author, false, false, glideCover)
+        //comic.setInfo(title, cover, update, intro!!, author, false, false, glideCover)
     }
 
     override fun getSearchIterator(html: String, page: Int): SearchIterator? {
@@ -69,7 +69,8 @@ class Kuaikan(source: Source): Parser() {
                         val author = user.getString("nickname")
                         val update = obj.getString("latest_comic_title")
                         val glideCover = GlideUrl(cover, LazyHeaders.Builder().build())
-                        return Comic(TYPE, cid, title, cover, author, update, glideCover)
+                        return null
+                        //return Comic(TYPE, cid, title, cover, author, update, glideCover)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         return null

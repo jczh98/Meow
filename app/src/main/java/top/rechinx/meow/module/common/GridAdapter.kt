@@ -10,11 +10,13 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
 import top.rechinx.meow.R
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseAdapter
 import top.rechinx.meow.module.result.ResultAdapter
+import top.rechinx.meow.engine.Helper
 
 class GridAdapter: BaseAdapter<Comic> {
 
@@ -30,9 +32,10 @@ class GridAdapter: BaseAdapter<Comic> {
         val itemHolder = holder as ViewHolder
 
         itemHolder.comicTitle.text = comic.title
-        itemHolder.comicSource.text = SourceManager.getInstance().getTitle(comic.source!!)
+        val glideUrl = GlideUrl(comic.image, Helper.parseHeaders(comic.headers!!))
+        itemHolder.comicSource.text = comic.sourceName
         Glide.with(mContext)
-                .load(SourceManager.getInstance().getParser(comic.source!!)?.constructCoverGlideUrl(comic.image!!))
+                .load(glideUrl)
                 .into(itemHolder.comicImage)
     }
 

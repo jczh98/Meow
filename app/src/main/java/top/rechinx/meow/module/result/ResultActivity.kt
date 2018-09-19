@@ -46,8 +46,7 @@ class ResultActivity : BaseActivity(), ResultView, BaseAdapter.OnItemClickListen
 
     override fun initPresenter() {
         val keyword = intent.getStringExtra(EXTRA_KEYWORD)
-        val sources = intent.getIntArrayExtra(EXTRA_SOURCE)
-        mResultPresenter = ResultPresenter(sources, keyword)
+        mResultPresenter = ResultPresenter(keyword)
         mResultPresenter.attachView(this)
     }
 
@@ -114,9 +113,8 @@ class ResultActivity : BaseActivity(), ResultView, BaseAdapter.OnItemClickListen
         const val EXTRA_KEYWORD = "extra_keyword"
         const val EXTRA_SOURCE = "extra_source"
 
-        fun createIntent(context: Context, keyword: String, array: IntArray): Intent {
+        fun createIntent(context: Context, keyword: String): Intent {
             val intent = Intent(context, ResultActivity::class.java)
-            intent.putExtra(EXTRA_SOURCE, array)
             intent.putExtra(EXTRA_KEYWORD, keyword)
             return intent
         }
