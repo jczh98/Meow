@@ -15,7 +15,6 @@ import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.module.base.BasePresenter
 import io.reactivex.functions.Function
 import top.rechinx.meow.network.Api
-import top.rechinx.meow.source.Dmzj
 import top.rechinx.meow.support.relog.ReLog
 
 class ReaderPresenter(): BasePresenter<ReaderView>() {

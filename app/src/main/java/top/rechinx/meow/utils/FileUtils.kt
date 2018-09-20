@@ -19,13 +19,13 @@ object FileUtils {
         return String(buffer, Charset.forName("utf8"))
     }
 
-    fun loadFiles(path: String): List<File>? {
+    fun loadFiles(path: String): Observable<List<File>> {
         val file = File(path)
         var strs: Array<File>? = arrayOf()
         if (file.exists()) {
             strs = file.listFiles()
         }
-        return strs?.toList()
+        return Observable.fromArray(strs?.toList())
     }
     
     fun readTextFromSDcard(path: String): String? {

@@ -6,7 +6,6 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import top.rechinx.meow.model.Comic
-import top.rechinx.meow.source.Dmzj
 
 class SaIterator(val array: JSONArray) {
 

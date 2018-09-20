@@ -11,10 +11,8 @@ import top.rechinx.meow.Constants
 import top.rechinx.meow.model.Comic
 
 
-@Database(entities = [Source::class, Comic::class], version = 1)
+@Database(entities = [Comic::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
-
-    abstract fun sourceDao(): SourceDao
 
     abstract fun comicDao(): ComicDao
 

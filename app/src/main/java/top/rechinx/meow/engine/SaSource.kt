@@ -31,6 +31,7 @@ class SaSource {
 
     lateinit var title: String
     lateinit var name: String
+    lateinit var desc: String
 
     private var mAttrs: MutableMap<String, String> = HashMap()
     private lateinit var root: Element
@@ -77,6 +78,7 @@ class SaSource {
 
         name = mAttrs["name"]!!
         title = mAttrs["title"]!!
+        desc = mAttrs["intro"]!!
 
         searchNode = SaNode().build(bodyList["search"]!! as Element)
         comicNode = SaNode().build(bodyList["comic"]!! as Element)

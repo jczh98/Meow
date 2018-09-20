@@ -12,9 +12,6 @@ import top.rechinx.meow.core.Parser
 import top.rechinx.meow.dao.AppDatabase
 import top.rechinx.meow.engine.SaSource
 import top.rechinx.meow.model.Source
-import top.rechinx.meow.source.Dmzj
-import top.rechinx.meow.source.Kuaikan
-import top.rechinx.meow.source.Shuhui
 import top.rechinx.meow.support.relog.ReLog
 import top.rechinx.meow.utils.FileUtils
 import java.io.File
@@ -22,51 +19,7 @@ import java.util.*
 
 class SourceManager {
 
-    private var mDatabaseHelper: AppDatabase = AppDatabase.getInstance()
     private var mSources: SparseArray<SaSource> = SparseArray()
-
-    fun initSource(): Completable {
-        return Completable.fromCallable {
-            mDatabaseHelper.sourceDao().insert(Dmzj.getDefaultSource(),
-                    Shuhui.getDefaultSource(),
-                    Kuaikan.getDefaultSource())
-        }
-    }
-
-    fun list(): Single<List<Source>> = mDatabaseHelper.sourceDao().list()
-
-    fun listEnable(): Single<List<Source>> = mDatabaseHelper.sourceDao().listEnable()
-
-
-    fun update(source: Source): Completable {
-        return Completable.fromCallable {
-            mDatabaseHelper.sourceDao().update(source)
-        }
-    }
-
-    fun load(type: Int) = mDatabaseHelper.sourceDao().load(type)
-
-    fun identify(type: Int, title: String): Source {
-        var source = mDatabaseHelper.sourceDao().identify(type, title)
-        if(source == null) {
-            source = Source(0, type, title, true)
-        }
-        return source
-    }
-
-    fun getTitle(type: Int): String {
-        return getParser(type)?.getTitle()!!
-    }
-
-    fun getParser(type: Int): Parser? {
-        val source = load(type)
-        when(type) {
-            Dmzj.TYPE -> return Dmzj(source)
-            Shuhui.TYPE -> return Shuhui(source)
-            Kuaikan.TYPE -> return Kuaikan(source)
-            else -> return null
-        }
-    }
 
     // for new engine
     fun rxGetSource(name: String): Observable<SaSource> {
@@ -74,7 +27,7 @@ class SourceManager {
     }
 
     fun getSourceNames(): List<String> {
-        val files = FileUtils.loadFiles(App.instance.getBasePath())
+        val files = FileUtils.loadFiles(App.instance.getBasePath()).blockingFirst()
         val list = LinkedList<String>()
         for(i in 0 until files?.size!!) {
             list.add(files[i].name.replace(".xml", ""))

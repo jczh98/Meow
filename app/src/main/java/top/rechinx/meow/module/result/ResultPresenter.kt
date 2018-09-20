@@ -73,6 +73,9 @@ class ResultPresenter(keyword: String): BasePresenter<ResultView>() {
             return
         }
         for(obj in mStateArray) {
+            if(!App.instance.getPreferenceManager().getBoolean(obj?.source!!, true)) {
+                continue
+            }
             if(obj?.state == STATE_NULL) {
                 obj.state = STATE_DOING
                 mCompositeDisposable.add(SourceManager.getInstance().rxGetSource(obj.source!!)
