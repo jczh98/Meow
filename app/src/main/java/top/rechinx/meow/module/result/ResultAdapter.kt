@@ -20,6 +20,7 @@ import top.rechinx.meow.engine.Helper
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.module.base.BaseAdapter
 import top.rechinx.meow.module.base.BaseView
+import top.rechinx.meow.support.relog.ReLog
 
 
 class ResultAdapter: BaseAdapter<Comic> {
@@ -42,7 +43,7 @@ class ResultAdapter: BaseAdapter<Comic> {
         itemHolder.comicAuthor.text = comic.author
         itemHolder.comicUpdate.text = comic.update
         itemHolder.comicSource.text = comic.sourceName
-        var glideUrl = GlideUrl(comic.image, Helper.parseHeaders(comic.headers!!))
+        var glideUrl = GlideUrl(comic.image, Helper.parseHeaders(comic.headers))
         Glide.with(mContext).load(glideUrl).into(itemHolder.comicImage)
     }
 

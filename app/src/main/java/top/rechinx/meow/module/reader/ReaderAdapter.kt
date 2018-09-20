@@ -83,7 +83,7 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
                     }
                 }
             }
-            val glideUrl = GlideUrl(images.imageUrl, Helper.parseHeaders(images.headers!!))
+            val glideUrl = GlideUrl(images.imageUrl, Helper.parseHeaders(images.headers))
             Glide.with(mContext).load(glideUrl).into(itemHolder.mImage)
         } else {
             val itemHolder = holder as StreamViewHolder
@@ -118,7 +118,7 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
 //                    }
 //                }
 //            }
-            val glideUrl = GlideUrl(images.imageUrl, Helper.parseHeaders(images.headers!!))
+            val glideUrl = GlideUrl(images.imageUrl, Helper.parseHeaders(images.headers))
             Glide.with(mContext).load(glideUrl).into(object : SimpleTarget<Drawable>() {
                 override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                     itemHolder.mImage.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT

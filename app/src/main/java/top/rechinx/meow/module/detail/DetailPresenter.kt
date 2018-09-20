@@ -62,7 +62,7 @@ class DetailPresenter: BasePresenter<DetailView>() {
     }
 
     fun refresh() {
-        page = 1
+        page = 0
         load(mComic?.source!!, mComic?.cid!!)
         mView?.onRefreshFinished()
     }

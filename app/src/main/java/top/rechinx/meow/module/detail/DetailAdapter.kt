@@ -87,7 +87,7 @@ class DetailAdapter: BaseAdapter<Chapter> {
                 }
             }
             if(mComic != null) {
-                val glideUrl = GlideUrl(mComic?.image, Helper.parseHeaders(mComic?.headers!!))
+                val glideUrl = GlideUrl(mComic?.image, Helper.parseHeaders(mComic?.headers))
                 Glide.with(mContext).load(glideUrl).into(headerHolder.mComicImage)
                 headerHolder.mComicTitle.text = mComic?.title
                 headerHolder.mComicIntro.text = mComic?.description

@@ -57,7 +57,6 @@ class SaSource {
 
         var head = root.getElementsByTagName("head").item(0)
         var body = root.getElementsByTagName("body").item(0)
-        var jscript = root.getElementsByTagName("jscript").item(0)
 
         for(i in 0 until head.childNodes.length) {
             val node = head.childNodes.item(i)
@@ -79,15 +78,15 @@ class SaSource {
         name = mAttrs["name"]!!
         title = mAttrs["title"]!!
 
-        searchNode = SaNode(bodyList["search"]!! as Element)
-        comicNode = SaNode(bodyList["comic"]!! as Element)
-        chapterNode = SaNode(bodyList["chapter"]!! as Element)
-        coverNode = SaNode(bodyList["cover"] as Element)
-        imageNode = SaNode(bodyList["image"] as Element)
+        searchNode = SaNode().build(bodyList["search"]!! as Element)
+        comicNode = SaNode().build(bodyList["comic"]!! as Element)
+        chapterNode = SaNode().build(bodyList["chapter"]!! as Element)
+        if(bodyList["cover"] != null) coverNode = SaNode().build(bodyList["cover"] as Element)
+        if(bodyList["image"] != null) imageNode = SaNode().build(bodyList["image"] as Element)
 
-        var code = (jscript as Element).getElementsByTagName("code").item(0).textContent
+        var jscript = JscriptNode().build(Helper.getElement(root, "jscript")!!)
         js = JsEngine(app)
-        js.loadJs(code)
+        jscript.loadJs(app, js)
     }
 
     fun getObservable(node: SaNode, keyword: String?, secondKeyword: String?, page: Int?): Observable<String> {

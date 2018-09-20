@@ -32,7 +32,7 @@ class GridAdapter: BaseAdapter<Comic> {
         val itemHolder = holder as ViewHolder
 
         itemHolder.comicTitle.text = comic.title
-        val glideUrl = GlideUrl(comic.image, Helper.parseHeaders(comic.headers!!))
+        val glideUrl = GlideUrl(comic.image, Helper.parseHeaders(comic.headers))
         itemHolder.comicSource.text = comic.sourceName
         Glide.with(mContext)
                 .load(glideUrl)

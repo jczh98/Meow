@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<site ver="1">
+    <head>
+        <name>shuhui</name>
+        <title>鼠绘</title>
+        <intro>intro</intro>
+    </head>
+    <body>
+        <search ua="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AcooBrowser; .NET CLR 1.1.4322; .NET CLR 2.0.50727)"
+            parser="search_parser"
+            url="http://www.ishuhui.net/ComicBooks/GetAllBook?Title=@key" />
+        <comic parser="comic_parser"
+            url="http://www.ishuhui.net/ComicBooks/GetChapterList?id=@key&amp;PageIndex=@page"/>
+        <chapter parser="chapter_parser"
+            url="http://www.ishuhui.net/ComicBooks/ReadComicBooksToIsoV1/@skey.html"/>
+    </body>
+    <jscript>
+        <require>
+            <item lib="cheerio"/>
+        </require>
+        <code>
+            <![CDATA[
+function search_parser(html) {
+    var jobj = JSON.parse(html);
+    var jList = jobj.Return.List;
+    var list = [];
+    jList.forEach(function(item){
+        var bm = {};
+        bm.cid = item.Id
+        bm.title = item.Title
+        bm.cover = item.FrontCover
+        bm.author = item.Author
+        bm.update = item.RefreshTimeStr
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+function comic_parser(html) {
+    var jTot = JSON.parse(html);
+    var jobj = jTot.Return.ParentItem;
+    var jList = jTot.Return.List;
+    var json = [];
+    var bm = {};
+    bm.title = jobj.Title;
+    bm.cover = jobj.FrontCover;
+    bm.intro = jobj.Explain;
+    bm.update = jobj.RefreshTimeStr
+    bm.author = jobj.Author;
+    bm.isPage = true
+    json.push(bm)
+    var list = [];
+    jList.forEach(function(item){
+        var c = {};
+        c.title = item.Sort + ' ' + item.Title;
+        c.chapterId = item.Id;
+        list.push(c)
+    })
+    var array = {};
+    array.chapters = list
+    json.push(array)
+    return JSON.stringify(json)
+}
+function chapter_parser(html) {
+    var $ = cheerio.load(html);
+    var json = [];
+    $('img[src]').each(function (item) {
+        var slf = $(this);
+        json.push(slf.attr('src'));
+    });
+    return JSON.stringify(json)
+}
+            ]]>
+        </code>
+    </jscript>
+</site>

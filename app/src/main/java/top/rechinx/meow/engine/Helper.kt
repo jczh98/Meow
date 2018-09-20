@@ -5,6 +5,7 @@ import okhttp3.Headers
 import okhttp3.Request
 import org.w3c.dom.Element
 import org.xml.sax.InputSource
+import top.rechinx.meow.support.relog.ReLog
 import java.io.StringReader
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -22,7 +23,7 @@ object Helper {
         if(keyword != null) url = url?.replace("@key", keyword)
         if(secondKeyword != null) url = url?.replace("@skey", secondKeyword)
         if(page != null) {
-            if(url?.indexOf("@Page") == -1) {
+            if(url?.indexOf("@page") == -1) {
                 if(page > 0) return null
             }
             url = url?.replace("@page", page.toString())
@@ -42,6 +43,14 @@ object Helper {
             lazyHeaders.addHeader(k, v)
         }
         return lazyHeaders.build()
+    }
+
+    fun getElement(n: Element, tag: String): Element? {
+        val temp = n.getElementsByTagName(tag)
+        return if (temp.length > 0)
+            temp.item(0) as Element
+        else
+            null
     }
 
     fun getSearchRequest(node: SaNode, keyword: String, page: Int): Request? {
