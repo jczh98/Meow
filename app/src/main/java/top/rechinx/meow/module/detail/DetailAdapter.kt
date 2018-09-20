@@ -2,6 +2,7 @@ package top.rechinx.meow.module.detail
 
 import android.content.Context
 import android.graphics.Rect
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -94,13 +95,14 @@ class DetailAdapter: BaseAdapter<Chapter> {
                 headerHolder.mComicAuthor.text = mComic?.author
                 headerHolder.mComicStatus.text = mComic?.status
                 headerHolder.mComicUpdate.text = "最后更新： ${mComic?.update}"
-                headerHolder.mRead.text = if(mComic?.last_chapter == null) "Read" else "Continue"
-                headerHolder.mFavorite.text = if(mComic?.favorite == null) "Favorite" else "Subscribed"
+                headerHolder.mRead.text = if(mComic?.last_chapter == null) mContext.getString(R.string.details_read) else mContext.getString(R.string.details_continue)
+                headerHolder.mFavorite.text = if(mComic?.favorite == null) mContext.getString(R.string.details_favorite) else mContext.getString(R.string.details_unfavorite)
             }
         } else {
             val chapter = mData[position - 1]
             var chapterHolder = holder as ChapterViewHolder
             chapterHolder.mChapterButton.text = chapter.title
+            chapterHolder.mChapterButton.isSelected = mComic?.last_chapter == chapter.chapter_id
         }
     }
 

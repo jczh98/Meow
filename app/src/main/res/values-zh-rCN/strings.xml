@@ -14,4 +14,8 @@
     <string name="item_group_other">其它</string>
     <string name="drawer_settings">设置</string>
     <string name="drawer_source">图源</string>
+    <string name="details_read">开始阅读</string>
+    <string name="details_continue">继续阅读</string>
+    <string name="details_favorite">订阅漫画</string>
+    <string name="details_unfavorite">取消订阅</string>
 </resources>

@@ -13,4 +13,8 @@
     <string name="item_group_other">Other</string>
     <string name="drawer_settings">Settings</string>
     <string name="drawer_source">Source</string>
+    <string name="details_read">read</string>
+    <string name="details_continue">continue</string>
+    <string name="details_favorite">subscribe</string>
+    <string name="details_unfavorite">unsubscribe</string>
 </resources>
