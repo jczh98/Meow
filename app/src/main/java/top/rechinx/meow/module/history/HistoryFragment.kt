@@ -15,7 +15,6 @@ import kotlin.collections.ArrayList
 
 class HistoryFragment: BaseFragment(), HistoryView, BaseAdapter.OnItemClickListener {
 
-    @BindView(R.id.grid_action_button) lateinit var mActionButton: FloatingActionButton
     @BindView(R.id.recycler_view_content) lateinit var mRecyclerView: RecyclerView
 
     private lateinit var mAdapter: GridAdapter
