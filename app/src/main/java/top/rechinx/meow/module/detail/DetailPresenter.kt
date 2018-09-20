@@ -20,10 +20,6 @@ class DetailPresenter: BasePresenter<DetailView>() {
     private lateinit var mSourceManager: SourceManager
     private lateinit var mComicManager: ComicManager
 
-    override fun initSubscription() {
-
-    }
-
     override fun onViewAttach() {
         mSourceManager = SourceManager.getInstance()
         mComicManager = ComicManager.getInstance()

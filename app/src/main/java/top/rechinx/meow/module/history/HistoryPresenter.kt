@@ -9,9 +9,6 @@ class HistoryPresenter: BasePresenter<HistoryView>() {
 
     private lateinit var mComicManager: ComicManager
 
-    override fun initSubscription() {
-    }
-
     override fun onViewAttach() {
         mComicManager = ComicManager.getInstance()
     }

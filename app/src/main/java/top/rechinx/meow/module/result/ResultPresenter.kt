@@ -31,10 +31,6 @@ class ResultPresenter(keyword: String): BasePresenter<ResultView>() {
         this.keyword = keyword
     }
 
-    override fun initSubscription() {
-
-    }
-
     override fun onViewAttach() {
         mSourceManager = SourceManager.getInstance()
         initStateArray()

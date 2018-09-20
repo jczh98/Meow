@@ -11,10 +11,7 @@ abstract class BasePresenter <T: BaseView> {
         this.mView = view
         mCompositeDisposable = CompositeDisposable()
         onViewAttach()
-        initSubscription()
     }
-
-    protected abstract fun initSubscription()
 
     protected abstract fun onViewAttach()
 

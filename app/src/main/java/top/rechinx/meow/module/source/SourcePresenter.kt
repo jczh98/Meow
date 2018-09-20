@@ -23,9 +23,6 @@ class SourcePresenter(context: Context): BasePresenter<SourceView>() {
     private lateinit var mPreferences: PreferenceManager
     private var mContext = context
 
-    override fun initSubscription() {
-    }
-
     override fun onViewAttach() {
         mSourceManager = SourceManager.getInstance()
         mPreferences = PreferenceManager(mContext)

@@ -26,10 +26,6 @@ class ReaderPresenter: BasePresenter<ReaderView>() {
     private lateinit var mSourceManger: SourceManager
     private lateinit var mComicManager: ComicManager
 
-    override fun initSubscription() {
-
-    }
-
     override fun onViewAttach() {
         mSourceManger = SourceManager.getInstance()
         mComicManager = ComicManager.getInstance()
@@ -45,7 +41,6 @@ class ReaderPresenter: BasePresenter<ReaderView>() {
                         .flatMap(Function<SaSource, Observable<List<ImageUrl>>> {
                             return@Function it.getChapterImage(cid, chapter_id)
                         }))
-                //images(Api.getChapterImage(mSourceManger.getParser(mComic.source!!)!!, cid, chapter_id))
             }
         }
     }
@@ -58,7 +53,6 @@ class ReaderPresenter: BasePresenter<ReaderView>() {
                     .flatMap(Function<SaSource, Observable<List<ImageUrl>>> {
                         return@Function it.getChapterImage(mComic.cid!!, chapter?.chapter_id!!)
                     }))
-            //images(Api.getChapterImage(mSourceManger.getParser(mComic.source!!)!!, mComic.cid!!, chapter?.chapter_id!!))
             mView?.onPrevLoading()
         }else {
             mView?.onPrevLoadNone()
@@ -73,7 +67,6 @@ class ReaderPresenter: BasePresenter<ReaderView>() {
                     .flatMap(Function<SaSource, Observable<List<ImageUrl>>> {
                         return@Function it.getChapterImage(mComic.cid!!, chapter?.chapter_id!!)
                     }))
-            //images(Api.getChapterImage(mSourceManger.getParser(mComic.source!!)!!, mComic.cid!!, chapter?.chapter_id!!))
             mView?.onNextLoading()
         }else {
             mView?.onNextLoadNone()
