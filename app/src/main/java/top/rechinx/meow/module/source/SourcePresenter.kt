@@ -32,7 +32,6 @@ class SourcePresenter(context: Context): BasePresenter<SourceView>() {
     }
 
     fun load() {
-        val list = ArrayList<Source>()
         mCompositeDisposable.add(FileUtils.loadFiles(App.instance.getBasePath())
                 .compose { upstream -> upstream.flatMap { ts -> Observable.fromIterable(ts) }.
                         map { file -> mSourceManager.getSource(file.name.replace(".xml", "")) }
