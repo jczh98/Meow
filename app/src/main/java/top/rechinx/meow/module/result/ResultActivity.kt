@@ -2,14 +2,10 @@ package top.rechinx.meow.module.result
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.PorterDuff
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import top.rechinx.meow.R
 import top.rechinx.meow.module.base.BaseActivity
-import android.provider.ContactsContract.QuickContact.EXTRA_MODE
 import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -17,13 +13,10 @@ import android.widget.FrameLayout
 import android.widget.ProgressBar
 import butterknife.BindView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseAdapter
 import top.rechinx.meow.module.detail.DetailActivity
-import top.rechinx.meow.support.relog.ReLog
-import java.util.*
 import kotlin.collections.ArrayList
 
 

@@ -2,7 +2,6 @@ package top.rechinx.meow.utils
 
 import android.content.Context
 import io.reactivex.Observable
-import top.rechinx.meow.support.relog.ReLog
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException

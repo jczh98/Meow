@@ -1,6 +1,5 @@
 package top.rechinx.meow.module.detail
 
-import android.content.Context
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
 import io.reactivex.Observable
@@ -11,9 +10,6 @@ import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BasePresenter
-import top.rechinx.meow.network.Api
-import top.rechinx.meow.support.relog.ReLog
-import java.util.*
 
 class DetailPresenter: BasePresenter<DetailView>() {
 

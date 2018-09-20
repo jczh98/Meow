@@ -17,8 +17,6 @@ import top.rechinx.meow.R
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.module.base.BaseActivity
-import top.rechinx.meow.support.relog.ReLog
-import top.rechinx.meow.support.rvp.RecyclerViewPager
 import top.rechinx.meow.widget.ReverseSeekBar
 
 abstract class ReaderActivity : BaseActivity(), ReaderView, ReaderAdapter.OnTouchCallback, DiscreteSeekBar.OnProgressChangeListener {

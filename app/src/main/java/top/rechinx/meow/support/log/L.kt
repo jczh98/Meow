@@ -1,9 +1,9 @@
-package top.rechinx.meow.support.relog
+package top.rechinx.meow.support.log
 
 import android.util.Log
 import top.rechinx.meow.BuildConfig
 
-object ReLog {
+object L {
 
     private var TAG = "ReLog"
 

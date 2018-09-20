@@ -11,30 +11,14 @@ import android.view.MenuItem
 import butterknife.BindView
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.tbruyelle.rxpermissions2.RxPermissions
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Function
-import io.reactivex.schedulers.Schedulers
-import org.reactivestreams.Publisher
 import top.rechinx.meow.R
-import top.rechinx.meow.engine.SaSource
 import top.rechinx.meow.manager.SourceManager
-import top.rechinx.meow.model.Source
 import top.rechinx.meow.module.about.AboutActivity
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.favorite.HistoryFragment
 import top.rechinx.meow.module.result.ResultActivity
 import top.rechinx.meow.module.source.SourceFragment
-import top.rechinx.meow.support.relog.ReLog
-import top.rechinx.meow.App
-import top.rechinx.meow.model.Comic
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.nio.charset.Charset
+import top.rechinx.meow.support.log.L
 
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -79,7 +63,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
 
     fun test() {
-        ReLog.d(SourceManager.getInstance().getSourceNames()[0])
+        L.d(SourceManager.getInstance().getSourceNames()[0])
 //        var iss = assets.open("dmzj.xml");
 //        var lenght = iss.available()
 //        var  buffer = ByteArray(lenght)

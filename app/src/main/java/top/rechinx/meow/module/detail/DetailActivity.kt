@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,7 +11,6 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import butterknife.BindView
-import butterknife.OnClick
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import top.rechinx.meow.R
@@ -22,7 +20,7 @@ import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.reader.ReaderActivity
 import top.rechinx.meow.module.base.BaseAdapter
-import top.rechinx.meow.support.relog.ReLog
+import top.rechinx.meow.support.log.L
 
 class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListener, DetailAdapter.OnClickCallback {
 
@@ -124,7 +122,7 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     override fun onItemClick(view: View, position: Int) {
         if(position != 0) {
             val chapter = mAdapter.getItem(position - 1)
-            ReLog.d(mAdapter.getReaderMode().toString())
+            L.d(mAdapter.getReaderMode().toString())
             val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, 1, mAdapter.getDataSet(), mAdapter.getReaderMode())
             startActivity(intent)
         }

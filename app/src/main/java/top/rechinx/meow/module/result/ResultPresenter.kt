@@ -1,23 +1,13 @@
 package top.rechinx.meow.module.result
 
-import android.content.Context
-import com.scwang.smartrefresh.layout.SmartRefreshLayout
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import io.reactivex.Flowable
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import org.reactivestreams.Publisher
 import top.rechinx.meow.App
 import top.rechinx.meow.engine.SaSource
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BasePresenter
-import top.rechinx.meow.network.Api
 import io.reactivex.functions.Function
-import io.reactivex.schedulers.Schedulers
-import top.rechinx.meow.support.relog.ReLog
 
 class ResultPresenter(keyword: String): BasePresenter<ResultView>() {
 

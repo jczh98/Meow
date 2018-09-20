@@ -1,9 +1,6 @@
 package top.rechinx.meow.module.reader
 
-import android.content.Context
-import android.media.Image
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import top.rechinx.meow.engine.SaSource
@@ -14,10 +11,8 @@ import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.module.base.BasePresenter
 import io.reactivex.functions.Function
-import top.rechinx.meow.network.Api
-import top.rechinx.meow.support.relog.ReLog
 
-class ReaderPresenter(): BasePresenter<ReaderView>() {
+class ReaderPresenter: BasePresenter<ReaderView>() {
 
     private val LOAD_NULL = 0
     private val LOAD_INIT = 1

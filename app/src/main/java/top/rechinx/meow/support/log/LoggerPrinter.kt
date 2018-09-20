@@ -1,4 +1,4 @@
-package top.rechinx.meow.support.relog
+package top.rechinx.meow.support.log
 
 object LoggerPrinter {
 
@@ -28,7 +28,7 @@ object LoggerPrinter {
         while (i < trace.size) {
             val e = trace[i]
             val name = e.className
-            if (name != LoggerPrinter::class.java.name && name != ReLog::class.java.name) {
+            if (name != LoggerPrinter::class.java.name && name != L::class.java.name) {
                 return --i
             }
             i++

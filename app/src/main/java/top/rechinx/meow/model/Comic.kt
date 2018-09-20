@@ -30,25 +30,6 @@ data class Comic(@PrimaryKey(autoGenerate = true) var id: Long = 0,
     @Ignore constructor(cid: String, title: String?, image: String?, author: String?, update: String?): this(0, cid, null, null, image, title, author, null, null, update, null, null, null, null, null, null)
 
     @Ignore constructor(source: String, cid: String) : this(0, cid, source, null, null, null, null, null, null, null, null, null, null, null, null, null)
-//
-//    @Ignore constructor(source: Int, cid: String, title: String?, image: String?, author: String?) :
-//            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, null, null, null) {
-//        this.cid = cid
-//        this.source = source
-//        this.title = title
-//        this.image = image
-//        this.author = author
-//    }
-//
-//    @Ignore constructor(source: Int, cid: String, title: String, image: String, author: String, update: String, glideCover: GlideUrl?) :
-//            this(0, cid, source, image, title, author, null, null, null, null, null, null, null, null, null, glideCover) {
-//        this.cid = cid
-//        this.source = source
-//        this.title = title
-//        this.image = image
-//        this.author = author
-//        this.update = update
-//    }
 
     fun setInfo(title: String?, cover: String?, update: String?, intro: String, author: String?, finish: Boolean, isPage: Boolean, headers: String?, sourceName: String?) {
         if (title != null) {

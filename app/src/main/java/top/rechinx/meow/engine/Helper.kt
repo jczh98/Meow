@@ -1,11 +1,9 @@
 package top.rechinx.meow.engine
 
 import com.bumptech.glide.load.model.LazyHeaders
-import okhttp3.Headers
 import okhttp3.Request
 import org.w3c.dom.Element
 import org.xml.sax.InputSource
-import top.rechinx.meow.support.relog.ReLog
 import java.io.StringReader
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -53,24 +51,4 @@ object Helper {
             null
     }
 
-    fun getSearchRequest(node: SaNode, keyword: String, page: Int): Request? {
-        var url = node.url
-        url = url?.replace("@key", keyword)
-        url = url?.replace("@page", page.toString())
-        return Request.Builder().url(url).build()
-    }
-
-    fun getInfoRequest(node: SaNode, cid: String, page: Int): Request? {
-        var url = node.url
-        url = url?.replace("@key", cid)
-        url = url?.replace("@key", page.toString())
-        return Request.Builder().url(url).build()
-    }
-
-    fun getImageRequest(node: SaNode, cid: String, chapterId: String): Request? {
-        var url = node.url
-        url = url?.replace("@key", cid)
-        url = url?.replace("@skey", chapterId)
-        return Request.Builder().url(url).build()
-    }
 }

@@ -1,6 +1,5 @@
 package top.rechinx.meow.module.source
 
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -9,7 +8,6 @@ import butterknife.BindView
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Source
 import top.rechinx.meow.module.base.BaseFragment
-import top.rechinx.meow.support.relog.ReLog
 
 class SourceFragment: BaseFragment(), SourceView, SourceAdapter.OnItemCheckedListener {
 

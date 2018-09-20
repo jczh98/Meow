@@ -1,20 +1,12 @@
 package top.rechinx.meow.module.reader
 
-import android.graphics.Point
 import android.graphics.Rect
-import android.graphics.RectF
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import top.rechinx.meow.R
-import top.rechinx.meow.support.relog.ReLog
-import top.rechinx.meow.utils.Utility
-import top.rechinx.meow.widget.zoomablerv.OnTapGestureListener
 import top.rechinx.meow.widget.zoomablerv.ZoomRecyclerView
-import top.rechinx.meow.widget.zoomablerv.ZoomableRecyclerView
-import android.support.v7.widget.LinearSmoothScroller
-
 
 
 class StreamReaderActivity: ReaderActivity() {

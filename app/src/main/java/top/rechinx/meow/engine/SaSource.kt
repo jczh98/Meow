@@ -1,31 +1,22 @@
 package top.rechinx.meow.engine
 
 import android.app.Application
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import io.reactivex.*
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONArray
-import org.json.JSONObject
-import org.reactivestreams.Publisher
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import top.rechinx.meow.App
-import top.rechinx.meow.core.JsonIterator
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
-import top.rechinx.meow.network.Api
-import top.rechinx.meow.support.relog.ReLog
 import java.nio.charset.Charset
 import java.util.*
-import java.util.Observer
 
 class SaSource {
 
@@ -202,7 +193,7 @@ class SaSource {
                 response.close()
             }
         }
-        throw Api.NetworkErrorException()
+        throw Exception()
     }
     fun getVersion() = version
 }

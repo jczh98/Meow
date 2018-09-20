@@ -4,7 +4,6 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import top.rechinx.meow.dao.AppDatabase
 import top.rechinx.meow.model.Comic
-import top.rechinx.meow.support.relog.ReLog
 
 class ComicManager {
 
