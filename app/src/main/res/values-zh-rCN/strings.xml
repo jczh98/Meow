@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">喵呜</string>
+    <string name="drawer_main">主页</string>
+    <string name="hint_for_search">请输入漫画名</string>
+    <string name="empty_for_search">关键字不能为空</string>
+    <string name="result_source">来源</string>
+    <string name="result_update">更新时间</string>
+    <string name="reader_picture_loading">加载中...</string>
+    <string name="favorite">收藏</string>
+    <string name="download">下载</string>
+    <string name="drawer_history">历史</string>
+    <string name="drawer_about">关于</string>
+    <string name="item_group_other">其它</string>
+    <string name="drawer_settings">设置</string>
+    <string name="drawer_source">图源</string>
+</resources>

@@ -6,7 +6,8 @@
     <string name="result_source">Source</string>
     <string name="result_update">Update Time</string>
     <string name="reader_picture_loading">Now loading...</string>
-    <string name="drawer_favorite">Favorite</string>
+    <string name="favorite">Favorite</string>
+    <string name="download">Download</string>
     <string name="drawer_history">History</string>
     <string name="drawer_about">About</string>
     <string name="item_group_other">Other</string>
