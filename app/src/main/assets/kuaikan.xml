@@ -21,63 +21,41 @@
         <code>
             <![CDATA[
 function search_parser(html) {
-var jList = JSON.parse(html);
+var jList = JSON.parse(html).data.topic.hit;
 var list = [];
 jList.forEach(function(item){
 var bm = {};
-bm.cid = item.id
-bm.title = item.title
-bm.cover = item.cover
-bm.author = item.authors
-bm.update = item.last_name
+bm.cid = item.id;
+bm.title = item.title;
+bm.cover = item.vertical_image_url;
+bm.author = item.user.nickname;
+bm.update = item.latest_comic_title;
 list.push(bm);
 });
 return JSON.stringify(list);
 }
-function dateFormat(longTypeDate){ 
- var dateTypeDate = ""; 
- var date = new Date(); 
- date.setTime(longTypeDate); 
- dateTypeDate += date.getFullYear(); //年 
- dateTypeDate += "-" + getMonth(date); //月 
- dateTypeDate += "-" + getDay(date); //日 
- return dateTypeDate;
-} 
-//返回 01-12 的月份值 
-function getMonth(date){ 
- var month = ""; 
- month = date.getMonth() + 1; //getMonth()得到的月份是0-11 
- if(month<10){ 
-  month = "0" + month; 
- } 
- return month; 
-} 
-//返回01-30的日期 
-function getDay(date){ 
- var day = ""; 
- day = date.getDate(); 
- if(day<10){ 
-  day = "0" + day; 
- } 
- return day; 
-}
- function comic_parser(html) {
- var jobj = JSON.parse(html);
- var jList = jobj.chapters[0].data
+function comic_parser(html) {
+var $ = cheerio.load(html);
  var json = [];
    var bm = {};
-   bm.title = jobj.title;
-   bm.cover = jobj.cover;
-   bm.intro = jobj.description;
-   bm.update = dateFormat(jobj.last_updatetime*1000)
-   bm.author = jobj.authors[0].tag_name;
-   bm.isPage = true
+   bm.title = $('div.comic-name').text();
+   bm.cover = $('div.comic-img > img').attr('src');
+   bm.intro = $('div.switch-content > p').text();
+   $('div.article-list > table > tbody > tr').each(function () {
+        var slf = $(this);
+        bm.update = slf.children().last().text();
+        return false;
+    })
+   bm.author = $('div.author-nickname').text();
+   bm.isPage = false
    json.push(bm)
    var list = [];
-   jList.forEach(function(item){
+   $('div.article-list > table > tbody > tr > td.tit > a').each(function(item){
+     var slf = $(this)
      var c = {};
-     c.title = item.chapter_title;
-     c.chapterId = item.chapter_id;
+     c.title = slf.attr('title');
+     var cc = slf.attr('href');
+     c.chapterId = cc.split("/")[3];
      list.push(c)
    })
    var array = {};
@@ -86,8 +64,8 @@ function getDay(date){ 
    return JSON.stringify(json)
  }
   function chapter_parser(html) {
- var jobj = JSON.parse(html);
- var jList = jobj.page_url
+ var jobj = JSON.parse(html).data;
+ var jList = jobj.images
  var json = [];
    jList.forEach(function(item){
      json.push(item)
