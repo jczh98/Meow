@@ -134,16 +134,16 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
             }else {
                 ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mComic.last_chapter!!, mComic.last_page!!, mAdapter.getDataSet(), mAdapter.getReaderMode())
             }
-            (view as TextView).text = "Continue"
+            (view as TextView).text = getString(R.string.details_continue)
             startActivity(intent)
         } else {
             if(mPresenter.mComic?.favorite != null) {
                 mPresenter.unFavoriteComic()
-                (view as TextView).text = "Favorite"
+                (view as TextView).text = getString(R.string.details_favorite)
                 //mActionButton.setImageResource(R.drawable.ic_favorite_border_white_24dp)
             }else {
                 mPresenter.favoriteComic()
-                (view as TextView).text = "Subscribed"
+                (view as TextView).text = getString(R.string.details_unfavorite)
                 //mActionButton.setImageResource(R.drawable.ic_favorite_white_24dp)
             }
         }
