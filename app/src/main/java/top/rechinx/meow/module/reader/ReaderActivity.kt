@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Point
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.OnClick
+import com.github.chrisbanes.photoview.OnViewTapListener
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import top.rechinx.meow.R
 import top.rechinx.meow.model.Chapter
@@ -19,7 +21,7 @@ import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.widget.ReverseSeekBar
 
-abstract class ReaderActivity : BaseActivity(), ReaderView, ReaderAdapter.OnTouchCallback, DiscreteSeekBar.OnProgressChangeListener {
+abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnProgressChangeListener, OnViewTapListener {
 
     @BindView(R.id.reader_chapter_title) lateinit var mChapterTitle: TextView
     @BindView(R.id.reader_chapter_page) lateinit var mChapterPage: TextView
@@ -51,7 +53,8 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, ReaderAdapter.OnTouc
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         // Recycler view
         mAdapter = ReaderAdapter(this, ArrayList())
-        mAdapter.setOnTouchCallback(this)
+        mAdapter.setOnViewTapListener(this)
+        //mAdapter.setOnTouchCallback(this)
         mRecyclerView.layoutManager = getLayoutManager()
         mRecyclerView.adapter = mAdapter
         mRecyclerView.itemAnimator = null
@@ -130,6 +133,27 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, ReaderAdapter.OnTouc
         registerReceiver(batteryReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
     }
 
+    override fun onViewTap(view: View?, x: Float, y: Float) {
+        val point = Point()
+        windowManager.defaultDisplay.getSize(point)
+        val limitX = point.x / 3.0f
+        val limitY = point.y / 3.0f
+        if(x < limitX) {
+            prevPage()
+        } else if(x > 2 * limitX) {
+            nextPage()
+        } else if(y < limitY) {
+            prevPage()
+        } else if(y > 2 * limitY) {
+            nextPage()
+        } else {
+            switchControl()
+        }
+    }
+
+    abstract fun prevPage()
+
+    abstract fun nextPage()
     /**
      * Battery broadcast receiver
      */

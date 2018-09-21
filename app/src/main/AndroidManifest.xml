@@ -22,8 +22,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".module.result.ResultActivity" />
-        <activity android:name=".module.reader.PageReaderActivity" />
-        <activity android:name=".module.reader.StreamReaderActivity" />
+        <activity android:name=".module.reader.PageReaderActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".module.reader.StreamReaderActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".module.detail.DetailActivity"/>
         <activity android:name=".module.about.AboutActivity" />
     </application>

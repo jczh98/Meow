@@ -122,7 +122,6 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     override fun onItemClick(view: View, position: Int) {
         if(position != 0) {
             val chapter = mAdapter.getItem(position - 1)
-            L.d(mAdapter.getReaderMode().toString())
             val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, 1, mAdapter.getDataSet(), mAdapter.getReaderMode())
             startActivity(intent)
         }

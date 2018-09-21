@@ -1,4 +1,4 @@
-package top.rechinx.meow.widget.zoomablerv;
+package top.rechinx.meow.support.zoomable;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -21,6 +21,8 @@ import android.view.ScaleGestureDetector;
 import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.view.animation.DecelerateInterpolator;
 
+import com.github.chrisbanes.photoview.OnViewTapListener;
+
 import top.rechinx.meow.R;
 import top.rechinx.meow.utils.Utility;
 
@@ -37,7 +39,7 @@ import static android.view.MotionEvent.INVALID_POINTER_ID;
  */
 @SuppressWarnings("UnnecessaryLocalVariable")
 @SuppressLint("ClickableViewAccessibility")
-public class ZoomRecyclerView extends RecyclerView {
+public class ZoomableRecyclerView extends RecyclerView {
 
     private static final String TAG = "999";
 
@@ -84,26 +86,26 @@ public class ZoomRecyclerView extends RecyclerView {
     float mDefaultScaleFactor;  // 默认缩放系数 双击缩小后的缩放系数 暂不支持小于1
     int mScaleDuration;         // 缩放时间 ms
 
-    private OnTouchListener touchListener;
+    private OnViewTapListener touchListener;
     private Handler mHandler = new Handler(getContext().getMainLooper());
     private boolean isMoving = false;
 
 
-    public void setTouchListener(OnTouchListener touchListener) {
+    public void setOnViewTapListener(OnViewTapListener touchListener) {
         this.touchListener = touchListener;
     }
 
-    public ZoomRecyclerView(Context context) {
+    public ZoomableRecyclerView(Context context) {
         super(context);
         init(null);
     }
 
-    public ZoomRecyclerView(Context context, @Nullable AttributeSet attrs) {
+    public ZoomableRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
-    public ZoomRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public ZoomableRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs);
     }
@@ -160,16 +162,6 @@ public class ZoomRecyclerView extends RecyclerView {
 
         switch (action) {
             case ACTION_DOWN: {
-                if(touchListener!=null){
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(!isScaling&&!isMoving){
-                                touchListener.clickScreen(ev.getX()/ Utility.getScreenWidth(getContext()),0.5f);
-                            }
-                        }
-                    },200);
-                }
                 final int pointerIndex = ev.getActionIndex();
                 final float x = ev.getX(pointerIndex);
                 final float y = ev.getY(pointerIndex);
@@ -431,6 +423,12 @@ public class ZoomRecyclerView extends RecyclerView {
             zoom(startFactor, endFactor);
             boolean retVal = super.onDoubleTap(e);
             return retVal;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            touchListener.onViewTap(ZoomableRecyclerView.this, e.getRawX(), e.getRawY());
+            return true;
         }
     }
 

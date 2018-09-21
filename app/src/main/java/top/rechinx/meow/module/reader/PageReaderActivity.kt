@@ -61,21 +61,32 @@ class PageReaderActivity: ReaderActivity(), RecyclerViewPager.OnPageChangedListe
     /**
      * PhotoView touch event
      */
-    override fun onCenter() {
-        switchControl()
-    }
 
-    override fun onPrev() {
+//    override fun onCenter() {
+//        switchControl()
+//    }
+//
+//    override fun onPrev() {
+//        val cur = getCurrentPosition()
+//        if(cur - 1 >= 0) mRecyclerView.smoothScrollToPosition(cur - 1)
+//    }
+//
+//    override fun onNext() {
+//        val cur = getCurrentPosition()
+//        if(cur + 1 < mAdapter.itemCount) mRecyclerView.smoothScrollToPosition(cur + 1)
+//    }
+
+    private fun getCurrentPosition(): Int = (mRecyclerView as RecyclerViewPager).currentPosition
+
+    override fun prevPage() {
         val cur = getCurrentPosition()
         if(cur - 1 >= 0) mRecyclerView.smoothScrollToPosition(cur - 1)
     }
 
-    override fun onNext() {
+    override fun nextPage() {
         val cur = getCurrentPosition()
         if(cur + 1 < mAdapter.itemCount) mRecyclerView.smoothScrollToPosition(cur + 1)
     }
-
-    private fun getCurrentPosition(): Int = (mRecyclerView as RecyclerViewPager).currentPosition
 
     override fun getLayoutId(): Int = R.layout.activity_page_reader
 }

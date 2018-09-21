@@ -27,6 +27,7 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
     private lateinit var mCallback: OnTouchCallback
 
     private var mMode: Int = 0
+    private lateinit var mTapListener: OnViewTapListener
 
     constructor(context: Context, list: ArrayList<ImageUrl>): super(context, list)
 
@@ -52,37 +53,38 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
 
         if(mMode == PAGE_READER_MODE) {
             val itemHolder = holder as PageViewHolder
-            itemHolder.mImage.setOnViewTapListener { view, x, y ->
-                run {
-                    val mViewWidth = view.width
-                    val mViewHeight = view.height
-                    val mCenterRect = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() / 3,
-                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() * 2 / 3)
-                    val mLeftRect1 = RectF(0F, 0F,
-                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() / 3)
-                    val mLeftRect2 = RectF(0F, mViewHeight.toFloat() / 3,
-                            mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3)
-                    val mRightRect1 = RectF(mViewWidth.toFloat() * 2 / 3, 0F,
-                            mViewWidth.toFloat(), mViewHeight.toFloat() * 2 / 3)
-                    val mRightRect2 = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3,
-                            mViewWidth.toFloat(), mViewHeight.toFloat())
-                    if(mCenterRect.contains(x, y)) {
-                        if(mCallback != null) {
-                            mCallback.onCenter()
-                        }
-                    }
-                    if(mLeftRect1.contains(x, y) || mLeftRect2.contains(x, y)) {
-                        if(mCallback != null) {
-                            mCallback.onPrev()
-                        }
-                    }
-                    if(mRightRect1.contains(x, y) || mRightRect2.contains(x, y)) {
-                        if(mCallback != null) {
-                            mCallback.onNext()
-                        }
-                    }
-                }
-            }
+            itemHolder.mImage.setOnViewTapListener(mTapListener)
+//            itemHolder.mImage.setOnViewTapListener { view, x, y ->
+//                run {
+//                    val mViewWidth = view.width
+//                    val mViewHeight = view.height
+//                    val mCenterRect = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() / 3,
+//                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() * 2 / 3)
+//                    val mLeftRect1 = RectF(0F, 0F,
+//                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() / 3)
+//                    val mLeftRect2 = RectF(0F, mViewHeight.toFloat() / 3,
+//                            mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3)
+//                    val mRightRect1 = RectF(mViewWidth.toFloat() * 2 / 3, 0F,
+//                            mViewWidth.toFloat(), mViewHeight.toFloat() * 2 / 3)
+//                    val mRightRect2 = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3,
+//                            mViewWidth.toFloat(), mViewHeight.toFloat())
+//                    if(mCenterRect.contains(x, y)) {
+//                        if(mCallback != null) {
+//                            mCallback.onCenter()
+//                        }
+//                    }
+//                    if(mLeftRect1.contains(x, y) || mLeftRect2.contains(x, y)) {
+//                        if(mCallback != null) {
+//                            mCallback.onPrev()
+//                        }
+//                    }
+//                    if(mRightRect1.contains(x, y) || mRightRect2.contains(x, y)) {
+//                        if(mCallback != null) {
+//                            mCallback.onNext()
+//                        }
+//                    }
+//                }
+//            }
             val glideUrl = GlideUrl(images.imageUrl, Helper.parseHeaders(images.headers))
             Glide.with(mContext).load(glideUrl).into(itemHolder.mImage)
         } else {
@@ -137,6 +139,10 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
 
     fun setOnTouchCallback(callback: OnTouchCallback) {
         mCallback = callback
+    }
+
+    fun setOnViewTapListener(listener: OnViewTapListener) {
+        this.mTapListener = listener
     }
 
     interface OnTouchCallback {

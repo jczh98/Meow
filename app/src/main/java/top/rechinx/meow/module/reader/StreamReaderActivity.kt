@@ -1,12 +1,18 @@
 package top.rechinx.meow.module.reader
 
+import android.graphics.Point
 import android.graphics.Rect
+import android.support.v4.view.GestureDetectorCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.View
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import top.rechinx.meow.R
-import top.rechinx.meow.widget.zoomablerv.ZoomRecyclerView
+import top.rechinx.meow.support.log.L
+import top.rechinx.meow.support.zoomable.ZoomableRecyclerView
 
 
 class StreamReaderActivity: ReaderActivity() {
@@ -17,27 +23,9 @@ class StreamReaderActivity: ReaderActivity() {
     override fun initView() {
         super.initView()
         mAdapter.setReaderMode(ReaderAdapter.STREAM_READER_MODE)
-        mRecyclerView.addItemDecoration( object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
-                    outRect.set(0, 0, 0, 0)
-            }
-        })
-//        (mRecyclerView as ZoomRecyclerView).setScaleFactor(200 * 0.01f)
-//        (mRecyclerView as ZoomRecyclerView).setVertical(true)
-//        (mRecyclerView as ZoomRecyclerView).setDoubleTap(true)
-        (mRecyclerView as ZoomRecyclerView).isEnableScale = true
-        (mRecyclerView as ZoomRecyclerView).setTouchListener(object : ZoomRecyclerView.OnTouchListener {
-            override fun clickScreen(x: Float, y: Float) {
-                if (x<0.336){
-                    onPrev()
-                }else if(x<0.666){
-                    onCenter()
-                }else {
-                    onNext()
-                }
-            }
+        (mRecyclerView as ZoomableRecyclerView).isEnableScale = true
+        (mRecyclerView as ZoomableRecyclerView).setOnViewTapListener(this)
 
-        })
         mRecyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
@@ -79,32 +67,31 @@ class StreamReaderActivity: ReaderActivity() {
         return mLayoutManager
     }
 
-    override fun onCenter() {
-        switchControl()
-    }
 
-    override fun onPrev() {
-        val current = mLastPosition - 1
-        val pos = mAdapter.getPositionByNum(current, currentPage - 1, true)
-        mLayoutManager.scrollToPositionWithOffset(pos, 0)
+    override fun prevPage() {
+        val point = Point()
+        windowManager.defaultDisplay.getSize(point)
+        mRecyclerView.smoothScrollBy(0, -point.y)
         if (mLayoutManager.findFirstVisibleItemPosition() == 0) {
             mPresenter.loadPrev()
         }
     }
 
-    override fun onNext() {
-        val current = mLastPosition + 1
-        val pos = mAdapter.getPositionByNum(current, currentPage + 1, false)
-        mLayoutManager.scrollToPositionWithOffset(pos, 0)
-        if (mLayoutManager.findLastVisibleItemPosition() == mAdapter.itemCount - 1) {
+    override fun nextPage() {
+        val point = Point()
+        windowManager.defaultDisplay.getSize(point)
+        mRecyclerView.smoothScrollBy(0, point.y)
+        if (mLayoutManager.findFirstVisibleItemPosition() == 0) {
             mPresenter.loadNext()
         }
     }
 
     override fun onProgressChanged(seekBar: DiscreteSeekBar?, value: Int, fromUser: Boolean) {
-        val current = mLastPosition + value - currentPage
-        val pos = mAdapter.getPositionByNum(current, value, value < currentPage)
-        mLayoutManager.scrollToPositionWithOffset(pos, 0)
+        if(fromUser) {
+            val current = mLastPosition + value - currentPage
+            val pos = mAdapter.getPositionByNum(current, value, value < currentPage)
+            mLayoutManager.scrollToPositionWithOffset(pos, 0)
+        }
     }
 
     override fun getLayoutId(): Int = R.layout.activity_stream_reader
