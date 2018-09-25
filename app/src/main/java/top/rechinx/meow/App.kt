@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import android.os.Environment
 import com.facebook.stetho.Stetho
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
 import top.rechinx.meow.dao.AppDatabase
 import top.rechinx.meow.manager.PreferenceManager
@@ -43,7 +44,7 @@ class App: Application() {
 
         fun getHttpClient(): OkHttpClient? {
             if(mHttpClient == null) {
-                mHttpClient = OkHttpClient()
+                mHttpClient = OkHttpClient.Builder().addNetworkInterceptor(StethoInterceptor()).build()
             }
             return mHttpClient
         }
