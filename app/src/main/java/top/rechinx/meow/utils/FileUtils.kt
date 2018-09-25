@@ -2,10 +2,9 @@ package top.rechinx.meow.utils
 
 import android.content.Context
 import io.reactivex.Observable
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.IOException
+import top.rechinx.meow.App
+import top.rechinx.meow.support.log.L
+import java.io.*
 import java.nio.charset.Charset
 
 object FileUtils {
@@ -52,5 +51,34 @@ object FileUtils {
         }
 
         return null
+    }
+
+    fun asset2Sdcard(app: App) {
+        val manager = app.assets
+        try {
+            var files = manager.list("sites")
+            for(file in files) {
+                L.d(file)
+                var ins = manager.open("sites/$file")
+                var outFile = File(app.getBasePath(), file)
+                var ous = FileOutputStream(outFile)
+                copyFile(ins, ous)
+                ins.close()
+                ous.flush()
+                ous.close()
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun copyFile(ins: InputStream, out: OutputStream) {
+        val buffer = ByteArray(1024)
+        var read: Int = ins.read(buffer)
+        while(read != -1) {
+            out.write(buffer, 0, read)
+            read = ins.read(buffer)
+        }
     }
 }

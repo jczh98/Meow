@@ -11,6 +11,7 @@ import android.view.MenuItem
 import butterknife.BindView
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.tbruyelle.rxpermissions2.RxPermissions
+import top.rechinx.meow.App
 import top.rechinx.meow.R
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.module.about.AboutActivity
@@ -19,6 +20,8 @@ import top.rechinx.meow.module.favorite.HistoryFragment
 import top.rechinx.meow.module.result.ResultActivity
 import top.rechinx.meow.module.source.SourceFragment
 import top.rechinx.meow.support.log.L
+import top.rechinx.meow.utils.FileUtils
+import top.rechinx.meow.utils.Utility
 
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -63,7 +66,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
 
     fun test() {
-        L.d(SourceManager.getInstance().getSourceNames()[0])
+//        L.d(SourceManager.getInstance().getSourceNames()[0])
 //        var iss = assets.open("dmzj.xml");
 //        var lenght = iss.available()
 //        var  buffer = ByteArray(lenght)
@@ -85,6 +88,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun initData() {
+        FileUtils.asset2Sdcard(App.instance)
     }
 
     override fun getLayoutId(): Int = R.layout.activity_home
