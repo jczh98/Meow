@@ -48,6 +48,7 @@ class DetailPresenter: BasePresenter<DetailView>() {
                 .subscribe({
                     mView?.onLoadMoreSuccess(it)
                 }, {
+                    it.printStackTrace()
                     mView?.onLoadMoreFailure()
                 }))
     }

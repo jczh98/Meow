@@ -45,6 +45,7 @@ const api_key = "C69BAF41DA5ABD1FFEDC6D2FEA56B";
 const secret_key = "~n}$S9$lGts=U)8zfL/R.PM9;4[3|@/CEsl~Kk!7?BYZ:BAa5zkkRBL7r|1/*Cr";
 function signature(url, ts, method, s_uuid) {
     var raw = url.replace("https://picaapi.picacomic.com/", "") + ts + s_uuid + method + api_key;
+    raw = encodeURI(raw)
     raw = raw.toLowerCase();
     var hc = CryptoJS.HmacSHA256(raw, secret_key)
     return hc
@@ -120,7 +121,7 @@ function comic_header_builder(url, method) {
 function comic_builder() {
     var obj={};
     var list=[];
-    list.push("https://picaapi.picacomic.com/comics/@key", "https://picaapi.picacomic.com/comics/@key/eps")
+    list.push("https://picaapi.picacomic.com/comics/@key", "https://picaapi.picacomic.com/comics/@key/eps?page=@pageplus")
     obj.url = list;
     obj.method="GET";
     return JSON.stringify(obj);

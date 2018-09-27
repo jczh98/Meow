@@ -16,10 +16,11 @@ object Helper {
         return domBuilder.parse(InputSource(sr)).documentElement
     }
 
-    fun getUrl(urlFrom: String, keyword: String?, secondKeyword: String?, page: Int?): String? {
+    fun getUrl(urlFrom: String, keyword: String?, secondKeyword: String?, page: Int?, ignorePage: Boolean?): String? {
         var url = urlFrom
         if(keyword != null) url = url?.replace("@key", keyword)
         if(secondKeyword != null) url = url?.replace("@skey", secondKeyword)
+        if(ignorePage == true) return url
         if(page != null) {
             if(url?.indexOf("@pageplus") != -1) {
                 url = url?.replace("@pageplus", (page + 1).toString())

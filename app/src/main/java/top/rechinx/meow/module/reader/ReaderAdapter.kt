@@ -24,6 +24,7 @@ import top.rechinx.meow.engine.Helper
 import top.rechinx.meow.engine.HttpDns
 import top.rechinx.meow.module.base.BaseAdapter
 import java.io.InputStream
+import java.net.InetAddress
 
 
 class ReaderAdapter: BaseAdapter<ImageUrl> {

@@ -97,15 +97,20 @@ class SaSource {
                 var list = ArrayList<String>()
                 for(i in 0 until urlArray.length()) {
                     val url = urlArray.getString(i)
-                    val urlGet = Helper.getUrl(url, keyword, secondKeyword, page)
+                    var urlGet = Helper.getUrl(url, keyword, secondKeyword, page, false)
                     var requestBuilderTmp = Request.Builder()
                     if(urlGet != null) {
                         requestBuilderTmp.url(urlGet)
                     } else {
-                        throw Exception()
+                        if(urlArray.length() > 1) {
+                            urlGet = Helper.getUrl(url, keyword, secondKeyword, page, true)
+                            requestBuilderTmp.url(urlGet)
+                        }else {
+                            throw Exception()
+                        }
                     }
                     if(node.headerBuilder != null) {
-                        val header_json = js.rxCallJs(node.headerBuilder!!, urlGet, method).blockingFirst()
+                        val header_json = js.rxCallJs(node.headerBuilder!!, urlGet!!, method).blockingFirst()
                         val headerData = JSONObject(header_json).getJSONObject("header")
                         val headerIterator = headerData.keys()
                         for(key in headerIterator) {
@@ -122,7 +127,6 @@ class SaSource {
                     var html = getResponseBody(App.getHttpClient()!!, request!!)
                     list.add(html)
                 }
-                L.d(list[0])
                 val json = js.rxCallJs(node.parser!!, list).blockingFirst()
                 it.onNext(json)
                 it.onComplete()
@@ -181,6 +185,9 @@ class SaSource {
                                 val title = item.getString("title")
                                 val chapterId = item.getString("chapterId")
                                 list.add(Chapter(title, chapterId))
+                            }
+                            if(list.isEmpty()) {
+                                throw Exception()
                             }
                             emitter.onNext(list)
                             emitter.onComplete()
