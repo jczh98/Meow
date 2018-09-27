@@ -43,6 +43,7 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     override fun initView() {
         mRecyclerView.layoutManager = GridLayoutManager(this, 4)
         mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.itemAnimator = null
         mRecyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
                 val position = parent.getChildLayoutPosition(view)
