@@ -152,6 +152,8 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     override fun onResume() {
         super.onResume()
         mComic = ComicManager.getInstance().identify(mComic.source!!, mComic.cid!!)
+        mAdapter.setComic(mComic)
+        mAdapter.notifyDataSetChanged()
     }
 
     companion object {
