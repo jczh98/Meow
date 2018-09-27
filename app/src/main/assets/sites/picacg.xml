@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<site ver="1">
+    <head>
+        <name>picacg</name>
+        <title>哔咔漫画</title>
+        <intro>intro</intro>
+        <dns>104.20.180.50</dns>
+    </head>
+    <body>
+        <search
+            headerbuilder="search_header_builder"
+            urlbuilder="search_builder"
+            parser="search_parser" />
+        <comic
+            headerbuilder="comic_header_builder"
+            urlbuilder="comic_builder"
+            parser="comic_parser" />
+        <chapter
+            headerbuilder="chapter_header_builder"
+            urlbuilder="chapter_builder"
+            parser="chapter_parser" />
+        <cover headers="Referer=http://images.dmzj.com/"/>
+        <image headers="Referer=http://images.dmzj.com/"/>
+    </body>
+    <jscript>
+        <require>
+            <item lib="hmacsha256"/>
+        </require>
+        <code>
+            <![CDATA[
+function uuid() {
+    var s = [];
+    var hexDigits = "0123456789abcdef";
+    for (var i = 0; i < 36; i++) {
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+    s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+    s[8] = s[13] = s[18] = s[23] = "-";
+
+    var uuid = s.join("");
+    return uuid;
+}
+const api_key = "C69BAF41DA5ABD1FFEDC6D2FEA56B";
+const secret_key = "~n}$S9$lGts=U)8zfL/R.PM9;4[3|@/CEsl~Kk!7?BYZ:BAa5zkkRBL7r|1/*Cr";
+function signature(url, ts, method, s_uuid) {
+    var raw = url.replace("https://picaapi.picacomic.com/", "") + ts + s_uuid + method + api_key;
+    raw = raw.toLowerCase();
+    var hc = CryptoJS.HmacSHA256(raw, secret_key)
+    return hc
+}
+function search_header_builder(url, method) {
+    var headers={};
+    var d = new Date();
+    var ts = parseInt(d.getTime()/1000);
+    var s_uuid = uuid().replace(/-/g,"");
+    headers["signature"]= signature(url, ts, method, s_uuid).toString();
+    headers["time"]= ts.toString();
+    headers["nonce"]= s_uuid;
+    headers["authorization"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN5dXVuaWNoaW5Ab3V0bG9vay5jb20iLCJyb2xlIjoibWVtYmVyIiwibmFtZSI6ImljaGlnb19kZXN1IiwidmVyc2lvbiI6IjIuMS4wLjQiLCJpYXQiOjE1MzgwMjczMjYsImV4cCI6MTUzODYzMjEyNn0.hTsPad12QEg3zn5uE4_dRRSyitAdm4LG4ICEbR6eAVw";
+    headers["api-key"]= api_key,
+    headers["accept"]= "application/vnd.picacomic.com.v1+json";
+    headers["app-channel"]= "3";
+    headers["app-version"]= "2.1.0.4";
+    headers["app-uuid"]= "418e56fb-60fb-352b-8fca-c6e8f0737ce6";
+    headers["app-platform"]= "android";
+    headers["Content-Type"]= "application/json; charset=UTF-8";
+    headers["User-Agent"]= "okhttp/3.8.1";
+    headers["app-build-version"]= "39";
+    var list = [];
+    var obj={};
+    obj.header=headers;
+    return JSON.stringify(obj);
+}
+function search_builder() {
+    var obj={};
+    var list=[];
+    list.push("https://picaapi.picacomic.com/comics/search?page=@pageplus&q=@key")
+    obj.url = list;
+    obj.method="GET";
+    return JSON.stringify(obj);
+}
+function search_parser(html) {
+    var jList = JSON.parse(html).data.comics.docs;
+    var list = [];
+    jList.forEach(function(item){
+        var bm = {};
+        bm.cid = item.id
+        bm.title = item.title
+        bm.cover = item.thumb.fileServer+"/static/"+item.thumb.path;
+        bm.author = item.author
+        bm.update = "null"
+        list.push(bm);
+    });
+    return JSON.stringify(list);
+}
+
+function comic_header_builder(url, method) {
+    var headers={};
+    var d = new Date();
+    var ts = parseInt(d.getTime()/1000);
+    var s_uuid = uuid().replace(/-/g,"");
+    headers["signature"]= signature(url, ts, method, s_uuid).toString();
+    headers["time"]= ts.toString();
+    headers["nonce"]= s_uuid;
+    headers["authorization"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN5dXVuaWNoaW5Ab3V0bG9vay5jb20iLCJyb2xlIjoibWVtYmVyIiwibmFtZSI6ImljaGlnb19kZXN1IiwidmVyc2lvbiI6IjIuMS4wLjQiLCJpYXQiOjE1MzgwMjMzNzcsImV4cCI6MTUzODYyODE3N30.pNpm5rvAb0pSrjDIKDG8XqRbYZUfSL6j5IFqmPeUL1o";
+    headers["api-key"]= api_key;
+    headers["accept"]= "application/vnd.picacomic.com.v1+json";
+    headers["app-channel"]= "3";
+    headers["app-version"]= "2.1.0.4";
+    headers["app-uuid"]= "418e56fb-60fb-352b-8fca-c6e8f0737ce6";
+    headers["app-platform"]= "android";
+    headers["Content-Type"]= "application/json; charset=UTF-8";
+    headers["User-Agent"]= "okhttp/3.8.1";
+    headers["app-build-version"]= "39";
+    var obj={};
+    obj.header=headers;
+    return JSON.stringify(obj);
+}
+function comic_builder() {
+    var obj={};
+    var list=[];
+    list.push("https://picaapi.picacomic.com/comics/@key", "https://picaapi.picacomic.com/comics/@key/eps")
+    obj.url = list;
+    obj.method="GET";
+    return JSON.stringify(obj);
+}
+function comic_parser(html, html2) {
+    var jobj = JSON.parse(html).data.comic;
+    var json = [];
+    var bm = {};
+    bm.title = jobj.title;
+    bm.cover = jobj.thumb.fileServer + "/static/" + jobj.thumb.path;
+    bm.intro = jobj.description;
+    bm.update = jobj.updated_at;
+    bm.author = jobj.author;
+    bm.isPage = true;
+    json.push(bm);
+    var jList = JSON.parse(html2).data.eps.docs
+    var list = [];
+    jList.forEach(function(item){
+        var c = {};
+        c.title = item.title;
+        c.chapterId = item.order;
+        list.push(c)
+    })
+    var array = {};
+    array.chapters = list
+    json.push(array)
+    return JSON.stringify(json)
+}
+
+
+function chapter_header_builder(url, method) {
+    var headers={};
+    var d = new Date();
+    var ts = parseInt(d.getTime()/1000);
+    var s_uuid = uuid().replace(/-/g,"");
+    headers["signature"]= signature(url, ts, method, s_uuid).toString();
+    headers["time"]= ts.toString();
+    headers["nonce"]= s_uuid;
+    headers["authorization"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN5dXVuaWNoaW5Ab3V0bG9vay5jb20iLCJyb2xlIjoibWVtYmVyIiwibmFtZSI6ImljaGlnb19kZXN1IiwidmVyc2lvbiI6IjIuMS4wLjQiLCJpYXQiOjE1MzgwMjMzNzcsImV4cCI6MTUzODYyODE3N30.pNpm5rvAb0pSrjDIKDG8XqRbYZUfSL6j5IFqmPeUL1o";
+    headers["api-key"]= api_key;
+    headers["accept"]= "application/vnd.picacomic.com.v1+json";
+    headers["app-channel"]= "3";
+    headers["app-version"]= "2.1.0.4";
+    headers["app-uuid"]= "418e56fb-60fb-352b-8fca-c6e8f0737ce6";
+    headers["app-platform"]= "android";
+    headers["Content-Type"]= "application/json; charset=UTF-8";
+    headers["User-Agent"]= "okhttp/3.8.1";
+    headers["app-build-version"]= "39";
+    var obj={};
+    obj.header=headers;
+    return JSON.stringify(obj);
+}
+function chapter_builder() {
+    var obj={};
+    var list=[];
+    list.push("https://picaapi.picacomic.com/comics/@key/order/@skey/pages")
+    obj.url = list;
+    obj.method="GET";
+    return JSON.stringify(obj);
+}
+function chapter_parser(html) {
+    var jList = JSON.parse(html).data.pages.docs;
+    var json = [];
+    jList.forEach(function(item){
+        json.push(item.media.fileServer + "/static/" + item.media.path)
+    })
+    return JSON.stringify(json)
+}
+            ]]>
+        </code>
+    </jscript>
+</site>
