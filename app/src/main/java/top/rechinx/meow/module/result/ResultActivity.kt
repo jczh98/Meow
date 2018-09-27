@@ -30,6 +30,7 @@ class ResultActivity : BaseActivity(), ResultView, BaseAdapter.OnItemClickListen
     private lateinit var mLayoutManager: LinearLayoutManager
     private lateinit var mResultPresenter: ResultPresenter
     private lateinit var mResultAdapter: ResultAdapter
+    private lateinit var keyword: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +39,7 @@ class ResultActivity : BaseActivity(), ResultView, BaseAdapter.OnItemClickListen
     override fun getLayoutId(): Int  = R.layout.activity_result
 
     override fun initPresenter() {
-        val keyword = intent.getStringExtra(EXTRA_KEYWORD)
+        keyword = intent.getStringExtra(EXTRA_KEYWORD)
         mResultPresenter = ResultPresenter(keyword)
         mResultPresenter.attachView(this)
     }
@@ -46,6 +47,7 @@ class ResultActivity : BaseActivity(), ResultView, BaseAdapter.OnItemClickListen
     override fun initToolbar() {
         super.initToolbar()
         mToolbar?.setNavigationOnClickListener { finish() }
+        supportActionBar?.title = String.format(getString(R.string.search_result_title), keyword)
     }
 
     override fun initView() {

@@ -17,4 +17,5 @@
     <string name="details_continue">continue</string>
     <string name="details_favorite">subscribe</string>
     <string name="details_unfavorite">unsubscribe</string>
+    <string name="search_result_title">Result-%s</string>
 </resources>
