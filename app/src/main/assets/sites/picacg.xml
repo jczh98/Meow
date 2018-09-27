@@ -177,14 +177,39 @@ function chapter_header_builder(url, method) {
 function chapter_builder() {
     var obj={};
     var list=[];
-    list.push("https://picaapi.picacomic.com/comics/@key/order/@skey/pages")
+    list.push("https://picaapi.picacomic.com/comics/@key/order/@skey/pages?page=1")
+    list.push("https://picaapi.picacomic.com/comics/@key/order/@skey/pages?page=2")
+    list.push("https://picaapi.picacomic.com/comics/@key/order/@skey/pages?page=3")
+    list.push("https://picaapi.picacomic.com/comics/@key/order/@skey/pages?page=4")
+    list.push("https://picaapi.picacomic.com/comics/@key/order/@skey/pages?page=5")
+    list.push("https://picaapi.picacomic.com/comics/@key/order/@skey/pages?page=6")
     obj.url = list;
     obj.method="GET";
     return JSON.stringify(obj);
 }
-function chapter_parser(html) {
-    var jList = JSON.parse(html).data.pages.docs;
+function chapter_parser(html, html1, html2, html3, html4, html5) {
     var json = [];
+    var jList = JSON.parse(html).data.pages.docs;
+    jList.forEach(function(item){
+        json.push(item.media.fileServer + "/static/" + item.media.path)
+    })
+    jList = JSON.parse(html1).data.pages.docs;
+    jList.forEach(function(item){
+        json.push(item.media.fileServer + "/static/" + item.media.path)
+    })
+    jList = JSON.parse(html2).data.pages.docs;
+    jList.forEach(function(item){
+        json.push(item.media.fileServer + "/static/" + item.media.path)
+    })
+    jList = JSON.parse(html3).data.pages.docs;
+    jList.forEach(function(item){
+        json.push(item.media.fileServer + "/static/" + item.media.path)
+    })
+    jList = JSON.parse(html4).data.pages.docs;
+    jList.forEach(function(item){
+        json.push(item.media.fileServer + "/static/" + item.media.path)
+    })
+    jList = JSON.parse(html5).data.pages.docs;
     jList.forEach(function(item){
         json.push(item.media.fileServer + "/static/" + item.media.path)
     })

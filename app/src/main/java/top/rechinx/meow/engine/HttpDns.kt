@@ -15,7 +15,6 @@ class HttpDns(addresses: String) : Dns {
         try {
             val list = ArrayList<InetAddress>()
             list.add(InetAddress.getByName(address))
-            L.d("HttpDns:  " + paramString + "  " + InetAddress.getByName(address))
             return list
         } catch (localException: Exception) {
             localException.printStackTrace()
