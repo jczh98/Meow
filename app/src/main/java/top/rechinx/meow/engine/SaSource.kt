@@ -9,20 +9,24 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONArray
+import org.json.JSONObject
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import top.rechinx.meow.App
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
+import top.rechinx.meow.support.log.L
 import java.nio.charset.Charset
 import java.util.*
+import kotlin.collections.ArrayList
 
 class SaSource {
 
     lateinit var title: String
     lateinit var name: String
     lateinit var desc: String
+    private var dns: String? = null
 
     private var mAttrs: MutableMap<String, String> = HashMap()
     private lateinit var root: Element
@@ -70,6 +74,7 @@ class SaSource {
         name = mAttrs["name"]!!
         title = mAttrs["title"]!!
         desc = mAttrs["intro"]!!
+        dns = mAttrs["dns"]
 
         searchNode = SaNode().build(bodyList["search"]!! as Element)
         comicNode = SaNode().build(bodyList["comic"]!! as Element)
@@ -85,9 +90,40 @@ class SaSource {
     fun getObservable(node: SaNode, keyword: String?, secondKeyword: String?, page: Int?): Observable<String> {
         return Observable.create(ObservableOnSubscribe<String> {
             try {
-                var request = Helper.getRequest(node, keyword, secondKeyword, page)
-                var html = getResponseBody(App.getHttpClient()!!, request!!)
-                val json = js.rxCallJs(node.parser!!, html).blockingFirst()
+                var jsonResponse = js.rxCallJs(node.urlbuilder!!).blockingFirst()
+                val data = JSONObject(jsonResponse)
+                var urlArray = data.getJSONArray("url")
+                var method = data.getString("method")
+                var list = ArrayList<String>()
+                for(i in 0 until urlArray.length()) {
+                    val url = urlArray.getString(i)
+                    val urlGet = Helper.getUrl(url, keyword, secondKeyword, page)
+                    var requestBuilderTmp = Request.Builder()
+                    if(urlGet != null) {
+                        requestBuilderTmp.url(urlGet)
+                    } else {
+                        throw Exception()
+                    }
+                    if(node.headerBuilder != null) {
+                        val header_json = js.rxCallJs(node.headerBuilder!!, urlGet, method).blockingFirst()
+                        val headerData = JSONObject(header_json).getJSONObject("header")
+                        val headerIterator = headerData.keys()
+                        for(key in headerIterator) {
+                            requestBuilderTmp.addHeader(key, headerData.getString(key))
+                        }
+                    }
+                    var request = requestBuilderTmp.build()
+                    if(dns != null) {
+                        val client = App.getHttpClientBuilder().dns(HttpDns(dns!!)).build()
+                        val html = getResponseBody(client, request)
+                        list.add(html)
+                        continue
+                    }
+                    var html = getResponseBody(App.getHttpClient()!!, request!!)
+                    list.add(html)
+                }
+                L.d(list[0])
+                val json = js.rxCallJs(node.parser!!, list).blockingFirst()
                 it.onNext(json)
                 it.onComplete()
             } catch (e: Exception) {
@@ -163,7 +199,7 @@ class SaSource {
                             val array = JSONArray(it)
                             val list = LinkedList<ImageUrl>()
                             for(i in 0 until array.length()) {
-                                list.add(ImageUrl(i + 1, array.getString(i), chapterId, imageNode?.headers))
+                                list.add(ImageUrl(i + 1, array.getString(i), chapterId, imageNode?.headers, dns))
                             }
                             emitter.onNext(list)
                             emitter.onComplete()

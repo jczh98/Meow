@@ -1,5 +1,6 @@
 package top.rechinx.meow
 
+import org.json.JSONArray
 import org.junit.Test
 
 import org.w3c.dom.Element
@@ -43,20 +44,20 @@ class ExampleUnitTest {
 
     @Test
     fun testEngine() {
-        val file = File("/Users/chin/workshop/Meow/app/src/test/java/top/rechinx/meow/test.xml")
-        //System.out.println(readToString(file))
-        var root = Helper.getXmlRoot(readToString(file)!!)
-        var head = root.getElementsByTagName("head").item(0)
-        var body = root.getElementsByTagName("body").item(0) as Element
-        var bodyList = HashMap<String, Node>()
-        for(i in 0 until head.childNodes.length) {
-            val node = head.childNodes.item(i)
-            if(node.nodeType == Node.ELEMENT_NODE) {
-                if(node.firstChild.nodeType == Node.TEXT_NODE) {
-                    print(node.nodeName + " " + node.firstChild.nodeValue)
-                }
-            }
-        }
+//        val file = File("/Users/chin/workshop/Meow/app/src/test/java/top/rechinx/meow/test.xml")
+//        //System.out.println(readToString(file))
+//        var root = Helper.getXmlRoot(readToString(file)!!)
+//        var head = root.getElementsByTagName("head").item(0)
+//        var body = root.getElementsByTagName("body").item(0) as Element
+//        var bodyList = HashMap<String, Node>()
+//        for(i in 0 until head.childNodes.length) {
+//            val node = head.childNodes.item(i)
+//            if(node.nodeType == Node.ELEMENT_NODE) {
+//                if(node.firstChild.nodeType == Node.TEXT_NODE) {
+//                    print(node.nodeName + " " + node.firstChild.nodeValue)
+//                }
+//            }
+//        }
 
 
     }

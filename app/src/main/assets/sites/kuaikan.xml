@@ -6,12 +6,17 @@
         <intro>intro</intro>
     </head>
     <body>
-        <search ua="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AcooBrowser; .NET CLR 1.1.4322; .NET CLR 2.0.50727)"
-            parser="search_parser"
-            url="http://search.kkmh.com/search/complex?q=@key" />
-        <comic parser="comic_parser"
+        <search
+            headerbuilder="header_builder"
+            urlbuilder="search_builder"
+            parser="search_parser" />
+        <comic
+            urlbuilder="comic_builder"
+            parser="comic_parser"
             url="http://www.kuaikanmanhua.com/web/topic/@key"/>
-        <chapter parser="chapter_parser"
+        <chapter
+            urlbuilder="chapter_builder"
+            parser="chapter_parser"
             url="http://api.kuaikanmanhua.com/v2/comic/@skey"/>
     </body>
     <jscript>
@@ -20,6 +25,40 @@
         </require>
         <code>
             <![CDATA[
+function header_builder(url, method) {
+    var headers={};
+    headers["User-Agent"]="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AcooBrowser; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+    var obj={};
+    obj.header=headers;
+    return JSON.stringify(obj);
+}
+function search_builder() {
+var obj={};
+var list=[];
+list.push("http://search.kkmh.com/search/complex?q=@key")
+obj.url = list;
+var method={};
+obj.method="GET";
+return JSON.stringify(obj);
+}
+function comic_builder() {
+var obj={};
+var list=[];
+list.push("http://www.kuaikanmanhua.com/web/topic/@key")
+obj.url = list;
+var method={};
+obj.method="GET";
+return JSON.stringify(obj);
+}
+function chapter_builder() {
+var obj={};
+var list=[];
+list.push("http://api.kuaikanmanhua.com/v2/comic/@skey")
+obj.url = list;
+var method={};
+obj.method="GET";
+return JSON.stringify(obj);
+}
 function search_parser(html) {
 var jList = JSON.parse(html).data.topic.hit;
 var list = [];

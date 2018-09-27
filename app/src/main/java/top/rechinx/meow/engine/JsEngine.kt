@@ -25,6 +25,25 @@ class JsEngine {
                 .subscribe {engine.executeScript(it)}
     }
 
+    fun rxCallJs(func: String, list: ArrayList<String>): Observable<String> {
+        return Observable.create(ObservableOnSubscribe<String> {
+            try {
+                val params = V8Array(engine)
+                for(p in list) {
+                    params.push(p)
+                }
+                val json = engine.executeStringFunction(func, params)
+                it.onNext(json)
+                it.onComplete()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                it.onError(e)
+            }
+        }).subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
+
+    }
+
     fun rxCallJs(func: String, vararg args: String): Observable<String> {
         return Observable.create(ObservableOnSubscribe<String> {
             try {

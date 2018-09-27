@@ -36,15 +36,21 @@ class App: Application() {
         return mPreferenceManager!!
     }
 
+
+
     companion object {
 
         lateinit var instance: App
 
         private var mHttpClient: OkHttpClient? = null
 
+        fun getHttpClientBuilder(): OkHttpClient.Builder {
+            return OkHttpClient.Builder().addNetworkInterceptor(StethoInterceptor())
+        }
+
         fun getHttpClient(): OkHttpClient? {
             if(mHttpClient == null) {
-                mHttpClient = OkHttpClient.Builder().addNetworkInterceptor(StethoInterceptor()).build()
+                mHttpClient = this.getHttpClientBuilder().build()
             }
             return mHttpClient
         }

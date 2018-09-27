@@ -15,11 +15,15 @@ import top.rechinx.meow.model.ImageUrl
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import top.rechinx.meow.App
 import top.rechinx.meow.engine.Helper
+import top.rechinx.meow.engine.HttpDns
 import top.rechinx.meow.module.base.BaseAdapter
+import java.io.InputStream
 
 
 class ReaderAdapter: BaseAdapter<ImageUrl> {
@@ -54,72 +58,10 @@ class ReaderAdapter: BaseAdapter<ImageUrl> {
         if(mMode == PAGE_READER_MODE) {
             val itemHolder = holder as PageViewHolder
             itemHolder.mImage.setOnViewTapListener(mTapListener)
-//            itemHolder.mImage.setOnViewTapListener { view, x, y ->
-//                run {
-//                    val mViewWidth = view.width
-//                    val mViewHeight = view.height
-//                    val mCenterRect = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() / 3,
-//                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() * 2 / 3)
-//                    val mLeftRect1 = RectF(0F, 0F,
-//                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() / 3)
-//                    val mLeftRect2 = RectF(0F, mViewHeight.toFloat() / 3,
-//                            mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3)
-//                    val mRightRect1 = RectF(mViewWidth.toFloat() * 2 / 3, 0F,
-//                            mViewWidth.toFloat(), mViewHeight.toFloat() * 2 / 3)
-//                    val mRightRect2 = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3,
-//                            mViewWidth.toFloat(), mViewHeight.toFloat())
-//                    if(mCenterRect.contains(x, y)) {
-//                        if(mCallback != null) {
-//                            mCallback.onCenter()
-//                        }
-//                    }
-//                    if(mLeftRect1.contains(x, y) || mLeftRect2.contains(x, y)) {
-//                        if(mCallback != null) {
-//                            mCallback.onPrev()
-//                        }
-//                    }
-//                    if(mRightRect1.contains(x, y) || mRightRect2.contains(x, y)) {
-//                        if(mCallback != null) {
-//                            mCallback.onNext()
-//                        }
-//                    }
-//                }
-//            }
             val glideUrl = GlideUrl(images.imageUrl, Helper.parseHeaders(images.headers))
             Glide.with(mContext).load(glideUrl).into(itemHolder.mImage)
         } else {
             val itemHolder = holder as StreamViewHolder
-//            itemHolder.mImage.setOnViewTapListener { view, x, y ->
-//                run {
-//                    val mViewWidth = view.width
-//                    val mViewHeight = view.height
-//                    val mCenterRect = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() / 3,
-//                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() * 2 / 3)
-//                    val mLeftRect1 = RectF(0F, 0F,
-//                            mViewWidth.toFloat() * 2 / 3, mViewHeight.toFloat() / 3)
-//                    val mLeftRect2 = RectF(0F, mViewHeight.toFloat() / 3,
-//                            mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3)
-//                    val mRightRect1 = RectF(mViewWidth.toFloat() * 2 / 3, 0F,
-//                            mViewWidth.toFloat(), mViewHeight.toFloat() * 2 / 3)
-//                    val mRightRect2 = RectF(mViewWidth.toFloat() / 3, mViewHeight.toFloat() * 2 / 3,
-//                            mViewWidth.toFloat(), mViewHeight.toFloat())
-//                    if(mCenterRect.contains(x, y)) {
-//                        if(mCallback != null) {
-//                            mCallback.onCenter()
-//                        }
-//                    }
-//                    if(mLeftRect1.contains(x, y) || mLeftRect2.contains(x, y)) {
-//                        if(mCallback != null) {
-//                            mCallback.onPrev()
-//                        }
-//                    }
-//                    if(mRightRect1.contains(x, y) || mRightRect2.contains(x, y)) {
-//                        if(mCallback != null) {
-//                            mCallback.onNext()
-//                        }
-//                    }
-//                }
-//            }
             val glideUrl = GlideUrl(images.imageUrl, Helper.parseHeaders(images.headers))
             Glide.with(mContext).load(glideUrl).into(object : SimpleTarget<Drawable>() {
                 override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {

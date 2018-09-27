@@ -40,6 +40,9 @@ class ResultPresenter(keyword: String): BasePresenter<ResultView>() {
         mStateArray = ArrayList()
         val list = SourceManager.getInstance().getSourceNames()
         for(item in list) {
+            if(!App.instance.getPreferenceManager().getBoolean(item, true)) {
+                continue
+            }
             var state = State()
             state.state = STATE_NULL
             state.source = item
@@ -59,9 +62,6 @@ class ResultPresenter(keyword: String): BasePresenter<ResultView>() {
             return
         }
         for(obj in mStateArray) {
-            if(!App.instance.getPreferenceManager().getBoolean(obj?.source!!, true)) {
-                continue
-            }
             if(obj?.state == STATE_NULL) {
                 obj.state = STATE_DOING
                 mCompositeDisposable.add(SourceManager.getInstance().rxGetSource(obj.source!!)

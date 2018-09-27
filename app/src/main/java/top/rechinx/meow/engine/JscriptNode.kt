@@ -37,6 +37,9 @@ class JscriptNode {
             "cheerio" -> {
                 loadLib(app.resources, R.raw.cheerio, js)
             }
+            "hmacsha256" -> {
+                loadLib(app.resources, R.raw.hmacsha256, js)
+            }
         }
     }
 

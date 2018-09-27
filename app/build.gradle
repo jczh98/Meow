@@ -41,6 +41,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.github.bumptech.glide:glide:4.7.1'
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.7.1"
     kapt 'com.github.bumptech.glide:compiler:4.7.1'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
@@ -54,7 +55,7 @@ dependencies {
     implementation 'com.github.seven332:ripple:0.1.0'
     implementation 'me.drakeet.support:about:2.1.1'
     implementation 'me.drakeet.multitype:multitype:3.4.4'
-    implementation 'com.eclipsesource.j2v8:j2v8:3.1.6@aar'
+    implementation 'com.eclipsesource.j2v8:j2v8:4.8.2@aar'
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
     implementation 'com.facebook.stetho:stetho:1.5.0'
