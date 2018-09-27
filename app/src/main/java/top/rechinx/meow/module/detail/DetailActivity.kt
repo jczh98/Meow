@@ -99,6 +99,7 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     override fun initToolbar() {
         super.initToolbar()
         mToolbar?.setNavigationOnClickListener { finish() }
+        supportActionBar?.title = getString(R.string.detail_title)
     }
 
     override fun onComicLoadSuccess(comic: Comic) {

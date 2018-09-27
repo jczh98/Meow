@@ -19,4 +19,5 @@
     <string name="details_favorite">订阅漫画</string>
     <string name="details_unfavorite">取消订阅</string>
     <string name="search_result_title">搜索-%s</string>
+    <string name="detail_title">详情</string>
 </resources>
