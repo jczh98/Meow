@@ -2,7 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/reader_back_layout"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
     android:layout_alignParentTop="true"
@@ -12,7 +12,7 @@
         android:id="@+id/reader_back_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:padding="7dp"
         android:clickable="true"
         android:src="@drawable/ic_navigate_before_white_24dp"/>
 </FrameLayout>
