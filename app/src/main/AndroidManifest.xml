@@ -28,6 +28,7 @@
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".module.detail.DetailActivity"/>
         <activity android:name=".module.about.AboutActivity" />
+        <activity android:name=".module.login.LoginActivity" />
     </application>
 
 </manifest>

@@ -20,4 +20,9 @@
     <string name="details_unfavorite">取消订阅</string>
     <string name="search_result_title">搜索-%s</string>
     <string name="detail_title">详情</string>
+    <string name="title_activity_login">登录</string>
+    <string name="snackbar_login_success">登录成功</string>
+    <string name="snackbar_login_failure">登录失败</string>
+    <string name="snackbar_result_empty">没有搜索到数据</string>
+    <string name="snackbar_login_check">用户名或密码不能为空</string>
 </resources>

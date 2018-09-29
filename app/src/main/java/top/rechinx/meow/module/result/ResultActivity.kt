@@ -79,7 +79,7 @@ class ResultActivity : BaseActivity(), ResultView, BaseAdapter.OnItemClickListen
 
     override fun onSearchError() {
         hideProgressBar()
-        Snackbar.make(mLayoutView, "Result is empty", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(mLayoutView, getString(R.string.snackbar_result_empty), Snackbar.LENGTH_SHORT).show()
         mRefreshLayout.finishLoadMore(1000,false, true)
     }
 

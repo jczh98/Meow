@@ -13,6 +13,8 @@ class SaNode: INode {
     var lib: String? = null
     var urlbuilder: String? = null
     var headerBuilder: String? = null
+    var provider: String? = null
+    var auth: String? = null
 
     private var attrList = SaAttrList()
     private var mItems: ArrayList<SaNode> = ArrayList()
@@ -27,6 +29,8 @@ class SaNode: INode {
             ua = attrList.getString("ua")
             urlbuilder = attrList.getString("urlbuilder")
             headerBuilder = attrList.getString("headerbuilder")
+            provider = attrList.getString("provide")
+            auth = attrList.getString("auth")
 
             if(element.hasChildNodes()) {
                 val list = element.childNodes

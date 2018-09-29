@@ -19,4 +19,9 @@
     <string name="details_unfavorite">unsubscribe</string>
     <string name="search_result_title">Result-%s</string>
     <string name="detail_title">Detail</string>
+    <string name="title_activity_login">Login</string>
+    <string name="snackbar_login_success">Login Success</string>
+    <string name="snackbar_login_failure">Login Failure</string>
+    <string name="snackbar_result_empty">Result is empty</string>
+    <string name="snackbar_login_check">Username or password must not be null</string>
 </resources>

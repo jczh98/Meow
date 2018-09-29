@@ -8,4 +8,8 @@ interface SourceView: BaseView {
     fun onSourceLoadSuccess(list: List<Source>)
 
     fun onSourceLoadFailure()
+
+    fun onLoginFailured(position: Int)
+
+    fun doLogin(name: String, position: Int)
 }

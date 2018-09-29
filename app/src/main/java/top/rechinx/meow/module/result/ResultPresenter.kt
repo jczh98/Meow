@@ -8,6 +8,7 @@ import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BasePresenter
 import io.reactivex.functions.Function
+import top.rechinx.meow.manager.LoginManager
 
 class ResultPresenter(keyword: String): BasePresenter<ResultView>() {
 
@@ -23,6 +24,7 @@ class ResultPresenter(keyword: String): BasePresenter<ResultView>() {
 
     private lateinit var mStateArray: ArrayList<State?>
     private lateinit var mSourceManager: SourceManager
+    private lateinit var mLoginManager: LoginManager
 
     private var keyword: String = keyword
     private var error: Int = 0
@@ -33,6 +35,7 @@ class ResultPresenter(keyword: String): BasePresenter<ResultView>() {
 
     override fun onViewAttach() {
         mSourceManager = SourceManager.getInstance()
+        mLoginManager = LoginManager.getInstance()
         initStateArray()
     }
 
@@ -66,6 +69,7 @@ class ResultPresenter(keyword: String): BasePresenter<ResultView>() {
                 obj.state = STATE_DOING
                 mCompositeDisposable.add(SourceManager.getInstance().rxGetSource(obj.source!!)
                         .flatMap(Function<SaSource, Observable<Comic>> {
+                            if(mLoginManager.isLogin(it.name)) it.setLogin(mLoginManager.getAuth(it.name))
                             return@Function it.getSearchResult(keyword, obj.page++)
                         })
                         .observeOn(AndroidSchedulers.mainThread())

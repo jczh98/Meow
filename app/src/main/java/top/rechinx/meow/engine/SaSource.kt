@@ -3,11 +3,10 @@ package top.rechinx.meow.engine
 import android.app.Application
 import io.reactivex.*
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
 import org.w3c.dom.Element
@@ -16,10 +15,13 @@ import top.rechinx.meow.App
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
+import top.rechinx.meow.model.Login
 import top.rechinx.meow.support.log.L
 import java.nio.charset.Charset
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+
 
 class SaSource {
 
@@ -27,6 +29,8 @@ class SaSource {
     lateinit var name: String
     lateinit var desc: String
     private var dns: String? = null
+    private var auth: String? = null
+    private var isLogin: Boolean = false
 
     private var mAttrs: MutableMap<String, String> = HashMap()
     private lateinit var root: Element
@@ -39,8 +43,11 @@ class SaSource {
     private lateinit var chapterNode: SaNode
     private var coverNode: SaNode? = null
     private var imageNode: SaNode? = null
+    private var loginNode: SaNode? = null
 
     constructor(app: Application, xml: String) {
+        this.isLogin = isLogin
+        this.auth = auth
         initSource(app, xml)
     }
 
@@ -79,6 +86,8 @@ class SaSource {
         searchNode = SaNode().build(bodyList["search"]!! as Element)
         comicNode = SaNode().build(bodyList["comic"]!! as Element)
         chapterNode = SaNode().build(bodyList["chapter"]!! as Element)
+
+        if(bodyList["login"] != null) loginNode = SaNode().build(bodyList["login"] as Element)
         if(bodyList["cover"] != null) coverNode = SaNode().build(bodyList["cover"] as Element)
         if(bodyList["image"] != null) imageNode = SaNode().build(bodyList["image"] as Element)
 
@@ -115,6 +124,13 @@ class SaSource {
                         val headerIterator = headerData.keys()
                         for(key in headerIterator) {
                             requestBuilderTmp.addHeader(key, headerData.getString(key))
+                        }
+                    }
+                    if(isNeedLogin()) {
+                        if(isLogin) {
+                            if(loginNode?.provider == "header") {
+                                requestBuilderTmp.addHeader(loginNode?.auth, auth)
+                            }
                         }
                     }
                     var request = requestBuilderTmp.build()
@@ -238,5 +254,59 @@ class SaSource {
         }
         throw Exception()
     }
+
+    fun isNeedLogin(): Boolean = loginNode != null
+
+    fun setLogin(auth: String) {
+        this.auth = auth
+        this.isLogin = true
+    }
+
+    fun login(username: String, password: String): Observable<Login> {
+        return Observable.create(ObservableOnSubscribe<String> {
+            try {
+                val json = js.rxCallJs(loginNode?.urlbuilder!!, username, password).blockingFirst()
+                val data = JSONObject(json)
+                var url = data.getString("url")
+                var method = data.getString("method")
+                var head = data.getJSONObject("header")
+                val usernameFrom = data.getString("username")
+                val passwordFrom = data.getString("password")
+                var request = Request.Builder()
+                request.url(url)
+                var iterator = head.keys()
+                for(key in iterator) {
+                    request.addHeader(key, head.getString(key))
+                }
+                if(method == "POST") {
+                    var map = HashMap<String, String>()
+                    map[usernameFrom] = username
+                    map[passwordFrom] = password
+                    val jsonOpt = JSONObject(map).toString()
+                    val requestBody = FormBody.create(MediaType.parse("application/json; charset=UTF-8"), jsonOpt)
+                    request.post(requestBody)
+                }
+                var html = getResponseBody(App.getHttpClient()!!, request.build())
+                val response = js.rxCallJs(loginNode?.parser!!, html).blockingFirst()
+                it.onNext(response)
+                it.onComplete()
+            }catch (e: Exception) {
+                it.onError(e)
+            }
+        }).subscribeOn(Schedulers.io())
+                .flatMap(Function<String, Observable<Login>> {
+                    return@Function Observable.create{ emitter ->
+                        try {
+                            val data = JSONObject(it)
+                            val auth = data.getString("auth")
+                            emitter.onNext(Login(this.name, username, password, auth, true))
+                            emitter.onComplete()
+                        } catch (e : Exception) {
+                            emitter.onError(e)
+                        }
+                    }
+        })
+    }
+
     fun getVersion() = version
 }

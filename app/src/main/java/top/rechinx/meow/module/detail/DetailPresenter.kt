@@ -6,6 +6,7 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import top.rechinx.meow.engine.SaSource
 import top.rechinx.meow.manager.ComicManager
+import top.rechinx.meow.manager.LoginManager
 import top.rechinx.meow.manager.SourceManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
@@ -19,16 +20,19 @@ class DetailPresenter: BasePresenter<DetailView>() {
 
     private lateinit var mSourceManager: SourceManager
     private lateinit var mComicManager: ComicManager
+    private lateinit var mLoginManager: LoginManager
 
     override fun onViewAttach() {
         mSourceManager = SourceManager.getInstance()
         mComicManager = ComicManager.getInstance()
+        mLoginManager = LoginManager.getInstance()
     }
 
     fun load(source: String, cid: String) {
         mComic = mComicManager.identify(source, cid)
         mCompositeDisposable.add(SourceManager.getInstance().rxGetSource(source)
                 .flatMap(Function<SaSource, Observable<List<Chapter>>> {
+                    if(mLoginManager.isLogin(it.name)) it.setLogin(mLoginManager.getAuth(it.name))
                     return@Function it.getComicInfo(mComic!!, page++)
                 }).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

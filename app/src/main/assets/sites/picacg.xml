@@ -7,6 +7,11 @@
         <dns>104.20.180.50</dns>
     </head>
     <body>
+        <login
+            urlbuilder="login_builder"
+            parser="login_parser"
+            provide="header"
+            auth="authorization"/>
         <search
             headerbuilder="search_header_builder"
             urlbuilder="search_builder"
@@ -50,6 +55,40 @@ function signature(url, ts, method, s_uuid) {
     var hc = CryptoJS.HmacSHA256(raw, secret_key)
     return hc
 }
+function login_parser(html) {
+    var jobj = JSON.parse(html);
+    var ret = {};
+    ret.code = jobj.code
+    ret.auth = jobj.data.token
+    return JSON.stringify(ret);
+}
+function login_builder(name, pwd) {
+    var obj={};
+    var list=[];
+    var url = "https://picaapi.picacomic.com/auth/sign-in"
+    obj.url = url;
+    obj.method="POST";
+    obj.username="email";
+    obj.password="password";
+    var headers={};
+    var d = new Date();
+    var ts = parseInt(d.getTime()/1000);
+    var s_uuid = uuid().replace(/-/g,"");
+    headers["signature"]= signature(url, ts, obj.method, s_uuid).toString();
+    headers["time"]= ts.toString();
+    headers["nonce"]= s_uuid;
+    headers["api-key"]= api_key,
+    headers["accept"]= "application/vnd.picacomic.com.v1+json";
+    headers["app-channel"]= "3";
+    headers["app-version"]= "2.1.0.4";
+    headers["app-uuid"]= "418e56fb-60fb-352b-8fca-c6e8f0737ce6";
+    headers["app-platform"]= "android";
+    headers["Content-Type"]= "application/json; charset=UTF-8";
+    headers["User-Agent"]= "okhttp/3.8.1";
+    headers["app-build-version"]= "39";
+    obj.header=headers;
+    return JSON.stringify(obj);
+}
 function search_header_builder(url, method) {
     var headers={};
     var d = new Date();
@@ -58,7 +97,7 @@ function search_header_builder(url, method) {
     headers["signature"]= signature(url, ts, method, s_uuid).toString();
     headers["time"]= ts.toString();
     headers["nonce"]= s_uuid;
-    headers["authorization"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN5dXVuaWNoaW5Ab3V0bG9vay5jb20iLCJyb2xlIjoibWVtYmVyIiwibmFtZSI6ImljaGlnb19kZXN1IiwidmVyc2lvbiI6IjIuMS4wLjQiLCJpYXQiOjE1MzgwMjczMjYsImV4cCI6MTUzODYzMjEyNn0.hTsPad12QEg3zn5uE4_dRRSyitAdm4LG4ICEbR6eAVw";
+    //headers["authorization"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN5dXVuaWNoaW5Ab3V0bG9vay5jb20iLCJyb2xlIjoibWVtYmVyIiwibmFtZSI6ImljaGlnb19kZXN1IiwidmVyc2lvbiI6IjIuMS4wLjQiLCJpYXQiOjE1MzgwMjczMjYsImV4cCI6MTUzODYzMjEyNn0.hTsPad12QEg3zn5uE4_dRRSyitAdm4LG4ICEbR6eAVw";
     headers["api-key"]= api_key,
     headers["accept"]= "application/vnd.picacomic.com.v1+json";
     headers["app-channel"]= "3";
@@ -104,7 +143,7 @@ function comic_header_builder(url, method) {
     headers["signature"]= signature(url, ts, method, s_uuid).toString();
     headers["time"]= ts.toString();
     headers["nonce"]= s_uuid;
-    headers["authorization"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN5dXVuaWNoaW5Ab3V0bG9vay5jb20iLCJyb2xlIjoibWVtYmVyIiwibmFtZSI6ImljaGlnb19kZXN1IiwidmVyc2lvbiI6IjIuMS4wLjQiLCJpYXQiOjE1MzgwMjMzNzcsImV4cCI6MTUzODYyODE3N30.pNpm5rvAb0pSrjDIKDG8XqRbYZUfSL6j5IFqmPeUL1o";
+    //headers["authorization"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN5dXVuaWNoaW5Ab3V0bG9vay5jb20iLCJyb2xlIjoibWVtYmVyIiwibmFtZSI6ImljaGlnb19kZXN1IiwidmVyc2lvbiI6IjIuMS4wLjQiLCJpYXQiOjE1MzgwMjMzNzcsImV4cCI6MTUzODYyODE3N30.pNpm5rvAb0pSrjDIKDG8XqRbYZUfSL6j5IFqmPeUL1o";
     headers["api-key"]= api_key;
     headers["accept"]= "application/vnd.picacomic.com.v1+json";
     headers["app-channel"]= "3";
@@ -160,7 +199,7 @@ function chapter_header_builder(url, method) {
     headers["signature"]= signature(url, ts, method, s_uuid).toString();
     headers["time"]= ts.toString();
     headers["nonce"]= s_uuid;
-    headers["authorization"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN5dXVuaWNoaW5Ab3V0bG9vay5jb20iLCJyb2xlIjoibWVtYmVyIiwibmFtZSI6ImljaGlnb19kZXN1IiwidmVyc2lvbiI6IjIuMS4wLjQiLCJpYXQiOjE1MzgwMjMzNzcsImV4cCI6MTUzODYyODE3N30.pNpm5rvAb0pSrjDIKDG8XqRbYZUfSL6j5IFqmPeUL1o";
+    //headers["authorization"]="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN5dXVuaWNoaW5Ab3V0bG9vay5jb20iLCJyb2xlIjoibWVtYmVyIiwibmFtZSI6ImljaGlnb19kZXN1IiwidmVyc2lvbiI6IjIuMS4wLjQiLCJpYXQiOjE1MzgwMjMzNzcsImV4cCI6MTUzODYyODE3N30.pNpm5rvAb0pSrjDIKDG8XqRbYZUfSL6j5IFqmPeUL1o";
     headers["api-key"]= api_key;
     headers["accept"]= "application/vnd.picacomic.com.v1+json";
     headers["app-channel"]= "3";

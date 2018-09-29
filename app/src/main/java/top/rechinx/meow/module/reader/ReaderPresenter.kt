@@ -11,6 +11,7 @@ import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.module.base.BasePresenter
 import io.reactivex.functions.Function
+import top.rechinx.meow.manager.LoginManager
 
 class ReaderPresenter: BasePresenter<ReaderView>() {
 
@@ -25,10 +26,12 @@ class ReaderPresenter: BasePresenter<ReaderView>() {
     private lateinit var mComic: Comic
     private lateinit var mSourceManger: SourceManager
     private lateinit var mComicManager: ComicManager
+    private lateinit var mLoginManager: LoginManager
 
     override fun onViewAttach() {
         mSourceManger = SourceManager.getInstance()
         mComicManager = ComicManager.getInstance()
+        mLoginManager = LoginManager.getInstance()
     }
 
     fun loadInit(source: String, cid: String, chapter_id: String, array: Array<Chapter>) {
@@ -39,6 +42,7 @@ class ReaderPresenter: BasePresenter<ReaderView>() {
                 mChapterManger = ChapterManger(array, index)
                 images(SourceManager.getInstance().rxGetSource(source)
                         .flatMap(Function<SaSource, Observable<List<ImageUrl>>> {
+                            if(mLoginManager.isLogin(it.name)) it.setLogin(mLoginManager.getAuth(it.name))
                             return@Function it.getChapterImage(cid, chapter_id)
                         }))
             }
@@ -51,6 +55,7 @@ class ReaderPresenter: BasePresenter<ReaderView>() {
             status = LOAD_PREV
             images(SourceManager.getInstance().rxGetSource(mComic.source!!)
                     .flatMap(Function<SaSource, Observable<List<ImageUrl>>> {
+                        if(mLoginManager.isLogin(it.name)) it.setLogin(mLoginManager.getAuth(it.name))
                         return@Function it.getChapterImage(mComic.cid!!, chapter?.chapter_id!!)
                     }))
             mView?.onPrevLoading()
@@ -65,6 +70,7 @@ class ReaderPresenter: BasePresenter<ReaderView>() {
             status = LOAD_NEXT
             images(SourceManager.getInstance().rxGetSource(mComic.source!!)
                     .flatMap(Function<SaSource, Observable<List<ImageUrl>>> {
+                        if(mLoginManager.isLogin(it.name)) it.setLogin(mLoginManager.getAuth(it.name))
                         return@Function it.getChapterImage(mComic.cid!!, chapter?.chapter_id!!)
                     }))
             mView?.onNextLoading()
