@@ -47,6 +47,7 @@ class DetailPresenter: BasePresenter<DetailView>() {
     fun loadMore() {
         mCompositeDisposable.add(SourceManager.getInstance().rxGetSource(mComic?.source!!)
                 .flatMap(Function<SaSource, Observable<List<Chapter>>> {
+                    if(mLoginManager.isLogin(it.name)) it.setLogin(mLoginManager.getAuth(it.name))
                     return@Function it.getComicInfo(mComic!!, page++)
                 }).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
