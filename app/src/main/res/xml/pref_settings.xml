@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_reader_settings">
+        <ListPreference
+            android:entries="@array/reader_mode"
+            android:entryValues="@array/reader_mode_value"
+            android:key="pref_reader_mode"
+            android:title="@string/pref_default_reader_mode"/>
+        <SwitchPreference
+            android:key="pref_hide_reader_status"
+            android:title="@string/pref_hide_reader_status" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="reader_mode">
+        <item>@string/pref_reader_mode_default</item>
+        <item>@string/pref_reader_mode_page</item>
+        <item>@string/pref_reader_mode_stream</item>
+    </string-array>
+    <string-array name="reader_mode_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

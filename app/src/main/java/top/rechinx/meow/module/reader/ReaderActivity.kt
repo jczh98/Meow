@@ -15,7 +15,9 @@ import butterknife.BindView
 import butterknife.OnClick
 import com.github.chrisbanes.photoview.OnViewTapListener
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+import top.rechinx.meow.Constants
 import top.rechinx.meow.R
+import top.rechinx.meow.manager.PreferenceManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.module.base.BaseActivity
@@ -33,6 +35,7 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnPr
     @BindView(R.id.reader_loading) lateinit var mLoadingText: TextView
     @BindView(R.id.reader_recycler_view) lateinit var mRecyclerView: RecyclerView
 
+    protected lateinit var mPreferenceManager: PreferenceManager
     protected lateinit var mPresenter: ReaderPresenter
     protected lateinit var mAdapter: ReaderAdapter
 
@@ -49,6 +52,7 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnPr
     }
 
     override fun initView() {
+        mPreferenceManager = PreferenceManager(this)
         // Hidden status bar
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         // Recycler view
@@ -61,8 +65,10 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnPr
         mRecyclerView.setItemViewCacheSize(2)
         // SeekBar listener
         mSeekBar.setOnProgressChangeListener(this)
-        // Back button
-
+        // Hidden info
+        if(mPreferenceManager.getBoolean(Constants.PREF_HIDE_READER_INFO, false)) {
+            mInfoLayout.visibility = View.GONE
+        }
     }
 
     override fun initPresenter() {
@@ -173,7 +179,9 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnPr
         if(mProgressLayout.isShown) {
             mBackLayout.visibility = View.INVISIBLE
             mProgressLayout.visibility = View.INVISIBLE
-            mInfoLayout.visibility = View.VISIBLE
+            if(!mPreferenceManager.getBoolean(Constants.PREF_HIDE_READER_INFO, false)) {
+                mInfoLayout.visibility = View.VISIBLE
+            }
         }else {
             mBackLayout.visibility = View.VISIBLE
             mProgressLayout.visibility = View.VISIBLE

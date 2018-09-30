@@ -1,6 +1,7 @@
 package top.rechinx.meow.module.home
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -18,6 +19,7 @@ import top.rechinx.meow.module.about.AboutActivity
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.favorite.HistoryFragment
 import top.rechinx.meow.module.result.ResultActivity
+import top.rechinx.meow.module.setting.SettingsActivity
 import top.rechinx.meow.module.source.SourceFragment
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.utils.FileUtils
@@ -116,6 +118,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
             R.id.drawer_about -> {
                 startActivity(AboutActivity.createIntent(this))
+            }
+            R.id.drawer_settings -> {
+                var intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
             }
         }
         mDrawerLayout.closeDrawer(GravityCompat.START)

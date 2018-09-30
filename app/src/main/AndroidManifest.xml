@@ -3,8 +3,8 @@
     package="top.rechinx.meow">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -22,13 +22,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".module.result.ResultActivity" />
-        <activity android:name=".module.reader.PageReaderActivity"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".module.reader.StreamReaderActivity"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".module.detail.DetailActivity"/>
+        <activity
+            android:name=".module.reader.PageReaderActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".module.reader.StreamReaderActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".module.detail.DetailActivity" />
         <activity android:name=".module.about.AboutActivity" />
         <activity android:name=".module.login.LoginActivity" />
+        <activity
+            android:name=".module.setting.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

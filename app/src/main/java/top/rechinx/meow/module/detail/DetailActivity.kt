@@ -13,8 +13,10 @@ import android.widget.TextView
 import butterknife.BindView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
+import top.rechinx.meow.Constants
 import top.rechinx.meow.R
 import top.rechinx.meow.manager.ComicManager
+import top.rechinx.meow.manager.PreferenceManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseActivity
@@ -29,6 +31,7 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     @BindView(R.id.custom_progress_bar) lateinit var mProgressBar: ProgressBar
     @BindView(R.id.coordinator_refresh_layout) lateinit var mRefreshLayout: SmartRefreshLayout
 
+    private lateinit var mPreferenceManager: PreferenceManager
     private lateinit var mAdapter: DetailAdapter
     private lateinit var mPresenter: DetailPresenter
     private lateinit var mComic: Comic
@@ -41,6 +44,8 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     }
 
     override fun initView() {
+        mPreferenceManager = PreferenceManager(this)
+
         mRecyclerView.layoutManager = GridLayoutManager(this, 4)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.itemAnimator = null
@@ -124,7 +129,7 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     override fun onItemClick(view: View, position: Int) {
         if(position != 0) {
             val chapter = mAdapter.getItem(position - 1)
-            val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, 1, mAdapter.getDataSet(), mAdapter.getReaderMode())
+            val intent = ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, chapter.chapter_id!!, 1, mAdapter.getDataSet(), getMode())
             startActivity(intent)
         }
     }
@@ -132,9 +137,9 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     override fun onClick(view: View, type: Int) {
         if(type == 1) {
             val intent = if(mComic.last_chapter == null) {
-                ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mAdapter.getFirst().chapter_id!!, 1, mAdapter.getDataSet(), mAdapter.getReaderMode())
+                ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mAdapter.getFirst().chapter_id!!, 1, mAdapter.getDataSet(), getMode())
             }else {
-                ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mComic.last_chapter!!, mComic.last_page!!, mAdapter.getDataSet(), mAdapter.getReaderMode())
+                ReaderActivity.createIntent(this, mComic.source!!, mAdapter.getComic()?.cid!!, mComic.last_chapter!!, mComic.last_page!!, mAdapter.getDataSet(), getMode())
             }
             (view as TextView).text = getString(R.string.details_continue)
             startActivity(intent)
@@ -148,6 +153,14 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
                 (view as TextView).text = getString(R.string.details_unfavorite)
                 //mActionButton.setImageResource(R.drawable.ic_favorite_white_24dp)
             }
+        }
+    }
+
+    private fun getMode(): Int {
+        return when {
+            mPreferenceManager.getString(Constants.PREF_READER_MODE) == "0" -> mAdapter.getReaderMode()
+            mPreferenceManager.getString(Constants.PREF_READER_MODE) == "1" -> 0
+            else -> 1
         }
     }
 

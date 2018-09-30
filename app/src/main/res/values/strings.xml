@@ -24,4 +24,11 @@
     <string name="snackbar_login_failure">Login Failure</string>
     <string name="snackbar_result_empty">Result is empty</string>
     <string name="snackbar_login_check">Username or password must not be null</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_default_reader_mode">Default reader mode</string>
+    <string name="pref_hide_reader_status">Hide reader information</string>
+    <string name="pref_reader_settings">Reader settings</string>
+    <string name="pref_reader_mode_default">Default</string>
+    <string name="pref_reader_mode_page">Page mode</string>
+    <string name="pref_reader_mode_stream">Scroll mode</string>
 </resources>

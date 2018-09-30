@@ -25,4 +25,11 @@
     <string name="snackbar_login_failure">登录失败</string>
     <string name="snackbar_result_empty">没有搜索到数据</string>
     <string name="snackbar_login_check">用户名或密码不能为空</string>
+    <string name="title_activity_settings">设置</string>
+    <string name="pref_default_reader_mode">默认阅读模式</string>
+    <string name="pref_hide_reader_status">隐藏阅读信息</string>
+    <string name="pref_reader_settings">阅读设置</string>
+    <string name="pref_reader_mode_default">漫画默认配置</string>
+    <string name="pref_reader_mode_page">翻页模式</string>
+    <string name="pref_reader_mode_stream">卷纸模式</string>
 </resources>
