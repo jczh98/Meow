@@ -38,4 +38,6 @@
     <string name="request_version_error">请求失败</string>
     <string name="request_version_checking">检查更新中</string>
     <string name="request_version_latest">已经是最新版本</string>
+    <string name="request_version_title">确认下载</string>
+    <string name="request_version_content">点击确认下载最新版本</string>
 </resources>

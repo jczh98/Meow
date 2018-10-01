@@ -38,4 +38,6 @@
     <string name="request_version_error">Request version error</string>
     <string name="request_version_checking">Checking version</string>
     <string name="request_version_latest">Already latest version</string>
+    <string name="request_version_title">Confirm download</string>
+    <string name="request_version_content">click ok to download latest version</string>
 </resources>

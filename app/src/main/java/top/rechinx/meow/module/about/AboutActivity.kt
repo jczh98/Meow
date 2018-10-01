@@ -33,13 +33,18 @@ class AboutActivity: BaseActivity() {
     @BindView(R.id.about_version_name) lateinit var mVersionName: TextView
     @BindView(R.id.about_layout) lateinit var mLayoutView: View
 
+    private lateinit var mVersion: String
+
     override fun initData() {
     }
 
     override fun initView() {
+        mToolbar?.setNavigationOnClickListener { finish() }
+        supportActionBar?.title = getString(R.string.drawer_about)
         try {
             val info = packageManager.getPackageInfo(packageName, 0)
-            mVersionName.text = "Version: ${info.versionName}"
+            mVersion = info.versionName
+            mVersionName.text = "Version: $mVersion"
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -63,12 +68,15 @@ class AboutActivity: BaseActivity() {
                 .request(object :RequestVersionBuilder(), RequestVersionListener {
                     override fun onRequestVersionSuccess(result: String?): UIData? {
                         val json = JSONObject(result)
-                        if(json.getString("tag_name") == mVersionName.text) {
+                        if(json.getString("tag_name") == mVersion) {
                             mUpdateText.text = getString(R.string.request_version_latest)
                             return null
                         }
                         mUpdateText.text = getString(R.string.request_version_latest)
-                        return UIData.create().setDownloadUrl(json.getJSONArray("assets").getJSONObject(0).getString("browser_download_url"))
+                        return UIData.create()
+                                .setTitle(getString(R.string.request_version_title))
+                                .setContent(getString(R.string.request_version_content))
+                                .setDownloadUrl(json.getJSONArray("assets").getJSONObject(0).getString("browser_download_url"))
                     }
 
                     override fun onRequestVersionFailure(message: String?) {
