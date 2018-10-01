@@ -32,4 +32,10 @@
     <string name="pref_reader_mode_default">漫画默认配置</string>
     <string name="pref_reader_mode_page">翻页模式</string>
     <string name="pref_reader_mode_stream">卷纸模式</string>
+    <string name="about_update">检查更新</string>
+    <string name="about_update_summary">点击检查更新</string>
+    <string name="about_resource">源代码</string>
+    <string name="request_version_error">请求失败</string>
+    <string name="request_version_checking">检查更新中</string>
+    <string name="request_version_latest">已经是最新版本</string>
 </resources>

@@ -31,4 +31,11 @@
     <string name="pref_reader_mode_default">Default</string>
     <string name="pref_reader_mode_page">Page mode</string>
     <string name="pref_reader_mode_stream">Scroll mode</string>
+    <string name="about_update">Check update</string>
+    <string name="about_update_summary">Click to check update</string>
+    <string name="about_resource">Source code</string>
+    <string name="about_resource_url">https://github.com/ReChinX/Meow</string>
+    <string name="request_version_error">Request version error</string>
+    <string name="request_version_checking">Checking version</string>
+    <string name="request_version_latest">Already latest version</string>
 </resources>
