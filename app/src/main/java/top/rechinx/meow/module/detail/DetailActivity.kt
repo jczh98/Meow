@@ -157,9 +157,9 @@ class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListen
     }
 
     private fun getMode(): Int {
-        return when {
-            mPreferenceManager.getString(Constants.PREF_READER_MODE) == "0" -> mAdapter.getReaderMode()
-            mPreferenceManager.getString(Constants.PREF_READER_MODE) == "1" -> 0
+        return when(mPreferenceManager.getString(Constants.PREF_READER_MODE, "0") ) {
+            "0" -> mAdapter.getReaderMode()
+            "1" -> 0
             else -> 1
         }
     }
