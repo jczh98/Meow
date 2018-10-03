@@ -36,7 +36,7 @@ You can download release version from here: <https://github.com/ReChinX/Meow/rel
 - [RxPermissions](https://github.com/tbruyelle/RxPermissions)
 - [CheckVersionLib](https://github.com/AlexLiuSheng/CheckVersionLib)
 - [SiteD](https://github.com/noear/SiteD)
-
+- [Cimoc](https://github.com/Arachnid-27/Cimoc)
 
 ## License
 
