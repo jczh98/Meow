@@ -6,15 +6,15 @@ You can download release version from here: <https://github.com/ReChinX/Meow/rel
 
 ## Screenshots
 
-<a href="./art/01.png"><img src="./art/01.png" width="40%"/></a>
+<a href="./art/01.jpg"><img src="./art/01.jpg" width="40%"/></a>
 
-<a href="./art/02.png"><img src="./art/02.png" width="40%"/></a>
+<a href="./art/02.jpg"><img src="./art/02.jpg" width="40%"/></a>
 
-<a href="./art/03.png"><img src="./art/03.png" width="40%"/></a>
+<a href="./art/03.jpg"><img src="./art/03.jpg" width="40%"/></a>
 
-<a href="./art/04.png"><img src="./art/04.png" width="40%"/></a>
+<a href="./art/04.jpg"><img src="./art/04.jpg" width="40%"/></a>
 
-<a href="./art/05.png"><img src="./art/05.png" width="40%"/></a>
+<a href="./art/05.jpg"><img src="./art/05.jpg" width="40%"/></a>
 
 ## Introduction
 
