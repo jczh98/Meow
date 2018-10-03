@@ -24,7 +24,8 @@ class App: Application() {
 
     fun getBasePath(): String {
         if (basePath == null) {
-            basePath = Environment.getExternalStorageDirectory().absolutePath + "/Meow/"
+            basePath = getExternalFilesDir(null).absolutePath
+            //basePath = Environment.getExternalStorageDirectory().absolutePath + "/Meow/"
         }
         return basePath!!
     }
