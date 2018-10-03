@@ -8,7 +8,7 @@ You can download release version from here: <https://github.com/ReChinX/Meow/rel
 
 <img src="./art/01.jpg" width="30%"/> <img src="./art/02.jpg" width="30%"/> <img src="./art/03.jpg" width="30%"/>
 
-<img src="./art/04.jpg" width="40%"/> <img src="./art/05.jpg" width="40%"/>
+<img src="./art/04.jpg" width="30%"/> <img src="./art/05.jpg" width="30%"/>
 
 ## Introduction
 
