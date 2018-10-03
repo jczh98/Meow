@@ -68,7 +68,7 @@ class AboutActivity: BaseActivity() {
                 .request(object :RequestVersionBuilder(), RequestVersionListener {
                     override fun onRequestVersionSuccess(result: String?): UIData? {
                         val json = JSONObject(result)
-                        if(json.getString("tag_name") == mVersion) {
+                        if(json.getString("tag_name") <= mVersion) {
                             mUpdateText.text = getString(R.string.request_version_latest)
                             return null
                         }
