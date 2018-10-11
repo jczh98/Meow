@@ -9,16 +9,36 @@
     android:visibility="gone"
     android:padding="8dp"
     android:background="@color/trans_light_black">
-    <top.rechinx.meow.widget.ReverseSeekBar
-        android:id="@+id/reader_seek_bar"
+
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:dsb_min="1"
-        app:dsb_trackColor="@color/white"
-        app:dsb_rippleColor="?attr/colorPrimary"
-        app:dsb_progressColor="?attr/colorPrimary"
-        app:dsb_indicatorColor="?attr/colorPrimary"
-        app:dsb_trackHeight="4dp"
-        app:dsb_thumbSize="12dp"/>
+        android:layout_height="wrap_content">
+
+            <top.rechinx.meow.widget.ReverseSeekBar
+                android:id="@+id/reader_seek_bar"
+                android:layout_weight="0.7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:dsb_min="1"
+                app:dsb_trackColor="@color/white"
+                app:dsb_rippleColor="?attr/colorPrimary"
+                app:dsb_progressColor="?attr/colorPrimary"
+                app:dsb_indicatorColor="?attr/colorPrimary"
+                app:dsb_trackHeight="4dp"
+                app:dsb_thumbSize="12dp"/>
+
+            <ImageView
+                android:id="@+id/reader_options"
+                android:src="@drawable/ic_options_white_48dp"
+                android:layout_weight="0.3"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
 </FrameLayout>

@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Point
+import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.WindowManager
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import butterknife.BindView
@@ -21,9 +23,10 @@ import top.rechinx.meow.manager.PreferenceManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.module.base.BaseActivity
+import top.rechinx.meow.support.log.L
 import top.rechinx.meow.widget.ReverseSeekBar
 
-abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnProgressChangeListener, OnViewTapListener {
+class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekBar.OnProgressChangeListener, OnViewTapListener {
 
     @BindView(R.id.reader_chapter_title) lateinit var mChapterTitle: TextView
     @BindView(R.id.reader_chapter_page) lateinit var mChapterPage: TextView
@@ -33,20 +36,24 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnPr
     @BindView(R.id.reader_info_layout) lateinit var mInfoLayout: View
     @BindView(R.id.reader_seek_bar) lateinit var mSeekBar: ReverseSeekBar
     @BindView(R.id.reader_loading) lateinit var mLoadingText: TextView
-    @BindView(R.id.reader_recycler_view) lateinit var mRecyclerView: RecyclerView
+    //@BindView(R.id.reader_recycler_view) lateinit var mRecyclerView: RecyclerView
+    @BindView(R.id.reader_content) lateinit var mFrame: FrameLayout
 
-    protected lateinit var mPreferenceManager: PreferenceManager
-    protected lateinit var mPresenter: ReaderPresenter
-    protected lateinit var mAdapter: ReaderAdapter
+    private lateinit var mPreferenceManager: PreferenceManager
+    private lateinit var mPresenter: ReaderPresenter
+    //private lateinit var mAdapter: ReaderAdapter
+    private var mReader: ReaderFragment? = null
 
-    protected var max: Int = 1
-    protected var currentPage: Int = 1
+    private var max: Int = 1
+    private var currentPage: Int = 1
+    private var sMode: Int = 0
 
     override fun initData() {
         val source = intent.getStringExtra(EXTRA_SOURCE)
         val cid = intent.getStringExtra(EXTRA_ID)
         val list = intent.getParcelableArrayListExtra<Chapter>(EXTRA_CHAPTER)
         val chapterId = intent.getStringExtra(EXTRA_CHAPTER_ID)
+        sMode = intent.getIntExtra(EXTRA_MODE, 0)
         currentPage = intent.getIntExtra(EXTRA_PAGE, 1)
         mPresenter.loadInit(source, cid, chapterId, list.toArray(arrayOfNulls<Chapter>(list.size)))
     }
@@ -55,14 +62,17 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnPr
         mPreferenceManager = PreferenceManager(this)
         // Hidden status bar
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        // init reader fragment
+        setupReader(sMode)
+
         // Recycler view
-        mAdapter = ReaderAdapter(this, ArrayList())
-        mAdapter.setOnViewTapListener(this)
+//        mAdapter = ReaderAdapter(this, ArrayList())
+//        mAdapter.setOnViewTapListener(this)
         //mAdapter.setOnTouchCallback(this)
-        mRecyclerView.layoutManager = getLayoutManager()
-        mRecyclerView.adapter = mAdapter
-        mRecyclerView.itemAnimator = null
-        mRecyclerView.setItemViewCacheSize(2)
+//        mRecyclerView.layoutManager = getLayoutManager()
+//        mRecyclerView.adapter = mAdapter
+//        mRecyclerView.itemAnimator = null
+//        mRecyclerView.setItemViewCacheSize(2)
         // SeekBar listener
         mSeekBar.setOnProgressChangeListener(this)
         // Hidden info
@@ -71,25 +81,49 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnPr
         }
     }
 
+    private fun setupReader(mode: Int) {
+        var saveStateBundle: Bundle? = null
+        if(mReader != null) {
+            saveStateBundle = Bundle()
+            mReader?.onSaveInstanceState(saveStateBundle)
+        }
+        when(mode) {
+            0 -> {
+                mReader = PageReaderFragment()
+            }
+            1 -> {
+                mReader = StreamReaderFragment()
+            }
+        }
+        mReader?.arguments = saveStateBundle
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.reader_content, mReader)
+                .commit()
+    }
+
     override fun initPresenter() {
         mPresenter = ReaderPresenter()
         mPresenter.attachView(this)
     }
 
     override fun onInitLoadSuccess(it: List<ImageUrl>) {
-        mAdapter.addAll(it)
+        mReader?.addAll(it)
         mLoadingText.visibility = View.GONE
-        mRecyclerView.visibility = View.VISIBLE
-        mRecyclerView.scrollToPosition(currentPage - 1)
+        mFrame.visibility = View.VISIBLE
+        //mRecyclerView.visibility = View.VISIBLE
+        mReader?.scrollToPosition(currentPage - 1)
+        mSeekBar.progress = currentPage
         updateProgress()
     }
 
     override fun onPrevLoadSuccess(it: List<ImageUrl>) {
-        mAdapter.addAll(0, it)
+        mReader?.addAll(0, it)
+        //mAdapter.addAll(0, it)
     }
 
     override fun onNextLoadSuccess(it: List<ImageUrl>) {
-        mAdapter.addAll(it)
+        mReader?.addAll(it)
+       // mAdapter.addAll(it)
     }
 
     override fun onParseError() {
@@ -118,7 +152,7 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnPr
         mSeekBar.max = max
     }
 
-    protected fun updateProgress() {
+    private fun updateProgress() {
         mChapterPage.text = "$currentPage/$max"
         mSeekBar.progress = currentPage
     }
@@ -145,21 +179,34 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnPr
         val limitX = point.x / 3.0f
         val limitY = point.y / 3.0f
         if(x < limitX) {
-            prevPage()
+            mReader?.prevPage()
         } else if(x > 2 * limitX) {
-            nextPage()
+            mReader?.nextPage()
         } else if(y < limitY) {
-            prevPage()
+            mReader?.prevPage()
         } else if(y > 2 * limitY) {
-            nextPage()
+            mReader?.nextPage()
         } else {
             switchControl()
         }
     }
 
-    abstract fun prevPage()
+    override fun onPrevChapter() {
+        mPresenter.toPrevChapter()
+    }
 
-    abstract fun nextPage()
+    override fun onNextChapter() {
+        mPresenter.toNextChapter()
+    }
+
+    override fun onLoadPrevChapter() {
+        mPresenter.loadPrev()
+    }
+
+    override fun onLoadNextChapter() {
+        mPresenter.loadNext()
+    }
+
     /**
      * Battery broadcast receiver
      */
@@ -197,35 +244,53 @@ abstract class ReaderActivity : BaseActivity(), ReaderView, DiscreteSeekBar.OnPr
     }
 
 
+    override fun onProgressChanged(seekBar: DiscreteSeekBar?, value: Int, fromUser: Boolean) {
+        mReader?.onProgressChanged(seekBar, value, fromUser)
+    }
+
+    override fun onReaderPageChanged(page: Int) {
+        currentPage = page
+        updateProgress()
+    }
+
+    override fun getCurrentPage(): Int = currentPage
+
     @OnClick(R.id.reader_back_btn) fun onBackClick() {finish()}
 
-    abstract fun getLayoutManager(): LinearLayoutManager
+    @OnClick(R.id.reader_options) fun onOptionsClick() {
+        sMode = sMode xor 1
+        setupReader(sMode)
+    }
+    override fun getLayoutId(): Int = R.layout.activity_reader
 
     companion object {
 
-        private val EXTRA_ID = "extra_id"
-        private val EXTRA_CHAPTER = "extra_chapter"
-        private val EXTRA_CHAPTER_ID = "extra_chapter_id"
-        private val EXTRA_SOURCE = "extra_source"
-        private val EXTRA_PAGE = "extra_page"
+        private const val EXTRA_ID = "extra_id"
+        private const val EXTRA_CHAPTER = "extra_chapter"
+        private const val EXTRA_CHAPTER_ID = "extra_chapter_id"
+        private const val EXTRA_SOURCE = "extra_source"
+        private const val EXTRA_PAGE = "extra_page"
+        private const val EXTRA_MODE = "extra_mode"
 
         fun createIntent(context: Context, source: String, cid: String, chapter_id: String, page: Int, array: ArrayList<Chapter>, mode: Int): Intent {
-            val intent = getIntent(context, mode)
+            //val intent = getIntent(context, mode)
+            val intent = Intent(context, ReaderActivity::class.java)
             intent.putExtra(EXTRA_SOURCE, source)
             intent.putExtra(EXTRA_ID, cid)
             intent.putExtra(EXTRA_CHAPTER, array)
             intent.putExtra(EXTRA_CHAPTER_ID, chapter_id)
             intent.putExtra(EXTRA_PAGE, page)
+            intent.putExtra(EXTRA_MODE, mode)
             return intent
         }
 
-        private fun getIntent(context: Context, mode: Int): Intent {
-            return if (mode == ReaderAdapter.PAGE_READER_MODE) {
-                Intent(context, PageReaderActivity::class.java)
-            } else {
-                Intent(context, StreamReaderActivity::class.java)
-            }
-        }
+//        private fun getIntent(context: Context, mode: Int): Intent {
+//            return if (mode == ReaderAdapter.PAGE_READER_MODE) {
+//                Intent(context, PageReaderActivity::class.java)
+//            } else {
+//                Intent(context, StreamReaderActivity::class.java)
+//            }
+//        }
 
     }
 }

@@ -21,8 +21,8 @@ abstract class BaseActivity: AppCompatActivity() {
         ButterKnife.bind(this)
         initPresenter()
         initToolbar()
-        initView()
         initData()
+        initView()
     }
 
     protected abstract fun initData()
