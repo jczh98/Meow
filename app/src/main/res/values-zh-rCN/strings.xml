@@ -40,4 +40,9 @@
     <string name="request_version_latest">已经是最新版本</string>
     <string name="request_version_title">确认下载</string>
     <string name="request_version_content">点击确认下载最新版本</string>
+    <string name="text_options">选项</string>
+    <string name="text_options_reader_mode">阅读模式</string>
+    <string name="text_options_page">翻页模式</string>
+    <string name="text_options_stream">卷轴模式</string>
+    <string name="text_options_hidden">收起</string>
 </resources>

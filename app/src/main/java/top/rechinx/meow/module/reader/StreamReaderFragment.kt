@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import butterknife.BindView
-import kotlinx.android.synthetic.main.activity_page_reader.view.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import top.rechinx.meow.R
 import top.rechinx.meow.support.zoomable.ZoomableRecyclerView

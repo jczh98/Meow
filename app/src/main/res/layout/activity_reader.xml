@@ -21,6 +21,6 @@
             android:textColor="@color/white"/>
         <include layout="@layout/custom_reader_info"/>
         <include layout="@layout/custom_back_btn"/>
-        <include layout="@layout/custom_seek_bar"/>
+        <include layout="@layout/custom_options"/>
     </RelativeLayout>
 </FrameLayout>

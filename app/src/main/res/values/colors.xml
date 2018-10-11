@@ -5,7 +5,7 @@
     <color name="colorAccent">#5d7cf9</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="trans_light_black">#4F000000</color>
+    <color name="trans_light_black">#88000000</color>
     <color name="colorBackgroundTrans">#AAFAFAFA</color>
     <color name="divider">#20000000</color>
     <color name="shadow_light">#38000000</color>

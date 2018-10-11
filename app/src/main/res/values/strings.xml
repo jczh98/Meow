@@ -40,4 +40,9 @@
     <string name="request_version_latest">Already latest version</string>
     <string name="request_version_title">Confirm download</string>
     <string name="request_version_content">click ok to download latest version</string>
+    <string name="text_options">Options</string>
+    <string name="text_options_reader_mode">Reader mode</string>
+    <string name="text_options_page">Page Mode</string>
+    <string name="text_options_stream">Stream Mode</string>
+    <string name="text_options_hidden">Hidden</string>
 </resources>

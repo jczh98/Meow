@@ -6,8 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Point
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
@@ -23,7 +21,7 @@ import top.rechinx.meow.manager.PreferenceManager
 import top.rechinx.meow.model.Chapter
 import top.rechinx.meow.model.ImageUrl
 import top.rechinx.meow.module.base.BaseActivity
-import top.rechinx.meow.support.log.L
+import top.rechinx.meow.widget.CheckableButton
 import top.rechinx.meow.widget.ReverseSeekBar
 
 class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekBar.OnProgressChangeListener, OnViewTapListener {
@@ -31,13 +29,17 @@ class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekB
     @BindView(R.id.reader_chapter_title) lateinit var mChapterTitle: TextView
     @BindView(R.id.reader_chapter_page) lateinit var mChapterPage: TextView
     @BindView(R.id.reader_battery) lateinit var mBatteryText: TextView
-    @BindView(R.id.reader_progress_layout) lateinit var mProgressLayout: View
+    @BindView(R.id.reader_options_main_panel) lateinit var mOptionsLayout: View
     @BindView(R.id.reader_back_layout) lateinit var mBackLayout: View
     @BindView(R.id.reader_info_layout) lateinit var mInfoLayout: View
     @BindView(R.id.reader_seek_bar) lateinit var mSeekBar: ReverseSeekBar
     @BindView(R.id.reader_loading) lateinit var mLoadingText: TextView
     //@BindView(R.id.reader_recycler_view) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.reader_content) lateinit var mFrame: FrameLayout
+    @BindView(R.id.reader_page_mode_btn) lateinit var mPageModeBtn: CheckableButton
+    @BindView(R.id.reader_stream_mode_btn) lateinit var mStreamModeBtn: CheckableButton
+    @BindView(R.id.reader_options_first_panel) lateinit var mFirstLevelOptions: View
+    @BindView(R.id.reader_options_second_panel) lateinit var mSecondLevelOptions: View
 
     private lateinit var mPreferenceManager: PreferenceManager
     private lateinit var mPresenter: ReaderPresenter
@@ -73,6 +75,15 @@ class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekB
 //        mRecyclerView.adapter = mAdapter
 //        mRecyclerView.itemAnimator = null
 //        mRecyclerView.setItemViewCacheSize(2)
+
+        // init options
+        if(sMode == 0) {
+            mPageModeBtn.isChecked = true
+            mStreamModeBtn.isChecked = false
+        } else {
+            mPageModeBtn.isChecked = false
+            mStreamModeBtn.isChecked = true
+        }
         // SeekBar listener
         mSeekBar.setOnProgressChangeListener(this)
         // Hidden info
@@ -223,19 +234,12 @@ class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekB
 
 
     fun switchControl() {
-        if(mProgressLayout.isShown) {
-            mBackLayout.visibility = View.INVISIBLE
-            mProgressLayout.visibility = View.INVISIBLE
-            if(!mPreferenceManager.getBoolean(Constants.PREF_HIDE_READER_INFO, false)) {
-                mInfoLayout.visibility = View.VISIBLE
-            }
+        if(mOptionsLayout.isShown) {
+            hiddenController()
         }else {
-            mBackLayout.visibility = View.VISIBLE
-            mProgressLayout.visibility = View.VISIBLE
-            mInfoLayout.visibility = View.INVISIBLE
+            showController()
         }
     }
-
 
     override fun onStartTrackingTouch(seekBar: DiscreteSeekBar?) {
     }
@@ -258,10 +262,53 @@ class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekB
     @OnClick(R.id.reader_back_btn) fun onBackClick() {finish()}
 
     @OnClick(R.id.reader_options) fun onOptionsClick() {
-        sMode = sMode xor 1
-        setupReader(sMode)
+        showMoreOptions()
     }
+
+    @OnClick(R.id.reader_page_mode_btn) fun onReaderModeBtnClick() {
+        mPageModeBtn.isChecked = true
+        mStreamModeBtn.isChecked = false
+        setupReader(0)
+    }
+
+    @OnClick(R.id.reader_stream_mode_btn) fun onStreamModeBtnClick() {
+        mPageModeBtn.isChecked = false
+        mStreamModeBtn.isChecked = true
+        setupReader(1)
+    }
+
+    @OnClick(R.id.reader_hidden_second_options) fun onHiddenMoreOptionsClick() {
+        hiddenMoreOptions()
+    }
+
     override fun getLayoutId(): Int = R.layout.activity_reader
+
+
+    private fun showController() {
+        mBackLayout.visibility = View.VISIBLE
+        mInfoLayout.visibility = View.INVISIBLE
+        mFirstLevelOptions.visibility = View.VISIBLE
+        mSecondLevelOptions.visibility = View.GONE
+        mOptionsLayout.visibility = View.VISIBLE
+    }
+
+    private fun hiddenController() {
+        mBackLayout.visibility = View.INVISIBLE
+        mOptionsLayout.visibility = View.INVISIBLE
+        if(!mPreferenceManager.getBoolean(Constants.PREF_HIDE_READER_INFO, false)) {
+            mInfoLayout.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showMoreOptions() {
+        mFirstLevelOptions.visibility = View.GONE
+        mSecondLevelOptions.visibility = View.VISIBLE
+    }
+
+    private fun hiddenMoreOptions() {
+        mFirstLevelOptions.visibility = View.VISIBLE
+        mSecondLevelOptions.visibility = View.GONE
+    }
 
     companion object {
 
