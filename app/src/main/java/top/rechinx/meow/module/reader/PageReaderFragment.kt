@@ -41,29 +41,23 @@ class PageReaderFragment: ReaderFragment(), RecyclerViewPager.OnPageChangedListe
 
         if(newPosition == 0) {
             onLoadPrevChapter()
-            //mPresenter.loadPrev()
         }
 
         if(newPosition == mAdapter.itemCount - 1) {
             onLoadNextChapter()
-            //mPresenter.loadNext()
         }
 
         val newImage = mAdapter.getItem(newPosition)
         val oldImage = mAdapter.getItem(oldPosition)
         if(!oldImage.chapter.equals(newImage.chapter)) {
             if(newPosition > oldPosition) {
-                //mPresenter.toNextChapter()
                 onNextChapter()
             }
             if(newPosition < oldPosition) {
-                //mPresenter.toPrevChapter()
                 onPrevChapter()
             }
         }
         onReaderPageChanged(newImage.page_number)
-        //currentPage = newImage.page_number
-        //updateProgress()
     }
 
     /**

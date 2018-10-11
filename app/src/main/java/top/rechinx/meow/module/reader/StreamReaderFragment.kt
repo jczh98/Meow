@@ -37,12 +37,10 @@ class StreamReaderFragment: ReaderFragment() {
                     val firstItem = mLayoutManager.findFirstVisibleItemPosition()
                     if(firstItem == 0) {
                         onLoadPrevChapter()
-                        //mPresenter.loadPrev()
                     }
                     val lastItem = mLayoutManager.findLastVisibleItemPosition()
                     if(lastItem == mAdapter.itemCount - 1) {
                         onLoadNextChapter()
-                        //mPresenter.loadNext()
                     }
                 }
             }
@@ -56,16 +54,12 @@ class StreamReaderFragment: ReaderFragment() {
                     if (!oldImage.chapter.equals(newImage.chapter)) {
                         if (dy > 0) {
                             onNextChapter()
-                            //mPresenter.toNextChapter()
                         } else if (dy < 0) {
                             onPrevChapter()
-                            //mPresenter.toPrevChapter()
                         }
                     }
                     onReaderPageChanged(mAdapter.getItem(target).page_number)
-                    //currentPage = mAdapter.getItem(target).page_number
                     mLastPosition = target
-                    //updateProgress()
                 }
             }
         })
@@ -85,7 +79,6 @@ class StreamReaderFragment: ReaderFragment() {
         activity?.windowManager?.defaultDisplay?.getSize(point)
         mRecyclerView.smoothScrollBy(0, -point.y)
         if (mLayoutManager.findFirstVisibleItemPosition() == 0) {
-            //mPresenter.loadPrev()
             onLoadPrevChapter()
         }
     }
@@ -95,7 +88,6 @@ class StreamReaderFragment: ReaderFragment() {
         activity?.windowManager?.defaultDisplay?.getSize(point)
         mRecyclerView.smoothScrollBy(0, point.y)
         if (mLayoutManager.findFirstVisibleItemPosition() == 0) {
-            //mPresenter.loadNext()
             onLoadNextChapter()
         }
     }

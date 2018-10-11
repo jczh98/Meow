@@ -34,7 +34,6 @@ class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekB
     @BindView(R.id.reader_info_layout) lateinit var mInfoLayout: View
     @BindView(R.id.reader_seek_bar) lateinit var mSeekBar: ReverseSeekBar
     @BindView(R.id.reader_loading) lateinit var mLoadingText: TextView
-    //@BindView(R.id.reader_recycler_view) lateinit var mRecyclerView: RecyclerView
     @BindView(R.id.reader_content) lateinit var mFrame: FrameLayout
     @BindView(R.id.reader_page_mode_btn) lateinit var mPageModeBtn: CheckableButton
     @BindView(R.id.reader_stream_mode_btn) lateinit var mStreamModeBtn: CheckableButton
@@ -43,7 +42,6 @@ class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekB
 
     private lateinit var mPreferenceManager: PreferenceManager
     private lateinit var mPresenter: ReaderPresenter
-    //private lateinit var mAdapter: ReaderAdapter
     private var mReader: ReaderFragment? = null
 
     private var max: Int = 1
@@ -66,16 +64,6 @@ class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekB
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         // init reader fragment
         setupReader(sMode)
-
-        // Recycler view
-//        mAdapter = ReaderAdapter(this, ArrayList())
-//        mAdapter.setOnViewTapListener(this)
-        //mAdapter.setOnTouchCallback(this)
-//        mRecyclerView.layoutManager = getLayoutManager()
-//        mRecyclerView.adapter = mAdapter
-//        mRecyclerView.itemAnimator = null
-//        mRecyclerView.setItemViewCacheSize(2)
-
         // init options
         if(sMode == 0) {
             mPageModeBtn.isChecked = true
@@ -121,7 +109,6 @@ class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekB
         mReader?.addAll(it)
         mLoadingText.visibility = View.GONE
         mFrame.visibility = View.VISIBLE
-        //mRecyclerView.visibility = View.VISIBLE
         mReader?.scrollToPosition(currentPage - 1)
         mSeekBar.progress = currentPage
         updateProgress()
@@ -129,16 +116,13 @@ class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekB
 
     override fun onPrevLoadSuccess(it: List<ImageUrl>) {
         mReader?.addAll(0, it)
-        //mAdapter.addAll(0, it)
     }
 
     override fun onNextLoadSuccess(it: List<ImageUrl>) {
         mReader?.addAll(it)
-       // mAdapter.addAll(it)
     }
 
     override fun onParseError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onPrevLoading() {
