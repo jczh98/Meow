@@ -15,7 +15,7 @@ import butterknife.BindView
 import butterknife.OnClick
 import com.github.chrisbanes.photoview.OnViewTapListener
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-import top.rechinx.meow.Constants
+import top.rechinx.meow.global.Constants
 import top.rechinx.meow.R
 import top.rechinx.meow.manager.PreferenceManager
 import top.rechinx.meow.model.Chapter
@@ -265,7 +265,7 @@ class ReaderActivity : BaseActivity(), ReaderCallback, ReaderView, DiscreteSeekB
         hiddenMoreOptions()
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_reader
+    override fun getLayoutId(): Int = R.layout.activity_read
 
 
     private fun showController() {

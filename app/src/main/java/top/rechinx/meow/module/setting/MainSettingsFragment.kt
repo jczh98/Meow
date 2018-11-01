@@ -7,8 +7,7 @@ import android.preference.PreferenceFragment
 import android.preference.SwitchPreference
 import android.view.View
 import android.widget.ListView
-import android.widget.Switch
-import top.rechinx.meow.Constants
+import top.rechinx.meow.global.Constants
 import top.rechinx.meow.R
 import top.rechinx.meow.manager.PreferenceManager
 

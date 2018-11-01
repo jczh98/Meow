@@ -1,14 +1,10 @@
 package top.rechinx.meow.dao
 
 import android.arch.persistence.room.Database
-import android.arch.persistence.room.Entity
 import android.arch.persistence.room.RoomDatabase
-import top.rechinx.meow.model.Source
 import android.arch.persistence.room.Room
-import android.os.Build
-import android.util.Log
 import top.rechinx.meow.App
-import top.rechinx.meow.Constants
+import top.rechinx.meow.global.Constants
 import top.rechinx.meow.model.Comic
 import top.rechinx.meow.model.Login
 

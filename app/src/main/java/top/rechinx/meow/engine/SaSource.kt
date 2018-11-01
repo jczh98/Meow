@@ -101,7 +101,7 @@ class SaSource {
             try {
                 var jsonResponse = js.rxCallJs(node.urlbuilder!!).blockingFirst()
                 val data = JSONObject(jsonResponse)
-                var urlArray = data.getJSONArray("url")
+                var urlArray = data.getJSONArray("cid")
                 var method = data.getString("method")
                 var list = ArrayList<String>()
                 for(i in 0 until urlArray.length()) {
@@ -267,7 +267,7 @@ class SaSource {
             try {
                 val json = js.rxCallJs(loginNode?.urlbuilder!!, username, password).blockingFirst()
                 val data = JSONObject(json)
-                var url = data.getString("url")
+                var url = data.getString("cid")
                 var method = data.getString("method")
                 var head = data.getJSONObject("header")
                 val usernameFrom = data.getString("username")

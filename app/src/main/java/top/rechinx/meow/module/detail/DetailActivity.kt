@@ -13,7 +13,7 @@ import android.widget.TextView
 import butterknife.BindView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
-import top.rechinx.meow.Constants
+import top.rechinx.meow.global.Constants
 import top.rechinx.meow.R
 import top.rechinx.meow.manager.ComicManager
 import top.rechinx.meow.manager.PreferenceManager
@@ -22,7 +22,6 @@ import top.rechinx.meow.model.Comic
 import top.rechinx.meow.module.base.BaseActivity
 import top.rechinx.meow.module.reader.ReaderActivity
 import top.rechinx.meow.module.base.BaseAdapter
-import top.rechinx.meow.support.log.L
 
 class DetailActivity : BaseActivity(), DetailView, BaseAdapter.OnItemClickListener, DetailAdapter.OnClickCallback {
 

@@ -48,6 +48,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.7.1'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
+    implementation "android.arch.persistence.room:rxjava2:1.1.1"
     implementation "android.arch.persistence.room:runtime:1.1.1"
     kapt "android.arch.persistence.room:compiler:1.1.1"
     implementation "android.arch.persistence.room:rxjava2:1.1.1"
@@ -61,6 +62,32 @@ dependencies {
     implementation 'com.eclipsesource.j2v8:j2v8:4.8.2@aar'
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     implementation 'com.allenliu.versionchecklib:library:2.0.8'
+    // Koin
+    def koin_version = '1.0.1'
+    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
+
+    // rxrelay
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0'
+
+    // system ui helper
+    implementation 'me.zhanghai.android.systemuihelper:library:1.0.0'
+
+    // rxsharedpreference
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
+
+    // directional view pager
+    implementation project(':library:DirectionalViewPager')
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+    
+    // DiskLruCache
+    implementation 'com.jakewharton:disklrucache:2.0.2'
+
+    // Okio
+    implementation 'com.squareup.okio:okio:1.14.0'
 
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'

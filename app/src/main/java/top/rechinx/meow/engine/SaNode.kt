@@ -25,7 +25,7 @@ class SaNode: INode {
             name = attrList.getString("name")
             parser = attrList.getString("parser")
             headers = attrList.getString("headers")
-            url = attrList.getString("url")
+            url = attrList.getString("cid")
             ua = attrList.getString("ua")
             urlbuilder = attrList.getString("urlbuilder")
             headerBuilder = attrList.getString("headerbuilder")

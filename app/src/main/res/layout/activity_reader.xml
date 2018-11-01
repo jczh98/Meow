@@ -1,26 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center">
+
     <RelativeLayout
+        android:id="@+id/reader_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black">
+
         <FrameLayout
-            android:id="@+id/reader_content"
-            android:visibility="invisible"
+            android:id="@+id/viewer_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-        <TextView
-            android:id="@+id/reader_loading"
+            android:layout_height="match_parent">
+        </FrameLayout>
+
+        <ProgressBar
+            android:id="@+id/please_wait"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/reader_picture_loading"
-            android:textColor="@color/white"/>
-        <include layout="@layout/custom_reader_info"/>
-        <include layout="@layout/custom_back_btn"/>
-        <include layout="@layout/custom_options"/>
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <include layout="@layout/custom_reader_info" />
+
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/reader_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:theme="?attr/actionBarTheme"
+        android:visibility="invisible"
+        tools:visibility="visible">
+
+        <include layout="@layout/custom_toolbar" />
+
+        <LinearLayout
+            android:id="@+id/reader_menu_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:background="?colorPrimary"
+            android:orientation="horizontal"
+            android:descendantFocusability="blocksDescendants">
+
+            <ImageButton
+                android:id="@+id/left_chapter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/material_layout_keylines_screen_edge_margin"
+                android:background="?selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_skip_previous_white_24dp"/>
+
+            <top.rechinx.meow.widget.ReverseSeekBar
+                android:id="@+id/reader_seek_bar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                app:dsb_min="1"
+                app:dsb_trackColor="@color/white"
+                app:dsb_rippleColor="?attr/colorAccent"
+                app:dsb_progressColor="?attr/colorAccent"
+                app:dsb_indicatorColor="?attr/colorAccent"
+                app:dsb_trackHeight="4dp"
+                app:dsb_thumbSize="12dp"/>
+
+            <ImageButton
+                android:id="@+id/right_chapter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/material_layout_keylines_screen_edge_margin"
+                android:background="?selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_skip_next_white_24dp"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/brightness_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <View
+        android:id="@+id/color_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
 </FrameLayout>

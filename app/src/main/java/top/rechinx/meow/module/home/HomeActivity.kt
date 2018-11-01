@@ -75,8 +75,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 //        var lenght = iss.available()
 //        var  buffer = ByteArray(lenght)
 //        iss.read(buffer)
-//        var source = String(buffer, Charset.forName("utf8"))
-//        var s = SaSource(App.instance, source)
+//        var sourceId = String(buffer, Charset.forName("utf8"))
+//        var s = SaSource(App.instance, sourceId)
 //        var comic = Comic()
 //        comic.cid = "21"
 //        CompositeDisposable().add(s.getSearchResult("akb", 0)
