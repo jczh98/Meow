@@ -21,7 +21,8 @@ data class Manga(@ColumnInfo override var cid: String?,
                  @ColumnInfo var favorite: Boolean = false,
                  @ColumnInfo var sourceId: Long = 0,
                  @ColumnInfo var last_update: Long = 0,
-                 @ColumnInfo var viewer: Int = 0): AbsManga() {
+                 @ColumnInfo var viewer: Int = 0,
+                 @ColumnInfo var history: Boolean = false): AbsManga() {
 
     constructor(): this(null, null, null, null, null, 0, null, false, null, null)
 

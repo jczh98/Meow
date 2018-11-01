@@ -1,5 +1,6 @@
 package top.rechinx.meow.data.repository
 
+import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
@@ -29,6 +30,14 @@ class MangaRepository(private val sourceManager: SourceManager,
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
+    }
+
+    fun listFavorite(): Flowable<List<Manga>> {
+        return mangaDao.listFavorite()
+    }
+
+    fun listHistory(): Flowable<List<Manga>> {
+        return mangaDao.listHistory()
     }
 
     fun fetchMangaInfo(sourceId: Long, cid: String): Observable<Manga> {
