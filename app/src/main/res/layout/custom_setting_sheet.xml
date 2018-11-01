@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:padding="@dimen/material_component_dialogs_padding_around_content_area">
+
+    <TextView
+        android:id="@+id/general_prefs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_sheet_category_general"
+        android:textColor="?attr/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v4.widget.Space
+        android:id="@+id/spinner_end"
+        android:layout_width="16dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/viewer_selection_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/setting_sheet_select_viewer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/verticalcenter"
+        app:layout_constraintBaseline_toBaselineOf="@id/viewer_selection_spinner" />
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/viewer_selection_spinner"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:entries="@array/viewers_selector"
+        app:layout_constraintTop_toBottomOf="@id/general_prefs"
+        app:layout_constraintLeft_toRightOf="@id/verticalcenter"
+        app:layout_constraintRight_toRightOf="@id/spinner_end" />
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/verticalcenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+</android.support.constraint.ConstraintLayout>

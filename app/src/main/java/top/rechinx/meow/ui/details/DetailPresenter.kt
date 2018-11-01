@@ -1,6 +1,7 @@
 package top.rechinx.meow.ui.details
 
 import top.rechinx.meow.data.repository.MangaRepository
+import top.rechinx.meow.support.log.L
 import top.rechinx.meow.support.mvp.RxPresenter
 
 class DetailPresenter(private val mangaRepository: MangaRepository): RxPresenter<DetailContract.View>(), DetailContract.Presenter {

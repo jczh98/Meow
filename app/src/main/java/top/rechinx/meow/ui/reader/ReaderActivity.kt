@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
@@ -96,6 +98,19 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
 
         })
         setMenuVisibility(menuVisible)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.reader, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings -> ReaderSetting(this).show()
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

@@ -1,6 +1,7 @@
 package top.rechinx.meow.support.viewbinding
 
 import android.app.Activity
+import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -17,6 +18,9 @@ object ViewBindings {
 }
 
 // bind view
+
+fun <V: View> BottomSheetDialog.bindView(id: Int) : ReadOnlyProperty<BottomSheetDialog, V> = required(id, viewFinder)
+
 fun <V: View> View.bindView(id: Int) : ReadOnlyProperty<View, V> = required(id, viewFinder)
 
 fun <V: View> Activity.bindView(id: Int) : ReadOnlyProperty<Activity, V> = required(id, viewFinder)
@@ -35,6 +39,9 @@ fun <V : View> Activity.bindOptionalView(id: Int)
 
 private val View.viewFinder: View.(Int) -> View?
     get() = { findViewById(it) }
+
+private val BottomSheetDialog.viewFinder: BottomSheetDialog.(Int) -> View?
+    get() = {  findViewById(it) }
 
 private val Activity.viewFinder: Activity.(Int) -> View?
     get() = { findViewById(it) }

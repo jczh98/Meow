@@ -17,4 +17,7 @@ interface ChapterDao {
 
     @Delete
     fun deleteChapters(list: List<Chapter>)
+
+    @Update
+    fun updateChapter(chapter: Chapter)
 }

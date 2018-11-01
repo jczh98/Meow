@@ -18,6 +18,7 @@ import top.rechinx.meow.ui.reader.model.ReaderChapter
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import top.rechinx.meow.ui.reader.model.ViewerChapters
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class ReaderPresenter(private val sourceManager: SourceManager,
                       private val mangaRepository: MangaRepository,
@@ -108,6 +109,7 @@ class ReaderPresenter(private val sourceManager: SourceManager,
         val currentChapters = viewerChaptersRelay.value ?: return
 
         val selectedChapter = page.chapter
+        selectedChapter.chapter.last_page_read = page.index
 
         if (selectedChapter != currentChapters.currChapter) {
             onChapterChanged(currentChapters.currChapter, selectedChapter)
@@ -126,7 +128,12 @@ class ReaderPresenter(private val sourceManager: SourceManager,
     }
 
     private fun onChapterChanged(fromChapter: ReaderChapter, toChapter: ReaderChapter) {
+        saveChapterProgress(fromChapter)
         saveChapterHistory(fromChapter)
+    }
+
+    private fun saveChapterProgress(chapter: ReaderChapter) {
+        chapterRepository.updateChapter(chapter.chapter)
     }
 
     private fun saveChapterHistory(chapter: ReaderChapter) {
@@ -134,6 +141,27 @@ class ReaderPresenter(private val sourceManager: SourceManager,
 
     override fun getCurrentChapter(): ReaderChapter? {
         return viewerChaptersRelay.value?.currChapter
+    }
+
+    override fun setMangaViewer(viewer: Int) {
+        val manga = manga ?: return
+        manga.viewer = viewer
+        mangaRepository.updateManga(manga)
+        rx {
+            Observable.timer(250, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                    .subscribe {
+                        val currChapters = viewerChaptersRelay.value
+                        if (currChapters != null) {
+                            // Save current page
+                            val currChapter = currChapters.currChapter
+                            currChapter.requestedPage = currChapter.chapter.last_page_read
+
+                            // Emit manga and chapters to the new viewer
+                            view?.setManga(manga)
+                            view?.setChapters(currChapters)
+                        }
+                    }
+        }
     }
 
     override fun getMangaViewer(): Int {

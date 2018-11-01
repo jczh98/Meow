@@ -24,6 +24,13 @@ class MangaRepository(private val sourceManager: SourceManager,
         return mangaDao.loadManga(mangaId).toObservable()
     }
 
+    fun updateManga(manga: Manga) {
+        Observable.just(mangaDao.updateManga(manga))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+    }
+
     fun fetchMangaInfo(sourceId: Long, cid: String): Observable<Manga> {
         val source = sourceManager.get(sourceId)
         val dbManga = mangaDao.loadManga(sourceId, cid)
@@ -51,8 +58,7 @@ class MangaRepository(private val sourceManager: SourceManager,
     fun fetchMangaChapters(sourceId: Long, cid: String): Observable<List<Chapter>> {
         val manga = mangaDao.loadManga(sourceId, cid)
         val source = sourceManager.get(sourceId)
-        val fromDb = Observable.fromCallable { chapterDao.getChapters(manga!!.id).blockingGet() }
-        return Observable.concat(fromDb, source!!.fetchChapters(cid).map { syncChaptersWithSource(it, manga!!, source) })
+        return source!!.fetchChapters(cid).map { syncChaptersWithSource(it, manga!!, source) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
