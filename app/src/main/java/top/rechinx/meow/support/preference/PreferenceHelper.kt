@@ -16,6 +16,9 @@ class PreferenceHelper(context: Context) {
 
     fun pageTransitions() = rxPrefs.getBoolean(Constants.PREF_ENABLE_TRANSITIONS, true)
 
+    fun readerMode() = rxPrefs.getString(Constants.PREF_READER_MODE, "0")
+
+    fun hiddenReaderInfo() = rxPrefs.getBoolean(Constants.PREF_HIDE_READER_INFO, false)
     companion object {
 
         private const val PREFERENCES_NAME = "meow_preferences"
