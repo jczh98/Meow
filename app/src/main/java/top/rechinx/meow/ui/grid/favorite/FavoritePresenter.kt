@@ -5,7 +5,7 @@ import io.reactivex.schedulers.Schedulers
 import top.rechinx.meow.data.repository.MangaRepository
 import top.rechinx.meow.support.mvp.RxPresenter
 
-class FavoritePresenter(val mangaRepository: MangaRepository): HistoryContract.Presenter, RxPresenter<HistoryContract.View>() {
+class FavoritePresenter(private val mangaRepository: MangaRepository): FavoriteContract.Presenter, RxPresenter<FavoriteContract.View>() {
 
     override fun load() {
         rx {

@@ -3,8 +3,8 @@ package top.rechinx.meow.di
 import org.koin.dsl.module.module
 import top.rechinx.meow.ui.details.DetailContract
 import top.rechinx.meow.ui.details.DetailPresenter
-import top.rechinx.meow.ui.grid.favorite.HistoryContract
-import top.rechinx.meow.ui.grid.favorite.HistoryPresenter
+import top.rechinx.meow.ui.grid.history.HistoryContract
+import top.rechinx.meow.ui.grid.history.HistoryPresenter
 import top.rechinx.meow.ui.reader.ReaderContarct
 import top.rechinx.meow.ui.reader.ReaderPresenter
 import top.rechinx.meow.ui.result.ResultContract

@@ -1,5 +1,6 @@
 package top.rechinx.meow.ui.home
 
+import android.content.Intent
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -9,8 +10,11 @@ import android.view.MenuItem
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import top.rechinx.meow.R
 import top.rechinx.meow.support.viewbinding.bindView
+import top.rechinx.meow.ui.about.AboutActivity
 import top.rechinx.meow.ui.base.BaseActivity
+import top.rechinx.meow.ui.grid.history.HistoryFragment
 import top.rechinx.meow.ui.result.ResultActivity
+import top.rechinx.meow.ui.setting.SettingsActivity
 
 class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListener, MaterialSearchView.OnQueryTextListener {
 
@@ -19,6 +23,8 @@ class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     private val searchView by bindView<MaterialSearchView>(R.id.search_view)
 
     override fun initViews() {
+        supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HomeFragment()).commit()
+        navigationView.setCheckedItem(R.id.drawer_main)
         initDrawer()
         searchView.setOnQueryTextListener(this)
     }
@@ -34,7 +40,23 @@ class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-
+            R.id.drawer_main -> {
+                supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HomeFragment()).commit()
+                toolbar?.title = getString(R.string.app_name)
+            }
+            R.id.drawer_source -> {
+            }
+            R.id.drawer_history -> {
+                supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HistoryFragment()).commit()
+                toolbar?.title = item.title
+            }
+            R.id.drawer_about -> {
+                startActivity(AboutActivity.createIntent(this))
+            }
+            R.id.drawer_settings -> {
+                var intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true

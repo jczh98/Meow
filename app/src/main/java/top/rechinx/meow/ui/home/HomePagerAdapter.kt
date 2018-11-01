@@ -5,14 +5,15 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import top.rechinx.meow.R
-import top.rechinx.meow.ui.grid.favorite.HistoryFragment
+import top.rechinx.meow.ui.grid.favorite.FavoriteFragment
+import top.rechinx.meow.ui.grid.history.HistoryFragment
 
 class HomePagerAdapter(context: Context, fragmentManager: FragmentManager): FragmentPagerAdapter(fragmentManager) {
 
     private var mContext: Context = context
 
     override fun getItem(position: Int): Fragment {
-        return HistoryFragment()
+        return FavoriteFragment()
     }
 
     override fun getCount(): Int = 1

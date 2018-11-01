@@ -1,4 +1,4 @@
-package top.rechinx.meow.ui.grid.favorite
+package top.rechinx.meow.ui.grid.history
 
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.support.mvp.BasePresenter
