@@ -1,4 +1,4 @@
-package top.rechinx.meow.ui.reader.viewer.pager
+package top.rechinx.meow.ui.reader.viewer.webtoon
 
 import com.f2prateek.rx.preferences2.Preference
 import io.reactivex.disposables.CompositeDisposable
@@ -7,17 +7,14 @@ import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import top.rechinx.meow.support.preference.PreferenceHelper
 
-class PagerConfig(private val viewer: PagerViewer) : KoinComponent {
+class WebtoonConfig: KoinComponent {
 
     private val preference: PreferenceHelper by inject()
+
     private val disposables = CompositeDisposable()
 
-    var usePageTransitions = false
-        private set
-
-    init {
-        preference.pageTransitions()
-                .register({usePageTransitions = it})
+    fun unsubscribe() {
+        disposables.clear()
     }
 
     private fun <T> Preference<T>.register(
@@ -31,9 +28,5 @@ class PagerConfig(private val viewer: PagerViewer) : KoinComponent {
                 .doOnNext(onChanged)
                 .subscribe()
                 .addTo(disposables)
-    }
-
-    fun clear() {
-        disposables.clear()
     }
 }

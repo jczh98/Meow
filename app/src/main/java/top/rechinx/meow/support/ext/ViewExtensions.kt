@@ -22,3 +22,7 @@ fun View.wrapContent() {
 fun View.matchContent() {
     layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 }
+
+inline fun View.visibleIf(block: () -> Boolean) {
+    visibility = if (block()) View.VISIBLE else View.GONE
+}

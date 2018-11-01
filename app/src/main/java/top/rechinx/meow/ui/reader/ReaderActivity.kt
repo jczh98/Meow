@@ -34,6 +34,7 @@ import top.rechinx.meow.ui.reader.model.ViewerChapters
 import top.rechinx.meow.ui.reader.viewer.BaseViewer
 import top.rechinx.meow.ui.reader.viewer.pager.L2RPagerViewer
 import top.rechinx.meow.ui.reader.viewer.pager.R2LPagerViewer
+import top.rechinx.meow.ui.reader.viewer.webtoon.WebtoonViewer
 import top.rechinx.meow.widget.ReverseSeekBar
 
 class ReaderActivity: BaseActivity(), ReaderContarct.View {
@@ -124,7 +125,7 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
         val preViewer = viewer
         val newViewer = when(presenter.getMangaViewer()) {
             RIGHT_TO_LEFT -> R2LPagerViewer(this)
-            else -> L2RPagerViewer(this)
+            else -> WebtoonViewer(this)
         }
         if(preViewer != null) {
             preViewer.destroy()
