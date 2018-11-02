@@ -8,15 +8,11 @@ import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
 import org.koin.android.ext.android.startKoin
-import top.rechinx.meow.dao.AppDatabase
 import top.rechinx.meow.di.AppComponent
-import top.rechinx.meow.manager.PreferenceManager
-import top.rechinx.meow.manager.SourceManager
 
 class App: Application() {
 
     private var basePath: String? = null
-    private var mPreferenceManager: PreferenceManager? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -35,14 +31,6 @@ class App: Application() {
         }
         return basePath!!
     }
-
-    fun getPreferenceManager(): PreferenceManager {
-        if(mPreferenceManager == null) {
-            mPreferenceManager = PreferenceManager(applicationContext)
-        }
-        return mPreferenceManager!!
-    }
-
 
 
     companion object {
