@@ -154,6 +154,7 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
     }
 
     private fun startReader(chapter: Chapter, isContinued: Boolean = false) {
+        presenter.markedAsHistory(adapter.manga!!)
         val intent = ReaderActivity.createIntent(this, adapter.manga!!, chapter, isContinued)
         startActivity(intent)
     }

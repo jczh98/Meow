@@ -53,6 +53,7 @@ class MangaRepository(private val sourceManager: SourceManager,
                     manga.sourceName = source.name
                     dbManga?.id?.let { manga.id = it }
                     dbManga?.favorite?.let { manga.favorite = it }
+                    dbManga?.history?.let { manga.history = it }
                     dbManga?.last_read_chapter_id?.let { manga.last_read_chapter_id = it }
                     mangaDao.insertManga(manga)
                 }

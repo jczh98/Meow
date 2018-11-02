@@ -25,6 +25,8 @@ interface DetailContract {
         fun fetchMangaChapters(sourceId: Long, cid: String)
 
         fun favoriteOrNot(manga: Manga)
+
+        fun markedAsHistory(manga: Manga)
     }
 
 }

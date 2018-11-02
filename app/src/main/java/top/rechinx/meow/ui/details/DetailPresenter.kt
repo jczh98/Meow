@@ -7,6 +7,12 @@ import top.rechinx.meow.support.mvp.RxPresenter
 
 class DetailPresenter(private val mangaRepository: MangaRepository): RxPresenter<DetailContract.View>(), DetailContract.Presenter {
 
+    override fun markedAsHistory(manga: Manga) {
+        manga.history = true
+        rx {
+            mangaRepository.updateManga(manga)
+        }
+    }
     override fun favoriteOrNot(manga: Manga) {
         manga.favorite = !manga.favorite
         rx {
