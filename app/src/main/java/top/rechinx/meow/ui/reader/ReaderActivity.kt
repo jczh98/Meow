@@ -54,6 +54,7 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
     val sourceId by lazy { intent.getLongExtra(Extras.EXTRA_SOURCE, 0) }
     val mangaId by lazy { intent.getLongExtra(Extras.EXTRA_MANGA_ID, -1L) }
     val chapterId by lazy { intent.getLongExtra(Extras.EXTRA_CHAPTER_ID, -1L) }
+    val isContinued by lazy { intent.getBooleanExtra(Extras.EXTRA_CONTINUE_READ, false) }
 
     var menuVisible = false
         private set
@@ -71,7 +72,7 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
                 finish()
                 return
             }
-            presenter.loadInit(mangaId, chapterId)
+            presenter.loadInit(mangaId, chapterId, isContinued)
         }
         config = ReaderConfig()
         initializeMenu()
@@ -230,12 +231,12 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         viewer?.destroy()
         viewer = null
         config?.destroy()
         config = null
         presenter.unsubscribe()
+        super.onDestroy()
     }
 
     override fun getLayoutId(): Int = R.layout.activity_reader
@@ -274,10 +275,11 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
         const val RIGHT_TO_LEFT = 2
         const val WEBTOON = 3
 
-        fun createIntent(context: Context, manga: Manga, chapter: Chapter): Intent {
+        fun createIntent(context: Context, manga: Manga, chapter: Chapter, isContinued: Boolean = false): Intent {
             val intent = Intent(context, ReaderActivity::class.java)
             intent.putExtra(Extras.EXTRA_MANGA_ID, manga.id)
             intent.putExtra(Extras.EXTRA_CHAPTER_ID, chapter.id)
+            intent.putExtra(Extras.EXTRA_CONTINUE_READ, isContinued)
             return intent
         }
     }

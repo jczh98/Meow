@@ -21,7 +21,7 @@ interface ReaderContarct {
 
         fun needsInit() : Boolean
 
-        fun loadInit(mangaId: Long, chapterId: Long)
+        fun loadInit(mangaId: Long, chapterId: Long, isContinued: Boolean = false)
 
         fun preloadChapter(chapter: ReaderChapter)
 

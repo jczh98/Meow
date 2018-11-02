@@ -69,7 +69,7 @@ class DetailAdapter: BaseAdapter<Chapter> {
                     AbsManga.UNKNOWN -> headerHolder.comicStatus.text = context.getString(R.string.string_manga_statu_unknown)
                 }
                 headerHolder.comicUpdate.text = "最后更新： ${manga?.last_update}"
-                headerHolder.read.text = if(manga?.last_update == null) context.getString(R.string.details_read) else context.getString(R.string.details_continue)
+                headerHolder.read.text = if(manga?.last_read_chapter_id == -1L) context.getString(R.string.details_read) else context.getString(R.string.details_continue)
                 headerHolder.favorite.text = if(manga?.favorite == false) context.getString(R.string.details_favorite) else context.getString(R.string.details_unfavorite)
             }
         } else {

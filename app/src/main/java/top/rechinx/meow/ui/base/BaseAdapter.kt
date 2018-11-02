@@ -7,11 +7,14 @@ import android.view.View
 
 abstract class BaseAdapter<T>: RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    var datas: ArrayList<T>
+
     protected var context: Context
-    protected var datas: ArrayList<T>
+
     protected var inflater: LayoutInflater
 
     private var clickListener: OnItemClickListener? = null
+
     private var longClickListener: OnItemLongClickListener? = null
 
     constructor(context: Context, list: ArrayList<T>) {

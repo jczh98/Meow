@@ -15,7 +15,7 @@ import java.lang.Exception
 class ChapterLoader(private val manga: Manga,
                     private val source: Source) {
 
-    fun loadChapter(chapter: ReaderChapter) : Completable {
+    fun loadChapter(chapter: ReaderChapter, isContinued: Boolean = false) : Completable {
         if(chapter.state is ReaderChapter.State.Loaded) {
             return Completable.complete()
         }
@@ -38,6 +38,9 @@ class ChapterLoader(private val manga: Manga,
                             throw Exception("Page list is empty")
                         }
                         chapter.state = ReaderChapter.State.Loaded(pages)
+                        if(isContinued) {
+                            chapter.requestedPage = chapter.chapter.last_page_read
+                        }
                     }
         ).doOnError {
             chapter.state = ReaderChapter.State.Error(it)

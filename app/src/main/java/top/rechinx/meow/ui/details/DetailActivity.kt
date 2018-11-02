@@ -81,7 +81,8 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
         }
     }
 
-    override fun initData() {
+    override fun onResume() {
+        super.onResume()
         presenter.fetchMangaInfo(sourceId, cid)
     }
 
@@ -120,10 +121,16 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
     }
 
     override fun onClick(view: View, type: Int) {
+        val manga = manga!!// must exist
         if(type == 1) {
-
+            if(manga.last_read_chapter_id != -1L) {
+                val chapter = adapter.datas.first { manga.last_read_chapter_id == it.id }
+                startReader(chapter, true)
+            } else {
+                startReader(-1, false)
+            }
+            (view as TextView).text = getString(R.string.details_continue)
         } else {
-            val manga = manga!!// must exist
             presenter.favoriteOrNot(manga)
             (view as TextView).text = if (manga.favorite) getString(R.string.details_unfavorite) else getString(R.string.details_favorite)
             manga.favorite = !manga.favorite
@@ -132,10 +139,23 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
 
     override fun onItemClick(view: View, position: Int) {
         if(position != 0) {
-            val chapter = adapter.getItem(position - 1)
-            val intent = ReaderActivity.createIntent(this, adapter.manga!!, chapter)
-            startActivity(intent)
+            startReader(position)
         }
+    }
+
+    private fun startReader(position: Int, isContinued: Boolean = false) {
+        if(position == -1) {
+            val chapter = adapter.getItem(adapter.itemCount - 2)
+            startReader(chapter)
+        } else {
+            val chapter = adapter.getItem(position - 1)
+            startReader(chapter)
+        }
+    }
+
+    private fun startReader(chapter: Chapter, isContinued: Boolean = false) {
+        val intent = ReaderActivity.createIntent(this, adapter.manga!!, chapter, isContinued)
+        startActivity(intent)
     }
 
     override fun getLayoutId(): Int = R.layout.activity_detail
