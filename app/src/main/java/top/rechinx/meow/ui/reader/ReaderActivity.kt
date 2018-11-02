@@ -124,7 +124,9 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
     override fun setManga(manga: Manga) {
         val preViewer = viewer
         val newViewer = when(presenter.getMangaViewer()) {
+            LEFT_TO_RIGHT -> L2RPagerViewer(this)
             RIGHT_TO_LEFT -> R2LPagerViewer(this)
+            WEBTOON -> WebtoonViewer(this)
             else -> L2RPagerViewer(this)
         }
         if(preViewer != null) {
@@ -270,7 +272,7 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
 
         const val LEFT_TO_RIGHT = 1
         const val RIGHT_TO_LEFT = 2
-        const val WEBTOON = 4
+        const val WEBTOON = 3
 
         fun createIntent(context: Context, manga: Manga, chapter: Chapter): Intent {
             val intent = Intent(context, ReaderActivity::class.java)

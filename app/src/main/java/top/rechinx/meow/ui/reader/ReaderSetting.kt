@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import org.koin.android.ext.android.inject
 import top.rechinx.meow.R
+import top.rechinx.meow.support.log.L
 import top.rechinx.meow.support.preference.PreferenceHelper
 import top.rechinx.meow.support.viewbinding.bindView
 
@@ -32,16 +33,11 @@ class ReaderSetting(val activity: ReaderActivity) : BottomSheetDialog(activity){
     private fun initGeneralPreferences() {
         viewerSelection.setSelection(activity.presenter.getMangaViewer(), false)
         viewerSelection.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            private var firstEvent = true
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(!firstEvent) {
-                    activity.presenter.setMangaViewer(position)
-                } else {
-                    firstEvent = false
-                }
+                activity.presenter.setMangaViewer(position)
             }
 
         }
