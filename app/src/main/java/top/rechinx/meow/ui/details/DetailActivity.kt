@@ -22,6 +22,7 @@ import top.rechinx.meow.R
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.global.Extras
+import top.rechinx.meow.support.log.L
 import top.rechinx.meow.support.viewbinding.bindView
 import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.base.BaseAdapter
@@ -46,6 +47,7 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
         super.onStart()
         presenter.subscribe(this)
     }
+
     override fun onDestroy() {
         presenter.unsubscribe()
         super.onDestroy()
@@ -96,6 +98,7 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
         finishRefreshLayout()
         this.manga = manga
         adapter.manga = manga
+        adapter.notifyDataSetChanged()
         presenter.fetchMangaChapters(sourceId, cid)
     }
 

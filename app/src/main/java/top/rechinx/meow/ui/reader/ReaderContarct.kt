@@ -32,5 +32,7 @@ interface ReaderContarct {
         fun setMangaViewer(viewer: Int)
 
         fun getCurrentChapter(): ReaderChapter?
+
+        fun saveLastRead(chapter: ReaderChapter?)
     }
 }

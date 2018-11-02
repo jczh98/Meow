@@ -230,6 +230,11 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
         viewer.moveToPage(page)
     }
 
+    override fun onPause() {
+        super.onPause()
+        presenter.saveLastRead(presenter.getCurrentChapter())
+    }
+
     override fun onDestroy() {
         viewer?.destroy()
         viewer = null

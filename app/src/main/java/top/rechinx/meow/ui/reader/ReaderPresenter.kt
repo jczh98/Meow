@@ -165,10 +165,10 @@ class ReaderPresenter(private val sourceManager: SourceManager,
         }
     }
 
-    private fun saveLastRead(chapter: ReaderChapter?) {
+    override fun saveLastRead(chapter: ReaderChapter?) {
         if(chapter != null) {
             manga?.last_read_chapter_id = chapter.chapter.id
-            rx { mangaRepository.updateManga(manga!!) }
+            mangaRepository.updateManga(manga!!)
         }
     }
 

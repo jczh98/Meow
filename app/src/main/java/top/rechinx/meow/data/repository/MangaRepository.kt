@@ -15,6 +15,7 @@ import top.rechinx.meow.data.database.dao.ChapterDao
 import top.rechinx.meow.data.database.dao.MangaDao
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.support.log.L
 import java.lang.Exception
 
 class MangaRepository(private val sourceManager: SourceManager,
@@ -42,11 +43,12 @@ class MangaRepository(private val sourceManager: SourceManager,
 
     fun fetchMangaInfo(sourceId: Long, cid: String): Observable<Manga> {
         val source = sourceManager.get(sourceId)
-        val dbManga = mangaDao.loadManga(sourceId, cid)
         return source!!.fetchMangaInfo(cid)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
                     val manga = Manga()
+                    val dbManga = mangaDao.loadManga(sourceId, cid)
                     manga.copyFrom(it)
                     manga.cid = cid
                     manga.sourceId = sourceId
@@ -57,9 +59,8 @@ class MangaRepository(private val sourceManager: SourceManager,
                     dbManga?.last_read_chapter_id?.let { manga.last_read_chapter_id = it }
                     mangaDao.insertManga(manga)
                 }
-                .observeOn(AndroidSchedulers.mainThread())
                 .map {
-                    mangaDao.loadManga(sourceId, cid)!!
+                    return@map mangaDao.loadManga(sourceId, cid)!!
                 }.onErrorReturn {
                     it.printStackTrace()
                     mangaDao.loadManga(sourceId, cid)

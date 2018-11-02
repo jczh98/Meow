@@ -20,7 +20,7 @@ abstract class RxPresenter<V>: BasePresenter<V> {
 
     @CallSuper
     override fun unsubscribe() {
-        disposable.clear()
+        disposable.dispose()
         view = null
     }
 }

@@ -76,7 +76,7 @@ class DetailAdapter: BaseAdapter<Chapter> {
             val chapter = datas[position - 1]
             var chapterHolder = holder as ChapterViewHolder
             chapterHolder.chapterButton.text = chapter.name
-            chapterHolder.chapterButton.isSelected = manga?.last_chapter == chapter.url
+            chapterHolder.chapterButton.isSelected = manga?.last_read_chapter_id == chapter.id
         }
     }
 
