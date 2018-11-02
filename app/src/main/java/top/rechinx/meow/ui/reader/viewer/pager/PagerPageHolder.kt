@@ -1,6 +1,7 @@
 package top.rechinx.meow.ui.reader.viewer.pager
 
 import android.graphics.drawable.Drawable
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -26,9 +27,13 @@ import io.reactivex.schedulers.Schedulers
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import top.rechinx.meow.core.source.model.AbsMangaPage
 import top.rechinx.meow.support.ext.gone
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.glide.GlideApp
+import top.rechinx.meow.ui.reader.ReaderProgressBar
+import top.rechinx.meow.support.ext.dpToPx
+import top.rechinx.meow.support.ext.visible
+import top.rechinx.meow.R
 import java.io.InputStream
+import java.util.concurrent.TimeUnit
 
 /**
  * View of the ViewPager that contains a page of a chapter.
@@ -41,19 +46,37 @@ class PagerPageHolder(
     override val item
         get() = page
 
+    private val progressBar = ReaderProgressBar(context, null).apply {
+
+        val size = 48.dpToPx
+        layoutParams = FrameLayout.LayoutParams(size, size).apply {
+            gravity = Gravity.CENTER
+        }
+    }
+
     private var photoView: PhotoView? = null
 
     private var retryButton: PagerButton? = null
 
     private var statusDisposable: Disposable? = null
 
+    private var progressDisposable: Disposable? = null
+
+
     init {
+        addView(progressBar)
         observeStatus()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         unsubscribeStatus()
+        unsubscribeProgress()
+    }
+
+    private fun unsubscribeProgress() {
+        progressDisposable?.dispose()
+        progressDisposable = null
     }
 
     private fun unsubscribeStatus() {
@@ -69,10 +92,23 @@ class PagerPageHolder(
                 .subscribe { precessStatus(it) }
     }
 
+    private fun observeProgress() {
+        progressDisposable?.dispose()
+        progressDisposable = Observable.interval(100, TimeUnit.MILLISECONDS)
+                .map { page.progress }
+                .distinctUntilChanged()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { value -> progressBar.setProgress(value) }
+    }
+
     private fun precessStatus(status: Int) {
         when(status) {
             AbsMangaPage.QUEUE -> setQueued()
             AbsMangaPage.LOAD_PAGE -> setLoading()
+            AbsMangaPage.DOWNLOAD_IMAGE -> {
+                observeProgress()
+                setDownloading()
+            }
             AbsMangaPage.READY -> {
                 setImage()
             }
@@ -82,11 +118,19 @@ class PagerPageHolder(
         }
     }
 
-    private fun setError() {
+    private fun setDownloading() {
+        progressBar.visible()
+        retryButton?.gone()
+    }
 
+    private fun setError() {
+        progressBar.gone()
+        initRetryButton().visible()
     }
 
     private fun setImage() {
+        progressBar.visible()
+        progressBar.completeAndFadeOut()
         retryButton?.gone()
         initPhotoView()
         val streamFn = page.stream ?: return
@@ -105,6 +149,25 @@ class PagerPageHolder(
                 .subscribe()
     }
 
+    private fun setLoading() {
+        progressBar.visible()
+        retryButton?.gone()
+    }
+
+    private fun setQueued() {
+        progressBar.visible()
+        retryButton?.gone()
+    }
+
+
+    private fun onImageDecoded() {
+        progressBar.gone()
+    }
+
+    private fun onImageDecodeError() {
+        progressBar.gone()
+    }
+
     private fun initPhotoView(): PhotoView {
         photoView = PhotoView(context).apply {
             layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -114,14 +177,21 @@ class PagerPageHolder(
         return photoView!!
     }
 
-    private fun setLoading() {
-        retryButton?.gone()
-    }
+    private fun initRetryButton(): PagerButton {
+        if (retryButton != null) return retryButton!!
 
-    private fun setQueued() {
-        retryButton?.gone()
+        retryButton = PagerButton(context, viewer).apply {
+            layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                gravity = Gravity.CENTER
+            }
+            setText(R.string.action_retry)
+            setOnClickListener {
+                page.chapter.pageLoader?.retryPage(page)
+            }
+        }
+        addView(retryButton)
+        return retryButton!!
     }
-
 
     private fun PhotoView.setImage(stream: InputStream) {
         GlideApp.with(this)
@@ -136,7 +206,7 @@ class PagerPageHolder(
                             target: Target<Drawable>?,
                             isFirstResource: Boolean
                     ): Boolean {
-                        //onImageDecodeError()
+                        onImageDecodeError()
                         return false
                     }
 
@@ -147,7 +217,7 @@ class PagerPageHolder(
                             dataSource: DataSource?,
                             isFirstResource: Boolean
                     ): Boolean {
-                        //onImageDecoded()
+                        onImageDecoded()
                         return false
                     }
                 })

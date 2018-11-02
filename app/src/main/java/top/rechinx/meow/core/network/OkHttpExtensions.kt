@@ -36,3 +36,17 @@ fun Call.asObservableSuccess(): Observable<Response> {
         }
     }
 }
+
+fun OkHttpClient.newCallWithProgress(request: Request, listener: ProgressListener): Call {
+    val progressClient = newBuilder()
+            .cache(null)
+            .addNetworkInterceptor { chain ->
+                val originalResponse = chain.proceed(chain.request())
+                originalResponse.newBuilder()
+                        .body(ProgressResponseBody(originalResponse.body()!!, listener))
+                        .build()
+            }
+            .build()
+
+    return progressClient.newCall(request)
+}

@@ -125,7 +125,7 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
         val preViewer = viewer
         val newViewer = when(presenter.getMangaViewer()) {
             RIGHT_TO_LEFT -> R2LPagerViewer(this)
-            else -> WebtoonViewer(this)
+            else -> L2RPagerViewer(this)
         }
         if(preViewer != null) {
             preViewer.destroy()

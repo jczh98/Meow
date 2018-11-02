@@ -12,6 +12,7 @@ import top.rechinx.meow.core.source.model.AbsMangaPage
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import top.rechinx.meow.core.network.asObservableSuccess
+import top.rechinx.meow.core.network.newCallWithProgress
 import top.rechinx.meow.core.source.model.FilterList
 import java.security.MessageDigest
 
@@ -66,7 +67,7 @@ abstract class HttpSource: Source(), KoinComponent {
             }
 
     fun fetchImage(page: AbsMangaPage): Observable<Response> {
-        return client.newCall(imageRequest(page))
+        return client.newCallWithProgress(imageRequest(page), page)
                 .asObservableSuccess()
     }
 
