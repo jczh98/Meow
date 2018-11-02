@@ -119,6 +119,8 @@
         <me.gujun.android.taggroup.TagGroup
             android:id="@+id/mangaGenresTags"
             style="@style/TagGroup"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -135,7 +137,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp">
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
             <TextView
                 android:id="@+id/item_header_comic_status"
                 android:layout_width="wrap_content"

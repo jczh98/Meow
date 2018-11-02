@@ -71,17 +71,20 @@ class DetailAdapter: BaseAdapter<Chapter> {
                 headerHolder.comicTitle.text = manga?.title
                 headerHolder.comicIntro.text = manga?.description
                 headerHolder.comicAuthor.text = manga?.author
+                var statusString = context.getString(R.string.info_status_label) + " :  "
                 when(manga?.status) {
-                    AbsManga.ONGOING -> headerHolder.comicStatus.text = context.getString(R.string.string_manga_statu_ongoing)
-                    AbsManga.COMPLETED -> headerHolder.comicStatus.text = context.getString(R.string.string_manga_statu_completed)
-                    AbsManga.UNKNOWN -> headerHolder.comicStatus.text = context.getString(R.string.string_manga_statu_unknown)
+                    AbsManga.ONGOING -> statusString += context.getString(R.string.string_manga_statu_ongoing)
+                    AbsManga.COMPLETED -> statusString += context.getString(R.string.string_manga_statu_completed)
+                    AbsManga.UNKNOWN -> statusString += context.getString(R.string.string_manga_statu_unknown)
                 }
+                holder.comicStatus.text = statusString
+                var updateLabel = context.getString(R.string.info_last_update_label) + " :  "
                 if(manga?.last_update != 0L) {
-                    headerHolder.comicUpdate.text = "最后更新： ${DateFormat.getDateInstance(DateFormat.SHORT).format(Date(manga?.last_update!!))}"
+                    updateLabel += DateFormat.getDateInstance(DateFormat.SHORT).format(Date(manga?.last_update!!))
                 } else {
-                    headerHolder.comicUpdate.text = "最后更新： ${context.getString(R.string.unknown)}"
+                    updateLabel += context.getString(R.string.unknown)
                 }
-
+                holder.comicUpdate.text = updateLabel
                 headerHolder.read.text = if(manga?.last_read_chapter_id == -1L) context.getString(R.string.details_read) else context.getString(R.string.details_continue)
                 headerHolder.favorite.text = if(manga?.favorite == false) context.getString(R.string.details_favorite) else context.getString(R.string.details_unfavorite)
             }
