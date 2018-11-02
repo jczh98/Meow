@@ -20,11 +20,11 @@ class DetailPresenter(private val mangaRepository: MangaRepository): RxPresenter
         }
     }
 
-    override fun fetchMangaInfo(sourceId: Long, cid: String) {
+    override fun fetchMangaInfo(sourceId: Long, cid: String, needsChaptersRefresh: Boolean) {
         rx {
             mangaRepository.fetchMangaInfo(sourceId, cid)
                     .subscribe({
-                        view?.onMangaLoadCompleted(it)
+                        view?.onMangaLoadCompleted(it, needsChaptersRefresh)
                     }, {
                         it.printStackTrace()
                         view?.onMangaFetchError()

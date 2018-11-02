@@ -42,6 +42,7 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
 
     private lateinit var adapter: DetailAdapter
     private var manga: Manga? = null
+    private var needsChaptersRefresh: Boolean = true
 
     override fun onStart() {
         super.onStart()
@@ -85,7 +86,10 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
 
     override fun onResume() {
         super.onResume()
-        presenter.fetchMangaInfo(sourceId, cid)
+        presenter.fetchMangaInfo(sourceId, cid, needsChaptersRefresh)
+        if(needsChaptersRefresh) {
+            needsChaptersRefresh = false
+        }
     }
 
     private fun hideProgressBar() {
@@ -94,12 +98,12 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
         }
     }
 
-    override fun onMangaLoadCompleted(manga: Manga) {
+    override fun onMangaLoadCompleted(manga: Manga, needsChaptersRefresh: Boolean) {
         finishRefreshLayout()
         this.manga = manga
         adapter.manga = manga
         adapter.notifyDataSetChanged()
-        presenter.fetchMangaChapters(sourceId, cid)
+        if(needsChaptersRefresh) presenter.fetchMangaChapters(sourceId, cid)
     }
 
     override fun onMangaFetchError() {

@@ -9,7 +9,7 @@ interface DetailContract {
 
     interface View: BaseView<Presenter> {
 
-        fun onMangaLoadCompleted(manga: Manga)
+        fun onMangaLoadCompleted(manga: Manga, needsChaptersRefresh: Boolean = true)
 
         fun onMangaFetchError()
 
@@ -20,7 +20,7 @@ interface DetailContract {
 
     interface Presenter: BasePresenter<View> {
 
-        fun fetchMangaInfo(sourceId: Long, cid: String)
+        fun fetchMangaInfo(sourceId: Long, cid: String, needsChaptersRefresh: Boolean = true)
 
         fun fetchMangaChapters(sourceId: Long, cid: String)
 
