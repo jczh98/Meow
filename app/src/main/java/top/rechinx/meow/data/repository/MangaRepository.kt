@@ -25,8 +25,8 @@ class MangaRepository(private val sourceManager: SourceManager,
         return mangaDao.loadManga(mangaId).toObservable()
     }
 
-    fun updateManga(manga: Manga) {
-        Observable.just(mangaDao.updateManga(manga))
+    fun updateManga(manga: Manga): Disposable {
+        return Observable.just(mangaDao.updateManga(manga))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
@@ -50,7 +50,9 @@ class MangaRepository(private val sourceManager: SourceManager,
                     manga.copyFrom(it)
                     manga.cid = cid
                     manga.sourceId = sourceId
+                    manga.sourceName = source.name
                     dbManga?.id?.let { manga.id = it }
+                    dbManga?.favorite?.let { manga.favorite = it }
                     mangaDao.insertManga(manga)
                 }
                 .observeOn(AndroidSchedulers.mainThread())

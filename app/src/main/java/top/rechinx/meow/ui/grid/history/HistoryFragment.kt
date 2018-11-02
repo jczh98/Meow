@@ -26,6 +26,17 @@ class HistoryFragment: BaseFragment(), HistoryContract.View, BaseAdapter.OnItemC
 
     override fun getLayoutId(): Int = R.layout.fragment_grid
 
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe(this)
+        presenter.load()
+    }
+
+    override fun onPause() {
+        presenter.unsubscribe()
+        super.onPause()
+    }
+
     override fun onMangasLoaded(list: List<Manga>) {
         adapter.clear()
         adapter.addAll(list)

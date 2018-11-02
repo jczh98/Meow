@@ -14,6 +14,7 @@ import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.AbsManga
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.support.log.L
 import top.rechinx.meow.support.viewbinding.bindView
 import top.rechinx.meow.ui.base.BaseAdapter
 import top.rechinx.meow.widget.ChapterButton
@@ -69,7 +70,7 @@ class DetailAdapter: BaseAdapter<Chapter> {
                 }
                 headerHolder.comicUpdate.text = "最后更新： ${manga?.last_update}"
                 headerHolder.read.text = if(manga?.last_update == null) context.getString(R.string.details_read) else context.getString(R.string.details_continue)
-                headerHolder.favorite.text = if(manga?.favorite == null) context.getString(R.string.details_favorite) else context.getString(R.string.details_unfavorite)
+                headerHolder.favorite.text = if(manga?.favorite == false) context.getString(R.string.details_favorite) else context.getString(R.string.details_unfavorite)
             }
         } else {
             val chapter = datas[position - 1]

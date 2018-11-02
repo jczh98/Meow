@@ -24,6 +24,17 @@ class FavoriteFragment: BaseFragment(), FavoriteContract.View, BaseAdapter.OnIte
         recyclerView.adapter = adapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe(this)
+        presenter.load()
+    }
+
+    override fun onPause() {
+        presenter.unsubscribe()
+        super.onPause()
+    }
+
     override fun getLayoutId(): Int = R.layout.fragment_grid
 
     override fun onMangasLoaded(list: List<Manga>) {

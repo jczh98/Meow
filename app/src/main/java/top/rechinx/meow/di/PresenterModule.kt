@@ -3,6 +3,8 @@ package top.rechinx.meow.di
 import org.koin.dsl.module.module
 import top.rechinx.meow.ui.details.DetailContract
 import top.rechinx.meow.ui.details.DetailPresenter
+import top.rechinx.meow.ui.grid.favorite.FavoriteContract
+import top.rechinx.meow.ui.grid.favorite.FavoritePresenter
 import top.rechinx.meow.ui.grid.history.HistoryContract
 import top.rechinx.meow.ui.grid.history.HistoryPresenter
 import top.rechinx.meow.ui.reader.ReaderContarct
@@ -21,5 +23,7 @@ object PresenterModule {
         factory<ReaderContarct.Presenter> { ReaderPresenter(get(), get(), get()) }
 
         factory<HistoryContract.Presenter> { HistoryPresenter(get()) }
+
+        factory<FavoriteContract.Presenter> { FavoritePresenter(get()) }
     }
 }

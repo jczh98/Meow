@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import com.scwang.smartrefresh.header.MaterialHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.BallPulseFooter
@@ -26,7 +27,7 @@ import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.base.BaseAdapter
 import top.rechinx.meow.ui.reader.ReaderActivity
 
-class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemClickListener {
+class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemClickListener, DetailAdapter.OnClickCallback {
 
     override val presenter: DetailContract.Presenter by inject()
 
@@ -39,6 +40,7 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
     val cid: String by lazy { intent.getStringExtra(Extras.EXTRA_CID) }
 
     private lateinit var adapter: DetailAdapter
+    private var manga: Manga? = null
 
     override fun onStart() {
         super.onStart()
@@ -67,6 +69,8 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
         })
         adapter = DetailAdapter(this, ArrayList())
         adapter.setOnItemClickListener(this)
+        adapter.setOnClickCallback(this)
+        adapter.setOnFavoriteClickCallback(this)
         recyclerView.adapter = adapter
         // Refresh layout setup
         refreshLayout.setRefreshHeader(MaterialHeader(this))
@@ -89,6 +93,7 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
 
     override fun onMangaLoadCompleted(manga: Manga) {
         finishRefreshLayout()
+        this.manga = manga
         adapter.manga = manga
         presenter.fetchMangaChapters(sourceId, cid)
     }
@@ -112,6 +117,17 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
 
     private fun finishRefreshLayout() {
         refreshLayout.finishRefresh()
+    }
+
+    override fun onClick(view: View, type: Int) {
+        if(type == 1) {
+
+        } else {
+            val manga = manga!!// must exist
+            presenter.favoriteOrNot(manga)
+            (view as TextView).text = if (manga.favorite) getString(R.string.details_unfavorite) else getString(R.string.details_favorite)
+            manga.favorite = !manga.favorite
+        }
     }
 
     override fun onItemClick(view: View, position: Int) {

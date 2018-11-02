@@ -23,6 +23,8 @@ interface DetailContract {
         fun fetchMangaInfo(sourceId: Long, cid: String)
 
         fun fetchMangaChapters(sourceId: Long, cid: String)
+
+        fun favoriteOrNot(manga: Manga)
     }
 
 }

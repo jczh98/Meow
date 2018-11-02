@@ -1,10 +1,18 @@
 package top.rechinx.meow.ui.details
 
+import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.repository.MangaRepository
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.support.mvp.RxPresenter
 
 class DetailPresenter(private val mangaRepository: MangaRepository): RxPresenter<DetailContract.View>(), DetailContract.Presenter {
+
+    override fun favoriteOrNot(manga: Manga) {
+        manga.favorite = !manga.favorite
+        rx {
+            mangaRepository.updateManga(manga)
+        }
+    }
 
     override fun fetchMangaInfo(sourceId: Long, cid: String) {
         rx {
