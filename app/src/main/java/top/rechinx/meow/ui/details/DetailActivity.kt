@@ -16,6 +16,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.BallPulseFooter
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import com.scwang.smartrefresh.layout.footer.FalsifyFooter
+import kotlinx.android.synthetic.main.item_chapter_header.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import top.rechinx.meow.R
@@ -41,6 +42,7 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
     val cid: String by lazy { intent.getStringExtra(Extras.EXTRA_CID) }
 
     private lateinit var adapter: DetailAdapter
+
     private var manga: Manga? = null
     private var needsChaptersRefresh: Boolean = true
 
@@ -79,6 +81,7 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
         refreshLayout.setRefreshHeader(MaterialHeader(this))
         refreshLayout.setRefreshFooter(FalsifyFooter(this))
         refreshLayout.setOnRefreshListener {
+            needsChaptersRefresh = true
             adapter.clear()
             presenter.fetchMangaInfo(sourceId, cid)
         }
@@ -113,6 +116,9 @@ class DetailActivity: BaseActivity(), DetailContract.View, BaseAdapter.OnItemCli
     }
 
     override fun onChaptersInit(chapters: List<Chapter>) {
+        // calculate manga update time
+        this.manga?.last_update = chapters.maxBy { it.date_updated }?.date_updated ?: 0L
+        adapter.manga = manga
         finishRefreshLayout()
         hideProgressBar()
         adapter.addAll(chapters)
