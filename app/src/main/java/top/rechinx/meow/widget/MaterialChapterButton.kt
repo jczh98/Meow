@@ -1,17 +1,18 @@
 package top.rechinx.meow.widget
 
 import android.content.Context
+import android.util.AttributeSet
+import com.google.android.material.button.MaterialButton
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
 import androidx.appcompat.widget.AppCompatTextView
-import android.util.AttributeSet
 import top.rechinx.meow.utils.Utility
 import top.rechinx.meow.R
 
-class ChapterButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : AppCompatTextView(context, attrs, defStyle) {
+class MaterialChapterButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : MaterialButton(context, attrs, defStyle) {
 
     private var normalColor: Int = 0
     private var accentColor: Int = 0
@@ -42,20 +43,8 @@ class ChapterButton @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     private fun initDrawableState() {
-        val normalDrawable = GradientDrawable()
-        normalDrawable.setStroke(Utility.dpToPixel(1f, context).toInt(), normalColor)
-        normalDrawable.cornerRadius = Utility.dpToPixel(4f, context)
-        normalDrawable.setColor(Color.TRANSPARENT)
-
-        val selectedDrawable = GradientDrawable()
-        selectedDrawable.setStroke(Utility.dpToPixel(1f, context).toInt(), accentColor)
-        selectedDrawable.cornerRadius = Utility.dpToPixel(4f, context)
-        selectedDrawable.setColor(accentColor)
-
-        val stateList = StateListDrawable()
-        stateList.addState(NORMAL_STATE, normalDrawable)
-        stateList.addState(SELECTED_STATE, selectedDrawable)
-        setBackgroundDrawable(stateList)
+        backgroundTintList = ColorStateList(arrayOf(NORMAL_STATE, SELECTED_STATE),
+                intArrayOf(Color.TRANSPARENT, accentColor))
     }
 
     fun setDownload(download: Boolean) {
@@ -72,5 +61,4 @@ class ChapterButton @JvmOverloads constructor(context: Context, attrs: Attribute
         private val NORMAL_STATE = intArrayOf(-android.R.attr.state_selected)
         private val SELECTED_STATE = intArrayOf(android.R.attr.state_selected)
     }
-
 }

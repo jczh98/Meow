@@ -1,6 +1,6 @@
 package top.rechinx.meow.ui.reader.loader
 
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import io.reactivex.Observable
 import top.rechinx.meow.ui.reader.model.ReaderPage
 

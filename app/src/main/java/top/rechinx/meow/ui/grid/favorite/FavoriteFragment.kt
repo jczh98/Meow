@@ -1,7 +1,7 @@
 package top.rechinx.meow.ui.grid.favorite
 
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_grid.*
 import org.koin.android.ext.android.inject
@@ -24,15 +24,19 @@ class FavoriteFragment: BaseFragment(), FavoriteContract.View, BaseAdapter.OnIte
         recyclerView.adapter = adapter
     }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.subscribe(this)
+    }
+
     override fun onResume() {
         super.onResume()
-        presenter.subscribe(this)
         presenter.load()
     }
 
-    override fun onPause() {
+    override fun onDestroy() {
         presenter.unsubscribe()
-        super.onPause()
+        super.onDestroy()
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_grid

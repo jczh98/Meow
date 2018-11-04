@@ -2,8 +2,8 @@ package top.rechinx.meow.ui.reader.viewer.webtoon
 
 import android.graphics.Color
 import android.graphics.Typeface
-import android.support.v7.widget.AppCompatButton
-import android.support.v7.widget.AppCompatTextView
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan

@@ -1,6 +1,6 @@
 package top.rechinx.meow.ui.reader.viewer.pager
 
-import android.support.v4.view.PagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import top.rechinx.meow.support.log.L

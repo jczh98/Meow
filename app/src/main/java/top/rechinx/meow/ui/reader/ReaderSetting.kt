@@ -1,9 +1,9 @@
 package top.rechinx.meow.ui.reader
 
 import android.os.Bundle
-import android.support.design.widget.BottomSheetDialog
-import android.support.v4.widget.NestedScrollView
-import android.support.v7.widget.AppCompatSpinner
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.core.widget.NestedScrollView
+import androidx.appcompat.widget.AppCompatSpinner
 import android.view.View
 import android.widget.AdapterView
 import org.koin.android.ext.android.inject

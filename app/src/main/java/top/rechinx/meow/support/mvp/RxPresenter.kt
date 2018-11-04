@@ -1,6 +1,6 @@
 package top.rechinx.meow.support.mvp
 
-import android.support.annotation.CallSuper
+import androidx.annotation.CallSuper
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 

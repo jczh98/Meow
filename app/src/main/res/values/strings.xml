@@ -67,4 +67,11 @@
     <string name="unknown">Unknown</string>
     <string name="info_status_label">Status</string>
     <string name="info_last_update_label">Latest update</string>
+    <string name="detail_manga_info_author">Author</string>
+    <string name="detail_manga_info_date_updated">Updated time</string>
+    <string name="detail_manga_info_date_loading">Loading</string>
+    <string name="detail_manga_info_status">Status</string>
+    <string name="detail_manga_information">Information</string>
+    <string name="detail_chapters">Chapters</string>
+    <string name="detail_empty_chapter">Empty chapter</string>
 </resources>

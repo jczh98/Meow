@@ -1,8 +1,8 @@
 package top.rechinx.meow.ui.reader.viewer.pager
 
-import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.PagerAdapter
 
 abstract class ViewPagerAdapter : PagerAdapter() {
 

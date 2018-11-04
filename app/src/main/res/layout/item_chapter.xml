@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<top.rechinx.meow.widget.ChapterButton
+<top.rechinx.meow.widget.MaterialChapterButton
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.MaterialComponents.Button.TextButton"
     android:id="@+id/item_chapter_button"
     android:layout_width="match_parent"
-    android:layout_height="32dp"
-    android:paddingLeft="6dp"
-    android:paddingRight="6dp"
+    android:layout_height="56dp"
+    android:layout_margin="12dp"
     android:gravity="center"
     android:textSize="12sp"
     android:maxLines="1"
     android:ellipsize="end"
-    app:selected_color="@color/colorPrimary"/>
+    android:background="@drawable/btn_status_selector"
+    app:selected_color="@color/colorPrimary"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/colorAccent"
+    />
+
 
 

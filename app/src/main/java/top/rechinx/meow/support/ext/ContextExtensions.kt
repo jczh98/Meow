@@ -2,7 +2,7 @@ package top.rechinx.meow.support.ext
 
 import android.content.Context
 import android.content.res.Resources
-import android.support.annotation.AttrRes
+import androidx.annotation.AttrRes
 
 val Int.dpToPx: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()

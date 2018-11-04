@@ -1,30 +1,305 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinator_layout"
+    android:layout_height="match_parent" >
+
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/detailRootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
+        android:layout_height="256dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <include layout="@layout/custom_toolbar"/>
-            <include layout="@layout/custom_progress_bar"/>
-            <com.scwang.smartrefresh.layout.SmartRefreshLayout
-                android:id="@+id/coordinator_refresh_layout"
+            android:layout_height="match_parent"
+            android:background="@color/material_grey_700"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
+
+            <ImageView
+                android:id="@+id/mangaBackCover"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/coordinator_recycler_view"
+                android:layout_height="match_parent"
+                android:alpha="0.5"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/Toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/detailScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:behavior_overlapTop="56dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:ignore="MissingPrefix">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/mangaInfoCover"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp" />
+
+                    <TextView
+                        android:id="@+id/mangaInfoTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/mangaInfoCover"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/mangaInfoAuthorLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/mangaInfoTitle"
+                        android:layout_toRightOf="@id/mangaInfoCover"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingTop="16dp"
+                        android:text="@string/detail_manga_info_author"
+                        android:textColor="@color/trans_light_black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/mangaInfoAuthor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/mangaInfoTitle"
+                        android:layout_toRightOf="@id/mangaInfoAuthorLabel"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="16dp"
+                        android:textColor="@color/trans_light_black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/mangaInfoUpdatedLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/mangaInfoAuthorLabel"
+                        android:layout_toRightOf="@id/mangaInfoCover"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingTop="16dp"
+                        android:text="@string/detail_manga_info_date_updated"
+                        android:textColor="@color/trans_light_black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/mangaInfoUpdated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/mangaInfoAuthorLabel"
+                        android:layout_toRightOf="@id/mangaInfoUpdatedLabel"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="16dp"
+                        android:text="@string/detail_manga_info_date_loading"
+                        android:textColor="@color/trans_light_black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/mangaInfoStatusLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/mangaInfoUpdatedLabel"
+                        android:layout_toRightOf="@id/mangaInfoCover"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingTop="16dp"
+                        android:text="@string/detail_manga_info_status"
+                        android:textColor="@color/trans_light_black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/mangaInfoStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/mangaInfoUpdatedLabel"
+                        android:layout_toRightOf="@id/mangaInfoStatusLabel"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="16dp"
+                        android:textColor="@color/trans_light_black"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"/>
-            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/detail_manga_information"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/mangaInfoDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:paddingTop="8dp"
+                        android:textColor="@color/trans_light_black"
+                        android:textSize="14sp" />
+
+                    <me.gujun.android.taggroup.TagGroup
+                        android:id="@+id/mangaGenresTags"
+                        style="@style/TagGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="16dp"
+                        app:atg_backgroundColor="@android:color/transparent"
+                        app:atg_borderColor="@color/colorPrimary"
+                        app:atg_borderStrokeWidth="1dp"
+                        app:atg_textColor="@color/colorPrimary" />
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="vertical"
+                app:cardCornerRadius="2dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/detail_chapters"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/emptyChapters"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:text="@string/detail_empty_chapter"/>
+
+                    <ProgressBar
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/chaptersProgressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/chaptersRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:nestedScrollingEnabled="false"
+                        android:paddingTop="16dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
-    </android.support.design.widget.CoordinatorLayout>
-</FrameLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/colorAccent"
+        app:fabAlignmentMode="end"
+        app:hideOnScroll="true" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/black"
+        app:layout_anchor="@id/bottomAppBar" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

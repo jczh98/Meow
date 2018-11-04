@@ -1,6 +1,6 @@
 package top.rechinx.meow.data.database.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import top.rechinx.meow.data.database.model.Chapter

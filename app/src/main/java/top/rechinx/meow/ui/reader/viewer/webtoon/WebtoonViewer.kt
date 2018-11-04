@@ -1,11 +1,11 @@
 package top.rechinx.meow.ui.reader.viewer.webtoon
 
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.WebtoonLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.WebtoonLayoutManager
 import io.reactivex.disposables.CompositeDisposable
 import top.rechinx.meow.support.ext.gone
 import top.rechinx.meow.support.ext.matchContent
@@ -42,7 +42,7 @@ class WebtoonViewer(val activity: ReaderActivity): BaseViewer {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val position = layoutManager.findLastEndVisibleItemPosition()
                 val item = adapter.items.getOrNull(position)
                 if (item != null && currentPage != item) {
@@ -72,7 +72,7 @@ class WebtoonViewer(val activity: ReaderActivity): BaseViewer {
         }
         recyclerView.longTapListener = { event ->
             val child = recyclerView.findChildViewUnder(event.x, event.y)
-            val position = recyclerView.getChildAdapterPosition(child)
+            val position = recyclerView.getChildAdapterPosition(child!!)
             val item = adapter.items.getOrNull(position)
             if (item is ReaderPage) {
                 activity.onPageLongTap(item)

@@ -1,9 +1,9 @@
 package top.rechinx.meow.support.viewbinding
 
 import android.app.Activity
-import android.support.design.widget.BottomSheetDialog
-import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import java.util.*
 import kotlin.properties.ReadOnlyProperty

@@ -1,7 +1,7 @@
 package top.rechinx.meow
 
 import android.app.Application
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import android.os.Environment
 import com.facebook.stetho.Stetho

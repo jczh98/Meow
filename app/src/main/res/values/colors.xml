@@ -6,7 +6,9 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="trans_light_black">#88000000</color>
+    <color name="trans_light_colorPrimary">#9b3f51b5</color>
     <color name="colorBackgroundTrans">#AAFAFAFA</color>
     <color name="divider">#20000000</color>
     <color name="shadow_light">#38000000</color>
+    <color name="material_grey_700">#616161</color>
 </resources>

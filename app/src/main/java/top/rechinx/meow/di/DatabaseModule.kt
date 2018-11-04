@@ -1,6 +1,6 @@
 package top.rechinx.meow.di
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module.module
 import top.rechinx.meow.data.database.AppDatabase

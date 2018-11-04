@@ -1,6 +1,8 @@
 @file:Suppress("PackageDirectoryMismatch")
-package android.support.v7.widget
+package androidx.recyclerview.widget
 
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import top.rechinx.meow.ui.reader.ReaderActivity
 
 class WebtoonLayoutManager(activity: ReaderActivity) : LinearLayoutManager(activity) {

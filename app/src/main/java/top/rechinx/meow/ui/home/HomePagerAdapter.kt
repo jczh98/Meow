@@ -1,9 +1,9 @@
 package top.rechinx.meow.ui.home
 
 import android.content.Context
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import top.rechinx.meow.R
 import top.rechinx.meow.ui.grid.favorite.FavoriteFragment
 import top.rechinx.meow.ui.grid.history.HistoryFragment
