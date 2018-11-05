@@ -15,7 +15,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import top.rechinx.meow.R
-import top.rechinx.meow.support.ext.getResourceColor
+import top.rechinx.rikka.ext.getResourceColor
 
 /**
  * A custom progress bar that always rotates while being determinate. By always rotating we give

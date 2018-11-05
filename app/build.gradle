@@ -29,6 +29,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
+
+    // Rikka
+    implementation 'com.github.ReChinX:Rikka:master-SNAPSHOT'
+
     // Support Library
     def androidx_version = '1.0.0'
     implementation "androidx.appcompat:appcompat:$androidx_version"

@@ -15,11 +15,11 @@ import android.widget.TextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import top.rechinx.meow.R
-import top.rechinx.meow.support.ext.dpToPx
-import top.rechinx.meow.support.ext.visibleIf
-import top.rechinx.meow.support.ext.wrapContent
 import top.rechinx.meow.ui.reader.model.ChapterTransition
 import top.rechinx.meow.ui.reader.model.ReaderChapter
+import top.rechinx.rikka.ext.dpToPx
+import top.rechinx.rikka.ext.visibleIf
+import top.rechinx.rikka.ext.wrapContent
 
 class WebtoonTransitionHolder(
         val layout: LinearLayout,

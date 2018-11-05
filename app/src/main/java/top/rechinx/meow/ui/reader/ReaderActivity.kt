@@ -23,7 +23,6 @@ import top.rechinx.meow.R
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.global.Extras
-import top.rechinx.meow.support.ext.visible
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.support.preference.PreferenceHelper
 import top.rechinx.meow.support.viewbinding.bindView
@@ -36,6 +35,7 @@ import top.rechinx.meow.ui.reader.viewer.pager.L2RPagerViewer
 import top.rechinx.meow.ui.reader.viewer.pager.R2LPagerViewer
 import top.rechinx.meow.ui.reader.viewer.webtoon.WebtoonViewer
 import top.rechinx.meow.widget.ReverseSeekBar
+import top.rechinx.rikka.ext.visible
 
 class ReaderActivity: BaseActivity(), ReaderContarct.View {
 

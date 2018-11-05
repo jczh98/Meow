@@ -26,14 +26,14 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.AbsMangaPage
-import top.rechinx.meow.support.ext.gone
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import java.io.InputStream
 import top.rechinx.meow.glide.GlideApp
-import top.rechinx.meow.support.ext.dpToPx
-import top.rechinx.meow.support.ext.visible
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.reader.ReaderProgressBar
+import top.rechinx.rikka.ext.dpToPx
+import top.rechinx.rikka.ext.gone
+import top.rechinx.rikka.ext.visible
 import java.util.concurrent.TimeUnit
 
 class WebtoonPageHolder(

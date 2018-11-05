@@ -5,8 +5,8 @@ import android.text.format.Formatter
 import com.google.gson.Gson
 import com.jakewharton.disklrucache.DiskLruCache
 import okhttp3.Response
-import top.rechinx.meow.support.ext.saveTo
 import top.rechinx.meow.utils.DiskUtil
+import top.rechinx.rikka.ext.saveTo
 import java.io.File
 import java.io.IOException
 

@@ -18,12 +18,12 @@ import top.rechinx.meow.core.source.model.AbsManga
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.global.Extras
-import top.rechinx.meow.support.ext.gone
-import top.rechinx.meow.support.ext.visible
 import top.rechinx.meow.support.viewbinding.bindView
 import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.base.BaseAdapter
 import top.rechinx.meow.ui.reader.ReaderActivity
+import top.rechinx.rikka.ext.gone
+import top.rechinx.rikka.ext.visible
 import java.text.DateFormat
 import java.util.*
 

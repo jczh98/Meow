@@ -7,15 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.WebtoonLayoutManager
 import io.reactivex.disposables.CompositeDisposable
-import top.rechinx.meow.support.ext.gone
-import top.rechinx.meow.support.ext.matchContent
-import top.rechinx.meow.support.ext.visible
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.meow.ui.reader.model.ChapterTransition
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import top.rechinx.meow.ui.reader.model.ViewerChapters
 import top.rechinx.meow.ui.reader.viewer.BaseViewer
+import top.rechinx.rikka.ext.gone
+import top.rechinx.rikka.ext.matchContent
+import top.rechinx.rikka.ext.visible
 
 class WebtoonViewer(val activity: ReaderActivity): BaseViewer {
 
