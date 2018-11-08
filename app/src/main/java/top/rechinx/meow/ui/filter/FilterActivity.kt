@@ -3,12 +3,11 @@ package top.rechinx.meow.ui.filter
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -19,14 +18,21 @@ import kotlinx.android.synthetic.main.activity_filter.*
 import kotlinx.android.synthetic.main.custom_filter_sidesheet.view.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
-import top.rechinx.meow.core.source.model.Filter
 import top.rechinx.meow.core.source.model.FilterList
-import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.support.log.L
+import top.rechinx.meow.ui.details.DetailActivity
+import top.rechinx.meow.ui.filter.items.CatalogueItem
+import top.rechinx.meow.ui.filter.items.ProgressItem
+import top.rechinx.rikka.ext.gone
+import top.rechinx.rikka.ext.invisible
+import top.rechinx.rikka.ext.visible
 import top.rechinx.rikka.mvp.MvpAppCompatActivityWithoutReflection
 
-class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>() {
+class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>(),
+        FlexibleAdapter.EndlessScrollListener,
+        FlexibleAdapter.OnItemClickListener {
 
 
     private val sideSheetAdapter: FlexibleAdapter<IFlexible<*>> = FlexibleAdapter<IFlexible<*>>(null)
@@ -36,9 +42,13 @@ class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>() {
 
     private val sourceId by lazy { intent.getLongExtra(Extras.EXTRA_SOURCE, 0) }
 
-    private lateinit var adapter : FilterAdapter
+    private var adapter: FlexibleAdapter<IFlexible<*>>? = null
 
     private lateinit var sideSheetRecycler: RecyclerView
+
+    private var progressItem: ProgressItem? = null
+
+    private var snack: Snackbar? = null
 
     override fun createPresenter(): FilterPresenter {
         return FilterPresenter(sourceId)
@@ -46,7 +56,6 @@ class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter.syncSourceFilters(sourceId)
         setContentView(R.layout.activity_filter)
         setSupportActionBar(custom_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -58,12 +67,13 @@ class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>() {
         initRecyclerView()
         filterSearchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                if(query.isBlank()) {
+                if(query.isEmpty()) {
                     filterSearchView.closeSearch()
                 } else {
-                    adapter = FilterAdapter(this@FilterActivity)
-                    filterContainer.adapter = adapter
-                    presenter.restartPaging(query = query)
+                    setQueryTitle(query)
+                    adapter?.clear()
+                    showProgressBar()
+                    presenter.restartPager(query = query)
                 }
                 return false
             }
@@ -73,10 +83,13 @@ class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>() {
             }
 
         })
+        // set title
+        setDefaultTitle()
     }
 
     private fun initRecyclerView() {
-        adapter = FilterAdapter(this)
+        contentProgress.visible()
+        adapter = FlexibleAdapter(null, this)
         filterContainer.adapter = adapter
         filterContainer.setHasFixedSize(true)
     }
@@ -97,19 +110,20 @@ class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>() {
             sideSheetAdapter.updateDataSet(presenter.filterItems)
         }
         filterSideSheet.contentView.filterBtn.setOnClickListener {
-            adapter = FilterAdapter(this)
-            filterContainer.adapter = adapter
+            setDefaultTitle()
+            adapter?.clear()
+            showProgressBar()
             filterDrawer.closeDrawer(GravityCompat.END)
-            presenter.restartPaging(query = "", filters = presenter.sourceFilters)
+            presenter.restartPager(query = "", filters = presenter.sourceFilters)
         }
     }
 
-    fun onMangaLoaded(list: PagedList<Manga>) {
-        adapter.submitList(list)
+    private fun setDefaultTitle() {
+        supportActionBar?.title = presenter.source.name
     }
 
-    fun onMangaLoadError(throwable: Throwable) {
-        Snackbar.make(layoutView, getString(R.string.snackbar_result_empty), Snackbar.LENGTH_SHORT).show()
+    private fun setQueryTitle(query: String) {
+        supportActionBar?.title = String.format(getString(R.string.search_result_title), query)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -123,6 +137,85 @@ class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>() {
             R.id.action_filter -> filterSideSheet?.let { filterDrawer?.openDrawer(GravityCompat.END) }
         }
         return true
+    }
+
+    fun onAddPage(page: Int, mangas: List<CatalogueItem>) {
+        val adapter = adapter ?: return
+        hideProgressBar()
+        if(page == 1) {
+            adapter.clear()
+            resetProgressItem()
+        }
+        adapter.onLoadMoreComplete(mangas)
+    }
+
+    private fun resetProgressItem() {
+        progressItem = ProgressItem()
+        adapter?.endlessTargetCount = 0
+        adapter?.setEndlessScrollListener(this, progressItem!!)
+    }
+
+    fun onAddPageError(throwable: Throwable) {
+        val adapter = adapter ?: return
+        adapter.onLoadMoreComplete(null)
+        hideProgressBar()
+        snack?.dismiss()
+        if(throwable is NoMoreResultException) {
+            snack = Snackbar.make(catalogueView, getString(R.string.snackbar_result_empty), Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.action_retry) {
+                        if (adapter.mainItemCount > 0) {
+                            val item = progressItem ?: return@setAction
+                            adapter.addScrollableFooterWithDelay(item, 0, true)
+                        } else {
+                            showProgressBar()
+                        }
+                        presenter.requestNext()
+                    }
+        } else {
+            snack = Snackbar.make(catalogueView, throwable.message.toString(), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.action_retry) {
+                        if (adapter.mainItemCount > 0) {
+                            val item = progressItem ?: return@setAction
+                            adapter.addScrollableFooterWithDelay(item, 0, true)
+                        } else {
+                            showProgressBar()
+                        }
+                        presenter.requestNext()
+                    }
+        }
+        snack?.show()
+    }
+
+    override fun noMoreLoad(newItemsSize: Int) {
+
+    }
+
+    override fun onLoadMore(lastPosition: Int, currentPage: Int) {
+        if (presenter.hasNextPage()) {
+            presenter.requestNext()
+        } else {
+            adapter?.onLoadMoreComplete(null)
+            adapter?.endlessTargetCount = 1
+        }
+    }
+
+    override fun onItemClick(view: View?, position: Int): Boolean {
+        val item = adapter?.getItem(position) as? CatalogueItem ?: return false
+        item.manga.cid?.let {
+            val intent = DetailActivity.createIntent(this, sourceId, it)
+            startActivity(intent)
+        }
+        return false
+    }
+
+    private fun showProgressBar() {
+        contentProgress?.visible()
+        snack?.dismiss()
+        snack = null
+    }
+
+    private fun hideProgressBar() {
+        contentProgress.gone()
     }
 
     companion object {

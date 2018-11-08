@@ -27,21 +27,38 @@
                     android:layout_height="wrap_content" />
             </FrameLayout>
 
-            <top.rechinx.meow.widget.AutofitRecyclerView
-                android:id="@+id/filterContainer"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:columnWidth="140dp"
-                android:clipToPadding="false"
-                android:padding="5dp"
-                android:gravity="top|left"
-                android:smoothScrollbar="true"
-                android:cacheColorHint="?android:attr/textColorHint"
-                android:verticalSpacing="0dp"
-                android:horizontalSpacing="0dp"
-                android:fastScrollEnabled="true"
-                >
-            </top.rechinx.meow.widget.AutofitRecyclerView>
+                android:fitsSystemWindows="true"
+                android:orientation="vertical"
+                android:id="@+id/catalogueView">
+
+                <ProgressBar
+                    android:id="@+id/contentProgress"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical|center_horizontal" />
+
+                <top.rechinx.meow.widget.AutofitRecyclerView
+                    android:id="@+id/filterContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:columnWidth="140dp"
+                    android:clipToPadding="false"
+                    android:padding="5dp"
+                    android:gravity="top|left"
+                    android:smoothScrollbar="true"
+                    android:cacheColorHint="?android:attr/textColorHint"
+                    android:verticalSpacing="0dp"
+                    android:horizontalSpacing="0dp"
+                    android:fastScrollEnabled="true"
+                    >
+
+                </top.rechinx.meow.widget.AutofitRecyclerView>
+
+            </LinearLayout>
 
         </LinearLayout>
         <top.rechinx.meow.widget.MaterialSideSheet

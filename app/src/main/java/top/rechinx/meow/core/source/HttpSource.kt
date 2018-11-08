@@ -6,14 +6,11 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import top.rechinx.meow.core.network.NetworkHelper
-import top.rechinx.meow.core.source.model.AbsChapter
-import top.rechinx.meow.core.source.model.AbsManga
-import top.rechinx.meow.core.source.model.AbsMangaPage
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import top.rechinx.meow.core.network.asObservableSuccess
 import top.rechinx.meow.core.network.newCallWithProgress
-import top.rechinx.meow.core.source.model.FilterList
+import top.rechinx.meow.core.source.model.*
 import java.security.MessageDigest
 
 abstract class HttpSource: Source(), KoinComponent {
@@ -35,14 +32,14 @@ abstract class HttpSource: Source(), KoinComponent {
         add("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64)")
     }
 
-    override fun fetchPopularManga(page: Int): Observable<List<AbsManga>> = client.newCall(popularMangaRequest(page))
+    override fun fetchPopularManga(page: Int): Observable<PagedManga> = client.newCall(popularMangaRequest(page))
             .asObservableSuccess()
             .map { response ->
                 popularMangaParse(response)
             }
 
 
-    override fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<List<AbsManga>> = client.newCall(searchMangaRequest(query, page, filters))
+    override fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedManga> = client.newCall(searchMangaRequest(query, page, filters))
             .asObservableSuccess()
             .map { response ->
                 searchMangaParse(response)
@@ -82,11 +79,11 @@ abstract class HttpSource: Source(), KoinComponent {
 
     protected abstract fun searchMangaRequest(keyword: String, page: Int, filters: FilterList): Request
 
-    protected abstract fun searchMangaParse(response: Response): List<AbsManga>
+    protected abstract fun searchMangaParse(response: Response): PagedManga
 
     protected abstract fun popularMangaRequest(page: Int): Request
 
-    protected abstract fun popularMangaParse(response: Response): List<AbsManga>
+    protected abstract fun popularMangaParse(response: Response): PagedManga
 
     protected abstract fun mangaInfoRequest(cid: String): Request
 

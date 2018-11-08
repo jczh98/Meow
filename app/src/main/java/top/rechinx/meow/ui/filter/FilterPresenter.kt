@@ -8,6 +8,7 @@ import eu.davidea.flexibleadapter.items.ISectionable
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
@@ -16,12 +17,23 @@ import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.core.source.model.AbsManga
 import top.rechinx.meow.core.source.model.Filter
 import top.rechinx.meow.core.source.model.FilterList
+import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.data.repository.CataloguePager
+import top.rechinx.meow.support.log.L
+import top.rechinx.meow.ui.filter.items.CatalogueItem
 import top.rechinx.meow.ui.filter.items.HeaderItem
 import top.rechinx.meow.ui.filter.items.SelectItem
-import top.rechinx.meow.ui.filter.paging.FilterDataSourceFactory
 import top.rechinx.rikka.mvp.BasePresenter
 
 class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComponent {
+
+    val sourceManager by inject<SourceManager>()
+
+    val source = sourceManager.get(sourceId) as Source
+
+    private lateinit var pager: CataloguePager
+
+    private var pagerDisposable: Disposable? = null
 
     var sourceFilters = FilterList()
         set(value) {
@@ -36,39 +48,48 @@ class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComp
     var query = ""
         private set
 
-    val sourceManager by inject<SourceManager>()
-
-    val source = sourceManager.get(sourceId) as Source
-
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
         sourceFilters = source.getFilterList()
-        restartPaging()
+        restartPager()
     }
 
-    fun restartPaging(query: String = this.query, filters: FilterList = this.appliedFilters) {
-        this.appliedFilters = filters
-        this.query = query
-        val sourceFractory = FilterDataSourceFactory(source, query, filters)
-        val config = PagedList.Config.Builder()
-                .setPageSize(100)
-                .setEnablePlaceholders(false)
-                .build()
-        RxPagedListBuilder(sourceFractory, config)
-                .setFetchScheduler(Schedulers.io())
-                .buildObservable()
-                .cache()
-                .subscribeOn(Schedulers.io())
+    fun restartPager(query: String = this.query, filters: FilterList = this.appliedFilters) {
+        pager = CataloguePager(source, query, filters)
+        L.d("enter")
+        pager.results()
+                .observeOn(Schedulers.io())
+                .map {
+                    it.first to it.second.map {
+                    val manga = Manga()
+                    manga.copyFrom(it)
+                    manga.sourceId = source.id
+                    manga
+                } }
+                .map { it.first to it.second.map { CatalogueItem(it) } }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeReplay({ view, item ->
-                    view.onMangaLoaded(item)
-                }, FilterActivity::onMangaLoadError)
+                .subscribeReplay({ view, (page, mangas) ->
+                    L.d("enter fuck")
+                    view.onAddPage(page, mangas)
+                }, { _, error ->
+                    error.printStackTrace()
+                    L.d(error.message)
+                })
+
+        // request first page
+        requestNext()
     }
 
-    fun syncSourceFilters(sourceId: Long) {
-
-        sourceFilters = source.getFilterList()
+   fun requestNext() {
+        if(!hasNextPage()) return
+        Observable.defer { pager.requestNext() }
+                .subscribeFirst({ _, _ -> }, FilterActivity::onAddPageError)
     }
+
+    fun hasNextPage(): Boolean {
+        return pager.hasNextPage
+    }
+
 
     private fun FilterList.toItems(): List<IFlexible<*>> {
         return mapNotNull {
@@ -89,14 +110,5 @@ class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComp
 //                }
             }
         }
-    }
-
-    private fun FilterList.clone(): FilterList {
-        return FilterList(mapNotNull {
-            when (it) {
-                is Filter.Header -> Filter.Header(it.name)
-                is Filter.Select<*> -> Filter.Select(it.name, it.values, it.state)
-            }
-        })
     }
 }

@@ -11,6 +11,8 @@ import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.core.source.model.AbsChapter
+import top.rechinx.meow.core.source.model.FilterList
+import top.rechinx.meow.core.source.model.PagedManga
 import top.rechinx.meow.data.database.dao.ChapterDao
 import top.rechinx.meow.data.database.dao.MangaDao
 import top.rechinx.meow.data.database.model.Chapter

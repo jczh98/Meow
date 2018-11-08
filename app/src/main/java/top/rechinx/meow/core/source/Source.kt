@@ -1,10 +1,7 @@
 package top.rechinx.meow.core.source
 
 import io.reactivex.Observable
-import top.rechinx.meow.core.source.model.AbsChapter
-import top.rechinx.meow.core.source.model.FilterList
-import top.rechinx.meow.core.source.model.AbsManga
-import top.rechinx.meow.core.source.model.AbsMangaPage
+import top.rechinx.meow.core.source.model.*
 
 abstract class Source {
 
@@ -12,9 +9,9 @@ abstract class Source {
 
     abstract val name: String
 
-    abstract fun fetchPopularManga(page: Int): Observable<List<AbsManga>>
+    abstract fun fetchPopularManga(page: Int): Observable<PagedManga>
 
-    abstract fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<List<AbsManga>>
+    abstract fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedManga>
 
     abstract fun fetchMangaInfo(cid: String): Observable<AbsManga>
 

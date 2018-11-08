@@ -1,21 +1,18 @@
 package top.rechinx.meow.core.source
 
 import io.reactivex.Observable
-import top.rechinx.meow.core.source.model.AbsChapter
-import top.rechinx.meow.core.source.model.AbsManga
-import top.rechinx.meow.core.source.model.AbsMangaPage
-import top.rechinx.meow.core.source.model.FilterList
+import top.rechinx.meow.core.source.model.*
 import java.lang.Exception
 
 class StubSource(override val id: Long): Source() {
 
     override val name: String = id.toString()
 
-    override fun fetchPopularManga(page: Int): Observable<List<AbsManga>> {
+    override fun fetchPopularManga(page: Int): Observable<PagedManga> {
         return Observable.error(Exception())
     }
 
-    override fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<List<AbsManga>> {
+    override fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedManga> {
         return Observable.error(Exception())
     }
 

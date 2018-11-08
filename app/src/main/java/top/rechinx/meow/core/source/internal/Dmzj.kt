@@ -41,13 +41,13 @@ class Dmzj: HttpSource() {
             }.map {
                 (it as UriPartFilter).toUriPart()
             }.joinToString("")
-            return  GET("http://v2.api.dmzj.com/classify/$params/$order/$page.json")
+            return  GET("http://v2.api.dmzj.com/classify/$params/$order/${page-1}.json")
         }
     }
 
-    override fun searchMangaParse(response: Response): List<AbsManga> = commonMangaParse(response)
+    override fun searchMangaParse(response: Response): PagedManga = commonMangaParse(response)
 
-    private fun commonMangaParse(response: Response): List<AbsManga> {
+    private fun commonMangaParse(response: Response): PagedManga {
         val res = response.body()!!.string()
         val r = Regex("g_search_data = (.*)")
         val m = r.find(res)
@@ -57,7 +57,7 @@ class Dmzj: HttpSource() {
             mangaFromJSON2(res)
         }
     }
-    private fun mangaFromJSON1(json: String): List<AbsManga> {
+    private fun mangaFromJSON1(json: String): PagedManga {
         val arr = JSONArray(json)
         val ret = ArrayList<AbsManga>(arr.length())
         for (i in 0 until arr.length()) {
@@ -78,10 +78,10 @@ class Dmzj: HttpSource() {
                 this.cid = cid
             })
         }
-        return ret
+        return PagedManga(ret, false)
     }
 
-    private fun mangaFromJSON2(json: String): List<AbsManga> {
+    private fun mangaFromJSON2(json: String): PagedManga {
         val arr = JSONArray(json)
         val ret = ArrayList<AbsManga>(arr.length())
         for (i in 0 until arr.length()) {
@@ -99,12 +99,12 @@ class Dmzj: HttpSource() {
                 this.cid = cid
             })
         }
-        return ret
+        return PagedManga(ret, arr.length() != 0)
     }
 
     override fun popularMangaRequest(page: Int): Request = GET("http://v2.api.dmzj.com/classify/0/0/${page-1}.json")
 
-    override fun popularMangaParse(response: Response): List<AbsManga> = commonMangaParse(response)
+    override fun popularMangaParse(response: Response): PagedManga = commonMangaParse(response)
 
     override fun mangaInfoRequest(cid: String): Request = GET("$baseUrl/comic/$cid.json")
 
