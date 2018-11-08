@@ -11,4 +11,7 @@
     <color name="divider">#20000000</color>
     <color name="shadow_light">#38000000</color>
     <color name="material_grey_700">#616161</color>
+    <color name="textColorPrimaryLight">#DE000000</color>
+    <color name="selectorColorLight">#612979FF</color>
+    <color name="backgroundLight">#FAFAFA</color>
 </resources>

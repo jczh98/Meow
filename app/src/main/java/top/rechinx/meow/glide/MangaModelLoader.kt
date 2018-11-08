@@ -33,10 +33,10 @@ class MangaModelLoader: ModelLoader<Manga, InputStream>, KoinComponent {
         if(url == null || url.isEmpty()) return null
 
         if (url.startsWith("http")) {
-            val source = sourceManager.get(manga.sourceId) as? HttpSource
+            val source = sourceManager.getOrStub(manga.sourceId) as HttpSource
             val glideUrl = GlideUrl(url, getHeaders(manga, source))
             // Get the resource fetcher for this request cid.
-            val networkFetcher = OkHttpStreamFetcher(source?.client ?: networkHelper.client, glideUrl)
+            val networkFetcher = OkHttpStreamFetcher(source.client ?: networkHelper.client, glideUrl)
 
             // Return an instance of the fetcher providing the needed elements.
             return ModelLoader.LoadData(glideUrl, networkFetcher)

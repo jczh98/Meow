@@ -12,9 +12,9 @@ abstract class Source {
 
     abstract val name: String
 
-    abstract fun fetchLatestManga(page: Int): Observable<List<AbsManga>>
+    abstract fun fetchPopularManga(page: Int): Observable<List<AbsManga>>
 
-    abstract fun fetchSearchManga(keyword: String, page: Int, filters: FilterList): Observable<List<AbsManga>>
+    abstract fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<List<AbsManga>>
 
     abstract fun fetchMangaInfo(cid: String): Observable<AbsManga>
 

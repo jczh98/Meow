@@ -7,12 +7,20 @@ class SourceManager(private val context: Context) {
 
     private val sourcesMap = mutableMapOf<Long, Source>()
 
+    private val stubSourcesMap = mutableMapOf<Long, StubSource>()
+
     init {
         createInternalSources().forEach{ registerSource(it)}
     }
 
     open fun get(sourceKey: Long): Source? {
         return sourcesMap[sourceKey]
+    }
+
+    open fun getOrStub(sourceKey: Long): Source {
+        return sourcesMap[sourceKey] ?: stubSourcesMap.getOrPut(sourceKey) {
+            StubSource(sourceKey)
+        }
     }
 
     fun getSources() = sourcesMap.values

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/filterDrawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/toolbarContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/custom_toolbar"/>
+
+                <com.miguelcatalan.materialsearchview.MaterialSearchView
+                    android:id="@+id/filterSearchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+
+            <top.rechinx.meow.widget.AutofitRecyclerView
+                android:id="@+id/filterContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnWidth="140dp"
+                android:clipToPadding="false"
+                android:padding="5dp"
+                android:gravity="top|left"
+                android:smoothScrollbar="true"
+                android:cacheColorHint="?android:attr/textColorHint"
+                android:verticalSpacing="0dp"
+                android:horizontalSpacing="0dp"
+                android:fastScrollEnabled="true"
+                >
+            </top.rechinx.meow.widget.AutofitRecyclerView>
+
+        </LinearLayout>
+        <top.rechinx.meow.widget.MaterialSideSheet
+            android:id="@+id/filterSideSheet"
+            android:layout_width="320dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end">
+        </top.rechinx.meow.widget.MaterialSideSheet>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</LinearLayout>

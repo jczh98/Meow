@@ -21,7 +21,7 @@ class Dmzj: HttpSource() {
 
     override fun searchMangaRequest(keyword: String, page: Int, filterList: FilterList): Request {
         if(keyword != "") {
-            if(page >= 1) return GET("http://www.baidu.com")
+            if(page > 1) return GET("http://www.baidu.com")
             val uri = Uri.parse("http://s.acg.dmzj.com/comicsum/search.php").buildUpon()
             uri.appendQueryParameter("s", keyword)
             return GET(uri.toString())
@@ -102,9 +102,9 @@ class Dmzj: HttpSource() {
         return ret
     }
 
-    override fun latestMangaRequest(page: Int): Request = GET("http://v2.api.dmzj.com/classify/0/1/${page-1}.json")
+    override fun popularMangaRequest(page: Int): Request = GET("http://v2.api.dmzj.com/classify/0/0/${page-1}.json")
 
-    override fun latestMangaParse(response: Response): List<AbsManga> = commonMangaParse(response)
+    override fun popularMangaParse(response: Response): List<AbsManga> = commonMangaParse(response)
 
     override fun mangaInfoRequest(cid: String): Request = GET("$baseUrl/comic/$cid.json")
 

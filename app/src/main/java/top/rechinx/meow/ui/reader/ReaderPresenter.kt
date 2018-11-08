@@ -57,8 +57,8 @@ class ReaderPresenter(private val sourceManager: SourceManager,
         this.manga = manga
         if(chapterId == -1L) chapterId = initialChapterId
 
-        val source = sourceManager.get(manga.sourceId)
-        loader = ChapterLoader(manga, source!!)
+        val source = sourceManager.getOrStub(manga.sourceId)
+        loader = ChapterLoader(manga, source)
 
         rx { Observable.just(manga).subscribe { view?.setManga(it)} }
         rx { viewerChaptersRelay.subscribe{ view?.setChapters(it) }}

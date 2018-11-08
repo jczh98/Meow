@@ -26,6 +26,7 @@
         <activity android:name=".ui.reader.ReaderActivity" />
         <activity android:name=".ui.about.AboutActivity" />
         <activity android:name=".ui.setting.SettingsActivity" />
+        <activity android:name=".ui.filter.FilterActivity" />
     </application>
 
 </manifest>

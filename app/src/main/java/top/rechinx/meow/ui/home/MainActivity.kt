@@ -15,6 +15,7 @@ import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.grid.history.HistoryFragment
 import top.rechinx.meow.ui.result.ResultActivity
 import top.rechinx.meow.ui.setting.SettingsActivity
+import top.rechinx.meow.ui.source.SourceFragment
 
 class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListener, MaterialSearchView.OnQueryTextListener {
 
@@ -45,6 +46,8 @@ class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 toolbar?.title = getString(R.string.app_name)
             }
             R.id.drawer_source -> {
+                supportFragmentManager.beginTransaction().replace(R.id.container_fragment, SourceFragment()).commit()
+                toolbar?.title = item.title
             }
             R.id.drawer_history -> {
                 supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HistoryFragment()).commit()
