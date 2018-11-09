@@ -3,21 +3,21 @@ package top.rechinx.meow.core.source
 import io.reactivex.Observable
 import top.rechinx.meow.core.source.model.*
 
-abstract class Source {
+interface Source {
 
-    abstract val id: Long
+    val id: Long
 
-    abstract val name: String
+    val name: String
 
-    abstract fun fetchPopularManga(page: Int): Observable<PagedManga>
+    fun fetchPopularManga(page: Int): Observable<PagedManga>
 
-    abstract fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedManga>
+    fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedManga>
 
-    abstract fun fetchMangaInfo(cid: String): Observable<AbsManga>
+    fun fetchMangaInfo(cid: String): Observable<AbsManga>
 
-    abstract fun fetchChapters(cid: String): Observable<List<AbsChapter>>
+    fun fetchChapters(page: Int, cid: String): Observable<PagedList<AbsChapter>>
 
-    abstract fun fetchMangaPages(chapter: AbsChapter): Observable<List<AbsMangaPage>>
+    fun fetchMangaPages(chapter: AbsChapter): Observable<List<AbsMangaPage>>
 
-    abstract fun getFilterList(): FilterList
+    fun getFilterList(): FilterList
 }

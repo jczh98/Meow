@@ -26,4 +26,7 @@ interface MangaDao {
 
     @Query("SELECT * FROM Manga WHERE history = 1")
     fun listHistory(): Flowable<List<Manga>>
+
+    @Query("SELECT * FROM Manga WHERE sourceId = :sourceId AND cid = :cid")
+    fun relayManga(sourceId: Long, cid: String): Flowable<Manga>
 }

@@ -13,7 +13,7 @@ import top.rechinx.meow.core.network.newCallWithProgress
 import top.rechinx.meow.core.source.model.*
 import java.security.MessageDigest
 
-abstract class HttpSource: Source(), KoinComponent {
+abstract class HttpSource: Source, KoinComponent {
 
     override val id by lazy {
         val key = "${name.toLowerCase()}"
@@ -51,7 +51,7 @@ abstract class HttpSource: Source(), KoinComponent {
                 mangaInfoParse(response).apply { initialized = true }
             }
 
-    override fun fetchChapters(cid: String): Observable<List<AbsChapter>> = client.newCall(chaptersRequest(cid))
+    override fun fetchChapters(page: Int, cid: String): Observable<PagedList<AbsChapter>> = client.newCall(chaptersRequest(page, cid))
             .asObservableSuccess()
             .map { response ->
                 chaptersParse(response)
@@ -89,9 +89,9 @@ abstract class HttpSource: Source(), KoinComponent {
 
     protected abstract fun mangaInfoParse(response: Response): AbsManga
 
-    protected abstract fun chaptersRequest(cid: String): Request
+    protected abstract fun chaptersRequest(page: Int, cid: String): Request
 
-    protected abstract fun chaptersParse(response: Response): List<AbsChapter>
+    protected abstract fun chaptersParse(response: Response): PagedList<AbsChapter>
 
     protected abstract fun mangaPagesRequest(chapter: AbsChapter): Request
 

@@ -4,7 +4,7 @@ import io.reactivex.Observable
 import top.rechinx.meow.core.source.model.*
 import java.lang.Exception
 
-class StubSource(override val id: Long): Source() {
+class StubSource(override val id: Long): Source {
 
     override val name: String = id.toString()
 
@@ -20,7 +20,7 @@ class StubSource(override val id: Long): Source() {
         return Observable.error(Exception())
     }
 
-    override fun fetchChapters(cid: String): Observable<List<AbsChapter>> {
+    override fun fetchChapters(page: Int, cid: String): Observable<PagedList<AbsChapter>> {
         return Observable.error(Exception())
     }
 

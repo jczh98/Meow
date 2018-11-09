@@ -56,7 +56,6 @@ class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComp
 
     fun restartPager(query: String = this.query, filters: FilterList = this.appliedFilters) {
         pager = CataloguePager(source, query, filters)
-        L.d("enter")
         pager.results()
                 .observeOn(Schedulers.io())
                 .map {
@@ -69,7 +68,6 @@ class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComp
                 .map { it.first to it.second.map { CatalogueItem(it) } }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeReplay({ view, (page, mangas) ->
-                    L.d("enter fuck")
                     view.onAddPage(page, mangas)
                 }, { _, error ->
                     error.printStackTrace()

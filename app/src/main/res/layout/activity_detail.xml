@@ -268,16 +268,22 @@
                         android:layout_gravity="center"
                         android:indeterminate="true"/>
 
-                    <androidx.recyclerview.widget.RecyclerView
+                    <top.rechinx.meow.widget.AutofitRecyclerView
                         android:id="@+id/chaptersRecyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"
                         android:clipChildren="false"
                         android:clipToPadding="false"
                         android:nestedScrollingEnabled="false"
                         android:paddingTop="16dp"
-                        android:visibility="gone"/>
+                        android:visibility="gone"
+                        android:columnWidth="128dp"
+                        android:smoothScrollbar="true"
+                        android:cacheColorHint="?android:attr/textColorHint"
+                        android:verticalSpacing="0dp"
+                        android:horizontalSpacing="0dp"
+                        android:fastScrollEnabled="true"/>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

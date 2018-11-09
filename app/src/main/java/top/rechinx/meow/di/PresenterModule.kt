@@ -18,8 +18,6 @@ object PresenterModule {
 
         factory<ResultContract.Presenter> { ResultPresenter(get()) }
 
-        factory<DetailContract.Presenter> { DetailPresenter(get()) }
-
         factory<ReaderContarct.Presenter> { ReaderPresenter(get(), get(), get()) }
 
         factory<HistoryContract.Presenter> { HistoryPresenter(get()) }

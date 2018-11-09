@@ -28,6 +28,14 @@ class MangaRepository(private val sourceManager: SourceManager,
         return mangaDao.loadManga(mangaId).toObservable()
     }
 
+    fun getRelayManga(sourceId: Long, cid: String) : Flowable<Manga> {
+        return mangaDao.relayManga(sourceId, cid)
+    }
+
+    fun getManga(sourceId: Long, cid: String): Manga? {
+        return mangaDao.loadManga(sourceId, cid)
+    }
+
     fun updateManga(manga: Manga): Disposable {
         return Observable.just(mangaDao.updateManga(manga))
                 .subscribeOn(Schedulers.io())
@@ -71,20 +79,22 @@ class MangaRepository(private val sourceManager: SourceManager,
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun fetchMangaChapters(sourceId: Long, cid: String): Observable<List<Chapter>> {
-        val manga = mangaDao.loadManga(sourceId, cid)
-        val source = sourceManager.getOrStub(sourceId)
-        return source.fetchChapters(cid).map { syncChaptersWithSource(it, manga!!, source) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map {
-                    chapterDao.getChapters(manga?.id!!).blockingGet()
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-    }
+//    fun fetchMangaChapters(sourceId: Long, cid: String): Observable<List<Chapter>> {
+//        val manga = mangaDao.loadManga(sourceId, cid)
+//        val source = sourceManager.getOrStub(sourceId)
+//        return source.fetchChapters(cid).map { syncChaptersWithSource(it, manga!!, source) }
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .map {
+//                    chapterDao.getChapters(manga?.id!!).blockingGet()
+//                }
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//    }
 
-    fun syncChaptersWithSource(rawSourceChapter: List<AbsChapter>, manga: Manga, source: Source) : List<Chapter> {
+    fun fetchLocalChapters(mangaId: Long) = chapterDao.getChapters(mangaId).blockingGet()
+
+    fun  syncChaptersWithSource(rawSourceChapter: List<AbsChapter>, manga: Manga, source: Source) : List<Chapter> {
         if(rawSourceChapter.isEmpty()) {
             throw Exception("No chapters found")
         }

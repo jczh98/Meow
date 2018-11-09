@@ -1,46 +1,104 @@
 package top.rechinx.meow.ui.details
 
+import android.os.Bundle
+import com.jakewharton.rxrelay2.PublishRelay
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
+import top.rechinx.meow.core.source.Source
+import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.data.repository.ChapterPager
 import top.rechinx.meow.data.repository.MangaRepository
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.support.mvp.RxPresenter
+import top.rechinx.meow.ui.details.items.ChapterItem
+import top.rechinx.rikka.mvp.BasePresenter
+import top.rechinx.rikka.mvp.MvpAppCompatActivity
 
-class DetailPresenter(private val mangaRepository: MangaRepository): RxPresenter<DetailContract.View>(), DetailContract.Presenter {
+class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<DetailActivity>(), KoinComponent {
 
-    override fun markedAsHistory(manga: Manga) {
+    val sourceManager by inject<SourceManager>()
+
+    val source = sourceManager.get(sourceId) as Source
+
+    /**
+     * allow chapters update with relay
+     */
+    val chaptersRelay: PublishRelay<List<ChapterItem>>
+            by lazy { PublishRelay.create<List<ChapterItem>>() }
+
+    var manga: Manga? = null
+
+    private val mangaRepository: MangaRepository by inject()
+
+    private lateinit var pager: ChapterPager
+
+    fun restartPager() {
+        pager = ChapterPager(source, cid)
+        pager.results.observeOn(Schedulers.io())
+                .map {
+                    it.first to mangaRepository.syncChaptersWithSource(it.second, manga!!, source)
+                }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    it.first to mangaRepository.fetchLocalChapters(manga!!.id)
+                }
+                .map {
+                    it.first to it.second.map { chapter ->  ChapterItem(chapter, manga!!) }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeReplay({ view , (page, chapters) ->
+                    view.onAddPage(page, chapters)
+                }, { _, error ->
+                    error.printStackTrace()
+                })
+        requestNext()
+    }
+
+    fun requestNext() {
+        if(!hasNextPage()) return
+        Observable.defer { pager.requestNext() }
+                .subscribeFirst({ _, _ -> }, DetailActivity::onAddPageError)
+    }
+
+    fun hasNextPage(): Boolean {
+        return pager.hasNextPage
+    }
+
+    fun markedAsHistory(manga: Manga) {
         manga.history = true
-        rx {
-            mangaRepository.updateManga(manga)
-        }
+        add(mangaRepository.updateManga(manga))
     }
-    override fun favoriteOrNot(manga: Manga) {
+
+    fun favoriteOrNot() {
+        val manga = manga ?: return
         manga.favorite = !manga.favorite
-        rx {
-            mangaRepository.updateManga(manga)
-        }
+        add(mangaRepository.updateManga(manga))
     }
 
-    override fun fetchMangaInfo(sourceId: Long, cid: String, needsChaptersRefresh: Boolean) {
-        rx {
-            mangaRepository.fetchMangaInfo(sourceId, cid)
-                    .subscribe({
-                        view?.onMangaLoadCompleted(it, needsChaptersRefresh)
-                    }, {
-                        it.printStackTrace()
-                        view?.onMangaFetchError()
-                    })
-        }
+    fun fetchMangaInfo(sourceId: Long, cid: String) {
+        mangaRepository.fetchMangaInfo(sourceId, cid)
+                .subscribeFirst({ view, smange ->
+                    this.manga = smange
+                    view.onMangaLoadCompleted(smange)
+                }, { view, error ->
+                    error.printStackTrace()
+                    view.onMangaFetchError()
+                })
     }
 
-    override fun fetchMangaChapters(sourceId: Long, cid: String) {
-        rx {
-            mangaRepository.fetchMangaChapters(sourceId, cid)
-                    .subscribe({
-                        view?.onChaptersInit(it)
-                    }, {
-                        it.printStackTrace()
-                        view?.onChaptersFetchError()
-                    })
-        }
-    }
+//    fun fetchMangaChapters(sourceId: Long, cid: String) {
+//        rx {
+//            mangaRepository.fetchMangaChapters(sourceId, cid)
+//                    .subscribe({
+//                        view?.onChaptersInit(it)
+//                    }, {
+//                        it.printStackTrace()
+//                        view?.onChaptersFetchError()
+//                    })
+//        }
+//    }
 }
