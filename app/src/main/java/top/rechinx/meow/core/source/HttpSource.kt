@@ -32,43 +32,43 @@ abstract class HttpSource: Source, KoinComponent {
         add("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64)")
     }
 
-    override fun fetchPopularManga(page: Int): Observable<PagedList<AbsManga>> = client.newCall(popularMangaRequest(page))
+    override fun fetchPopularManga(page: Int): Observable<PagedList<SManga>> = client.newCall(popularMangaRequest(page))
             .asObservableSuccess()
             .map { response ->
                 popularMangaParse(response)
             }
 
 
-    override fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedList<AbsManga>> = client.newCall(searchMangaRequest(query, page, filters))
+    override fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedList<SManga>> = client.newCall(searchMangaRequest(query, page, filters))
             .asObservableSuccess()
             .map { response ->
                 searchMangaParse(response)
             }
 
-    override fun fetchMangaInfo(cid: String): Observable<AbsManga> = client.newCall(mangaInfoRequest(cid))
+    override fun fetchMangaInfo(cid: String): Observable<SManga> = client.newCall(mangaInfoRequest(cid))
             .asObservableSuccess()
             .map { response ->
                 mangaInfoParse(response).apply { initialized = true }
             }
 
-    override fun fetchChapters(page: Int, cid: String): Observable<PagedList<AbsChapter>> = client.newCall(chaptersRequest(page, cid))
+    override fun fetchChapters(page: Int, cid: String): Observable<PagedList<SChapter>> = client.newCall(chaptersRequest(page, cid))
             .asObservableSuccess()
             .map { response ->
                 chaptersParse(response)
             }
 
-    override fun fetchMangaPages(chapter: AbsChapter): Observable<List<AbsMangaPage>> = client.newCall(mangaPagesRequest(chapter))
+    override fun fetchMangaPages(chapter: SChapter): Observable<List<MangaPage>> = client.newCall(mangaPagesRequest(chapter))
             .asObservableSuccess()
             .map { response ->
                 mangaPagesParse(response)
             }
 
-    fun fetchImage(page: AbsMangaPage): Observable<Response> {
+    fun fetchImage(page: MangaPage): Observable<Response> {
         return client.newCallWithProgress(imageRequest(page), page)
                 .asObservableSuccess()
     }
 
-    open protected fun imageRequest(page: AbsMangaPage): Request {
+    open protected fun imageRequest(page: MangaPage): Request {
         return Request.Builder()
                 .url(page.imageUrl!!)
                 .headers(headers)
@@ -79,21 +79,21 @@ abstract class HttpSource: Source, KoinComponent {
 
     protected abstract fun searchMangaRequest(keyword: String, page: Int, filters: FilterList): Request
 
-    protected abstract fun searchMangaParse(response: Response): PagedList<AbsManga>
+    protected abstract fun searchMangaParse(response: Response): PagedList<SManga>
 
     protected abstract fun popularMangaRequest(page: Int): Request
 
-    protected abstract fun popularMangaParse(response: Response): PagedList<AbsManga>
+    protected abstract fun popularMangaParse(response: Response): PagedList<SManga>
 
     protected abstract fun mangaInfoRequest(cid: String): Request
 
-    protected abstract fun mangaInfoParse(response: Response): AbsManga
+    protected abstract fun mangaInfoParse(response: Response): SManga
 
     protected abstract fun chaptersRequest(page: Int, cid: String): Request
 
-    protected abstract fun chaptersParse(response: Response): PagedList<AbsChapter>
+    protected abstract fun chaptersParse(response: Response): PagedList<SChapter>
 
-    protected abstract fun mangaPagesRequest(chapter: AbsChapter): Request
+    protected abstract fun mangaPagesRequest(chapter: SChapter): Request
 
-    protected abstract fun mangaPagesParse(response: Response): List<AbsMangaPage>
+    protected abstract fun mangaPagesParse(response: Response): List<MangaPage>
 }

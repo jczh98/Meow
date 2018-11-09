@@ -5,7 +5,7 @@ import io.reactivex.processors.PublishProcessor
 import io.reactivex.subjects.Subject
 import top.rechinx.meow.core.network.ProgressListener
 
-open class AbsMangaPage(
+open class MangaPage(
         val index: Int,
         val url: String,
         var imageUrl: String?

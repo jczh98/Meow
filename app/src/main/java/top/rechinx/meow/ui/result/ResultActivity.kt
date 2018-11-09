@@ -1,6 +1,5 @@
 package top.rechinx.meow.ui.result
 
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import com.google.android.material.snackbar.Snackbar
@@ -13,12 +12,9 @@ import com.scwang.smartrefresh.header.MaterialHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
 import top.rechinx.meow.R
-import top.rechinx.meow.core.source.model.AbsManga
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.global.Extras
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.support.viewbinding.bindView
 import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.base.BaseAdapter

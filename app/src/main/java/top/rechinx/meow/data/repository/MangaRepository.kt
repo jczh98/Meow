@@ -1,23 +1,17 @@
 package top.rechinx.meow.data.repository
 
 import io.reactivex.Flowable
-import io.reactivex.Maybe
 import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
-import top.rechinx.meow.core.source.model.AbsChapter
-import top.rechinx.meow.core.source.model.FilterList
-import top.rechinx.meow.core.source.model.PagedManga
+import top.rechinx.meow.core.source.model.SChapter
 import top.rechinx.meow.data.database.dao.ChapterDao
 import top.rechinx.meow.data.database.dao.MangaDao
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
-import top.rechinx.meow.support.log.L
 import java.lang.Exception
 
 class MangaRepository(private val sourceManager: SourceManager,
@@ -94,7 +88,7 @@ class MangaRepository(private val sourceManager: SourceManager,
 
     fun fetchLocalChapters(mangaId: Long) = chapterDao.getChapters(mangaId).blockingGet()
 
-    fun  syncChaptersWithSource(rawSourceChapter: List<AbsChapter>, manga: Manga, source: Source) : List<Chapter> {
+    fun  syncChaptersWithSource(rawSourceChapter: List<SChapter>, manga: Manga, source: Source) : List<Chapter> {
         if(rawSourceChapter.isEmpty()) {
             throw Exception("No chapters found")
         }
@@ -152,7 +146,7 @@ class MangaRepository(private val sourceManager: SourceManager,
         return toAdd.toList()
     }
 
-    private fun shouldUpdateDbChapter(dbChapter: Chapter, sourceChapter: AbsChapter): Boolean {
+    private fun shouldUpdateDbChapter(dbChapter: Chapter, sourceChapter: SChapter): Boolean {
         return dbChapter.name != sourceChapter.name ||
                 dbChapter.date_updated != sourceChapter.date_updated ||
                 dbChapter.chapter_number != sourceChapter.chapter_number

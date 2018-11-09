@@ -1,6 +1,6 @@
 package top.rechinx.meow.core.source.model
 
-class AbsChapterImpl: AbsChapter {
+class SChapterImpl: SChapter {
 
     override var url: String? = null
 

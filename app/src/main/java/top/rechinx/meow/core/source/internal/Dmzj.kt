@@ -44,9 +44,9 @@ class Dmzj: HttpSource() {
         }
     }
 
-    override fun searchMangaParse(response: Response): PagedList<AbsManga> = commonMangaParse(response)
+    override fun searchMangaParse(response: Response): PagedList<SManga> = commonMangaParse(response)
 
-    private fun commonMangaParse(response: Response): PagedList<AbsManga> {
+    private fun commonMangaParse(response: Response): PagedList<SManga> {
         val res = response.body()!!.string()
         val r = Regex("g_search_data = (.*)")
         val m = r.find(res)
@@ -56,22 +56,22 @@ class Dmzj: HttpSource() {
             mangaFromJSON2(res)
         }
     }
-    private fun mangaFromJSON1(json: String): PagedList<AbsManga> {
+    private fun mangaFromJSON1(json: String): PagedList<SManga> {
         val arr = JSONArray(json)
-        val ret = ArrayList<AbsManga>(arr.length())
+        val ret = ArrayList<SManga>(arr.length())
         for (i in 0 until arr.length()) {
             var obj = arr.getJSONObject(i)
             var cid = obj.getString("id")
-            ret.add(AbsManga.create().apply {
+            ret.add(SManga.create().apply {
                 title = obj.getString("name")
                 thumbnail_url = obj.getString("cover").let {
                     if(it.startsWith("//")) "http:$it" else it
                 }
                 author = obj.optString("authors")
                 status = when(obj.getString("status_tag_id")) {
-                    "2310" -> AbsManga.COMPLETED
-                    "2309" -> AbsManga.ONGOING
-                    else -> AbsManga.UNKNOWN
+                    "2310" -> SManga.COMPLETED
+                    "2309" -> SManga.ONGOING
+                    else -> SManga.UNKNOWN
                 }
                 description = obj.getString("description")
                 this.cid = cid
@@ -80,20 +80,20 @@ class Dmzj: HttpSource() {
         return PagedList(ret, false)
     }
 
-    private fun mangaFromJSON2(json: String): PagedList<AbsManga> {
+    private fun mangaFromJSON2(json: String): PagedList<SManga> {
         val arr = JSONArray(json)
-        val ret = ArrayList<AbsManga>(arr.length())
+        val ret = ArrayList<SManga>(arr.length())
         for (i in 0 until arr.length()) {
             var obj = arr.getJSONObject(i)
             var cid = obj.getString("id")
-            ret.add(AbsManga.create().apply {
+            ret.add(SManga.create().apply {
                 title = obj.getString("title")
                 thumbnail_url = obj.getString("cover")
                 author = obj.optString("authors")
                 status = when(obj.getString("status")) {
-                    "已完结" -> AbsManga.COMPLETED
-                    "连载中" -> AbsManga.ONGOING
-                    else -> AbsManga.UNKNOWN
+                    "已完结" -> SManga.COMPLETED
+                    "连载中" -> SManga.ONGOING
+                    else -> SManga.UNKNOWN
                 }
                 this.cid = cid
             })
@@ -103,11 +103,11 @@ class Dmzj: HttpSource() {
 
     override fun popularMangaRequest(page: Int): Request = GET("http://v2.api.dmzj.com/classify/0/0/${page-1}.json")
 
-    override fun popularMangaParse(response: Response): PagedList<AbsManga> = commonMangaParse(response)
+    override fun popularMangaParse(response: Response): PagedList<SManga> = commonMangaParse(response)
 
     override fun mangaInfoRequest(cid: String): Request = GET("$baseUrl/comic/$cid.json")
 
-    override fun mangaInfoParse(response: Response): AbsManga = AbsManga.create().apply{
+    override fun mangaInfoParse(response: Response): SManga = SManga.create().apply{
         val obj = JSONObject(response.body()!!.string())
 
         title = obj.getString("title")
@@ -127,9 +127,9 @@ class Dmzj: HttpSource() {
         }
         genre = tmparr.joinToString(", ")
         status = when(obj.getJSONArray("status").getJSONObject(0).getInt("tag_id")) {
-            2310 -> AbsManga.COMPLETED
-            2309 -> AbsManga.ONGOING
-            else -> AbsManga.UNKNOWN
+            2310 -> SManga.COMPLETED
+            2309 -> SManga.ONGOING
+            else -> SManga.UNKNOWN
         }
 
         description = obj.getString("description")
@@ -137,9 +137,9 @@ class Dmzj: HttpSource() {
 
     override fun chaptersRequest(page: Int, cid: String): Request = GET("$baseUrl/comic/$cid.json")
 
-    override fun chaptersParse(response: Response): PagedList<AbsChapter> {
+    override fun chaptersParse(response: Response): PagedList<SChapter> {
         val obj = JSONObject(response.body()!!.string())
-        val ret = ArrayList<AbsChapter>()
+        val ret = ArrayList<SChapter>()
         val cid = obj.getString("id")
         val arr = obj.getJSONArray("chapters")
         for (i in 0 until arr.length()) {
@@ -148,7 +148,7 @@ class Dmzj: HttpSource() {
             val prefix = obj2.getString("title")
             for (j in 0 until arr2.length()) {
                 val chapter = arr2.getJSONObject(j)
-                ret.add(AbsChapter.create().apply {
+                ret.add(SChapter.create().apply {
                     name = "$prefix: ${chapter.getString("chapter_title")}"
                     date_updated = chapter.getString("updatetime").toLong()*1000 //milliseconds
                     url = "/chapter/$cid/${chapter.getString("chapter_id")}.json"
@@ -158,14 +158,14 @@ class Dmzj: HttpSource() {
         return PagedList(ret, false)
     }
 
-    override fun mangaPagesRequest(chapter: AbsChapter): Request = GET(baseUrl + chapter.url)
+    override fun mangaPagesRequest(chapter: SChapter): Request = GET(baseUrl + chapter.url)
 
-    override fun mangaPagesParse(response: Response): List<AbsMangaPage> {
+    override fun mangaPagesParse(response: Response): List<MangaPage> {
         val obj = JSONObject(response.body()!!.string())
         val arr = obj.getJSONArray("page_url")
-        val ret = ArrayList<AbsMangaPage>(arr.length())
+        val ret = ArrayList<MangaPage>(arr.length())
         for (i in 0 until arr.length()) {
-            ret.add(AbsMangaPage(i, "", arr.getString(i)))
+            ret.add(MangaPage(i, "", arr.getString(i)))
         }
         return ret
     }

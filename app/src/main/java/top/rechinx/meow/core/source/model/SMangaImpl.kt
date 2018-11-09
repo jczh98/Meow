@@ -1,6 +1,6 @@
 package top.rechinx.meow.core.source.model
 
-class AbsMangaImpl: AbsManga() {
+class SMangaImpl: SManga() {
 
     override var cid: String? = null
 

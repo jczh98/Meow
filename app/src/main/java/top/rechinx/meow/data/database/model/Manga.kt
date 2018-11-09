@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import top.rechinx.meow.core.source.model.AbsManga
+import top.rechinx.meow.core.source.model.SManga
 
 @Entity
 data class Manga(@ColumnInfo override var cid: String?,
@@ -23,7 +23,7 @@ data class Manga(@ColumnInfo override var cid: String?,
                  @ColumnInfo var sourceId: Long = 0,
                  @ColumnInfo var last_update: Long = 0,
                  @ColumnInfo var viewer: Int = 0,
-                 @ColumnInfo var history: Boolean = false): AbsManga() {
+                 @ColumnInfo var history: Boolean = false): SManga() {
 
     constructor(): this(null, null, null, null, null, 0, null, false, null, null)
 

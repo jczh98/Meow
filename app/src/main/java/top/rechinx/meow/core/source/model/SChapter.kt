@@ -1,6 +1,6 @@
 package top.rechinx.meow.core.source.model
 
-interface AbsChapter {
+interface SChapter {
 
     var url: String?
 
@@ -10,7 +10,7 @@ interface AbsChapter {
 
     var chapter_number: String?
 
-    fun copyFrom(other: AbsChapter) {
+    fun copyFrom(other: SChapter) {
         if(other.url != null) {
             this.url = other.url
         }
@@ -23,8 +23,8 @@ interface AbsChapter {
     }
 
     companion object {
-        fun create(): AbsChapter {
-            return AbsChapterImpl()
+        fun create(): SChapter {
+            return SChapterImpl()
         }
     }
 }

@@ -1,6 +1,6 @@
 package top.rechinx.meow.core.source.model
 
-abstract class AbsManga {
+abstract class SManga {
 
     abstract var cid: String?
 
@@ -18,7 +18,7 @@ abstract class AbsManga {
 
     abstract var initialized: Boolean
 
-    fun copyFrom(other: AbsManga) {
+    fun copyFrom(other: SManga) {
         if (other.cid != null)
             cid = other.cid
 
@@ -51,8 +51,8 @@ abstract class AbsManga {
         const val ONGOING = 1
         const val COMPLETED = 2
 
-        fun create(): AbsManga {
-            return AbsMangaImpl()
+        fun create(): SManga {
+            return SMangaImpl()
         }
     }
 }

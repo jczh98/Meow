@@ -3,11 +3,7 @@ package top.rechinx.meow.ui.details
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
@@ -16,25 +12,17 @@ import com.scwang.smartrefresh.header.MaterialHeader
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.items.IFlexible
 import kotlinx.android.synthetic.main.activity_detail.*
-import org.koin.android.ext.android.inject
 import top.rechinx.meow.R
-import top.rechinx.meow.core.source.model.AbsManga
+import top.rechinx.meow.core.source.model.SManga
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.global.Extras
-import top.rechinx.meow.support.log.L
-import top.rechinx.meow.support.viewbinding.bindView
-import top.rechinx.meow.ui.base.BaseActivity
-import top.rechinx.meow.ui.base.BaseAdapter
 import top.rechinx.meow.ui.details.items.ChapterItem
-import top.rechinx.meow.ui.filter.FilterPresenter
 import top.rechinx.meow.ui.filter.items.ProgressItem
 import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.rikka.ext.gone
 import top.rechinx.rikka.ext.visible
-import top.rechinx.rikka.mvp.MvpAppCompatActivity
 import top.rechinx.rikka.mvp.MvpAppCompatActivityWithoutReflection
-import top.rechinx.rikka.mvp.factory.RequiresPresenter
 import java.text.DateFormat
 import java.util.*
 
@@ -130,9 +118,9 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         mangaInfoAuthor.text = manga.author
         var statusString = ""
         when(manga.status) {
-            AbsManga.ONGOING -> statusString += getString(R.string.string_manga_statu_ongoing)
-            AbsManga.COMPLETED -> statusString += getString(R.string.string_manga_statu_completed)
-            AbsManga.UNKNOWN -> statusString += getString(R.string.string_manga_statu_unknown)
+            SManga.ONGOING -> statusString += getString(R.string.string_manga_statu_ongoing)
+            SManga.COMPLETED -> statusString += getString(R.string.string_manga_statu_completed)
+            SManga.UNKNOWN -> statusString += getString(R.string.string_manga_statu_unknown)
         }
         mangaInfoStatus.text = statusString
         mangaInfoDescription.text = manga.description

@@ -2,30 +2,22 @@ package top.rechinx.meow.ui.reader.viewer.pager
 
 import android.graphics.drawable.Drawable
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.NoTransition
-import com.bumptech.glide.request.transition.Transition
 import com.github.chrisbanes.photoview.PhotoView
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import top.rechinx.meow.ui.reader.model.ReaderPage
-import top.rechinx.meow.core.source.model.AbsMangaPage
+import top.rechinx.meow.core.source.model.MangaPage
 import top.rechinx.meow.glide.GlideApp
 import top.rechinx.meow.ui.reader.ReaderProgressBar
 import top.rechinx.meow.R
@@ -103,16 +95,16 @@ class PagerPageHolder(
 
     private fun precessStatus(status: Int) {
         when(status) {
-            AbsMangaPage.QUEUE -> setQueued()
-            AbsMangaPage.LOAD_PAGE -> setLoading()
-            AbsMangaPage.DOWNLOAD_IMAGE -> {
+            MangaPage.QUEUE -> setQueued()
+            MangaPage.LOAD_PAGE -> setLoading()
+            MangaPage.DOWNLOAD_IMAGE -> {
                 observeProgress()
                 setDownloading()
             }
-            AbsMangaPage.READY -> {
+            MangaPage.READY -> {
                 setImage()
             }
-            AbsMangaPage.ERROR -> {
+            MangaPage.ERROR -> {
                 setError()
             }
         }

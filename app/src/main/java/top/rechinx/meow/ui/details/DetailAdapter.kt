@@ -6,22 +6,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import com.bumptech.glide.Glide
-import com.google.android.material.button.MaterialButton
-import com.hippo.ripple.Ripple
-import me.gujun.android.taggroup.TagGroup
 import top.rechinx.meow.R
-import top.rechinx.meow.core.source.model.AbsManga
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.support.viewbinding.bindView
 import top.rechinx.meow.ui.base.BaseAdapter
-import top.rechinx.meow.widget.ChapterButton
 import top.rechinx.meow.widget.MaterialChapterButton
-import java.text.DateFormat
 import java.util.*
 
 class DetailAdapter : BaseAdapter<Chapter> {

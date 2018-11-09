@@ -7,10 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import top.rechinx.meow.R
-import top.rechinx.meow.core.source.model.AbsManga
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.support.viewbinding.bindView
 import top.rechinx.meow.ui.base.BaseAdapter

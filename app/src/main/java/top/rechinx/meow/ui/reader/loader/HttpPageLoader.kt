@@ -1,18 +1,15 @@
 package top.rechinx.meow.ui.reader.loader
 
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
-import io.reactivex.subscribers.SerializedSubscriber
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import top.rechinx.meow.core.source.HttpSource
-import top.rechinx.meow.core.source.model.AbsMangaPage
+import top.rechinx.meow.core.source.model.MangaPage
 import top.rechinx.meow.data.cache.ChapterCache
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.reader.model.ReaderChapter
@@ -31,7 +28,7 @@ class HttpPageLoader(private val chapter: ReaderChapter,
 
     init {
         disposable += Observable.defer { Observable.just(queue.take().page) }
-                .filter { it.status == AbsMangaPage.QUEUE }
+                .filter { it.status == MangaPage.QUEUE }
                 .concatMap {
                     source.fetchImageFromCacheThenNet(it)
                 }
@@ -66,19 +63,19 @@ class HttpPageLoader(private val chapter: ReaderChapter,
             val imageUrl = page.imageUrl
 
             // Check if the image has been deleted
-            if (page.status == AbsMangaPage.READY && imageUrl != null && !chapterCache.isImageInCache(imageUrl)) {
-                page.status = AbsMangaPage.QUEUE
+            if (page.status == MangaPage.READY && imageUrl != null && !chapterCache.isImageInCache(imageUrl)) {
+                page.status = MangaPage.QUEUE
             }
 
             // Automatically retry failed pages when subscribed to this page
-            if (page.status == AbsMangaPage.ERROR) {
-                page.status = AbsMangaPage.QUEUE
+            if (page.status == MangaPage.ERROR) {
+                page.status = MangaPage.QUEUE
             }
 
             val statusProcessor = PublishProcessor.create<Int>().toSerialized()
             page.setStatusProcessor(statusProcessor)
 
-            if (page.status == AbsMangaPage.QUEUE) {
+            if (page.status == MangaPage.QUEUE) {
                 queue.offer(PriorityPage(page, 1))
             }
 
@@ -94,15 +91,15 @@ class HttpPageLoader(private val chapter: ReaderChapter,
         if (pageIndex == pages.lastIndex) return
         val nextPages = pages.subList(pageIndex + 1, Math.min(pageIndex + 1 + amount, pages.size))
         for (nextPage in nextPages) {
-            if (nextPage.status == AbsMangaPage.QUEUE) {
+            if (nextPage.status == MangaPage.QUEUE) {
                 queue.offer(PriorityPage(nextPage, 0))
             }
         }
     }
 
     override fun retryPage(page: ReaderPage) {
-        if (page.status == AbsMangaPage.ERROR) {
-            page.status = AbsMangaPage.QUEUE
+        if (page.status == MangaPage.ERROR) {
+            page.status = MangaPage.QUEUE
         }
         queue.offer(PriorityPage(page, 2))
     }
@@ -124,14 +121,14 @@ class HttpPageLoader(private val chapter: ReaderChapter,
                 }
                 .doOnNext {
                     page.stream = { chapterCache.getImageFile(imageUrl).inputStream() }
-                    page.status = AbsMangaPage.READY
+                    page.status = MangaPage.READY
                 }
-                .doOnError { page.status = AbsMangaPage.ERROR }
+                .doOnError { page.status = MangaPage.ERROR }
                 .onErrorReturn { page }
     }
 
     private fun HttpSource.cacheImage(page: ReaderPage): Observable<ReaderPage> {
-        page.status = AbsMangaPage.DOWNLOAD_IMAGE
+        page.status = MangaPage.DOWNLOAD_IMAGE
         return fetchImage(page)
                 .doOnNext { chapterCache.putImageToCache(page.imageUrl!!, it) }
                 .map { page }

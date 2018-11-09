@@ -1,12 +1,8 @@
 package top.rechinx.meow.ui.filter
 
 import android.os.Bundle
-import androidx.paging.PagedList
-import androidx.paging.RxPagedListBuilder
 import eu.davidea.flexibleadapter.items.IFlexible
-import eu.davidea.flexibleadapter.items.ISectionable
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -14,7 +10,6 @@ import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
-import top.rechinx.meow.core.source.model.AbsManga
 import top.rechinx.meow.core.source.model.Filter
 import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.data.database.model.Manga

@@ -3,8 +3,7 @@ package top.rechinx.meow.data.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import top.rechinx.meow.core.source.model.AbsChapter
-import top.rechinx.meow.core.source.model.AbsChapterImpl
+import top.rechinx.meow.core.source.model.SChapter
 
 @Entity
 data class Chapter(@ColumnInfo override var url: String?,
@@ -13,7 +12,7 @@ data class Chapter(@ColumnInfo override var url: String?,
                    @ColumnInfo override var chapter_number: String?,
                    @PrimaryKey(autoGenerate = true) var id: Long = 0,
                    @ColumnInfo var manga_id: Long = 0,
-                   @ColumnInfo var last_page_read: Int = 0) : AbsChapter {
+                   @ColumnInfo var last_page_read: Int = 0) : SChapter {
 
     constructor(): this(null, null, 0, null)
 
