@@ -9,9 +9,9 @@ interface Source {
 
     val name: String
 
-    fun fetchPopularManga(page: Int): Observable<PagedManga>
+    fun fetchPopularManga(page: Int): Observable<PagedList<AbsManga>>
 
-    fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedManga>
+    fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedList<AbsManga>>
 
     fun fetchMangaInfo(cid: String): Observable<AbsManga>
 

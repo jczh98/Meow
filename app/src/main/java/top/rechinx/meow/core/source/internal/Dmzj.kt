@@ -44,9 +44,9 @@ class Dmzj: HttpSource() {
         }
     }
 
-    override fun searchMangaParse(response: Response): PagedManga = commonMangaParse(response)
+    override fun searchMangaParse(response: Response): PagedList<AbsManga> = commonMangaParse(response)
 
-    private fun commonMangaParse(response: Response): PagedManga {
+    private fun commonMangaParse(response: Response): PagedList<AbsManga> {
         val res = response.body()!!.string()
         val r = Regex("g_search_data = (.*)")
         val m = r.find(res)
@@ -56,7 +56,7 @@ class Dmzj: HttpSource() {
             mangaFromJSON2(res)
         }
     }
-    private fun mangaFromJSON1(json: String): PagedManga {
+    private fun mangaFromJSON1(json: String): PagedList<AbsManga> {
         val arr = JSONArray(json)
         val ret = ArrayList<AbsManga>(arr.length())
         for (i in 0 until arr.length()) {
@@ -77,10 +77,10 @@ class Dmzj: HttpSource() {
                 this.cid = cid
             })
         }
-        return PagedManga(ret, false)
+        return PagedList(ret, false)
     }
 
-    private fun mangaFromJSON2(json: String): PagedManga {
+    private fun mangaFromJSON2(json: String): PagedList<AbsManga> {
         val arr = JSONArray(json)
         val ret = ArrayList<AbsManga>(arr.length())
         for (i in 0 until arr.length()) {
@@ -98,12 +98,12 @@ class Dmzj: HttpSource() {
                 this.cid = cid
             })
         }
-        return PagedManga(ret, arr.length() != 0)
+        return PagedList(ret, arr.length() != 0)
     }
 
     override fun popularMangaRequest(page: Int): Request = GET("http://v2.api.dmzj.com/classify/0/0/${page-1}.json")
 
-    override fun popularMangaParse(response: Response): PagedManga = commonMangaParse(response)
+    override fun popularMangaParse(response: Response): PagedList<AbsManga> = commonMangaParse(response)
 
     override fun mangaInfoRequest(cid: String): Request = GET("$baseUrl/comic/$cid.json")
 

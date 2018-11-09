@@ -8,11 +8,11 @@ class StubSource(override val id: Long): Source {
 
     override val name: String = id.toString()
 
-    override fun fetchPopularManga(page: Int): Observable<PagedManga> {
+    override fun fetchPopularManga(page: Int): Observable<PagedList<AbsManga>> {
         return Observable.error(Exception())
     }
 
-    override fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedManga> {
+    override fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedList<AbsManga>> {
         return Observable.error(Exception())
     }
 

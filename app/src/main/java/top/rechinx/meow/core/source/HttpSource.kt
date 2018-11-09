@@ -32,14 +32,14 @@ abstract class HttpSource: Source, KoinComponent {
         add("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64)")
     }
 
-    override fun fetchPopularManga(page: Int): Observable<PagedManga> = client.newCall(popularMangaRequest(page))
+    override fun fetchPopularManga(page: Int): Observable<PagedList<AbsManga>> = client.newCall(popularMangaRequest(page))
             .asObservableSuccess()
             .map { response ->
                 popularMangaParse(response)
             }
 
 
-    override fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedManga> = client.newCall(searchMangaRequest(query, page, filters))
+    override fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedList<AbsManga>> = client.newCall(searchMangaRequest(query, page, filters))
             .asObservableSuccess()
             .map { response ->
                 searchMangaParse(response)
@@ -79,11 +79,11 @@ abstract class HttpSource: Source, KoinComponent {
 
     protected abstract fun searchMangaRequest(keyword: String, page: Int, filters: FilterList): Request
 
-    protected abstract fun searchMangaParse(response: Response): PagedManga
+    protected abstract fun searchMangaParse(response: Response): PagedList<AbsManga>
 
     protected abstract fun popularMangaRequest(page: Int): Request
 
-    protected abstract fun popularMangaParse(response: Response): PagedManga
+    protected abstract fun popularMangaParse(response: Response): PagedList<AbsManga>
 
     protected abstract fun mangaInfoRequest(cid: String): Request
 

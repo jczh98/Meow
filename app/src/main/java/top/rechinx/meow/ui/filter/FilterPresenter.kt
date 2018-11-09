@@ -56,7 +56,7 @@ class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComp
 
     fun restartPager(query: String = this.query, filters: FilterList = this.appliedFilters) {
         pager = CataloguePager(source, query, filters)
-        pager.results()
+        pager.results
                 .observeOn(Schedulers.io())
                 .map {
                     it.first to it.second.map {

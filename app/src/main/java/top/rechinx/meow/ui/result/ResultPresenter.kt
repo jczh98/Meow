@@ -51,8 +51,8 @@ class ResultPresenter(private val sourceManager: SourceManager): ResultContract.
                                 .flatMap {
                                     return@flatMap Observable.create(ObservableOnSubscribe<Manga> { emitter ->
                                         try {
-                                            if(it.mangas.isEmpty()) throw Exception()
-                                            for(item in it.mangas) {
+                                            if(it.list.isEmpty()) throw Exception()
+                                            for(item in it.list) {
                                                 val manga = Manga()
                                                 manga.copyFrom(item)
                                                 manga.sourceId = source.id
