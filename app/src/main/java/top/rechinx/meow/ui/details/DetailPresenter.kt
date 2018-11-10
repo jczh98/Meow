@@ -33,13 +33,8 @@ class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<Detail
 
     val source = sourceManager.get(sourceId) as Source
 
-    /**
-     * allow chapters update with relay
-     */
-    val chaptersRelay: PublishRelay<List<ChapterItem>>
-            by lazy { PublishRelay.create<List<ChapterItem>>() }
-
     val rxbusRelay: PublishRelay<Manga> by lazy { PublishRelay.create<Manga>() }
+
     var manga: Manga? = null
 
     private val mangaRepository: MangaRepository by inject()
@@ -123,15 +118,4 @@ class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<Detail
         return localChapter
     }
 
-//    fun fetchMangaChapters(sourceId: Long, cid: String) {
-//        rx {
-//            mangaRepository.fetchMangaChapters(sourceId, cid)
-//                    .subscribe({
-//                        view?.onChaptersInit(it)
-//                    }, {
-//                        it.printStackTrace()
-//                        view?.onChaptersFetchError()
-//                    })
-//        }
-//    }
 }
