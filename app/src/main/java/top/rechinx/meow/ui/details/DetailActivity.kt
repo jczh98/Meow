@@ -16,6 +16,7 @@ import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.SManga
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.ui.details.items.ChapterItem
 import top.rechinx.meow.ui.filter.items.ProgressItem
@@ -212,9 +213,16 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
     fun onAddPageError(throwable: Throwable) {
         finishRefreshLayout()
         chaptersProgressBar.gone()
-        chaptersRecyclerView.gone()
-        emptyChapters.visible()
-        showSnackbar(R.string.snackbar_result_empty)
+        adapter?.onLoadMoreComplete(null)
+        adapter?.endlessTargetCount = 1
+        if(throwable is NoMoreResultException) {
+            progressItem
+            showSnackbar(R.string.snackbar_result_empty)
+        } else {
+            chaptersRecyclerView.gone()
+            emptyChapters.visible()
+            showSnackbar(R.string.snackbar_result_empty)
+        }
     }
 
     override fun noMoreLoad(newItemsSize: Int) {

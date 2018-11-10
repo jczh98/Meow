@@ -12,8 +12,14 @@ interface ChapterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertChapters(chapters: List<Chapter>)
 
+    @Insert
+    fun insertChapter(chapter: Chapter): Long
+
     @Query("SELECT * FROM Chapter WHERE manga_id = :mangaId")
     fun getChapters(mangaId: Long) : Maybe<List<Chapter>>
+
+    @Query("SELECT * FROM Chapter WHERE url = :chapterUrl AND manga_id = :mangaId")
+    fun getChapter(chapterUrl: String, mangaId: Long) : Chapter?
 
     @Delete
     fun deleteChapters(list: List<Chapter>)

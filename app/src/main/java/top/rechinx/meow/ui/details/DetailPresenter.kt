@@ -9,6 +9,9 @@ import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
+import top.rechinx.meow.core.source.model.SChapter
+import top.rechinx.meow.data.database.dao.ChapterDao
+import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.repository.ChapterPager
 import top.rechinx.meow.data.repository.MangaRepository
@@ -21,6 +24,8 @@ import top.rechinx.rikka.mvp.MvpAppCompatActivity
 class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<DetailActivity>(), KoinComponent {
 
     val sourceManager by inject<SourceManager>()
+
+    val chapterDao by inject<ChapterDao> ()
 
     val source = sourceManager.get(sourceId) as Source
 
@@ -40,12 +45,9 @@ class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<Detail
         pager = ChapterPager(source, cid)
         pager.results.observeOn(Schedulers.io())
                 .map {
-                    it.first to mangaRepository.syncChaptersWithSource(it.second, manga!!, source)
+                    it.first to it.second.map { chapter -> networkToLocalChapter(chapter, manga?.id!!) }
                 }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map {
-                    it.first to mangaRepository.fetchLocalChapters(manga!!.id)
-                }
                 .map {
                     it.first to it.second.map { chapter ->  ChapterItem(chapter, manga!!) }
                 }
@@ -88,6 +90,20 @@ class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<Detail
                     error.printStackTrace()
                     view.onMangaFetchError()
                 })
+    }
+
+    fun networkToLocalChapter(sChapter: SChapter, mangaId: Long): Chapter {
+        var localChapter = chapterDao.getChapter(sChapter.url!!, mangaId)
+        if(localChapter == null) {
+            val newChapter = Chapter.create().apply {
+                manga_id = mangaId
+            }
+            newChapter.copyFrom(sChapter)
+            val insertedId = chapterDao.insertChapter(newChapter)
+            newChapter.id = insertedId
+            localChapter = newChapter
+        }
+        return localChapter
     }
 
 //    fun fetchMangaChapters(sourceId: Long, cid: String) {

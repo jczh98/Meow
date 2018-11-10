@@ -49,11 +49,10 @@ class ReaderPresenter : BasePresenter<ReaderActivity>(), KoinComponent{
 
     fun loadInit(mangaId: Long, initialChapterId: Long, isContinued: Boolean) {
         if(!needsInit()) return
-
             mangaRepository.getManga(mangaId)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext { loadInit(it, initialChapterId, isContinued) }
-                    .subscribeFirst({_, _ -> })
+                    .subscribeFirst({_, _ -> }, {_, e -> L.d(e.message)})
     }
 
     fun loadInit(manga: Manga, initialChapterId: Long, isContinued: Boolean) {
@@ -72,7 +71,7 @@ class ReaderPresenter : BasePresenter<ReaderActivity>(), KoinComponent{
                 .flatMap { getLoadObservable(loader!!, it, isContinued) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeFirst({_, _ -> })
+                .subscribeFirst({_, _ -> }, {_, e -> L.d(e.message)})
     }
 
     private fun getLoadObservable(loader: ChapterLoader, chapter: ReaderChapter, isContinued: Boolean = false): Observable<ViewerChapters> {
