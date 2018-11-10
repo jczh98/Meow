@@ -89,7 +89,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
                         } else {
                             bottomAppBar.replaceMenu(R.menu.bottombar_menu_with_favorite)
                         }
-                        presenter.manga!!.favorite = !presenter.manga!!.favorite
+                        //presenter.manga!!.favorite = !presenter.manga!!.favorite
                     }
                 }
             }
@@ -126,7 +126,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         }
         mangaInfoStatus.text = statusString
         mangaInfoDescription.text = manga.description
-        mangaGenresTags.setTags(manga.genre?.split(", "))
+        if(manga.genre != null && manga.genre!!.isNotBlank()) mangaGenresTags.setTags(manga.genre?.split(", "))
         // set favorite
         if (manga.favorite)  {
             bottomAppBar.replaceMenu(R.menu.bottombar_menu_with_unfavorite)
