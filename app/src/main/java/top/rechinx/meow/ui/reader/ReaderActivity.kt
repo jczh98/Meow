@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,6 +17,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.custom_toolbar.*
 import me.zhanghai.android.systemuihelper.SystemUiHelper
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import org.koin.android.ext.android.inject
@@ -36,10 +38,11 @@ import top.rechinx.meow.ui.reader.viewer.pager.R2LPagerViewer
 import top.rechinx.meow.ui.reader.viewer.webtoon.WebtoonViewer
 import top.rechinx.meow.widget.ReverseSeekBar
 import top.rechinx.rikka.ext.visible
+import top.rechinx.rikka.mvp.MvpAppCompatActivity
+import top.rechinx.rikka.mvp.factory.RequiresPresenter
 
-class ReaderActivity: BaseActivity(), ReaderContarct.View {
-
-    override val presenter: ReaderContarct.Presenter by inject()
+@RequiresPresenter(ReaderPresenter::class)
+class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
 
     var viewer: BaseViewer? = null
         private set
@@ -66,7 +69,11 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
     private var config: ReaderConfig? = null
 
 
-    override fun initViews() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_reader)
+        setSupportActionBar(custom_toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         if(presenter.needsInit()) {
             if (mangaId == -1L || chapterId == -1L) {
                 finish()
@@ -78,13 +85,8 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
         initializeMenu()
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.subscribe(this)
-    }
-
     private fun initializeMenu() {
-        toolbar?.setNavigationOnClickListener { onBackPressed() }
+        custom_toolbar?.setNavigationOnClickListener { onBackPressed() }
         readerSeekbar.setOnProgressChangeListener(object : DiscreteSeekBar.OnProgressChangeListener {
             override fun onProgressChanged(seekBar: DiscreteSeekBar?, value: Int, fromUser: Boolean) {
                 if (viewer != null && fromUser) {
@@ -122,7 +124,7 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
         }
     }
 
-    override fun setManga(manga: Manga) {
+    fun setManga(manga: Manga) {
         val preViewer = viewer
         val newViewer = when(presenter.getMangaViewer()) {
             LEFT_TO_RIGHT -> L2RPagerViewer(this)
@@ -136,7 +138,7 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
         }
         viewer = newViewer
         viewerContainer.addView(newViewer.getView())
-        toolbar?.title = manga.title
+        custom_toolbar?.title = manga.title
         readerSeekbar.setReverse(newViewer is R2LPagerViewer)
         waitProgressBar.visible()
         waitProgressBar.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in_long))
@@ -161,7 +163,7 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
                         }
                     }
                 })
-                toolbar?.startAnimation(toolbarAnimation)
+                custom_toolbar?.startAnimation(toolbarAnimation)
 
                 val bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.enter_from_bottom)
                 readerMenuBottom.startAnimation(bottomAnimation)
@@ -178,7 +180,7 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
                         readerMenu.visibility = View.GONE
                     }
                 })
-                toolbar?.startAnimation(toolbarAnimation)
+                custom_toolbar?.startAnimation(toolbarAnimation)
 
                 val bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.exit_to_bottom)
                 readerMenuBottom.startAnimation(bottomAnimation)
@@ -204,10 +206,10 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
 
     }
 
-    override fun setChapters(viewerChapters: ViewerChapters) {
+    fun setChapters(viewerChapters: ViewerChapters) {
         waitProgressBar.visibility = View.GONE
         viewer?.setChapters(viewerChapters)
-        toolbar?.subtitle = viewerChapters.currChapter.chapter.name
+        custom_toolbar?.subtitle = viewerChapters.currChapter.chapter.name
     }
 
     @SuppressLint("SetTextI18n")
@@ -236,15 +238,13 @@ class ReaderActivity: BaseActivity(), ReaderContarct.View {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
         viewer?.destroy()
         viewer = null
         config?.destroy()
         config = null
-        presenter.unsubscribe()
-        super.onDestroy()
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_reader
 
     private inner class ReaderConfig {
 

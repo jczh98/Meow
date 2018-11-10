@@ -41,7 +41,6 @@ class AutofitRecyclerView @JvmOverloads constructor(context: Context, attrs: Att
 
             val count = Math.max(1, measuredWidth / columnWidth)
             spanCount = count
-            L.d(spanCount.toString() + " " + itemWidth)
         }
     }
 }

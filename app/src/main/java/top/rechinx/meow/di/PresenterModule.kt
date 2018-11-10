@@ -16,8 +16,6 @@ object PresenterModule {
 
         factory<ResultContract.Presenter> { ResultPresenter(get()) }
 
-        factory<ReaderContarct.Presenter> { ReaderPresenter(get(), get(), get()) }
-
         factory<HistoryContract.Presenter> { HistoryPresenter(get()) }
 
         factory<FavoriteContract.Presenter> { FavoritePresenter(get()) }

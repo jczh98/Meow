@@ -7,6 +7,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.repository.ChapterRepository
@@ -17,12 +19,15 @@ import top.rechinx.meow.ui.reader.loader.ChapterLoader
 import top.rechinx.meow.ui.reader.model.ReaderChapter
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import top.rechinx.meow.ui.reader.model.ViewerChapters
+import top.rechinx.rikka.mvp.BasePresenter
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class ReaderPresenter(private val sourceManager: SourceManager,
-                      private val mangaRepository: MangaRepository,
-                      private val chapterRepository: ChapterRepository) : RxPresenter<ReaderContarct.View>(), ReaderContarct.Presenter {
+class ReaderPresenter : BasePresenter<ReaderActivity>(), KoinComponent{
+
+    private val sourceManager: SourceManager by inject()
+    private val mangaRepository: MangaRepository by inject()
+    private val chapterRepository: ChapterRepository by inject()
 
     var manga: Manga? = null
         private set
@@ -40,17 +45,15 @@ class ReaderPresenter(private val sourceManager: SourceManager,
 
     private var loader: ChapterLoader? = null
 
-    override fun needsInit() : Boolean = manga == null
+    fun needsInit() : Boolean = manga == null
 
-    override fun loadInit(mangaId: Long, initialChapterId: Long, isContinued: Boolean) {
+    fun loadInit(mangaId: Long, initialChapterId: Long, isContinued: Boolean) {
         if(!needsInit()) return
 
-        rx {
             mangaRepository.getManga(mangaId)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext { loadInit(it, initialChapterId, isContinued) }
-                    .subscribe()
-        }
+                    .subscribeFirst({_, _ -> })
     }
 
     fun loadInit(manga: Manga, initialChapterId: Long, isContinued: Boolean) {
@@ -60,8 +63,8 @@ class ReaderPresenter(private val sourceManager: SourceManager,
         val source = sourceManager.getOrStub(manga.sourceId)
         loader = ChapterLoader(manga, source)
 
-        rx { Observable.just(manga).subscribe { view?.setManga(it)} }
-        rx { viewerChaptersRelay.subscribe{ view?.setChapters(it) }}
+        Observable.just(manga).subscribeLatestCache(ReaderActivity::setManga)
+        viewerChaptersRelay.subscribeLatestCache(ReaderActivity::setChapters)
 
         activeChapterDisposable?.dispose()
         activeChapterDisposable = Observable
@@ -69,7 +72,7 @@ class ReaderPresenter(private val sourceManager: SourceManager,
                 .flatMap { getLoadObservable(loader!!, it, isContinued) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                .subscribeFirst({_, _ -> })
     }
 
     private fun getLoadObservable(loader: ChapterLoader, chapter: ReaderChapter, isContinued: Boolean = false): Observable<ViewerChapters> {
@@ -89,7 +92,7 @@ class ReaderPresenter(private val sourceManager: SourceManager,
                 }
     }
 
-    override fun preloadChapter(chapter: ReaderChapter) {
+    fun preloadChapter(chapter: ReaderChapter) {
         if (chapter.state != ReaderChapter.State.Wait && chapter.state !is ReaderChapter.State.Error) {
             return
         }
@@ -102,10 +105,10 @@ class ReaderPresenter(private val sourceManager: SourceManager,
                 .doOnComplete { viewerChaptersRelay.value?.let(viewerChaptersRelay::accept) }
                 .onErrorComplete()
                 .subscribe()
-                .also { rx { it } }
+                .also(::add)
     }
 
-    override fun onPageSelected(page: ReaderPage) {
+    fun onPageSelected(page: ReaderPage) {
         val currentChapters = viewerChaptersRelay.value ?: return
 
         val selectedChapter = page.chapter
@@ -124,7 +127,7 @@ class ReaderPresenter(private val sourceManager: SourceManager,
         activeChapterDisposable = getLoadObservable(loader, chapter)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
-                .also { rx { it } }
+                .also(::add)
     }
 
     private fun onChapterChanged(fromChapter: ReaderChapter, toChapter: ReaderChapter) {
@@ -140,49 +143,47 @@ class ReaderPresenter(private val sourceManager: SourceManager,
     private fun saveChapterHistory(chapter: ReaderChapter) {
     }
 
-    override fun getCurrentChapter(): ReaderChapter? {
+    fun getCurrentChapter(): ReaderChapter? {
         return viewerChaptersRelay.value?.currChapter
     }
 
-    override fun setMangaViewer(viewer: Int) {
+    fun setMangaViewer(viewer: Int) {
         val manga = manga ?: return
         manga.viewer = viewer
         mangaRepository.updateManga(manga)
-        rx {
-            Observable.timer(250, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                    .subscribe {
-                        val currChapters = viewerChaptersRelay.value
-                        if (currChapters != null) {
-                            // Save current page
-                            val currChapter = currChapters.currChapter
-                            currChapter.requestedPage = currChapter.chapter.last_page_read
+        Observable.timer(250, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .subscribeFirst({ view, _ ->
+                    val currChapters = viewerChaptersRelay.value
+                    if (currChapters != null) {
+                        // Save current page
+                        val currChapter = currChapters.currChapter
+                        currChapter.requestedPage = currChapter.chapter.last_page_read
 
-                            // Emit manga and chapters to the new viewer
-                            view?.setManga(manga)
-                            view?.setChapters(currChapters)
-                        }
+                        // Emit manga and chapters to the new viewer
+                        view.setManga(manga)
+                        view.setChapters(currChapters)
                     }
-        }
+                })
     }
 
-    override fun saveLastRead(chapter: ReaderChapter?) {
+    fun saveLastRead(chapter: ReaderChapter?) {
         if(chapter != null) {
             manga?.last_read_chapter_id = chapter.chapter.id
             mangaRepository.updateManga(manga!!)
         }
     }
 
-    override fun unsubscribe() {
+    override fun onDestroy() {
+        super.onDestroy()
         val currentChapters = viewerChaptersRelay.value
         if (currentChapters != null) {
             currentChapters.unref()
             saveChapterProgress(currentChapters.currChapter)
             saveChapterHistory(currentChapters.currChapter)
         }
-        super.unsubscribe()
     }
 
-    override fun getMangaViewer(): Int {
+    fun getMangaViewer(): Int {
         return manga?.viewer ?: 0
     }
 }
