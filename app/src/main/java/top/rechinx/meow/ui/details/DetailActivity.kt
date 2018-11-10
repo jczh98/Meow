@@ -34,7 +34,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
     val sourceId: Long by lazy { intent.getLongExtra(Extras.EXTRA_SOURCE, 0) }
     val cid: String by lazy { intent.getStringExtra(Extras.EXTRA_CID) }
 
-    private var adapter: FlexibleAdapter<IFlexible<*>>? = null
+    private var adapter: DetailAdapter? = null
 
     private var progressItem: ProgressItem? = null
 
@@ -46,6 +46,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         initViews()
+        presenter.fetchMangaInfo(sourceId, cid)
     }
 
     fun initViews() {
@@ -55,7 +56,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         }
         Toolbar?.setNavigationOnClickListener { finish() }
         chaptersRecyclerView.setHasFixedSize(false)
-        adapter = FlexibleAdapter(null, this)
+        adapter = DetailAdapter( this)
         chaptersRecyclerView.adapter = adapter
         // Refresh layout setup
         detailRefreshLayout.setRefreshHeader(MaterialHeader(this))
@@ -98,7 +99,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
 
     override fun onResume() {
         super.onResume()
-        presenter.fetchMangaInfo(sourceId, cid)
+        //presenter.fetchMangaInfo(sourceId, cid)
     }
 
     private fun hideProgressBar() {
@@ -238,7 +239,11 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         }
     }
 
-    fun getLayoutId(): Int = R.layout.activity_detail
+    fun setLastChanged(manga: Manga) {
+        val adapter = adapter ?: return
+        presenter.manga?.last_read_chapter_id = manga.last_read_chapter_id
+        adapter.setLast(manga.last_read_chapter_id)
+    }
 
     companion object {
 

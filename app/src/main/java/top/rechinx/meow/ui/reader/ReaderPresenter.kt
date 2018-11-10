@@ -20,6 +20,7 @@ import top.rechinx.meow.ui.reader.model.ReaderChapter
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import top.rechinx.meow.ui.reader.model.ViewerChapters
 import top.rechinx.rikka.mvp.BasePresenter
+import top.rechinx.rikka.rxbus.RxBus
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -168,7 +169,8 @@ class ReaderPresenter : BasePresenter<ReaderActivity>(), KoinComponent{
     fun saveLastRead(chapter: ReaderChapter?) {
         if(chapter != null) {
             manga?.last_read_chapter_id = chapter.chapter.id
-            mangaRepository.updateManga(manga!!)
+            RxBus.instance?.post(manga!!)
+            add(mangaRepository.updateManga(manga!!))
         }
     }
 

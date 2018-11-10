@@ -4,6 +4,8 @@ import android.os.Bundle
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Action
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
@@ -18,8 +20,10 @@ import top.rechinx.meow.data.repository.MangaRepository
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.support.mvp.RxPresenter
 import top.rechinx.meow.ui.details.items.ChapterItem
+import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.rikka.mvp.BasePresenter
 import top.rechinx.rikka.mvp.MvpAppCompatActivity
+import top.rechinx.rikka.rxbus.RxBus
 
 class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<DetailActivity>(), KoinComponent {
 
@@ -35,11 +39,23 @@ class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<Detail
     val chaptersRelay: PublishRelay<List<ChapterItem>>
             by lazy { PublishRelay.create<List<ChapterItem>>() }
 
+    val rxbusRelay: PublishRelay<Manga> by lazy { PublishRelay.create<Manga>() }
     var manga: Manga? = null
 
     private val mangaRepository: MangaRepository by inject()
 
     private lateinit var pager: ChapterPager
+
+    override fun onCreate(savedState: Bundle?) {
+        super.onCreate(savedState)
+        rxbusRelay.observeOn(AndroidSchedulers.mainThread())
+                .subscribeReplay({ view, it ->
+                    view.setLastChanged(it)
+                })
+        add(RxBus.instance?.register(Manga::class.java, Consumer {
+            rxbusRelay.accept(it)
+        }, Consumer {}, Action {}, Consumer {}))
+    }
 
     fun restartPager() {
         pager = ChapterPager(source, cid)
@@ -49,7 +65,7 @@ class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<Detail
                 }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map {
-                    it.first to it.second.map { chapter ->  ChapterItem(chapter, manga!!) }
+                    it.first to it.second.map { chapter ->  ChapterItem(chapter) }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeReplay({ view , (page, chapters) ->
