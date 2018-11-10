@@ -102,6 +102,7 @@ class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<Detail
                 .subscribeFirst({ view, smange ->
                     this.manga = smange
                     view.onMangaLoadCompleted(smange)
+                    view.setLastChanged(smange)
                 }, { view, error ->
                     error.printStackTrace()
                     view.onMangaFetchError()
