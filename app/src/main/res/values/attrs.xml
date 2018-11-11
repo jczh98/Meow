@@ -2,6 +2,18 @@
 <resources>
     <declare-styleable name="ChapterButton">
         <attr name="selected_color" format="color" />
+        <attr name="strokeColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="StatedChapterButton">
+        <attr name="buttonColor" format="color"/>
+        <attr name="progressColor" format="color"/>
+        <attr name="buttonStrokeWidth" format="float"/>
+        <attr name="submitText" format="string" />
+        <attr name="completeText" format="string" />
+        <attr name="failureText" format="string" />
+        <attr name="buttonTextSize" format="dimension" />
+        <attr name="unKnownProgress" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="ZoomRecyclerView">

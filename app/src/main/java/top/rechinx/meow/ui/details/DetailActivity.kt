@@ -19,7 +19,8 @@ import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.ui.details.items.ChapterItem
-import top.rechinx.meow.ui.filter.items.ProgressItem
+import top.rechinx.meow.ui.details.items.LoadItem
+import top.rechinx.meow.ui.details.items.ProgressItem
 import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.rikka.ext.gone
 import top.rechinx.rikka.ext.visible
@@ -28,7 +29,6 @@ import java.text.DateFormat
 import java.util.*
 
 class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
-        FlexibleAdapter.EndlessScrollListener,
         FlexibleAdapter.OnItemClickListener{
 
     val sourceId: Long by lazy { intent.getLongExtra(Extras.EXTRA_SOURCE, 0) }
@@ -36,7 +36,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
 
     private var adapter: DetailAdapter? = null
 
-    private var progressItem: ProgressItem? = null
+    private var loadItem: LoadItem = LoadItem()
 
     override fun createPresenter(): DetailPresenter {
         return DetailPresenter(sourceId, cid)
@@ -57,6 +57,16 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         Toolbar?.setNavigationOnClickListener { finish() }
         chaptersRecyclerView.setHasFixedSize(false)
         adapter = DetailAdapter( this)
+        adapter?.onLoadMoreListener = object : DetailAdapter.OnLoadMoreListener {
+            override fun onLoadMore() {
+                if(presenter.hasNextPage()) {
+                    loadItem.status = LoadItem.LOADING
+                    presenter.requestNext()
+                } else {
+                    adapter?.onLoadMoreComplete(null)
+                }
+            }
+        }
         chaptersRecyclerView.adapter = adapter
         // Refresh layout setup
         detailRefreshLayout.setRefreshHeader(MaterialHeader(this))
@@ -95,11 +105,6 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
             }
             return@setOnMenuItemClickListener true
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        //presenter.fetchMangaInfo(sourceId, cid)
     }
 
     private fun hideProgressBar() {
@@ -168,8 +173,10 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
 
 
     override fun onItemClick(view: View, position: Int): Boolean {
+        val adapter = adapter ?: return false
+        if(adapter.getItem(position) !is ChapterItem) return false
         startReader(position)
-        return false
+        return true
     }
 
     private fun startReader(position: Int, isContinued: Boolean = false) {
@@ -194,21 +201,21 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
     fun onAddPage(page: Int, chapters: List<ChapterItem>) {
         val adapter = adapter ?: return
         val manga = presenter.manga ?: return
+        loadItem.status = LoadItem.IDLE
         manga.last_update = chapters.maxBy { it.chapter.date_updated }?.chapter?.date_updated ?: 0L
         setMangaLastUpdated(manga)
         finishRefreshLayout()
         hideProgressBar()
         if(page == 1) {
             adapter.clear()
-            resetProgressItem()
+            resetLoadItem()
         }
         adapter.onLoadMoreComplete(chapters)
     }
 
-    private fun resetProgressItem() {
-        progressItem = ProgressItem()
-        adapter?.endlessTargetCount = 0
-        adapter?.setEndlessScrollListener(this, progressItem!!)
+    private fun resetLoadItem() {
+        loadItem = LoadItem()
+        adapter?.setEndlessProgressItem(loadItem)
     }
 
     fun onAddPageError(throwable: Throwable) {
@@ -217,25 +224,11 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         adapter?.onLoadMoreComplete(null)
         adapter?.endlessTargetCount = 1
         if(throwable is NoMoreResultException) {
-            progressItem
             showSnackbar(R.string.snackbar_result_empty)
         } else {
             chaptersRecyclerView.gone()
             emptyChapters.visible()
             showSnackbar(R.string.snackbar_result_empty)
-        }
-    }
-
-    override fun noMoreLoad(newItemsSize: Int) {
-
-    }
-
-    override fun onLoadMore(lastPosition: Int, currentPage: Int) {
-        if (presenter.hasNextPage()) {
-            presenter.requestNext()
-        } else {
-            adapter?.onLoadMoreComplete(null)
-            adapter?.endlessTargetCount = 1
         }
     }
 

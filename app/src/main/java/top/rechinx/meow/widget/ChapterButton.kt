@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
 import top.rechinx.meow.utils.Utility
 import top.rechinx.meow.R
+import top.rechinx.meow.support.log.L
 
 class ChapterButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : AppCompatTextView(context, attrs, defStyle) {
 
@@ -25,9 +26,8 @@ class ChapterButton @JvmOverloads constructor(context: Context, attrs: Attribute
         val typedArray = context.theme.obtainStyledAttributes(
                 attrs, R.styleable.ChapterButton, 0, 0)
         accentColor = typedArray.getColor(R.styleable.ChapterButton_selected_color, Color.BLACK)
+        normalColor = typedArray.getColor(R.styleable.ChapterButton_strokeColor, Color.BLACK)
         typedArray.recycle()
-
-        normalColor = -0x76000000
 
         isClickable = true
         download = false
@@ -44,12 +44,12 @@ class ChapterButton @JvmOverloads constructor(context: Context, attrs: Attribute
     private fun initDrawableState() {
         val normalDrawable = GradientDrawable()
         normalDrawable.setStroke(Utility.dpToPixel(1f, context).toInt(), normalColor)
-        normalDrawable.cornerRadius = Utility.dpToPixel(4f, context)
+        normalDrawable.cornerRadius = Utility.dpToPixel(18f, context)
         normalDrawable.setColor(Color.TRANSPARENT)
 
         val selectedDrawable = GradientDrawable()
         selectedDrawable.setStroke(Utility.dpToPixel(1f, context).toInt(), accentColor)
-        selectedDrawable.cornerRadius = Utility.dpToPixel(4f, context)
+        selectedDrawable.cornerRadius = Utility.dpToPixel(18f, context)
         selectedDrawable.setColor(accentColor)
 
         val stateList = StateListDrawable()

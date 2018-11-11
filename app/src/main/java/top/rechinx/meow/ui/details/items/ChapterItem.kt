@@ -33,7 +33,7 @@ class ChapterItem(val chapter: Chapter): AbstractFlexibleItem<ChapterItem.ViewHo
 
     class ViewHolder(private val view: View, private val adapter: DetailAdapter): FlexibleViewHolder(view, adapter) {
         fun bindTo(chapter: Chapter) {
-            view.item_chapter_button.text = chapter.name
+            view.item_chapter_button.text = chapter.name!!
             view.item_chapter_button.isSelected = adapter.latestChapterId == chapter.id
         }
     }

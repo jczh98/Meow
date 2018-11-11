@@ -5,7 +5,11 @@ import eu.davidea.flexibleadapter.FlexibleAdapter
 import eu.davidea.flexibleadapter.items.IFlexible
 import top.rechinx.meow.ui.details.items.ChapterItem
 
+
+
 class DetailAdapter(context: Context): FlexibleAdapter<IFlexible<*>>(null, context, true) {
+
+    lateinit var onLoadMoreListener: OnLoadMoreListener
 
     var latestChapterId: Long = 0
 
@@ -21,5 +25,9 @@ class DetailAdapter(context: Context): FlexibleAdapter<IFlexible<*>>(null, conte
                 updateItem(i, item, null)
             }
         }
+    }
+
+    interface OnLoadMoreListener {
+        fun onLoadMore()
     }
 }

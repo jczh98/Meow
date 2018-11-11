@@ -14,4 +14,5 @@
     <color name="textColorPrimaryLight">#DE000000</color>
     <color name="selectorColorLight">#612979FF</color>
     <color name="backgroundLight">#FAFAFA</color>
+    <color name="md_red_500">#F44336</color>
 </resources>

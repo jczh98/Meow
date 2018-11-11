@@ -46,4 +46,5 @@
     <string name="text_options_stream">卷轴模式</string>
     <string name="text_options_hidden">收起</string>
     <string name="info_last_update_label">最后更新</string>
+    <string name="text_chapter_load_more">加载更多章节</string>
 </resources>

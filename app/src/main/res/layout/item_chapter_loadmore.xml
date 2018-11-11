@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <top.rechinx.meow.widget.ChapterButton
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/item_chapter_load"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_margin="12dp"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:background="@drawable/btn_status_selector"
+        android:text="@string/text_chapter_load_more"
+        app:selected_color="@color/colorPrimary"
+        app:strokeColor="@color/md_red_500"
+        />
+    <ProgressBar
+        android:id="@+id/itemProgressLoad"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:indeterminate="true" />
+</FrameLayout>

@@ -75,4 +75,5 @@
     <string name="detail_chapters">Chapters</string>
     <string name="detail_empty_chapter">Empty chapter</string>
     <string name="title_search_filter">Search Filter</string>
+    <string name="text_chapter_load_more">load more chapters</string>
 </resources>

@@ -52,7 +52,6 @@ class GridAdapter: BaseAdapter<Manga> {
                     .centerCrop()
                     .into(thumbnail)
         }
-        L.d(recyclerView.itemWidth.toString())
     }
 
     override fun getItemDecoration(): RecyclerView.ItemDecoration? = null
