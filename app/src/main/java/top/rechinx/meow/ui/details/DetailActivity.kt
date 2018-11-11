@@ -29,14 +29,14 @@ import java.text.DateFormat
 import java.util.*
 
 class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
-        FlexibleAdapter.OnItemClickListener{
+        FlexibleAdapter.OnItemClickListener, FlexibleAdapter.EndlessScrollListener {
 
     val sourceId: Long by lazy { intent.getLongExtra(Extras.EXTRA_SOURCE, 0) }
     val cid: String by lazy { intent.getStringExtra(Extras.EXTRA_CID) }
 
     private var adapter: DetailAdapter? = null
 
-    private var loadItem: LoadItem = LoadItem()
+    private var loadItem: LoadItem? = null
 
     override fun createPresenter(): DetailPresenter {
         return DetailPresenter(sourceId, cid)
@@ -60,7 +60,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         adapter?.onLoadMoreListener = object : DetailAdapter.OnLoadMoreListener {
             override fun onLoadMore() {
                 if(presenter.hasNextPage()) {
-                    loadItem.status = LoadItem.LOADING
+                    loadItem?.status = LoadItem.LOADING
                     presenter.requestNext()
                 } else {
                     adapter?.onLoadMoreComplete(null)
@@ -201,7 +201,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
     fun onAddPage(page: Int, chapters: List<ChapterItem>) {
         val adapter = adapter ?: return
         val manga = presenter.manga ?: return
-        loadItem.status = LoadItem.IDLE
+        loadItem?.status = LoadItem.IDLE
         manga.last_update = chapters.maxBy { it.chapter.date_updated }?.chapter?.date_updated ?: 0L
         setMangaLastUpdated(manga)
         finishRefreshLayout()
@@ -215,7 +215,23 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
 
     private fun resetLoadItem() {
         loadItem = LoadItem()
-        adapter?.setEndlessProgressItem(loadItem)
+        if(presenter.hasNextPage()) {
+            adapter?.setEndlessProgressItem(loadItem)
+        } else {
+            adapter?.endlessTargetCount = 0
+            adapter?.setEndlessScrollListener(this, loadItem!!)
+        }
+
+    }
+
+
+    /**
+     * empty functions for single page chapters without load more
+     */
+    override fun noMoreLoad(newItemsSize: Int) {}
+    override fun onLoadMore(lastPosition: Int, currentPage: Int) {
+        adapter?.onLoadMoreComplete(null)
+        adapter?.endlessTargetCount = 1
     }
 
     fun onAddPageError(throwable: Throwable) {
