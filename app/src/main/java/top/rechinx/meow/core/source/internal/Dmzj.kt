@@ -21,6 +21,7 @@ class Dmzj: HttpSource() {
 
     override fun searchMangaRequest(keyword: String, page: Int, filterList: FilterList): Request {
         if(keyword != "") {
+            if(page > 1) return GET("http://www.baidu.com")
             val uri = Uri.parse("http://s.acg.dmzj.com/comicsum/search.php").buildUpon()
             uri.appendQueryParameter("s", keyword)
             return GET(uri.toString())
