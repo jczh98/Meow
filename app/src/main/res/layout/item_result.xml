@@ -1,52 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:padding="10dp"
-    android:clickable="true"
-    android:background="@color/white"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:layout_height="@dimen/material_component_lists_single_line_with_avatar_height"
+    android:layout_gravity="center_vertical"
+    android:background="@drawable/list_item_selector_light">
     <ImageView
-        android:id="@+id/result_comic_image"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:layout_marginRight="10dp" />
-    <TextView
-        android:id="@+id/result_comic_source"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:textSize="14sp"/>
-    <TextView
-        android:id="@+id/result_comic_update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:textSize="14sp"/>
-    <TextView
-        android:id="@+id/result_comic_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/result_comic_image"
-        android:layout_toLeftOf="@id/result_comic_source"
-        android:paddingRight="4dp"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"/>
-    <TextView
-        android:id="@+id/result_comic_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/result_comic_title"
-        android:layout_toLeftOf="@id/result_comic_source"
-        android:layout_below="@id/result_comic_title"
-        android:layout_marginTop="6dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:textSize="16sp"/>
+        android:id="@+id/thumbnail"
+        android:layout_width="@dimen/material_component_lists_single_line_avatar_height"
+        android:layout_height="@dimen/material_component_lists_single_line_avatar_height"
+        android:layout_gravity="center_vertical"
+        tools:src="@mipmap/ic_launcher"
+        android:layout_centerVertical="true"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginLeft="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/material_component_lists_single_line_with_avatar_height"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/thumbnail">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/material_component_lists_single_line_with_avatar_height_minus1"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerVertical="true"
+
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp">
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="Manga title"
+                    />
+
+                <TextView
+                    android:id="@+id/author"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="Manga author"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/source"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="1dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:paddingTop="1dp"
+                android:layout_gravity="center|end"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:maxLines="1"
+                tools:text="Source"
+                tools:visibility="visible"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            />
+    </LinearLayout>
+
+
 </RelativeLayout>

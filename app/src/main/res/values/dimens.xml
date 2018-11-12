@@ -3,4 +3,7 @@
     <dimen name="keyline_margin">16dp</dimen>
     <dimen name="material_layout_keylines_screen_edge_margin">16dp</dimen>
     <dimen name="material_component_dialogs_padding_around_content_area">24dp</dimen>
+    <dimen name="material_component_lists_single_line_with_avatar_height">72dp</dimen>
+    <dimen name="material_component_lists_single_line_with_avatar_height_minus1">71dp</dimen>
+    <dimen name="material_component_lists_single_line_avatar_height">56dp</dimen>
 </resources>
