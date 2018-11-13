@@ -15,7 +15,6 @@ import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.repository.CataloguePager
 import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.support.log.L
-import top.rechinx.meow.support.mvp.RxPresenter
 import top.rechinx.rikka.mvp.BasePresenter
 import java.lang.Exception
 import java.util.*

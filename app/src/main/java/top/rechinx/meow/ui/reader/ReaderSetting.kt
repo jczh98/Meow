@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.custom_setting_sheet.*
 import org.koin.android.ext.android.inject
 import top.rechinx.meow.R
 import top.rechinx.meow.data.preference.PreferenceHelper
-import top.rechinx.meow.support.viewbinding.bindView
 
 class ReaderSetting(val activity: ReaderActivity) : BottomSheetDialog(activity){
 

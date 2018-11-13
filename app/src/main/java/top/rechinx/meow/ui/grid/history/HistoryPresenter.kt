@@ -5,7 +5,6 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import top.rechinx.meow.data.repository.MangaRepository
-import top.rechinx.meow.support.mvp.RxPresenter
 import top.rechinx.rikka.mvp.BasePresenter
 
 class HistoryPresenter: BasePresenter<HistoryFragment>(), KoinComponent {

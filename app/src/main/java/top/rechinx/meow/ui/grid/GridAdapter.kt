@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_grid_fit.view.*
 import top.rechinx.meow.R
 import top.rechinx.meow.data.database.model.Manga
-import top.rechinx.meow.support.viewbinding.bindView
 import top.rechinx.meow.ui.base.BaseAdapter
 import top.rechinx.meow.glide.GlideApp
 import top.rechinx.meow.support.log.L

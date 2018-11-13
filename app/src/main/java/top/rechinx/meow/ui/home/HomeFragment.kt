@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_home.*
 import top.rechinx.meow.R
-import top.rechinx.meow.support.viewbinding.bindView
 
 class HomeFragment: Fragment() {
 

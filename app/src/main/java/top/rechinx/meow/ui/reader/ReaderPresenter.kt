@@ -14,7 +14,6 @@ import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.repository.ChapterRepository
 import top.rechinx.meow.data.repository.MangaRepository
 import top.rechinx.meow.support.log.L
-import top.rechinx.meow.support.mvp.RxPresenter
 import top.rechinx.meow.ui.reader.loader.ChapterLoader
 import top.rechinx.meow.ui.reader.model.ReaderChapter
 import top.rechinx.meow.ui.reader.model.ReaderPage

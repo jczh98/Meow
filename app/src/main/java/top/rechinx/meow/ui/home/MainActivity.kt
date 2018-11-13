@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
 import top.rechinx.meow.ui.about.AboutActivity
 import top.rechinx.meow.ui.base.BaseActivity

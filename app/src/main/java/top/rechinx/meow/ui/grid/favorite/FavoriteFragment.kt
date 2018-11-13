@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_grid.*
 import top.rechinx.meow.R
 import top.rechinx.meow.data.database.model.Manga
-import top.rechinx.meow.support.viewbinding.ViewBindings
 import top.rechinx.meow.ui.base.BaseAdapter
 import top.rechinx.meow.ui.details.DetailActivity
 import top.rechinx.meow.ui.grid.GridAdapter
@@ -50,11 +49,6 @@ class FavoriteFragment: MvpFragment<FavoritePresenter>(), BaseAdapter.OnItemClic
         val manga = adapter.getItem(position)
         val intent = DetailActivity.createIntent(activity!!, manga.sourceId, manga.url!!)
         startActivity(intent)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        ViewBindings.reset(this)
     }
 
 }

@@ -3,6 +3,7 @@ package top.rechinx.meow.ui.about
 import android.content.Context
 import android.content.Intent
 import kotlinx.android.synthetic.main.activity_about.*
+import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
 import top.rechinx.meow.ui.base.BaseActivity
 

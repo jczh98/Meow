@@ -1,5 +1,6 @@
 package top.rechinx.meow.ui.setting
 
+import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
 import top.rechinx.meow.ui.base.BaseActivity
 

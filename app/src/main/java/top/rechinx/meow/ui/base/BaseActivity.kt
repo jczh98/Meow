@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
-import top.rechinx.meow.support.viewbinding.bindOptionalView
 
 abstract class BaseActivity: AppCompatActivity() {
 
