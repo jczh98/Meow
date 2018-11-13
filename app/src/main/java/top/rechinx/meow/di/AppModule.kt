@@ -5,6 +5,7 @@ import org.koin.dsl.module.module
 import top.rechinx.meow.core.network.NetworkHelper
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.cache.ChapterCache
+import top.rechinx.meow.data.cache.CoverCache
 import top.rechinx.meow.data.preference.PreferenceHelper
 
 object AppModule {
@@ -14,6 +15,7 @@ object AppModule {
         single { SourceManager(androidApplication()) }
         single { PreferenceHelper(androidApplication())}
         single { ChapterCache(androidApplication()) }
+        single { CoverCache(androidApplication()) }
     }
 
 }
