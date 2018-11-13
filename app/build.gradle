@@ -31,7 +31,7 @@ dependencies {
 
 
     // Rikka
-    implementation 'com.github.ReChinX:Rikka:2f5f3fe9ab'
+    implementation project(':library:Rikka:rikka')
 
     // Support Library
     def androidx_version = '1.0.0'

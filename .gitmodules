@@ -1,0 +1,3 @@
+[submodule "library/Rikka"]
+	path = library/Rikka
+	url = https://github.com/ReChinX/Rikka.git
