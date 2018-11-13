@@ -17,15 +17,11 @@ import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.repository.ChapterPager
 import top.rechinx.meow.data.repository.MangaRepository
-import top.rechinx.meow.support.log.L
-import top.rechinx.meow.support.mvp.RxPresenter
 import top.rechinx.meow.ui.details.items.ChapterItem
-import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.rikka.mvp.BasePresenter
-import top.rechinx.rikka.mvp.MvpAppCompatActivity
 import top.rechinx.rikka.rxbus.RxBus
 
-class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<DetailActivity>(), KoinComponent {
+class DetailPresenter(val sourceId: Long, val url: String): BasePresenter<DetailActivity>(), KoinComponent {
 
     val sourceManager by inject<SourceManager>()
 
@@ -53,7 +49,7 @@ class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<Detail
     }
 
     fun restartPager() {
-        pager = ChapterPager(source, cid)
+        pager = ChapterPager(source, url)
         pager.results.observeOn(Schedulers.io())
                 .map {
                     it.first to it.second.map { chapter -> networkToLocalChapter(chapter, manga?.id!!) }
@@ -92,8 +88,8 @@ class DetailPresenter(val sourceId: Long, val cid: String): BasePresenter<Detail
         add(mangaRepository.updateManga(manga))
     }
 
-    fun fetchMangaInfo(sourceId: Long, cid: String) {
-        mangaRepository.fetchMangaInfo(sourceId, cid)
+    fun fetchMangaInfo(sourceId: Long, url: String) {
+        mangaRepository.fetchMangaInfo(sourceId, url)
                 .subscribeFirst({ view, smange ->
                     this.manga = smange
                     view.onMangaLoadCompleted(smange)

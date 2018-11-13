@@ -45,13 +45,13 @@ abstract class HttpSource: Source, KoinComponent {
                 searchMangaParse(response)
             }
 
-    override fun fetchMangaInfo(cid: String): Observable<SManga> = client.newCall(mangaInfoRequest(cid))
+    override fun fetchMangaInfo(url: String): Observable<SManga> = client.newCall(mangaInfoRequest(url))
             .asObservableSuccess()
             .map { response ->
                 mangaInfoParse(response).apply { initialized = true }
             }
 
-    override fun fetchChapters(page: Int, cid: String): Observable<PagedList<SChapter>> = client.newCall(chaptersRequest(page, cid))
+    override fun fetchChapters(page: Int, url: String): Observable<PagedList<SChapter>> = client.newCall(chaptersRequest(page, url))
             .asObservableSuccess()
             .map { response ->
                 chaptersParse(response)
@@ -100,11 +100,11 @@ abstract class HttpSource: Source, KoinComponent {
 
     protected abstract fun popularMangaParse(response: Response): PagedList<SManga>
 
-    protected abstract fun mangaInfoRequest(cid: String): Request
+    protected abstract fun mangaInfoRequest(url: String): Request
 
     protected abstract fun mangaInfoParse(response: Response): SManga
 
-    protected abstract fun chaptersRequest(page: Int, cid: String): Request
+    protected abstract fun chaptersRequest(page: Int, url: String): Request
 
     protected abstract fun chaptersParse(response: Response): PagedList<SChapter>
 

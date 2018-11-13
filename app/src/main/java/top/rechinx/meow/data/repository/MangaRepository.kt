@@ -22,8 +22,8 @@ class MangaRepository(private val sourceManager: SourceManager,
         return mangaDao.loadManga(mangaId).toObservable()
     }
 
-    fun getRelayManga(sourceId: Long, cid: String) : Flowable<Manga> {
-        return mangaDao.relayManga(sourceId, cid)
+    fun getRelayManga(sourceId: Long, url: String) : Flowable<Manga> {
+        return mangaDao.relayManga(sourceId, url)
     }
 
     fun getManga(sourceId: Long, cid: String): Manga? {
@@ -45,16 +45,16 @@ class MangaRepository(private val sourceManager: SourceManager,
         return mangaDao.listHistory()
     }
 
-    fun fetchMangaInfo(sourceId: Long, cid: String): Observable<Manga> {
+    fun fetchMangaInfo(sourceId: Long, url: String): Observable<Manga> {
         val source = sourceManager.getOrStub(sourceId)
-        return source.fetchMangaInfo(cid)
+        return source.fetchMangaInfo(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext {
                     val manga = Manga()
-                    val dbManga = mangaDao.loadManga(sourceId, cid)
+                    val dbManga = mangaDao.loadManga(sourceId, url)
                     manga.copyFrom(it)
-                    manga.url = cid
+                    manga.url = url
                     manga.sourceId = sourceId
                     manga.sourceName = source.name
                     dbManga?.id?.let { manga.id = it }
@@ -64,10 +64,10 @@ class MangaRepository(private val sourceManager: SourceManager,
                     mangaDao.insertManga(manga)
                 }
                 .map {
-                    return@map mangaDao.loadManga(sourceId, cid)!!
+                    return@map mangaDao.loadManga(sourceId, url)!!
                 }.onErrorReturn {
                     it.printStackTrace()
-                    mangaDao.loadManga(sourceId, cid)
+                    mangaDao.loadManga(sourceId, url)
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

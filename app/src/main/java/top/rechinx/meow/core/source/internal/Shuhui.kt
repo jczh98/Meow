@@ -37,7 +37,7 @@ class Shuhui: HttpSource() {
                 thumbnail_url = item.getString("FrontCover")
                 author = item.optString("Author")
                 status = SManga.UNKNOWN
-                this.url = cid
+                this.url = "http://www.ishuhui.net/ComicBooks/GetChapterList?id=$cid"
             })
         }
         return PagedList(ret, arr.length() != 0)
@@ -51,8 +51,8 @@ class Shuhui: HttpSource() {
         return commonParse(response)
     }
 
-    override fun mangaInfoRequest(cid: String): Request {
-        return GET("http://www.ishuhui.net/ComicBooks/GetChapterList?id=$cid")
+    override fun mangaInfoRequest(url: String): Request {
+        return GET(url)
     }
 
     override fun mangaInfoParse(response: Response): SManga = SManga.create().apply{
@@ -68,8 +68,8 @@ class Shuhui: HttpSource() {
         description = obj.getString("Explain")
     }
 
-    override fun chaptersRequest(page: Int, cid: String): Request {
-        return GET("http://www.ishuhui.net/ComicBooks/GetChapterList?id=$cid&PageIndex=${page-1}")
+    override fun chaptersRequest(page: Int, url: String): Request {
+        return GET("$url&PageIndex=${page-1}")
     }
 
     override fun chaptersParse(response: Response): PagedList<SChapter> {

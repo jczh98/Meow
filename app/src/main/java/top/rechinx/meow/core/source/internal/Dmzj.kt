@@ -19,11 +19,11 @@ class Dmzj: HttpSource() {
             .addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 ")
             .build()
 
-    override fun searchMangaRequest(keyword: String, page: Int, filterList: FilterList): Request {
-        if(keyword != "") {
+    override fun searchMangaRequest(query: String, page: Int, filterList: FilterList): Request {
+        if(query != "") {
             if(page > 1) return GET("http://www.baidu.com")
             val uri = Uri.parse("http://s.acg.dmzj.com/comicsum/search.php").buildUpon()
-            uri.appendQueryParameter("s", keyword)
+            uri.appendQueryParameter("s", query)
             return GET(uri.toString())
         } else {
             var params = filterList.map {
@@ -96,7 +96,7 @@ class Dmzj: HttpSource() {
                     "连载中" -> SManga.ONGOING
                     else -> SManga.UNKNOWN
                 }
-                this.url = cid
+                this.url = "$baseUrl/comic/$cid.json"
             })
         }
         return PagedList(ret, arr.length() != 0)
@@ -106,7 +106,7 @@ class Dmzj: HttpSource() {
 
     override fun popularMangaParse(response: Response): PagedList<SManga> = commonMangaParse(response)
 
-    override fun mangaInfoRequest(cid: String): Request = GET("$baseUrl/comic/$cid.json")
+    override fun mangaInfoRequest(url: String): Request = GET(url)
 
     override fun mangaInfoParse(response: Response): SManga = SManga.create().apply{
         val obj = JSONObject(response.body()!!.string())
@@ -136,7 +136,7 @@ class Dmzj: HttpSource() {
         description = obj.getString("description")
     }
 
-    override fun chaptersRequest(page: Int, cid: String): Request = GET("$baseUrl/comic/$cid.json")
+    override fun chaptersRequest(page: Int, url: String): Request = GET(url)
 
     override fun chaptersParse(response: Response): PagedList<SChapter> {
         val obj = JSONObject(response.body()!!.string())

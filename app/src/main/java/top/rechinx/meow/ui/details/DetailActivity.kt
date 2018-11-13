@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.scwang.smartrefresh.header.MaterialHeader
 import eu.davidea.flexibleadapter.FlexibleAdapter
-import eu.davidea.flexibleadapter.items.IFlexible
 import kotlinx.android.synthetic.main.activity_detail.*
 import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.SManga
@@ -20,7 +19,6 @@ import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.ui.details.items.ChapterItem
 import top.rechinx.meow.ui.details.items.LoadItem
-import top.rechinx.meow.ui.details.items.ProgressItem
 import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.rikka.ext.gone
 import top.rechinx.rikka.ext.visible
@@ -32,21 +30,21 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         FlexibleAdapter.OnItemClickListener, FlexibleAdapter.EndlessScrollListener {
 
     val sourceId: Long by lazy { intent.getLongExtra(Extras.EXTRA_SOURCE, 0) }
-    val cid: String by lazy { intent.getStringExtra(Extras.EXTRA_CID) }
+    val url: String by lazy { intent.getStringExtra(Extras.EXTRA_URL) }
 
     private var adapter: DetailAdapter? = null
 
     private var loadItem: LoadItem? = null
 
     override fun createPresenter(): DetailPresenter {
-        return DetailPresenter(sourceId, cid)
+        return DetailPresenter(sourceId, url)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         initViews()
-        presenter.fetchMangaInfo(sourceId, cid)
+        presenter.fetchMangaInfo(sourceId, url)
     }
 
     fun initViews() {
@@ -256,10 +254,10 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
 
     companion object {
 
-        fun createIntent(context: Context, source: Long, cid: String): Intent {
+        fun createIntent(context: Context, source: Long, url: String): Intent {
             val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra(Extras.EXTRA_SOURCE, source)
-            intent.putExtra(Extras.EXTRA_CID, cid)
+            intent.putExtra(Extras.EXTRA_URL, url)
             return intent
         }
     }

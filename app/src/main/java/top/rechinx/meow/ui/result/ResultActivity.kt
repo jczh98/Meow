@@ -21,12 +21,12 @@ import top.rechinx.rikka.mvp.MvpAppCompatActivityWithoutReflection
 class ResultActivity: MvpAppCompatActivityWithoutReflection<ResultPresenter>(), BaseAdapter.OnItemClickListener {
 
     private val layoutManager = LinearLayoutManager(this)
-    private val keyword: String by lazy { intent.getStringExtra(Extras.EXTRA_KEYWORD) }
+    private val query: String by lazy { intent.getStringExtra(Extras.EXTRA_KEYWORD) }
 
     private lateinit var resultAdapter: ResultAdapter
 
     override fun createPresenter(): ResultPresenter {
-        return ResultPresenter(keyword)
+        return ResultPresenter(query)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,7 @@ class ResultActivity: MvpAppCompatActivityWithoutReflection<ResultPresenter>(), 
         if(customToolbar != null) {
             setSupportActionBar(customToolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.title = String.format(getString(R.string.search_result_title), keyword)
+            supportActionBar?.title = String.format(getString(R.string.search_result_title), query)
             customToolbar?.setNavigationOnClickListener { finish() }
         }
         initViews()

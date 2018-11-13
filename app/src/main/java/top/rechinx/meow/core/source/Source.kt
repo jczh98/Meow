@@ -13,9 +13,9 @@ interface Source {
 
     fun fetchSearchManga(query: String, page: Int, filters: FilterList): Observable<PagedList<SManga>>
 
-    fun fetchMangaInfo(cid: String): Observable<SManga>
+    fun fetchMangaInfo(url: String): Observable<SManga>
 
-    fun fetchChapters(page: Int, cid: String): Observable<PagedList<SChapter>>
+    fun fetchChapters(page: Int, url: String): Observable<PagedList<SChapter>>
 
     fun fetchMangaPages(chapter: SChapter): Observable<List<MangaPage>>
 
