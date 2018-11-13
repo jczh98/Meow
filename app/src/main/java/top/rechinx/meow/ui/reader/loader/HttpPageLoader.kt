@@ -105,7 +105,19 @@ class HttpPageLoader(private val chapter: ReaderChapter,
     }
 
     private fun HttpSource.fetchImageFromCacheThenNet(page: ReaderPage): Observable<ReaderPage> {
-        return getCachedImage(page)
+        return if(page.imageUrl.isNullOrEmpty())
+            getImageUrl(page).flatMap { getCachedImage(it) }
+        else
+            getCachedImage(page)
+    }
+
+    private fun HttpSource.getImageUrl(page: ReaderPage): Observable<ReaderPage> {
+        page.status = MangaPage.LOAD_PAGE
+        return fetchImageUrl(page)
+                .doOnError { page.status = MangaPage.ERROR }
+                .onErrorReturn { null }
+                .doOnNext { page.imageUrl = it }
+                .map { page }
     }
 
     private fun HttpSource.getCachedImage(page: ReaderPage): Observable<ReaderPage> {

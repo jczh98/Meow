@@ -75,7 +75,7 @@ class Dmzj: HttpSource() {
                     else -> SManga.UNKNOWN
                 }
                 description = obj.getString("description")
-                this.cid = cid
+                this.url = cid
             })
         }
         return PagedList(ret, false)
@@ -96,7 +96,7 @@ class Dmzj: HttpSource() {
                     "连载中" -> SManga.ONGOING
                     else -> SManga.UNKNOWN
                 }
-                this.cid = cid
+                this.url = cid
             })
         }
         return PagedList(ret, arr.length() != 0)
@@ -170,6 +170,9 @@ class Dmzj: HttpSource() {
         }
         return ret
     }
+
+    override fun imageUrlParse(response: Response): String
+        = throw UnsupportedOperationException("Unused method was called somehow!")
 
     override fun getFilterList(): FilterList = FilterList(
             SortFilter(),

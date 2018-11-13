@@ -68,7 +68,22 @@ abstract class HttpSource: Source, KoinComponent {
                 .asObservableSuccess()
     }
 
-    open protected fun imageRequest(page: MangaPage): Request {
+    open fun fetchImageUrl(page: MangaPage): Observable<String> {
+        return client.newCall(imageUrlRequest(page))
+                .asObservableSuccess()
+                .map { imageUrlParse(it) }
+    }
+
+    protected abstract fun imageUrlParse(response: Response): String
+
+    open fun imageUrlRequest(page: MangaPage): Request {
+        return Request.Builder()
+                .url(page.url)
+                .headers(headers)
+                .build()
+    }
+
+    protected open fun imageRequest(page: MangaPage): Request {
         return Request.Builder()
                 .url(page.imageUrl!!)
                 .headers(headers)

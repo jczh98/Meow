@@ -21,12 +21,10 @@ import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.global.Extras
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.details.DetailActivity
 import top.rechinx.meow.ui.filter.items.CatalogueItem
 import top.rechinx.meow.ui.filter.items.ProgressItem
 import top.rechinx.rikka.ext.gone
-import top.rechinx.rikka.ext.invisible
 import top.rechinx.rikka.ext.visible
 import top.rechinx.rikka.mvp.MvpAppCompatActivityWithoutReflection
 
@@ -201,7 +199,7 @@ class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>(),
 
     override fun onItemClick(view: View?, position: Int): Boolean {
         val item = adapter?.getItem(position) as? CatalogueItem ?: return false
-        item.manga.cid?.let {
+        item.manga.url?.let {
             val intent = DetailActivity.createIntent(this, sourceId, it)
             startActivity(intent)
         }

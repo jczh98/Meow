@@ -15,8 +15,8 @@ interface MangaDao {
     @Update
     fun updateManga(manga: Manga)
 
-    @Query("SELECT * FROM Manga WHERE sourceId = :sourceId AND cid = :cid")
-    fun loadManga(sourceId: Long, cid: String): Manga?
+    @Query("SELECT * FROM Manga WHERE sourceId = :sourceId AND url = :url")
+    fun loadManga(sourceId: Long, url: String): Manga?
 
     @Query("SELECT * FROM Manga WHERE id = :mangaId")
     fun loadManga(mangaId: Long): Maybe<Manga>
@@ -27,6 +27,6 @@ interface MangaDao {
     @Query("SELECT * FROM Manga WHERE history = 1")
     fun listHistory(): Flowable<List<Manga>>
 
-    @Query("SELECT * FROM Manga WHERE sourceId = :sourceId AND cid = :cid")
-    fun relayManga(sourceId: Long, cid: String): Flowable<Manga>
+    @Query("SELECT * FROM Manga WHERE sourceId = :sourceId AND url = :url")
+    fun relayManga(sourceId: Long, url: String): Flowable<Manga>
 }

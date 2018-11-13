@@ -1,6 +1,5 @@
 package top.rechinx.meow.core.source.internal
 
-import okhttp3.Headers
 import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONObject
@@ -8,7 +7,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.model.*
-import top.rechinx.meow.support.log.L
 
 class Shuhui: HttpSource() {
     override val baseUrl: String
@@ -39,7 +37,7 @@ class Shuhui: HttpSource() {
                 thumbnail_url = item.getString("FrontCover")
                 author = item.optString("Author")
                 status = SManga.UNKNOWN
-                this.cid = cid
+                this.url = cid
             })
         }
         return PagedList(ret, arr.length() != 0)
@@ -101,6 +99,9 @@ class Shuhui: HttpSource() {
         }
         return ret
     }
+
+    override fun imageUrlParse(response: Response): String
+        = throw UnsupportedOperationException("Unused method was called somehow!")
 
     override val name: String
         get() = "鼠绘"

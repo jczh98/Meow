@@ -3,29 +3,23 @@ package top.rechinx.meow.ui.result
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ProgressBar
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.scwang.smartrefresh.header.MaterialHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 import kotlinx.android.synthetic.main.custom_toolbar.*
-import org.koin.android.ext.android.inject
 import top.rechinx.meow.R
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.support.viewbinding.bindView
-import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.base.BaseAdapter
 import top.rechinx.meow.ui.details.DetailActivity
-import top.rechinx.rikka.mvp.MvpAppCompatActivity
 import top.rechinx.rikka.mvp.MvpAppCompatActivityWithoutReflection
-import top.rechinx.rikka.mvp.factory.RequiresPresenter
 
 class ResultActivity: MvpAppCompatActivityWithoutReflection<ResultPresenter>(), BaseAdapter.OnItemClickListener {
 
@@ -100,7 +94,7 @@ class ResultActivity: MvpAppCompatActivityWithoutReflection<ResultPresenter>(), 
 
     override fun onItemClick(view: View, position: Int) {
         val manga = resultAdapter.getItem(position)
-        val intent = DetailActivity.createIntent(this, manga.sourceId, manga.cid!!)
+        val intent = DetailActivity.createIntent(this, manga.sourceId, manga.url!!)
         startActivity(intent)
     }
 

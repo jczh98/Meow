@@ -2,7 +2,7 @@ package top.rechinx.meow.core.source.model
 
 abstract class SManga {
 
-    abstract var cid: String?
+    abstract var url: String?
 
     abstract var title: String?
 
@@ -19,8 +19,8 @@ abstract class SManga {
     abstract var initialized: Boolean
 
     fun copyFrom(other: SManga) {
-        if (other.cid != null)
-            cid = other.cid
+        if (other.url != null)
+            url = other.url
 
         if (other.author != null)
             author = other.author

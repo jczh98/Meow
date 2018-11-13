@@ -2,18 +2,12 @@ package top.rechinx.meow.ui.grid.history
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_grid.*
-import org.koin.android.ext.android.inject
 import top.rechinx.meow.R
 import top.rechinx.meow.data.database.model.Manga
-import top.rechinx.meow.support.viewbinding.ViewBindings
-import top.rechinx.meow.support.viewbinding.bindView
 import top.rechinx.meow.ui.base.BaseAdapter
-import top.rechinx.meow.ui.base.BaseFragment
 import top.rechinx.meow.ui.details.DetailActivity
 import top.rechinx.meow.ui.grid.GridAdapter
 import top.rechinx.rikka.mvp.MvpFragment
@@ -54,7 +48,7 @@ class HistoryFragment: MvpFragment<HistoryPresenter>(), BaseAdapter.OnItemClickL
 
     override fun onItemClick(view: View, position: Int) {
         val manga = adapter.getItem(position)
-        val intent = DetailActivity.createIntent(activity!!, manga.sourceId, manga.cid!!)
+        val intent = DetailActivity.createIntent(activity!!, manga.sourceId, manga.url!!)
         startActivity(intent)
     }
 

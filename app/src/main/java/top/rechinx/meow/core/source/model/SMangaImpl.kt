@@ -2,7 +2,7 @@ package top.rechinx.meow.core.source.model
 
 class SMangaImpl: SManga() {
 
-    override var cid: String? = null
+    override var url: String? = null
 
     override var title: String? = null
 

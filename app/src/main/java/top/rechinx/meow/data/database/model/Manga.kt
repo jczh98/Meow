@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import top.rechinx.meow.core.source.model.SManga
 
 @Entity
-data class Manga(@ColumnInfo override var cid: String?,
+data class Manga(@ColumnInfo override var url: String?,
                  @ColumnInfo override var title: String?,
                  @ColumnInfo override var author: String?,
                  @ColumnInfo override var description: String?,
@@ -34,7 +34,7 @@ data class Manga(@ColumnInfo override var cid: String?,
     @Ignore constructor(pathUrl: String, title: String, source: Long = 0): this() {
         this.sourceId = source
         this.title = title
-        this.cid = pathUrl
+        this.url = pathUrl
     }
 
 }
