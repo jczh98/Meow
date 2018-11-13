@@ -9,7 +9,6 @@ class PreferenceHelper(context: Context) {
     private val prefs = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
     private val rxPrefs = RxSharedPreferences.create(prefs)
 
-
     fun fullscreen() = rxPrefs.getBoolean(Constants.PREF_FULL_SCREEN, true)
 
     fun pageTransitions() = rxPrefs.getBoolean(Constants.PREF_ENABLE_TRANSITIONS, true)
@@ -17,6 +16,13 @@ class PreferenceHelper(context: Context) {
     fun readerMode() = rxPrefs.getString(Constants.PREF_READER_MODE, "0")
 
     fun hiddenReaderInfo() = rxPrefs.getBoolean(Constants.PREF_HIDE_READER_INFO, false)
+
+    fun sourceSwitch(sourceId: Long) = rxPrefs.getBoolean("source_switch_$sourceId", false)
+
+    fun setSourceSwitch(sourceId: Long, switcher: Boolean) {
+        prefs.edit().putBoolean("source_switch_$sourceId", switcher)
+                .apply()
+    }
     companion object {
 
         private const val PREFERENCES_NAME = "meow_preferences"

@@ -12,6 +12,7 @@ import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.data.preference.PreferenceHelper
 import top.rechinx.meow.data.repository.CataloguePager
 import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.support.log.L
@@ -24,6 +25,8 @@ class ResultPresenter(val query: String): BasePresenter<ResultActivity>(), KoinC
 
     private val sourceManager: SourceManager by inject()
 
+    private val preferences: PreferenceHelper by inject()
+
     private var stateArray: ArrayList<State> = ArrayList()
 
     var error = 0
@@ -35,7 +38,9 @@ class ResultPresenter(val query: String): BasePresenter<ResultActivity>(), KoinC
 
     private fun initStateArray() {
         stateArray = ArrayList()
-        for(source in sourceManager.getSources()) {
+        sourceManager.getSources().filter {
+            preferences.sourceSwitch(it.id).get()
+        }.forEach { source ->
             val state = State()
             state.state = State.STATE_NULL
             state.source = source
