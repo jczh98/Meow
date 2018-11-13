@@ -8,7 +8,7 @@
     android:padding="@dimen/material_component_dialogs_padding_around_content_area">
 
     <TextView
-        android:id="@+id/general_prefs"
+        android:id="@+id/general"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/setting_sheet_category_general"
@@ -18,29 +18,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.legacy.widget.Space
-        android:id="@+id/spinner_end"
+        android:id="@+id/spinnerEnd"
         android:layout_width="16dp"
         android:layout_height="0dp"
         app:layout_constraintLeft_toRightOf="parent" />
 
     <TextView
-        android:id="@+id/viewer_selection_text"
+        android:id="@+id/viewerSelectionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/setting_sheet_select_viewer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/verticalcenter"
-        app:layout_constraintBaseline_toBaselineOf="@id/viewer_selection_spinner" />
+        app:layout_constraintBaseline_toBaselineOf="@id/viewerSelectionSpinner" />
 
     <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/viewer_selection_spinner"
+        android:id="@+id/viewerSelectionSpinner"
         android:layout_width="0dp"
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
         android:entries="@array/viewers_selector"
-        app:layout_constraintTop_toBottomOf="@id/general_prefs"
+        app:layout_constraintTop_toBottomOf="@id/general"
         app:layout_constraintLeft_toRightOf="@id/verticalcenter"
-        app:layout_constraintRight_toRightOf="@id/spinner_end" />
+        app:layout_constraintRight_toRightOf="@id/spinnerEnd" />
 
 
     <androidx.constraintlayout.widget.Guideline

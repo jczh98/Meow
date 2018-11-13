@@ -9,8 +9,6 @@ import eu.davidea.viewholders.FlexibleViewHolder
 import kotlinx.android.synthetic.main.item_chapter_loadmore.view.*
 import top.rechinx.meow.R
 import top.rechinx.meow.ui.details.DetailAdapter
-import android.R.attr.button
-import top.rechinx.meow.R.id.progressBar
 import top.rechinx.rikka.ext.gone
 import top.rechinx.rikka.ext.visible
 
@@ -24,12 +22,12 @@ class LoadItem: AbstractFlexibleItem<LoadItem.ViewHolder>() {
     override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>, holder: LoadItem.ViewHolder, position: Int, payloads: MutableList<Any>?) {
         holder.itemView.apply {
             if (status == IDLE) {
-                item_chapter_load.visible()
-                item_chapter_load.setOnClickListener { (adapter as DetailAdapter).onLoadMoreListener.onLoadMore() }
+                loadButton.visible()
+                loadButton.setOnClickListener { (adapter as DetailAdapter).onLoadMoreListener.onLoadMore() }
                 itemProgressLoad.gone()
             } else if (status == LOADING) {
                 itemProgressLoad.visible()
-                item_chapter_load.gone()
+                loadButton.gone()
             }
         }
 

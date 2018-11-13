@@ -37,17 +37,5 @@ class App: Application() {
 
         lateinit var instance: App
 
-        private var mHttpClient: OkHttpClient? = null
-
-        fun getHttpClientBuilder(): OkHttpClient.Builder {
-            return OkHttpClient.Builder().addNetworkInterceptor(StethoInterceptor())
-        }
-
-        fun getHttpClient(): OkHttpClient? {
-            if(mHttpClient == null) {
-                mHttpClient = this.getHttpClientBuilder().build()
-            }
-            return mHttpClient
-        }
     }
 }

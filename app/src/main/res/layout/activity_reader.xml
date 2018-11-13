@@ -6,19 +6,19 @@
     android:gravity="center">
 
     <RelativeLayout
-        android:id="@+id/reader_container"
+        android:id="@+id/readerContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black">
 
         <FrameLayout
-            android:id="@+id/viewer_container"
+            android:id="@+id/viewerContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </FrameLayout>
 
         <ProgressBar
-            android:id="@+id/please_wait"
+            android:id="@+id/waitProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -30,7 +30,7 @@
     </RelativeLayout>
 
     <FrameLayout
-        android:id="@+id/reader_menu"
+        android:id="@+id/readerMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
@@ -41,7 +41,7 @@
         <include layout="@layout/custom_toolbar" />
 
         <LinearLayout
-            android:id="@+id/reader_menu_bottom"
+            android:id="@+id/readerMenuBottom"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="bottom"
@@ -51,7 +51,7 @@
             android:descendantFocusability="blocksDescendants">
 
             <ImageButton
-                android:id="@+id/left_chapter"
+                android:id="@+id/leftChapterBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/material_layout_keylines_screen_edge_margin"
@@ -59,7 +59,7 @@
                 app:srcCompat="@drawable/ic_skip_previous_white_24dp"/>
 
             <top.rechinx.meow.widget.ReverseSeekBar
-                android:id="@+id/reader_seek_bar"
+                android:id="@+id/readerSeekBar"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -73,7 +73,7 @@
                 app:dsb_thumbSize="12dp"/>
 
             <ImageButton
-                android:id="@+id/right_chapter"
+                android:id="@+id/rightChapterBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/material_layout_keylines_screen_edge_margin"
@@ -83,17 +83,5 @@
         </LinearLayout>
 
     </FrameLayout>
-
-    <View
-        android:id="@+id/brightness_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
-
-    <View
-        android:id="@+id/color_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
 
 </FrameLayout>

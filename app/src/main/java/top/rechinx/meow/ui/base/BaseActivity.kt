@@ -1,16 +1,13 @@
 package top.rechinx.meow.ui.base
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
 import top.rechinx.meow.support.viewbinding.bindOptionalView
-import top.rechinx.meow.support.viewbinding.bindView
 
 abstract class BaseActivity: AppCompatActivity() {
-
-    val toolbar: Toolbar? by bindOptionalView(R.id.custom_toolbar)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +20,8 @@ abstract class BaseActivity: AppCompatActivity() {
     protected abstract fun initViews()
 
     protected open fun initToolbar() {
-        if(toolbar != null) {
-            setSupportActionBar(toolbar)
+        if(customToolbar != null) {
+            setSupportActionBar(customToolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }

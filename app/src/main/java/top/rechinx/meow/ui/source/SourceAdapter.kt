@@ -24,8 +24,8 @@ class SourceAdapter(context: Context, list: ArrayList<Source>): BaseAdapter<Sour
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         val source = datas[position]
-        holder.itemView.item_source_title.text = source.name
-        holder.itemView.item_source_switch.isChecked = true
+        holder.itemView.title.text = source.name
+        holder.itemView.switchCompat.isChecked = true
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

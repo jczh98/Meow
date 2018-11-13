@@ -55,9 +55,9 @@ class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filter)
-        setSupportActionBar(custom_toolbar)
+        setSupportActionBar(customToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        custom_toolbar.setNavigationOnClickListener { finish() }
+        customToolbar.setNavigationOnClickListener { finish() }
         // for drawer
         val drawerToggle = ActionBarDrawerToggle(this, filterDrawer, null, 0, 0)
         filterDrawer.addDrawerListener(drawerToggle)

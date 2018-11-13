@@ -11,13 +11,10 @@ import kotlinx.android.synthetic.main.custom_progress_bar.*
 import kotlinx.android.synthetic.main.fragment_source.*
 import org.koin.android.ext.android.inject
 import top.rechinx.meow.R
-import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.ui.base.BaseAdapter
 import top.rechinx.meow.ui.filter.FilterActivity
 import top.rechinx.rikka.ext.gone
-import top.rechinx.rikka.mvp.MvpFragment
-import top.rechinx.rikka.mvp.factory.RequiresPresenter
 
 class SourceFragment: Fragment(), BaseAdapter.OnItemClickListener {
 
@@ -32,13 +29,13 @@ class SourceFragment: Fragment(), BaseAdapter.OnItemClickListener {
         super.onViewCreated(view, savedInstanceState)
         adapter = SourceAdapter(activity!!, ArrayList())
         adapter.setOnItemClickListener(this)
-        sourceRecyclerView.itemAnimator = null
-        sourceRecyclerView.setHasFixedSize(true)
-        adapter.getItemDecoration()?.let { sourceRecyclerView.addItemDecoration(it) }
-        sourceRecyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        sourceRecyclerView.adapter = adapter
+        recyclerView.itemAnimator = null
+        recyclerView.setHasFixedSize(true)
+        adapter.getItemDecoration()?.let { recyclerView.addItemDecoration(it) }
+        recyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        recyclerView.adapter = adapter
         adapter.addAll(sourceManager.getSources().toList())
-        custom_progress_bar.gone()
+        customProgressBar.gone()
     }
 
     override fun onItemClick(view: View, position: Int) {

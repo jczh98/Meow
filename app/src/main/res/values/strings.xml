@@ -1,11 +1,7 @@
 <resources>
     <string name="app_name">Meow</string>
     <string name="drawer_main">Home</string>
-    <string name="hint_for_search">Please input comic name</string>
     <string name="empty_for_search">keyword cannot be empty</string>
-    <string name="result_source">Source</string>
-    <string name="result_update">Update Time</string>
-    <string name="reader_picture_loading">Now loading...</string>
     <string name="favorite">Favorite</string>
     <string name="download">Download</string>
     <string name="drawer_history">History</string>
@@ -13,17 +9,8 @@
     <string name="item_group_other">Other</string>
     <string name="drawer_settings">Settings</string>
     <string name="drawer_source">Source</string>
-    <string name="details_read">read</string>
-    <string name="details_continue">continue</string>
-    <string name="details_favorite">subscribe</string>
-    <string name="details_unfavorite">unsubscribe</string>
     <string name="search_result_title">Result-%s</string>
-    <string name="detail_title">Detail</string>
-    <string name="title_activity_login">Login</string>
-    <string name="snackbar_login_success">Login Success</string>
-    <string name="snackbar_login_failure">Login Failure</string>
     <string name="snackbar_result_empty">Result is empty</string>
-    <string name="snackbar_login_check">Username or password must not be null</string>
     <string name="title_activity_settings">Settings</string>
     <string name="pref_default_reader_mode">Default reader mode</string>
     <string name="pref_hide_reader_status">Hide reader information</string>
@@ -35,16 +22,6 @@
     <string name="about_update_summary">Click to check update</string>
     <string name="about_resource">Source code</string>
     <string name="about_resource_url">https://github.com/ReChinX/Meow</string>
-    <string name="request_version_error">Request version error</string>
-    <string name="request_version_checking">Checking version</string>
-    <string name="request_version_latest">Already latest version</string>
-    <string name="request_version_title">Confirm download</string>
-    <string name="request_version_content">click ok to download latest version</string>
-    <string name="text_options">Options</string>
-    <string name="text_options_reader_mode">Reader mode</string>
-    <string name="text_options_page">Page Mode</string>
-    <string name="text_options_stream">Stream Mode</string>
-    <string name="text_options_hidden">Hidden</string>
     <string name="string_manga_statu_ongoing">Ongoing</string>
     <string name="string_manga_statu_completed">Completed</string>
     <string name="string_manga_statu_unknown">Unknown</string>
@@ -65,8 +42,6 @@
     <string name="setting_sheet_category_general">General</string>
     <string name="label_settings">Settings</string>
     <string name="unknown">Unknown</string>
-    <string name="info_status_label">Status</string>
-    <string name="info_last_update_label">Latest update</string>
     <string name="detail_manga_info_author">Author</string>
     <string name="detail_manga_info_date_updated">Updated time</string>
     <string name="detail_manga_info_date_loading">Loading</string>

@@ -3,13 +3,12 @@ package top.rechinx.meow.ui.home
 import android.content.Intent
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
 import com.miguelcatalan.materialsearchview.MaterialSearchView
+import kotlinx.android.synthetic.main.activity_home.*
 import top.rechinx.meow.R
-import top.rechinx.meow.support.viewbinding.bindView
 import top.rechinx.meow.ui.about.AboutActivity
 import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.grid.history.HistoryFragment
@@ -19,19 +18,15 @@ import top.rechinx.meow.ui.source.SourceFragment
 
 class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListener, MaterialSearchView.OnQueryTextListener {
 
-    private val drawerLayout  by bindView<DrawerLayout>(R.id.drawer_layout)
-    private val navigationView by bindView<NavigationView>(R.id.navigation_view)
-    private val searchView by bindView<MaterialSearchView>(R.id.search_view)
-
     override fun initViews() {
-        supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HomeFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.containerFragment, HomeFragment()).commit()
         navigationView.setCheckedItem(R.id.drawer_main)
         initDrawer()
         searchView.setOnQueryTextListener(this)
     }
 
     private fun initDrawer() {
-        val drawerToggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0)
+        val drawerToggle = ActionBarDrawerToggle(this, drawerLayout, customToolbar, 0, 0)
         drawerToggle.syncState()
         drawerLayout.addDrawerListener(drawerToggle)
         navigationView.setNavigationItemSelectedListener(this)
@@ -42,16 +37,16 @@ class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.drawer_main -> {
-                supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HomeFragment()).commit()
-                toolbar?.title = getString(R.string.app_name)
+                supportFragmentManager.beginTransaction().replace(R.id.containerFragment, HomeFragment()).commit()
+                customToolbar?.title = getString(R.string.app_name)
             }
             R.id.drawer_source -> {
-                supportFragmentManager.beginTransaction().replace(R.id.container_fragment, SourceFragment()).commit()
-                toolbar?.title = item.title
+                supportFragmentManager.beginTransaction().replace(R.id.containerFragment, SourceFragment()).commit()
+                customToolbar?.title = item.title
             }
             R.id.drawer_history -> {
-                supportFragmentManager.beginTransaction().replace(R.id.container_fragment, HistoryFragment()).commit()
-                toolbar?.title = item.title
+                supportFragmentManager.beginTransaction().replace(R.id.containerFragment, HistoryFragment()).commit()
+                customToolbar?.title = item.title
             }
             R.id.drawer_about -> {
                 startActivity(AboutActivity.createIntent(this))

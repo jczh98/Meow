@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
-        android:id="@+id/about_layout"
+        android:id="@+id/layoutView"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,7 +14,7 @@
             android:layout_height="200dp"
             android:background="?attr/colorPrimary">
             <TextView
-                android:id="@+id/about_app_name"
+                android:id="@+id/appName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -24,16 +24,16 @@
                 android:textColor="@color/white"
                 android:textSize="54sp"/>
             <TextView
-                android:id="@+id/about_version_name"
+                android:id="@+id/versionName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/about_app_name"
+                android:layout_below="@id/appName"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/white"
                 android:textSize="14sp"/>
         </RelativeLayout>
         <LinearLayout
-            android:id="@+id/about_update_btn"
+            android:id="@+id/update"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 android:textSize="16sp"
                 android:text="@string/about_update"/>
             <TextView
-                android:id="@+id/about_update_summary"
+                android:id="@+id/updateSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="2dp"
@@ -56,7 +56,7 @@
                 android:text="@string/about_update_summary"/>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/about_resource_btn"
+            android:id="@+id/resourceBtn"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/reader_info_layout"
+    android:id="@+id/readerInfoLayout"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -11,7 +11,7 @@
     android:paddingBottom="2dp"
     android:background="@color/trans_light_black">
     <TextView
-        android:id="@+id/reader_chapter_title"
+        android:id="@+id/readerChapterTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="4dp"
@@ -21,7 +21,7 @@
         android:textColor="@color/white"
         android:textSize="12sp"/>
     <TextView
-        android:id="@+id/reader_chapter_page"
+        android:id="@+id/readerPageNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="4dp"
@@ -36,7 +36,7 @@
         android:textColor="@color/white"
         android:textSize="12sp"/>
     <TextView
-        android:id="@+id/reader_battery"
+        android:id="@+id/readerBattery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="4dp"

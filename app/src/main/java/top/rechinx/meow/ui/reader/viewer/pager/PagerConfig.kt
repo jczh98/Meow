@@ -5,7 +5,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
-import top.rechinx.meow.support.preference.PreferenceHelper
+import top.rechinx.meow.data.preference.PreferenceHelper
 
 class PagerConfig(private val viewer: PagerViewer) : KoinComponent {
 

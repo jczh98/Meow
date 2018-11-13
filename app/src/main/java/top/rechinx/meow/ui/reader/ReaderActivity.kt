@@ -11,12 +11,10 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
+import kotlinx.android.synthetic.main.activity_reader.*
+import kotlinx.android.synthetic.main.custom_reader_info.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
 import me.zhanghai.android.systemuihelper.SystemUiHelper
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
@@ -25,10 +23,7 @@ import top.rechinx.meow.R
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.global.Extras
-import top.rechinx.meow.support.log.L
-import top.rechinx.meow.support.preference.PreferenceHelper
-import top.rechinx.meow.support.viewbinding.bindView
-import top.rechinx.meow.ui.base.BaseActivity
+import top.rechinx.meow.data.preference.PreferenceHelper
 import top.rechinx.meow.ui.reader.model.ReaderChapter
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import top.rechinx.meow.ui.reader.model.ViewerChapters
@@ -36,7 +31,6 @@ import top.rechinx.meow.ui.reader.viewer.BaseViewer
 import top.rechinx.meow.ui.reader.viewer.pager.L2RPagerViewer
 import top.rechinx.meow.ui.reader.viewer.pager.R2LPagerViewer
 import top.rechinx.meow.ui.reader.viewer.webtoon.WebtoonViewer
-import top.rechinx.meow.widget.ReverseSeekBar
 import top.rechinx.rikka.ext.visible
 import top.rechinx.rikka.mvp.MvpAppCompatActivity
 import top.rechinx.rikka.mvp.factory.RequiresPresenter
@@ -46,13 +40,6 @@ class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
 
     var viewer: BaseViewer? = null
         private set
-
-    val viewerContainer by bindView<FrameLayout>(R.id.viewer_container)
-    val readerMenu : FrameLayout by bindView(R.id.reader_menu)
-    val readerMenuBottom by bindView<LinearLayout>(R.id.reader_menu_bottom)
-    val readerSeekbar by bindView<ReverseSeekBar>(R.id.reader_seek_bar)
-    val readerPageNumber by bindView<TextView>(R.id.reader_chapter_page)
-    val waitProgressBar by bindView<ProgressBar>(R.id.please_wait)
 
     val sourceId by lazy { intent.getLongExtra(Extras.EXTRA_SOURCE, 0) }
     val mangaId by lazy { intent.getLongExtra(Extras.EXTRA_MANGA_ID, -1L) }
@@ -72,7 +59,7 @@ class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reader)
-        setSupportActionBar(custom_toolbar)
+        setSupportActionBar(customToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         if(presenter.needsInit()) {
             if (mangaId == -1L || chapterId == -1L) {
@@ -86,8 +73,8 @@ class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
     }
 
     private fun initializeMenu() {
-        custom_toolbar?.setNavigationOnClickListener { onBackPressed() }
-        readerSeekbar.setOnProgressChangeListener(object : DiscreteSeekBar.OnProgressChangeListener {
+        customToolbar?.setNavigationOnClickListener { onBackPressed() }
+        readerSeekBar.setOnProgressChangeListener(object : DiscreteSeekBar.OnProgressChangeListener {
             override fun onProgressChanged(seekBar: DiscreteSeekBar?, value: Int, fromUser: Boolean) {
                 if (viewer != null && fromUser) {
                     moveToPageIndex(value)
@@ -138,8 +125,8 @@ class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
         }
         viewer = newViewer
         viewerContainer.addView(newViewer.getView())
-        custom_toolbar?.title = manga.title
-        readerSeekbar.setReverse(newViewer is R2LPagerViewer)
+        customToolbar?.title = manga.title
+        readerSeekBar.setReverse(newViewer is R2LPagerViewer)
         waitProgressBar.visible()
         waitProgressBar.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in_long))
     }
@@ -163,7 +150,7 @@ class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
                         }
                     }
                 })
-                custom_toolbar?.startAnimation(toolbarAnimation)
+                customToolbar?.startAnimation(toolbarAnimation)
 
                 val bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.enter_from_bottom)
                 readerMenuBottom.startAnimation(bottomAnimation)
@@ -180,7 +167,7 @@ class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
                         readerMenu.visibility = View.GONE
                     }
                 })
-                custom_toolbar?.startAnimation(toolbarAnimation)
+                customToolbar?.startAnimation(toolbarAnimation)
 
                 val bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.exit_to_bottom)
                 readerMenuBottom.startAnimation(bottomAnimation)
@@ -209,7 +196,8 @@ class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
     fun setChapters(viewerChapters: ViewerChapters) {
         waitProgressBar.visibility = View.GONE
         viewer?.setChapters(viewerChapters)
-        custom_toolbar?.subtitle = viewerChapters.currChapter.chapter.name
+        customToolbar?.subtitle = viewerChapters.currChapter.chapter.name
+        readerChapterTitle.text = viewerChapters.currChapter.chapter.name
     }
 
     @SuppressLint("SetTextI18n")
@@ -221,8 +209,8 @@ class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
         readerPageNumber.text = "${page.number}/${pages.size}"
 
         // Set seekbar progress
-        readerSeekbar.max = pages.lastIndex
-        readerSeekbar.progress = page.index
+        readerSeekBar.max = pages.lastIndex
+        readerSeekBar.progress = page.index
     }
 
     fun moveToPageIndex(index: Int) {

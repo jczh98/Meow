@@ -10,7 +10,7 @@ import android.widget.ListView
 import org.koin.android.ext.android.inject
 import top.rechinx.meow.global.Constants
 import top.rechinx.meow.R
-import top.rechinx.meow.support.preference.PreferenceHelper
+import top.rechinx.meow.data.preference.PreferenceHelper
 
 class MainSettingsFragment: PreferenceFragment(), Preference.OnPreferenceChangeListener {
 

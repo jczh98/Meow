@@ -1,8 +1,6 @@
-package top.rechinx.meow.support.preference
+package top.rechinx.meow.data.preference
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import top.rechinx.meow.global.Constants
 

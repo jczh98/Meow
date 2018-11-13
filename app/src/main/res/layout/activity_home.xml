@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+        android:id="@+id/drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -14,27 +14,27 @@
             android:layout_height="match_parent">
 
             <FrameLayout
-                android:id="@+id/toolbar_container"
+                android:id="@+id/toolbarContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <include layout="@layout/custom_toolbar"/>
 
                 <com.miguelcatalan.materialsearchview.MaterialSearchView
-                    android:id="@+id/search_view"
+                    android:id="@+id/searchView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/container_fragment"
+                android:id="@+id/containerFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             </FrameLayout>
 
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigation_view"
+            android:id="@+id/navigationView"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"

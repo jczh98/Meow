@@ -2,11 +2,7 @@
 <resources>
     <string name="app_name">喵呜</string>
     <string name="drawer_main">主页</string>
-    <string name="hint_for_search">请输入漫画名</string>
     <string name="empty_for_search">关键字不能为空</string>
-    <string name="result_source">来源</string>
-    <string name="result_update">更新时间</string>
-    <string name="reader_picture_loading">加载中...</string>
     <string name="favorite">收藏</string>
     <string name="download">下载</string>
     <string name="drawer_history">历史</string>
@@ -14,17 +10,8 @@
     <string name="item_group_other">其它</string>
     <string name="drawer_settings">设置</string>
     <string name="drawer_source">图源</string>
-    <string name="details_read">开始阅读</string>
-    <string name="details_continue">继续阅读</string>
-    <string name="details_favorite">订阅漫画</string>
-    <string name="details_unfavorite">取消订阅</string>
     <string name="search_result_title">搜索-%s</string>
-    <string name="detail_title">详情</string>
-    <string name="title_activity_login">登录</string>
-    <string name="snackbar_login_success">登录成功</string>
-    <string name="snackbar_login_failure">登录失败</string>
     <string name="snackbar_result_empty">没有搜索到数据</string>
-    <string name="snackbar_login_check">用户名或密码不能为空</string>
     <string name="title_activity_settings">设置</string>
     <string name="pref_default_reader_mode">默认阅读模式</string>
     <string name="pref_hide_reader_status">隐藏阅读信息</string>
@@ -35,16 +22,5 @@
     <string name="about_update">检查更新</string>
     <string name="about_update_summary">点击检查更新</string>
     <string name="about_resource">源代码</string>
-    <string name="request_version_error">请求失败</string>
-    <string name="request_version_checking">检查更新中</string>
-    <string name="request_version_latest">已经是最新版本</string>
-    <string name="request_version_title">确认下载</string>
-    <string name="request_version_content">点击确认下载最新版本</string>
-    <string name="text_options">选项</string>
-    <string name="text_options_reader_mode">阅读模式</string>
-    <string name="text_options_page">翻页模式</string>
-    <string name="text_options_stream">卷轴模式</string>
-    <string name="text_options_hidden">收起</string>
-    <string name="info_last_update_label">最后更新</string>
     <string name="text_chapter_load_more">加载更多章节</string>
 </resources>

@@ -11,18 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/item_source_switch"
+            android:id="@+id/switchCompat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>
         <TextView
-            android:id="@+id/item_source_title"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@id/item_source_switch"
+            android:layout_toLeftOf="@id/switchCompat"
             android:maxLines="1"
             android:text="text"
             android:ellipsize="end"

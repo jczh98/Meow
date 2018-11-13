@@ -3,20 +3,17 @@ package top.rechinx.meow.ui.reader
 import android.os.Bundle
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import androidx.core.widget.NestedScrollView
-import androidx.appcompat.widget.AppCompatSpinner
 import android.view.View
 import android.widget.AdapterView
+import kotlinx.android.synthetic.main.custom_setting_sheet.*
 import org.koin.android.ext.android.inject
 import top.rechinx.meow.R
-import top.rechinx.meow.support.log.L
-import top.rechinx.meow.support.preference.PreferenceHelper
+import top.rechinx.meow.data.preference.PreferenceHelper
 import top.rechinx.meow.support.viewbinding.bindView
 
 class ReaderSetting(val activity: ReaderActivity) : BottomSheetDialog(activity){
 
     private val preferences: PreferenceHelper by activity.inject()
-
-    val viewerSelection by bindView<AppCompatSpinner>(R.id.viewer_selection_spinner)
 
     init {
         val view = activity.layoutInflater.inflate(R.layout.custom_setting_sheet, null)
@@ -31,8 +28,8 @@ class ReaderSetting(val activity: ReaderActivity) : BottomSheetDialog(activity){
     }
 
     private fun initGeneralPreferences() {
-        viewerSelection.setSelection(activity.presenter.getMangaViewer(), false)
-        viewerSelection.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        viewerSelectionSpinner.setSelection(activity.presenter.getMangaViewer(), false)
+        viewerSelectionSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 

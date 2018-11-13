@@ -8,13 +8,13 @@ class SettingsActivity: BaseActivity() {
 
     override fun initToolbar() {
         super.initToolbar()
-        toolbar?.title = getString(R.string.title_activity_settings)
+        customToolbar?.title = getString(R.string.title_activity_settings)
     }
 
     override fun initViews() {
-        toolbar?.setNavigationOnClickListener { finish() }
+        customToolbar?.setNavigationOnClickListener { finish() }
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_container, MainSettingsFragment()).commit()
+        fragmentTransaction.replace(R.id.frameContainer, MainSettingsFragment()).commit()
     }
 
     override fun getLayoutId(): Int = R.layout.activity_settings
