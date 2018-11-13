@@ -75,7 +75,7 @@ class Dmzj: HttpSource() {
                     else -> SManga.UNKNOWN
                 }
                 description = obj.getString("description")
-                this.url = cid
+                this.url = "$baseUrl/comic/$cid.json"
             })
         }
         return PagedList(ret, false)
