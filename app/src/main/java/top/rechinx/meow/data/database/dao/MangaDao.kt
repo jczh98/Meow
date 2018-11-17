@@ -19,13 +19,22 @@ interface MangaDao {
     fun loadManga(sourceId: Long, url: String): Manga?
 
     @Query("SELECT * FROM Manga WHERE id = :mangaId")
+    fun load(mangaId: Long): Manga?
+
+    @Query("SELECT * FROM Manga WHERE id = :mangaId")
     fun loadManga(mangaId: Long): Maybe<Manga>
+
+    @Query("SELECT * FROM Manga")
+    fun listMangas(): Flowable<List<Manga>>
 
     @Query("SELECT * FROM Manga WHERE favorite = 1")
     fun listFavorite(): Flowable<List<Manga>>
 
     @Query("SELECT * FROM Manga WHERE history = 1")
     fun listHistory(): Flowable<List<Manga>>
+
+    @Query("SELECT * FROM Manga WHERE download = 1")
+    fun listDownload(): Flowable<List<Manga>>
 
     @Query("SELECT * FROM Manga WHERE sourceId = :sourceId AND url = :url")
     fun relayManga(sourceId: Long, url: String): Flowable<Manga>

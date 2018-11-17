@@ -1,6 +1,8 @@
 package top.rechinx.meow.ui.details
 
+import android.net.Uri
 import android.os.Bundle
+import com.hippo.unifile.UniFile
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -9,23 +11,37 @@ import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import top.rechinx.meow.App
 import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.core.source.model.SChapter
 import top.rechinx.meow.data.database.dao.ChapterDao
+import top.rechinx.meow.data.database.dao.MangaDao
+import top.rechinx.meow.data.database.dao.TaskDao
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.data.database.model.Task
+import top.rechinx.meow.data.download.DownloaderProvider
+import top.rechinx.meow.data.preference.PreferenceHelper
+import top.rechinx.meow.data.preference.getOrDefault
 import top.rechinx.meow.data.repository.ChapterPager
 import top.rechinx.meow.data.repository.MangaRepository
 import top.rechinx.meow.ui.details.items.ChapterItem
 import top.rechinx.rikka.mvp.BasePresenter
 import top.rechinx.rikka.rxbus.RxBus
+import java.util.ArrayList
 
 class DetailPresenter(val sourceId: Long, val url: String): BasePresenter<DetailActivity>(), KoinComponent {
 
     val sourceManager by inject<SourceManager>()
 
     val chapterDao by inject<ChapterDao> ()
+
+    val mangaDao by inject<MangaDao>()
+
+    val taskDao by inject<TaskDao>()
+
+    val preferences by inject<PreferenceHelper>()
 
     val source = sourceManager.get(sourceId) as Source
 
@@ -114,4 +130,46 @@ class DetailPresenter(val sourceId: Long, val url: String): BasePresenter<Detail
         return localChapter
     }
 
+    /**
+     * Convert chapter list to task list
+     *
+     * @param list chapter list
+     * @return transformed task list
+     */
+    private fun getTaskList(list: List<Chapter>): ArrayList<Task> {
+        val result = ArrayList<Task>(list.size)
+        for (chapter in list) {
+            val task = Task(null, -1, chapter.url!!, chapter.name!!, 0, 0)
+            task.sourceId = manga!!.sourceId
+            task.sourceName = source.name
+            task.mangaName = manga!!.title
+            task.mangaUrl = manga!!.url
+            task.state = Task.STATE_WAIT
+            task.chapter = chapter
+            result.add(task)
+        }
+        return result
+    }
+
+    fun addTask(totalList: ArrayList<Chapter>, selectedList: ArrayList<Chapter>) {
+        Observable.create<ArrayList<Task>> {
+            val result = getTaskList(selectedList)
+            manga!!.download = true
+            mangaDao.updateManga(manga!!)
+            for (task in result) {
+                task.mangaId = manga!!.id
+                val id = taskDao.insert(task)
+                task.id = id
+            }
+            DownloaderProvider.updateMangaIndex(App.instance.contentResolver, rootDirectory(), totalList, manga!!, source)
+            it.onNext(result)
+            it.onComplete()
+        }.subscribeFirst({ view , tasks ->
+            view.onTaskAddSuccess(tasks)
+        })
+    }
+
+    fun rootDirectory() : UniFile {
+        return UniFile.fromUri(App.instance, Uri.parse(preferences.downloadsDirectory().getOrDefault()))
+    }
 }

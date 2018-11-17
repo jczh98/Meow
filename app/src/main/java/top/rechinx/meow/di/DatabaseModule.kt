@@ -19,6 +19,7 @@ object DatabaseModule {
         }
         single { get<AppDatabase>().mangaDao() }
         single { get<AppDatabase>().chapterDao() }
+        single { get<AppDatabase>().taskDao() }
         single { MangaRepository(get(), get(), get()) }
         single { ChapterRepository(get(), get()) }
     }

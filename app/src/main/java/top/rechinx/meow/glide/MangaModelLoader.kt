@@ -63,10 +63,10 @@ class MangaModelLoader: ModelLoader<Manga, InputStream>, KoinComponent {
     override fun handles(model: Manga): Boolean = true
 
     /**
-     * Returns the request header from specific source and caching it
+     * Returns the request header from specific sourceId and caching it
      *
      * @param manga the model
-     * @param source specific source
+     * @param source specific sourceId
      */
     fun getHeaders(manga: Manga, source: HttpSource?): Headers {
         if (source == null) return LazyHeaders.DEFAULT

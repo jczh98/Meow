@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import top.rechinx.meow.R
+import top.rechinx.meow.ui.grid.download.DownloadFragment
 import top.rechinx.meow.ui.grid.favorite.FavoriteFragment
 import top.rechinx.meow.ui.grid.history.HistoryFragment
 
@@ -13,10 +14,14 @@ class HomePagerAdapter(context: Context, fragmentManager: FragmentManager): Frag
     private var mContext: Context = context
 
     override fun getItem(position: Int): Fragment {
-        return FavoriteFragment()
+        if(position == 0) {
+            return FavoriteFragment()
+        } else {
+            return DownloadFragment()
+        }
     }
 
-    override fun getCount(): Int = 1
+    override fun getCount(): Int = 2
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when(position) {

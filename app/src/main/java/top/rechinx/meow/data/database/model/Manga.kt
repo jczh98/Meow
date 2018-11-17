@@ -23,7 +23,8 @@ data class Manga(@ColumnInfo override var url: String?,
                  @ColumnInfo var sourceId: Long = 0,
                  @ColumnInfo var last_update: Long = 0,
                  @ColumnInfo var viewer: Int = 0,
-                 @ColumnInfo var history: Boolean = false): SManga() {
+                 @ColumnInfo var history: Boolean = false,
+                 @ColumnInfo var download: Boolean = false): SManga() {
 
     constructor(): this(null, null, null, null, null, 0, null, false, null, null)
 
@@ -35,6 +36,14 @@ data class Manga(@ColumnInfo override var url: String?,
         this.sourceId = source
         this.title = title
         this.url = pathUrl
+    }
+
+    companion object {
+        fun create(pathUrl: String, title: String, sourceId: Long = 0): Manga = Manga().apply {
+            url = pathUrl
+            this.title = title
+            this.sourceId = sourceId
+        }
     }
 
 }

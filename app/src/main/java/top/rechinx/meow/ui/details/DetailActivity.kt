@@ -1,5 +1,6 @@
 package top.rechinx.meow.ui.details
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,8 +16,11 @@ import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.SManga
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.data.database.model.Task
+import top.rechinx.meow.data.download.DownloadService
 import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.global.Extras
+import top.rechinx.meow.ui.details.chapters.ChaptersActivity
 import top.rechinx.meow.ui.details.items.ChapterItem
 import top.rechinx.meow.ui.details.items.LoadItem
 import top.rechinx.meow.ui.reader.ReaderActivity
@@ -25,6 +29,7 @@ import top.rechinx.rikka.ext.visible
 import top.rechinx.rikka.mvp.MvpAppCompatActivityWithoutReflection
 import java.text.DateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         FlexibleAdapter.OnItemClickListener, FlexibleAdapter.EndlessScrollListener {
@@ -100,11 +105,26 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
                         //presenter.manga!!.favorite = !presenter.manga!!.favorite
                     }
                 }
+                R.id.action_download -> {
+                    val intent = ChaptersActivity.createIntent(this@DetailActivity, adapter!!.getChapters())
+                    startActivityForResult(intent, REQUEST_CODE_DOWNLOAD)
+                }
             }
             return@setOnMenuItemClickListener true
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
+            when(requestCode) {
+                REQUEST_CODE_DOWNLOAD -> {
+                    val list = data?.getParcelableArrayListExtra<Chapter>(Extras.EXTRA_CHAPTERS)
+                    presenter.addTask(adapter!!.getChapters(), list!!)
+                }
+            }
+        }
+    }
     private fun hideProgressBar() {
         chaptersProgressBar.gone()
         chaptersRecyclerView.visible()
@@ -252,7 +272,14 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         adapter.setLast(manga.last_read_chapter_id)
     }
 
+    fun onTaskAddSuccess(list: ArrayList<Task>) {
+        val intent = DownloadService.createIntent(this, list)
+        startService(intent)
+    }
+
     companion object {
+
+        const val REQUEST_CODE_DOWNLOAD = 0
 
         fun createIntent(context: Context, source: Long, url: String): Intent {
             val intent = Intent(context, DetailActivity::class.java)

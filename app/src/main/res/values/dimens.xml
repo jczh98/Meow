@@ -5,4 +5,5 @@
     <dimen name="material_component_lists_single_line_with_avatar_height">72dp</dimen>
     <dimen name="material_component_lists_single_line_with_avatar_height_minus1">71dp</dimen>
     <dimen name="material_component_lists_single_line_avatar_height">56dp</dimen>
+    <dimen name="material_component_lists_padding_above_list">8dp</dimen>
 </resources>

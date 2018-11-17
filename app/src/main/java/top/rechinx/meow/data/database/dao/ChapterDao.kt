@@ -21,6 +21,9 @@ interface ChapterDao {
     @Query("SELECT * FROM Chapter WHERE url = :chapterUrl AND manga_id = :mangaId")
     fun getChapter(chapterUrl: String, mangaId: Long) : Chapter?
 
+    @Query("SELECT * FROM Chapter WHERE id = :chapterId")
+    fun getChapter(chapterId: Long): Chapter?
+
     @Delete
     fun deleteChapters(list: List<Chapter>)
 

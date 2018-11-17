@@ -75,8 +75,8 @@ class MangaRepository(private val sourceManager: SourceManager,
 
 //    fun fetchMangaChapters(sourceId: Long, url: String): Observable<List<Chapter>> {
 //        val manga = mangaDao.loadManga(sourceId, url)
-//        val source = sourceManager.getOrStub(sourceId)
-//        return source.fetchChapters(url).map { syncChaptersWithSource(it, manga!!, source) }
+//        val sourceId = sourceManager.getOrStub(sourceId)
+//        return sourceId.fetchChapters(url).map { syncChaptersWithSource(it, manga!!, sourceId) }
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .map {

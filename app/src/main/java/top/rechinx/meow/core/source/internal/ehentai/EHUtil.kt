@@ -1,7 +1,7 @@
 package top.rechinx.meow.core.source.internal.ehentai
 
 /**
- * Various utility methods used in the E-Hentai source
+ * Various utility methods used in the E-Hentai sourceId
  */
 
 /**

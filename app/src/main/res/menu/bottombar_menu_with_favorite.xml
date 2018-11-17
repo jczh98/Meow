@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/action_favorite"
         android:icon="@drawable/ic_favorite_border_white_24dp"
-        android:orderInCategory="100"
         android:title="@string/abc_search_hint"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_download"
+        android:icon="@drawable/ic_file_download_white_24dp"
+        android:title="@string/action_download"
+        app:showAsAction="always" />
+
 </menu>

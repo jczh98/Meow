@@ -1,12 +1,19 @@
 package top.rechinx.meow.ui.home
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.miguelcatalan.materialsearchview.MaterialSearchView
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
@@ -24,6 +31,23 @@ class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         navigationView.setCheckedItem(R.id.drawer_main)
         initDrawer()
         searchView.setOnQueryTextListener(this)
+        requestStoragePermission(0)
+    }
+
+    fun requestStoragePermission(requestCode: Int) {
+        if(checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, requestCode)) {
+
+        } else {
+            requestPermission(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), requestCode)
+        }
+    }
+
+    fun checkPermission(context: Context, permission: String, code: Int): Boolean {
+        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun requestPermission(context: Context, permissions: Array<String>, code: Int) {
+        ActivityCompat.requestPermissions(this, permissions, code)
     }
 
     private fun initDrawer() {
