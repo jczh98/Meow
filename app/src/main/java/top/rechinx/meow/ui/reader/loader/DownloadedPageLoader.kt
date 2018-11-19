@@ -7,7 +7,7 @@ import org.koin.standalone.inject
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.model.MangaPage
 import top.rechinx.meow.data.database.model.Manga
-import top.rechinx.meow.data.download.DownloaderProvider
+import top.rechinx.meow.data.download.DownloadProvider
 import top.rechinx.meow.data.preference.PreferenceHelper
 import top.rechinx.meow.data.preference.getOrDefault
 import top.rechinx.meow.ui.reader.model.ReaderChapter
@@ -21,7 +21,7 @@ class DownloadedPageLoader(private val chapter: ReaderChapter,
     val context by inject<Application> ()
 
     override fun getPages(): Observable<List<ReaderPage>> {
-        return DownloaderProvider.buildReaderPages(source, manga, chapter.chapter,
+        return DownloadProvider.buildReaderPages(source, manga, chapter.chapter,
                 preferences.downloadsDirectory().getOrDefault(),
                 context.contentResolver)
     }

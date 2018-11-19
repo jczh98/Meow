@@ -11,9 +11,7 @@ import androidx.collection.LongSparseArray
 import com.hippo.unifile.UniFile
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.Request
 import okhttp3.Response
 import org.koin.android.ext.android.inject
 import top.rechinx.meow.App
@@ -26,9 +24,7 @@ import top.rechinx.meow.data.database.model.Task
 import top.rechinx.meow.data.preference.PreferenceHelper
 import top.rechinx.meow.data.preference.getOrDefault
 import top.rechinx.meow.global.Extras
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.utils.ImageUtil
-import top.rechinx.meow.utils.RetryWithDelay
 import top.rechinx.rikka.ext.saveTo
 import java.io.IOException
 import java.io.InterruptedIOException
@@ -132,7 +128,7 @@ class DownloadService: Service() {
                         .doOnError { stateRelay.accept(Pair(EVENT_ERROR, task)) }
                         .blockingFirst()
                 if(list.isNotEmpty()) {
-                    val dir = DownloaderProvider.updateChapterIndex(contentResolver, rootDirectory(), task)
+                    val dir = DownloadProvider.updateChapterIndex(contentResolver, rootDirectory(), task)
                     if(dir != null) {
                         task.max = list.size
                         task.state = Task.STATE_DOING

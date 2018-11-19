@@ -18,7 +18,7 @@ import top.rechinx.meow.utils.UniFileUtils
 import io.reactivex.Observable
 import top.rechinx.meow.ui.reader.model.ReaderPage
 
-object DownloaderProvider {
+object DownloadProvider {
 
     private val JSON_KEY_VERSION = "version"
     private val JSON_KEY_TYPE = "type"

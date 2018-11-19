@@ -21,7 +21,7 @@ import top.rechinx.meow.data.database.dao.TaskDao
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.database.model.Task
-import top.rechinx.meow.data.download.DownloaderProvider
+import top.rechinx.meow.data.download.DownloadProvider
 import top.rechinx.meow.data.preference.PreferenceHelper
 import top.rechinx.meow.data.preference.getOrDefault
 import top.rechinx.meow.data.repository.ChapterPager
@@ -161,7 +161,7 @@ class DetailPresenter(val sourceId: Long, val url: String): BasePresenter<Detail
                 val id = taskDao.insert(task)
                 task.id = id
             }
-            DownloaderProvider.updateMangaIndex(App.instance.contentResolver, rootDirectory(), totalList, manga!!, source)
+            DownloadProvider.updateMangaIndex(App.instance.contentResolver, rootDirectory(), totalList, manga!!, source)
             it.onNext(result)
             it.onComplete()
         }.subscribeFirst({ view , tasks ->

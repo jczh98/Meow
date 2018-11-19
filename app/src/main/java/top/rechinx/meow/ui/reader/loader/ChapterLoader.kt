@@ -2,19 +2,12 @@ package top.rechinx.meow.ui.reader.loader
 
 import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.koin.android.ext.android.inject
 import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.data.database.model.Manga
-import top.rechinx.meow.data.download.DownloaderProvider
-import top.rechinx.meow.data.preference.PreferenceHelper
-import top.rechinx.meow.data.preference.getOrDefault
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.reader.model.ReaderChapter
 import java.lang.Exception
 
