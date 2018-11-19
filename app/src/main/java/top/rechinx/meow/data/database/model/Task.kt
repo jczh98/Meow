@@ -17,6 +17,8 @@ class Task : Parcelable {
     @ColumnInfo
     var mangaId: Long = 0      // 漫画主键
     @ColumnInfo
+    var chapterId: Long = 0
+    @ColumnInfo
     var path: String? = null
     @ColumnInfo
     var title: String? = null
@@ -59,6 +61,7 @@ class Task : Parcelable {
         this.state = source.readInt()
         this.sourceName = source.readString()
         this.mangaName = source.readString()
+        this.chapterId = source.readLong()
         this.chapter = source.readParcelable(Chapter.javaClass.classLoader)
     }
 
@@ -99,6 +102,7 @@ class Task : Parcelable {
         dest.writeInt(state)
         dest.writeString(sourceName)
         dest.writeString(mangaName)
+        dest.writeLong(chapterId)
         dest.writeParcelable(chapter, flags)
     }
 

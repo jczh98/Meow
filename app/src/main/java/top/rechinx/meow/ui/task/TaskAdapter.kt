@@ -30,6 +30,7 @@ class TaskAdapter(context: Context, list: ArrayList<Task>) : BaseAdapter<Task>(c
         val task = datas.get(position)
         holder.itemView.apply {
             title.text = task.title
+            state.text = context.getString(getState(task))
             page.text = "${task.progress}/${task.max}"
             progress.max = task.max
             progress.progress = task.progress
@@ -44,6 +45,18 @@ class TaskAdapter(context: Context, list: ArrayList<Task>) : BaseAdapter<Task>(c
             }
         }
         return -1
+    }
+
+    private fun getState(task: Task): Int {
+        return when (task.state) {
+            Task.STATE_PAUSE -> R.string.task_pause
+            Task.STATE_PARSE -> R.string.task_parse
+            Task.STATE_DOING -> R.string.task_dowloading
+            Task.STATE_FINISH -> R.string.task_finish
+            Task.STATE_WAIT -> R.string.task_wait
+            Task.STATE_ERROR -> R.string.task_error
+            else -> R.string.task_pause
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

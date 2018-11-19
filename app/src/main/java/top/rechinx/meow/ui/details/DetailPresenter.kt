@@ -145,6 +145,7 @@ class DetailPresenter(val sourceId: Long, val url: String): BasePresenter<Detail
             task.mangaName = manga!!.title
             task.mangaUrl = manga!!.url
             task.state = Task.STATE_WAIT
+            task.chapterId = chapter.id
             task.chapter = chapter
             result.add(task)
         }

@@ -23,8 +23,23 @@ class TaskPresenter : BasePresenter<TaskActivity>(), KoinComponent {
         super.onCreate(savedState)
         DownloadService.progressRelay
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeLatestCache({ view, task ->
+                .subscribeReplay({ view, task ->
                     view.onTaskProcess(task)
+                })
+        DownloadService.pauseRelay
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeReplay({ view, task ->
+                    view.onTaskPause(task)
+                })
+        DownloadService.parseRelay
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeReplay({ view, task ->
+                    view.onTaskParse(task)
+                })
+        DownloadService.errorRelay
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeReplay({ view, task ->
+                    view.onTaskError(task)
                 })
     }
 
@@ -35,7 +50,7 @@ class TaskPresenter : BasePresenter<TaskActivity>(), KoinComponent {
                 .doOnNext {
                     updateTaskList(it)
                 }.observeOn(AndroidSchedulers.mainThread())
-                .subscribeLatestCache({ view, list ->
+                .subscribeFirst({ view, list ->
                     view.onTaskLoadSuccess(list)
                 }, { view, error ->
                     view.onTaskLoadError(error)
@@ -47,7 +62,7 @@ class TaskPresenter : BasePresenter<TaskActivity>(), KoinComponent {
         for (task in list) {
             task.mangaUrl = manga.url
             task.sourceId = manga.sourceId
-            task.state = if (task.isFinish) Task.STATE_FINISH else Task.STATE_PAUSE
+            if(task.isFinish) task.state = Task.STATE_FINISH
         }
     }
 }

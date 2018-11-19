@@ -14,6 +14,7 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import okhttp3.Request
 import okhttp3.Response
 import org.koin.android.ext.android.inject
 import top.rechinx.meow.App
@@ -25,9 +26,13 @@ import top.rechinx.meow.data.database.model.Task
 import top.rechinx.meow.data.preference.PreferenceHelper
 import top.rechinx.meow.data.preference.getOrDefault
 import top.rechinx.meow.global.Extras
+import top.rechinx.meow.support.log.L
 import top.rechinx.meow.utils.ImageUtil
 import top.rechinx.meow.utils.RetryWithDelay
 import top.rechinx.rikka.ext.saveTo
+import java.io.IOException
+import java.io.InterruptedIOException
+import java.net.SocketTimeoutException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -46,7 +51,7 @@ class DownloadService: Service() {
 
     override fun onCreate() {
         super.onCreate()
-        executorService = Executors.newFixedThreadPool(4)
+        executorService = Executors.newFixedThreadPool(1)
     }
 
     override fun onBind(intent: Intent?): IBinder {
@@ -98,37 +103,67 @@ class DownloadService: Service() {
         runningRelay.accept(false)
     }
 
+    @Synchronized
+    fun removeDownload(id: Long) {
+        val pair = workerArray.get(id)
+        if(pair != null) {
+            pair.second.cancel(true)
+            workerArray.remove(id)
+        }
+    }
+
     inner class Worker(val task: Task) : Runnable {
 
         private val source = sourceManager.getOrStub(task.sourceId)
 
         override fun run() {
             try {
-                val list = source.fetchMangaPages(task.chapter!!).blockingFirst()
+                // listen to parse relay
+                task.state = Task.STATE_PARSE
+                parseRelay.accept(task)
+                val list = source.fetchMangaPages(task.chapter!!)
+                        .subscribeOn(Schedulers.trampoline())
+                        .blockingFirst()
                 if(list.isNotEmpty()) {
                     val dir = DownloaderProvider.updateChapterIndex(contentResolver, rootDirectory(), task)
                     if(dir != null) {
                         task.max = list.size
                         task.state = Task.STATE_DOING
-                        var success = true
+                        var success = false
                         for (i in task.progress until list.size) {
                             onDownloadProgress(i)
-                            getOrDownloadImage(list[i], source as HttpSource, dir)
-                                    .blockingSubscribe({}, { success = false})
+                            success = false
+                            for (retry in 0 until 3) {
+                                success = getOrDownloadImage(list[i], source as HttpSource, dir)
+                                if(!success) {
+                                    Thread.sleep( (2 shl retry) * 1000L )
+                                } else {
+                                    break
+                                }
+                            }
+                            if(!success) {
+                                errorRelay.accept(task)
+                            }
                         }
                         if(success) {
                             onDownloadProgress(list.size)
                         }
                     } else {
-
+                        errorRelay.accept(task)
                     }
                 } else {
-
+                    errorRelay.accept(task)
                 }
-            } catch (e : Exception) {
-
+            } catch (e : InterruptedIOException) {
+                onDownloadPaused(task)
             }
             completeDownload(task.id!!)
+        }
+
+        private fun onDownloadPaused(task: Task) {
+            task.state = Task.STATE_PAUSE
+            taskDao.update(task)
+            pauseRelay.accept(task)
         }
 
         private fun onDownloadProgress(progress: Int) {
@@ -149,8 +184,9 @@ class DownloadService: Service() {
          * @param download the download of the page.
          * @param tmpDir the temporary directory of the download.
          */
-        fun getOrDownloadImage(page: MangaPage, source: HttpSource, dir: UniFile): Observable<MangaPage> {
-            if(page.imageUrl == null) return Observable.just(page)
+        @Throws(InterruptedIOException::class)
+        fun getOrDownloadImage(page: MangaPage, source: HttpSource, dir: UniFile): Boolean {
+            if(page.imageUrl == null) return false
             val filename = String.format("%03d", page.number)
             val tmpFile = dir.findFile("$filename.tmp")
 
@@ -160,43 +196,33 @@ class DownloadService: Service() {
             // Try to find the image file.
             val imageFile = dir.listFiles()!!.find { it.name!!.startsWith("$filename.") }
 
-            // If the image is already downloaded, do nothing. Otherwise download from network
-            val pageObservable = if (imageFile != null)
-                Observable.just(imageFile)
-            else {
-                page.status = MangaPage.DOWNLOAD_IMAGE
-                page.progress = 0
-                source.fetchImage(page)
-                        .map { response ->
-                            val file = dir.createFile("$filename.tmp")
-                            try {
-                                response.body()!!.source().saveTo(file.openOutputStream())
-                                val extension = getImageExtension(response, file)
-                                file.renameTo("$filename.$extension")
-                            } catch (e: Exception) {
-                                response.close()
-                                file.delete()
-                                throw e
-                            }
-                            file
-                        }
-                        // Retry 3 times, waiting 2, 4 and 8 seconds between attempts.
-                        .retryWhen(RetryWithDelay(3, { (2 shl it - 1) * 1000 }, Schedulers.trampoline()))
+            if(imageFile != null) {
+                return true
+            } else {
+                var response : Response? = null
+                val file = dir.createFile("$filename.tmp")
+                try {
+                    response = source.fetchStraightImage(page)
+                    if(response.isSuccessful) {
+                        response.body()!!.source().saveTo(file.openOutputStream())
+                        val extension = getImageExtension(response, file)
+                        file.renameTo("$filename.$extension")
+                        return true
+                    }
+                } catch (e : SocketTimeoutException) {
+                    file.delete()
+                    e.printStackTrace()
+                } catch (e : InterruptedIOException) {
+                    file.delete()
+                    throw e
+                } catch (e: IOException) {
+                    file.delete()
+                    e.printStackTrace()
+                } finally {
+                    response?.close()
+                }
             }
-
-            return pageObservable
-                    // When the image is ready, set image path, progress (just in case) and status
-                    .doOnNext { file ->
-                        page.progress = 100
-                        page.status = MangaPage.READY
-                    }
-                    .map { page }
-                    // Mark this page as error and allow to download the remaining
-                    .onErrorReturn {
-                        page.progress = 0
-                        page.status = MangaPage.ERROR
-                        page
-                    }
+            return false
         }
 
         /**
@@ -227,6 +253,13 @@ class DownloadService: Service() {
 
         val runningRelay = BehaviorRelay.createDefault(false)
         val progressRelay = PublishRelay.create<Task>()
+        val pauseRelay = PublishRelay.create<Task>()
+        val parseRelay = PublishRelay.create<Task>()
+        val errorRelay = PublishRelay.create<Task>()
+
+        fun createIntent(context: Context, task: Task): Intent {
+            return createIntent(context, arrayListOf(task))
+        }
 
         fun createIntent(context: Context, list: ArrayList<Task>): Intent {
             val intent = Intent(context, DownloadService::class.java)

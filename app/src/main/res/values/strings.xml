@@ -68,4 +68,10 @@
     <string name="download_notifier_no_network">No network connection available</string>
     <string name="tab_download_complete">DownloadCompleted</string>
     <string name="tab_download_queue">DownloadQueue</string>
+    <string name="task_parse">Parsing</string>
+    <string name="task_pause">Pausing</string>
+    <string name="task_wait">Waiting</string>
+    <string name="task_dowloading">Downloading</string>
+    <string name="task_finish">Finished</string>
+    <string name="task_error">Error</string>
 </resources>
