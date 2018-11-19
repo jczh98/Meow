@@ -13,11 +13,13 @@ import kotlinx.android.synthetic.main.custom_toolbar.*
 import org.koin.android.ext.android.inject
 import top.rechinx.meow.R
 import top.rechinx.meow.data.database.dao.ChapterDao
+import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Task
 import top.rechinx.meow.data.download.DownloadService
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.base.BaseAdapter
+import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.rikka.mvp.MvpAppCompatActivity
 import top.rechinx.rikka.mvp.factory.RequiresPresenter
 import kotlin.collections.ArrayList
@@ -59,7 +61,8 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
         L.d(task.state.toString())
         when(task.state) {
             Task.STATE_FINISH -> {
-
+                val chapter = chapterDao.getChapter(task.chapterId)
+                chapter?.let { startReader(it) }
             }
             Task.STATE_PAUSE, Task.STATE_ERROR -> {
                 task.chapter = chapterDao.getChapter(task.chapterId)
@@ -138,6 +141,12 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
                 notifyItemChanged(position)
             }
         }
+    }
+
+    private fun startReader(chapter: Chapter, isContinued: Boolean = false) {
+        val manga = presenter.manga ?: return
+        val intent = ReaderActivity.createIntent(this, manga, chapter, isContinued)
+        startActivity(intent)
     }
 
     private fun notifyItemChanged(position: Int) {

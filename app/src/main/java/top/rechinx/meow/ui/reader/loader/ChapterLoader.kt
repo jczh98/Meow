@@ -5,15 +5,21 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.koin.android.ext.android.inject
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.data.download.DownloaderProvider
+import top.rechinx.meow.data.preference.PreferenceHelper
+import top.rechinx.meow.data.preference.getOrDefault
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.reader.model.ReaderChapter
 import java.lang.Exception
 
 class ChapterLoader(private val manga: Manga,
-                    private val source: Source) {
+                    private val source: Source): KoinComponent {
 
     fun loadChapter(chapter: ReaderChapter, isContinued: Boolean = false) : Completable {
         if(chapter.state is ReaderChapter.State.Loaded) {
@@ -48,6 +54,9 @@ class ChapterLoader(private val manga: Manga,
     }
 
     private fun getPageLoader(readerChapter: ReaderChapter): PageLoader {
+        if(readerChapter.chapter.complete) {
+            return DownloadedPageLoader(readerChapter, manga, source as HttpSource)
+        }
         return HttpPageLoader(readerChapter, source as HttpSource)
     }
 }

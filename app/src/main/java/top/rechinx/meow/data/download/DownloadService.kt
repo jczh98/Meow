@@ -20,6 +20,7 @@ import top.rechinx.meow.App
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.core.source.model.MangaPage
+import top.rechinx.meow.data.database.dao.ChapterDao
 import top.rechinx.meow.data.database.dao.TaskDao
 import top.rechinx.meow.data.database.model.Task
 import top.rechinx.meow.data.preference.PreferenceHelper
@@ -45,6 +46,8 @@ class DownloadService: Service() {
     private val preferences by inject<PreferenceHelper>()
 
     private val taskDao by inject<TaskDao>()
+
+    private val chapterDao by inject<ChapterDao>()
 
     private var workerArray: LongSparseArray<Pair<Worker, Future<*>>> = LongSparseArray()
 
@@ -89,8 +92,12 @@ class DownloadService: Service() {
     }
 
     @Synchronized
-    private fun completeDownload(id: Long) {
-        workerArray.remove(id)
+    private fun completeDownload(task: Task) {
+        if(task.chapter != null) {
+            task.chapter!!.complete = true
+            chapterDao.updateChapter(task.chapter!!)
+        }
+        workerArray.remove(task.id)
         if (workerArray.size() == 0) {
             notifyCompleted()
             stopSelf()
@@ -122,6 +129,7 @@ class DownloadService: Service() {
                 stateRelay.accept(Pair(EVENT_PARSE, task))
                 val list = source.fetchMangaPages(task.chapter!!)
                         .subscribeOn(Schedulers.trampoline())
+                        .doOnError { stateRelay.accept(Pair(EVENT_ERROR, task)) }
                         .blockingFirst()
                 if(list.isNotEmpty()) {
                     val dir = DownloaderProvider.updateChapterIndex(contentResolver, rootDirectory(), task)
@@ -156,7 +164,7 @@ class DownloadService: Service() {
             } catch (e : InterruptedIOException) {
                 onDownloadPaused(task)
             }
-            completeDownload(task.id!!)
+            completeDownload(task)
         }
 
         private fun onDownloadPaused(task: Task) {

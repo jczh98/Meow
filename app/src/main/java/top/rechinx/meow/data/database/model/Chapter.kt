@@ -16,7 +16,8 @@ data class Chapter(@ColumnInfo override var url: String?,
                    @PrimaryKey(autoGenerate = true) var id: Long = 0,
                    @ColumnInfo var manga_id: Long = 0,
                    @ColumnInfo var last_page_read: Int = 0,
-                   @ColumnInfo var download: Boolean = false) : SChapter, Parcelable {
+                   @ColumnInfo var download: Boolean = false,
+                   @ColumnInfo var complete: Boolean = false) : SChapter, Parcelable {
     constructor() : this(null, null, 0, null)
 
     @Ignore constructor(source: Parcel) : this(
@@ -26,7 +27,9 @@ data class Chapter(@ColumnInfo override var url: String?,
             source.readString(),
             source.readLong(),
             source.readLong(),
-            source.readInt()
+            source.readInt(),
+            1 == source.readInt(),
+            1 == source.readInt()
     )
 
     override fun describeContents() = 0
@@ -39,6 +42,8 @@ data class Chapter(@ColumnInfo override var url: String?,
         writeLong(id)
         writeLong(manga_id)
         writeInt(last_page_read)
+        writeInt(if(download) 1 else 0)
+        writeInt(if(complete) 1 else 0)
     }
 
     companion object {

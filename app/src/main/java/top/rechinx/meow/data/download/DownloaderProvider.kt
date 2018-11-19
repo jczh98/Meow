@@ -1,16 +1,22 @@
 package top.rechinx.meow.data.download
 
 import android.content.ContentResolver
+import android.net.Uri
 import com.hippo.unifile.UniFile
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import top.rechinx.meow.App
 import top.rechinx.meow.core.source.Source
+import top.rechinx.meow.core.source.model.MangaPage
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.database.model.Task
+import top.rechinx.meow.data.preference.getOrDefault
 import top.rechinx.meow.utils.DiskUtil
 import top.rechinx.meow.utils.UniFileUtils
+import io.reactivex.Observable
+import top.rechinx.meow.ui.reader.model.ReaderPage
 
 object DownloaderProvider {
 
@@ -100,6 +106,49 @@ object DownloaderProvider {
         }
 
         return null
+    }
+
+    fun buildReaderPages(source: Source, manga: Manga, chapter: Chapter, rootDirectory: String, resolver: ContentResolver) : Observable<List<ReaderPage>> {
+        val chapterDir = findChapterDir(getUniFileDirectory(rootDirectory),
+                chapter, manga, source)
+        return Observable.fromCallable {
+            val files = chapterDir?.listFiles().orEmpty()
+                    .filter { "image" in it.type.orEmpty() }
+            if (files.isEmpty()) {
+                throw Exception("Page list is empty")
+            }
+            files.sortedBy { it.name }
+                    .mapIndexed { i, file ->
+                        ReaderPage(i, "", null, {resolver.openInputStream(file.uri)} )
+                                .apply { status = MangaPage.READY }
+                        }
+        }
+    }
+
+    fun getUniFileDirectory(rootDirectory: String) : UniFile {
+        return UniFile.fromUri(App.instance, Uri.parse(rootDirectory))
+    }
+
+    fun findSourceDir(root: UniFile, source: Source): UniFile? {
+        return root.findFile(source.name)
+    }
+
+    fun findMangaDir(root: UniFile, manga: Manga, source: Source): UniFile? {
+        val sourceDir = findSourceDir(root, source)
+        return sourceDir?.findFile(getMangaDirName(manga))
+    }
+
+    fun findChapterDir(root: UniFile, chapter: Chapter, manga: Manga, source: Source): UniFile? {
+        val mangaDir = findMangaDir(root, manga, source)
+        return mangaDir?.findFile(getChapterDirName(chapter))
+    }
+
+    fun getMangaDirName(manga: Manga): String {
+        return DiskUtil.buildValidFilename(manga.title!!)
+    }
+
+    fun getChapterDirName(chapter: Chapter): String {
+        return DiskUtil.buildValidFilename(chapter.name!!)
     }
 
 }
