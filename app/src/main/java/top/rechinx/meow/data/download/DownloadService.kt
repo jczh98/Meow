@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
-import android.util.Pair
 import android.webkit.MimeTypeMap
 import androidx.collection.LongSparseArray
 import com.hippo.unifile.UniFile
@@ -75,7 +74,7 @@ class DownloadService: Service() {
     @Synchronized
     private fun addWorker(id: Long, worker: Worker, future: Future<*>) {
         if(workerArray[id] == null) {
-            workerArray.put(id, Pair.create(worker, future))
+            workerArray.put(id, Pair(worker, future))
         }
     }
 
@@ -120,7 +119,7 @@ class DownloadService: Service() {
             try {
                 // listen to parse relay
                 task.state = Task.STATE_PARSE
-                parseRelay.accept(task)
+                stateRelay.accept(Pair(EVENT_PARSE, task))
                 val list = source.fetchMangaPages(task.chapter!!)
                         .subscribeOn(Schedulers.trampoline())
                         .blockingFirst()
@@ -142,17 +141,17 @@ class DownloadService: Service() {
                                 }
                             }
                             if(!success) {
-                                errorRelay.accept(task)
+                                stateRelay.accept(Pair(EVENT_ERROR, task))
                             }
                         }
                         if(success) {
                             onDownloadProgress(list.size)
                         }
                     } else {
-                        errorRelay.accept(task)
+                        stateRelay.accept(Pair(EVENT_ERROR, task))
                     }
                 } else {
-                    errorRelay.accept(task)
+                    stateRelay.accept(Pair(EVENT_ERROR, task))
                 }
             } catch (e : InterruptedIOException) {
                 onDownloadPaused(task)
@@ -163,13 +162,13 @@ class DownloadService: Service() {
         private fun onDownloadPaused(task: Task) {
             task.state = Task.STATE_PAUSE
             taskDao.update(task)
-            pauseRelay.accept(task)
+            stateRelay.accept(Pair(EVENT_PAUSE, task))
         }
 
         private fun onDownloadProgress(progress: Int) {
             task.progress = progress
             taskDao.update(task)
-            progressRelay.accept(task)
+            stateRelay.accept(Pair(EVENT_PROCESS, task))
         }
 
         fun rootDirectory() : UniFile {
@@ -177,8 +176,7 @@ class DownloadService: Service() {
         }
 
         /**
-         * Returns the observable which gets the image from the filesystem if it exists or downloads it
-         * otherwise.
+         * Returns the existences of downloaded image from network or local filesystem
          *
          * @param page the page to download.
          * @param download the download of the page.
@@ -251,12 +249,15 @@ class DownloadService: Service() {
 
     companion object {
 
-        val runningRelay = BehaviorRelay.createDefault(false)
-        val progressRelay = PublishRelay.create<Task>()
-        val pauseRelay = PublishRelay.create<Task>()
-        val parseRelay = PublishRelay.create<Task>()
-        val errorRelay = PublishRelay.create<Task>()
+        const val EVENT_PROCESS = 1
+        const val EVENT_PAUSE = 2
+        const val EVENT_PARSE = 3
+        const val EVENT_ERROR = 4
 
+        val runningRelay = BehaviorRelay.createDefault(false)
+
+        val stateRelay = PublishRelay.create<Pair<Int, Task>>()
+        
         fun createIntent(context: Context, task: Task): Intent {
             return createIntent(context, arrayListOf(task))
         }

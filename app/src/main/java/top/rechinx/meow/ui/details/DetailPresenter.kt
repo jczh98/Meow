@@ -139,11 +139,10 @@ class DetailPresenter(val sourceId: Long, val url: String): BasePresenter<Detail
     private fun getTaskList(list: List<Chapter>): ArrayList<Task> {
         val result = ArrayList<Task>(list.size)
         for (chapter in list) {
-            val task = Task(null, -1, chapter.url!!, chapter.name!!, 0, 0)
+            val task = Task(0, -1, chapter.url!!, chapter.name!!, 0, 0)
             task.sourceId = manga!!.sourceId
             task.sourceName = source.name
             task.mangaName = manga!!.title
-            task.mangaUrl = manga!!.url
             task.state = Task.STATE_WAIT
             task.chapterId = chapter.id
             task.chapter = chapter
