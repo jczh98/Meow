@@ -35,6 +35,7 @@ class ChapterItem(val chapter: Chapter): AbstractFlexibleItem<ChapterItem.ViewHo
         fun bindTo(chapter: Chapter) {
             view.chapterButton.text = chapter.name!!
             view.chapterButton.isSelected = adapter.latestChapterId == chapter.id
+            view.chapterButton.setDownload(chapter.complete)
         }
     }
 

@@ -26,7 +26,7 @@ class ChapterButton @JvmOverloads constructor(context: Context, attrs: Attribute
         val typedArray = context.theme.obtainStyledAttributes(
                 attrs, R.styleable.ChapterButton, 0, 0)
         accentColor = typedArray.getColor(R.styleable.ChapterButton_selected_color, Color.BLACK)
-        normalColor = typedArray.getColor(R.styleable.ChapterButton_strokeColor, Color.BLACK)
+        normalColor = -0x76000000
         typedArray.recycle()
 
         isClickable = true
