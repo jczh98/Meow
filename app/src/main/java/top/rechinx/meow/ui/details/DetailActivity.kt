@@ -57,6 +57,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
             setSupportActionBar(Toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
+        supportActionBar?.title = getString(R.string.title_activity_detail)
         Toolbar?.setNavigationOnClickListener { finish() }
         chaptersRecyclerView.setHasFixedSize(false)
         adapter = DetailAdapter( this)

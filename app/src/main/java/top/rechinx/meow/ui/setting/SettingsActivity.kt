@@ -9,7 +9,7 @@ class SettingsActivity: BaseActivity() {
 
     override fun initToolbar() {
         super.initToolbar()
-        customToolbar?.title = getString(R.string.title_activity_settings)
+        supportActionBar?.title = getString(R.string.title_activity_settings)
     }
 
     override fun initViews() {

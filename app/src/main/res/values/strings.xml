@@ -74,4 +74,6 @@
     <string name="task_dowloading">Downloading</string>
     <string name="task_finish">Finished</string>
     <string name="task_error">Error</string>
+    <string name="title_activity_detail">Detail</string>
+    <string name="title_activity_task">Task</string>
 </resources>

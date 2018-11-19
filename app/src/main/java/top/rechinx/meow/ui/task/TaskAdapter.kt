@@ -9,8 +9,12 @@ import kotlinx.android.synthetic.main.item_task.view.*
 import top.rechinx.meow.R
 import top.rechinx.meow.data.database.model.Task
 import top.rechinx.meow.ui.base.BaseAdapter
+import top.rechinx.rikka.ext.gone
+import top.rechinx.rikka.ext.visible
 
 class TaskAdapter(context: Context, list: ArrayList<Task>) : BaseAdapter<Task>(context, list) {
+
+    private var latestChapterId: Long = 0
 
     override fun getItemDecoration(): RecyclerView.ItemDecoration? {
         return object : RecyclerView.ItemDecoration() {
@@ -34,6 +38,7 @@ class TaskAdapter(context: Context, list: ArrayList<Task>) : BaseAdapter<Task>(c
             page.text = "${task.progress}/${task.max}"
             progress.max = task.max
             progress.progress = task.progress
+            if(task.chapterId == latestChapterId) last.visible() else last.gone()
         }
     }
 
@@ -45,6 +50,20 @@ class TaskAdapter(context: Context, list: ArrayList<Task>) : BaseAdapter<Task>(c
             }
         }
         return -1
+    }
+
+    fun setLast(id: Long) {
+        if(id == latestChapterId) return
+        val tmp = latestChapterId
+        latestChapterId = id
+        for(i in 0 until itemCount) {
+            val item = datas[i]
+            if(item.chapterId == latestChapterId) {
+                notifyItemChanged(i)
+            } else if(item.chapterId == tmp) {
+                notifyItemChanged(i)
+            }
+        }
     }
 
     private fun getState(task: Task): Int {

@@ -14,6 +14,7 @@ import org.koin.android.ext.android.inject
 import top.rechinx.meow.R
 import top.rechinx.meow.data.database.dao.ChapterDao
 import top.rechinx.meow.data.database.model.Chapter
+import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.database.model.Task
 import top.rechinx.meow.data.download.DownloadService
 import top.rechinx.meow.global.Extras
@@ -43,6 +44,7 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
         // Toolbar
         setSupportActionBar(customToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.title_activity_task)
         customToolbar.setNavigationOnClickListener { finish() }
         // For recycler
         adapter = TaskAdapter(this, ArrayList())
@@ -74,10 +76,10 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
             Task.STATE_WAIT -> {
                 task.state = Task.STATE_PAUSE
                 adapter.notifyItemChanged(position)
-                binder.service.removeDownload(task.id!!)
+                binder.service.removeDownload(task.id)
             }
             Task.STATE_DOING, Task.STATE_PARSE -> {
-                binder.service.removeDownload(task.id!!)
+                binder.service.removeDownload(task.id)
             }
         }
     }
@@ -101,7 +103,7 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
     }
 
     fun onTaskProcess(task: Task) {
-        val pos = adapter.getPositionById(task.id!!)
+        val pos = adapter.getPositionById(task.id)
         if(pos != -1) {
             val item = adapter.getItem(pos)
             item.max = task.max
@@ -114,7 +116,7 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
     }
 
     fun onTaskPause(task: Task) {
-        val pos = adapter.getPositionById(task.id!!)
+        val pos = adapter.getPositionById(task.id)
         if(pos != -1) {
             adapter.getItem(pos).state = Task.STATE_PAUSE
             notifyItemChanged(pos)
@@ -122,7 +124,7 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
     }
 
     fun onTaskParse(task: Task) {
-        val position = adapter.getPositionById(task.id!!)
+        val position = adapter.getPositionById(task.id)
         if (position != -1) {
             val item = adapter.getItem(position)
             if (item.state != Task.STATE_PAUSE) {
@@ -133,7 +135,7 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
     }
 
     fun onTaskError(task: Task) {
-        val position = adapter.getPositionById(task.id!!)
+        val position = adapter.getPositionById(task.id)
         if (position != -1) {
             val item = adapter.getItem(position)
             if (item.state != Task.STATE_PAUSE) {
@@ -141,6 +143,11 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
                 notifyItemChanged(position)
             }
         }
+    }
+
+    fun setLastChanged(manga: Manga) {
+        presenter.manga?.last_read_chapter_id = manga.last_read_chapter_id
+        adapter.setLast(manga.last_read_chapter_id)
     }
 
     private fun startReader(chapter: Chapter, isContinued: Boolean = false) {

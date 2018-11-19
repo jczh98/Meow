@@ -1,7 +1,10 @@
 package top.rechinx.meow.ui.task
 
 import android.os.Bundle
+import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Action
+import io.reactivex.functions.Consumer
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import top.rechinx.meow.data.database.dao.MangaDao
@@ -10,6 +13,7 @@ import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.database.model.Task
 import top.rechinx.meow.data.download.DownloadService
 import top.rechinx.rikka.mvp.BasePresenter
+import top.rechinx.rikka.rxbus.RxBus
 
 class TaskPresenter : BasePresenter<TaskActivity>(), KoinComponent {
 
@@ -18,6 +22,8 @@ class TaskPresenter : BasePresenter<TaskActivity>(), KoinComponent {
     val mangaDao by inject<MangaDao>()
 
     var manga: Manga? = null
+
+    val rxbusRelay: PublishRelay<Manga> by lazy { PublishRelay.create<Manga>() }
 
     override fun onCreate(savedState: Bundle?) {
         super.onCreate(savedState)
@@ -31,6 +37,14 @@ class TaskPresenter : BasePresenter<TaskActivity>(), KoinComponent {
                         DownloadService.EVENT_ERROR -> view.onTaskError(task)
                     }
                 })
+        // Last updated chapters shows
+        rxbusRelay.observeOn(AndroidSchedulers.mainThread())
+                .subscribeReplay({ view, it ->
+                    view.setLastChanged(it)
+                })
+        add(RxBus.instance?.register(Manga::class.java, Consumer {
+            rxbusRelay.accept(it)
+        }, Consumer {}, Action {}, Consumer {}))
     }
 
     fun load(mangaId: Long) {
@@ -41,6 +55,9 @@ class TaskPresenter : BasePresenter<TaskActivity>(), KoinComponent {
                     updateTaskList(it)
                 }.observeOn(AndroidSchedulers.mainThread())
                 .subscribeFirst({ view, list ->
+                    if(manga != null) {
+                        view.setLastChanged(manga!!)
+                    }
                     view.onTaskLoadSuccess(list)
                 }, { view, error ->
                     view.onTaskLoadError(error)
