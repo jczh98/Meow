@@ -79,4 +79,6 @@
     <string name="label_delete">Delete</string>
     <string name="label_select_all">Select All</string>
     <string name="message_delete_success">Deleted success</string>
+    <string name="label_pause_all">Pause All</string>
+    <string name="label_play_all">Start All</string>
 </resources>

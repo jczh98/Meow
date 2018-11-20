@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_launch_white_24dp"
             app:layout_behavior="top.rechinx.meow.widget.ScrollAwareFABBehavior"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </FrameLayout>

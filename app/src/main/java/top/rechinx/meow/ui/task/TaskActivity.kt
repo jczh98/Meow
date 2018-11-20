@@ -6,7 +6,10 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_task.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
@@ -20,6 +23,7 @@ import top.rechinx.meow.data.download.DownloadService
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.base.BaseAdapter
+import top.rechinx.meow.ui.details.DetailActivity
 import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.rikka.mvp.MvpAppCompatActivity
 import top.rechinx.rikka.mvp.factory.RequiresPresenter
@@ -56,11 +60,61 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
         recycler.adapter = adapter
         // Init datas
         presenter.load(mangaId)
+        // Fab init
+        fab.setOnClickListener {
+            startActivity(DetailActivity.createIntent(this@TaskActivity, presenter.manga!!.sourceId, presenter.manga!!.url!!))
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_task, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.action_pause_all -> switchAll(false)
+            R.id.action_play_all -> switchAll(true)
+        }
+        return true
+    }
+
+    /**
+     * switch all downloading/pausing tasks to opposite state
+     *
+     * @param enable false for downloading switch to pause, true for pausing switch to downloading
+     */
+    private fun switchAll(enable: Boolean) {
+        for(position in 0 until adapter.itemCount) {
+            val task = adapter.getItem(position)
+            when(task.state) {
+                Task.STATE_DOING, Task.STATE_PARSE -> {
+                    if(!enable) {
+                        binder.service.removeDownload(task.id)
+                    }
+                }
+                Task.STATE_WAIT -> {
+                    if(!enable) {
+                        task.state = Task.STATE_PAUSE
+                        adapter.notifyItemChanged(position)
+                        binder.service.removeDownload(task.id)
+                    }
+                }
+                Task.STATE_PAUSE, Task.STATE_ERROR -> {
+                    if(enable) {
+                        task.chapter = chapterDao.getChapter(task.chapterId)
+                        task.state = Task.STATE_WAIT
+                        adapter.notifyItemChanged(position)
+                        val taskIntent = DownloadService.createIntent(this, task)
+                        startService(taskIntent)
+                    }
+                }
+            }
+        }
     }
 
     override fun onItemClick(view: View, position: Int) {
         val task = adapter.getItem(position)
-        L.d(task.state.toString())
         when(task.state) {
             Task.STATE_FINISH -> {
                 val chapter = chapterDao.getChapter(task.chapterId)
