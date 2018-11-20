@@ -125,6 +125,11 @@ object DownloadProvider {
         }
     }
 
+    fun deleteMangaDirectory(rootDirectory: String, manga: Manga, source: Source) {
+        val dir = findMangaDir(getUniFileDirectory(rootDirectory), manga, source)
+        dir?.delete()
+    }
+
     fun getUniFileDirectory(rootDirectory: String) : UniFile {
         return UniFile.fromUri(App.instance, Uri.parse(rootDirectory))
     }

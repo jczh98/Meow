@@ -1,9 +1,6 @@
 package top.rechinx.meow.data.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -23,4 +20,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM Task WHERE mangaId = :mangaId")
     fun listInRx(mangaId: Long) : Maybe<List<Task>>
+
+    @Query("DELETE FROM Task WHERE mangaId = :mangaId")
+    fun deleteByMangaId(mangaId: Long)
 }

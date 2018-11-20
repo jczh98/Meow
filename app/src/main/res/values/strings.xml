@@ -76,4 +76,7 @@
     <string name="task_error">Error</string>
     <string name="title_activity_detail">Detail</string>
     <string name="title_activity_task">Task</string>
+    <string name="label_delete">Delete</string>
+    <string name="label_select_all">Select All</string>
+    <string name="message_delete_success">Deleted success</string>
 </resources>

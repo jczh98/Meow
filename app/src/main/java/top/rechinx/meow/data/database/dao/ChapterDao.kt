@@ -29,4 +29,7 @@ interface ChapterDao {
 
     @Update
     fun updateChapter(chapter: Chapter)
+
+    @Query("UPDATE Chapter SET download = 0, complete = 0 WHERE manga_id = :mangaId")
+    fun updateChapterDownloadInfoByMangaId(mangaId: Long)
 }
