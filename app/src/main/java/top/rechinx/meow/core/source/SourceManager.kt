@@ -2,7 +2,6 @@ package top.rechinx.meow.core.source
 
 import android.content.Context
 import top.rechinx.meow.core.source.internal.Dmzj
-import top.rechinx.meow.core.source.internal.Shuhui
 import top.rechinx.meow.core.source.internal.ehentai.EHentai
 
 class SourceManager(private val context: Context) {
@@ -27,8 +26,8 @@ class SourceManager(private val context: Context) {
 
     fun getSources() = sourcesMap.values
 
-    fun registerSource(source: Source) {
-        if(!sourcesMap.containsKey(source.id)) {
+    fun registerSource(source: Source, overwrite: Boolean = false) {
+        if(overwrite || !sourcesMap.containsKey(source.id)) {
             sourcesMap[source.id] = source
         }
     }
@@ -39,7 +38,7 @@ class SourceManager(private val context: Context) {
 
     private fun createInternalSources(): List<Source> = listOf(
             Dmzj(),
-            Shuhui(),
+            //Shuhui(),
             EHentai()
     )
 }

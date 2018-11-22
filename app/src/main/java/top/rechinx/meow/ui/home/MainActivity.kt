@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
 import top.rechinx.meow.ui.about.AboutActivity
 import top.rechinx.meow.ui.base.BaseActivity
+import top.rechinx.meow.ui.extension.ExtensionFragment
 import top.rechinx.meow.ui.grid.history.HistoryFragment
 import top.rechinx.meow.ui.result.ResultActivity
 import top.rechinx.meow.ui.setting.SettingsActivity
@@ -67,6 +68,10 @@ class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             }
             R.id.drawer_source -> {
                 supportFragmentManager.beginTransaction().replace(R.id.containerFragment, SourceFragment()).commit()
+                customToolbar?.title = item.title
+            }
+            R.id.drawer_extension -> {
+                supportFragmentManager.beginTransaction().replace(R.id.containerFragment, ExtensionFragment()).commit()
                 customToolbar?.title = item.title
             }
             R.id.drawer_history -> {

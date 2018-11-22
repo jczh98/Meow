@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_widgets_black_24dp"
             android:title="@string/drawer_source"/>
         <item
+            android:id="@+id/drawer_extension"
+            android:icon="@drawable/ic_extension_black_24dp"
+            android:title="@string/drawer_extension"/>
+        <item
             android:id="@+id/drawer_history"
             android:icon="@drawable/ic_history_black_24dp"
             android:title="@string/drawer_history"/>

@@ -2,6 +2,7 @@ package top.rechinx.meow.di
 
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module.module
+import top.rechinx.meow.core.extension.ExtensionManager
 import top.rechinx.meow.core.network.NetworkHelper
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.cache.ChapterCache
@@ -16,6 +17,7 @@ object AppModule {
         single { PreferenceHelper(androidApplication())}
         single { ChapterCache(androidApplication()) }
         single { CoverCache(androidApplication()) }
+        single { ExtensionManager(androidApplication(), get()) }
     }
 
 }
