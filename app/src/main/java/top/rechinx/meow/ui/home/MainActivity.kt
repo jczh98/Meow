@@ -2,37 +2,49 @@ package top.rechinx.meow.ui.home
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
-import com.google.android.material.navigation.NavigationView
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.miguelcatalan.materialsearchview.MaterialSearchView
-import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
-import top.rechinx.meow.ui.about.AboutActivity
+import top.rechinx.meow.ui.about.AboutFragment
 import top.rechinx.meow.ui.base.BaseActivity
-import top.rechinx.meow.ui.extension.ExtensionFragment
-import top.rechinx.meow.ui.grid.history.HistoryFragment
 import top.rechinx.meow.ui.result.ResultActivity
-import top.rechinx.meow.ui.setting.SettingsActivity
 import top.rechinx.meow.ui.source.SourceFragment
 
-class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListener, MaterialSearchView.OnQueryTextListener {
+class MainActivity: BaseActivity(), MaterialSearchView.OnQueryTextListener, BottomNavigationView.OnNavigationItemSelectedListener {
+
+    // Instance all fragments
+    private var homeFragment = HomeFragment()
+    private var sourceFragment = SourceFragment()
+    private var aboutFragment = AboutFragment()
 
     override fun initViews() {
-        supportFragmentManager.beginTransaction().replace(R.id.containerFragment, HomeFragment()).commit()
-        navigationView.setCheckedItem(R.id.drawer_main)
-        initDrawer()
+        bottomNavigation.setOnNavigationItemSelectedListener(this)
         searchView.setOnQueryTextListener(this)
         requestStoragePermission(0)
+        // Init fragments
+        supportFragmentManager.beginTransaction()
+                .add(R.id.containerFragment, homeFragment)
+                .add(R.id.containerFragment, sourceFragment)
+                .add(R.id.containerFragment, aboutFragment)
+                .show(homeFragment)
+                .hide(sourceFragment)
+                .hide(aboutFragment)
+                .commit()
+        bottomNavigation.selectedItemId = R.id.drawer_main
+
+    }
+
+    override fun initToolbar() {
+        setSupportActionBar(customToolbar)
+        supportActionBar?.setHomeButtonEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     fun requestStoragePermission(requestCode: Int) {
@@ -51,44 +63,42 @@ class MainActivity: BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         ActivityCompat.requestPermissions(this, permissions, code)
     }
 
-    private fun initDrawer() {
-        val drawerToggle = ActionBarDrawerToggle(this, drawerLayout, customToolbar, 0, 0)
-        drawerToggle.syncState()
-        drawerLayout.addDrawerListener(drawerToggle)
-        navigationView.setNavigationItemSelectedListener(this)
-    }
 
     override fun getLayoutId(): Int = R.layout.activity_home
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.drawer_main -> {
-                supportFragmentManager.beginTransaction().replace(R.id.containerFragment, HomeFragment()).commit()
+                supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .hide(sourceFragment)
+                        .hide(aboutFragment)
+                        .show(homeFragment)
+                        .commit()
                 customToolbar?.title = getString(R.string.app_name)
             }
             R.id.drawer_source -> {
-                supportFragmentManager.beginTransaction().replace(R.id.containerFragment, SourceFragment()).commit()
-                customToolbar?.title = item.title
-            }
-            R.id.drawer_extension -> {
-                supportFragmentManager.beginTransaction().replace(R.id.containerFragment, ExtensionFragment()).commit()
-                customToolbar?.title = item.title
-            }
-            R.id.drawer_history -> {
-                supportFragmentManager.beginTransaction().replace(R.id.containerFragment, HistoryFragment()).commit()
+                supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .hide(homeFragment)
+                        .hide(aboutFragment)
+                        .show(sourceFragment)
+                        .commit()
                 customToolbar?.title = item.title
             }
             R.id.drawer_about -> {
-                startActivity(AboutActivity.createIntent(this))
-            }
-            R.id.drawer_settings -> {
-                var intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
+                supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                        .hide(homeFragment)
+                        .hide(sourceFragment)
+                        .show(aboutFragment)
+                        .commit()
+                customToolbar?.title = item.title
             }
         }
-        drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
 
     override fun onQueryTextSubmit(query: String): Boolean {
         if (query.isEmpty()) {

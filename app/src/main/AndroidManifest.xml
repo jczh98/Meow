@@ -26,7 +26,6 @@
         <activity android:name=".ui.result.ResultActivity" />
         <activity android:name=".ui.details.DetailActivity" />
         <activity android:name=".ui.reader.ReaderActivity" />
-        <activity android:name=".ui.about.AboutActivity" />
         <activity android:name=".ui.setting.SettingsActivity" />
         <activity android:name=".ui.filter.FilterActivity" />
         <activity android:name=".ui.details.chapters.ChaptersActivity" />

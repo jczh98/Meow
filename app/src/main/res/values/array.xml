@@ -16,4 +16,9 @@
         <item>@string/right_to_left_viewer</item>
         <item>@string/webtoon_viewer</item>
     </string-array>
+    <string-array name="home_tabs">
+        <item>@string/favorite</item>
+        <item>@string/drawer_history</item>
+        <item>@string/download</item>
+    </string-array>
 </resources>
