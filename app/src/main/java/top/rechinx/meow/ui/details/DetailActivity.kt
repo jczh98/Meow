@@ -4,9 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.scwang.smartrefresh.header.MaterialHeader
@@ -22,6 +27,7 @@ import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.ui.details.chapters.ChaptersActivity
 import top.rechinx.meow.ui.details.items.ChapterItem
+import top.rechinx.meow.ui.details.items.HeaderItem
 import top.rechinx.meow.ui.details.items.LoadItem
 import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.rikka.ext.gone
@@ -41,6 +47,10 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
 
     private var loadItem: LoadItem? = null
 
+    private var headerItem: HeaderItem? = null
+
+    private var toolbarMenu: Menu? = null
+
     override fun createPresenter(): DetailPresenter {
         return DetailPresenter(sourceId, url)
     }
@@ -53,13 +63,20 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
     }
 
     fun initViews() {
-        if(Toolbar != null) {
-            setSupportActionBar(Toolbar)
+        if(toolbar != null) {
+            setSupportActionBar(toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
         supportActionBar?.title = getString(R.string.title_activity_detail)
-        Toolbar?.setNavigationOnClickListener { finish() }
-        chaptersRecyclerView.setHasFixedSize(false)
+        toolbar?.setNavigationOnClickListener { finish() }
+        chaptersRecyclerView.setHasFixedSize(true)
+        val layoutManager = GridLayoutManager(this, 4)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (adapter?.getItem(position) is ChapterItem || adapter?.getItem(position) is LoadItem) 1 else 4
+            }
+        }
+        chaptersRecyclerView.layoutManager = layoutManager
         adapter = DetailAdapter( this)
         adapter?.onLoadMoreListener = object : DetailAdapter.OnLoadMoreListener {
             override fun onLoadMore() {
@@ -72,14 +89,6 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
             }
         }
         chaptersRecyclerView.adapter = adapter
-        // Refresh layout setup
-        detailRefreshLayout.setRefreshHeader(MaterialHeader(this))
-        detailRefreshLayout.setOnRefreshListener {
-            chaptersProgressBar.visible()
-            chaptersRecyclerView.gone()
-            adapter?.clear()
-            presenter.restartPager()
-        }
         fab.setOnClickListener {
             if(presenter.manga?.last_read_chapter_id != -1L) {
                 for(index in 0 until adapter?.itemCount!!) {
@@ -93,26 +102,35 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
                 (it as FloatingActionButton).setImageResource(R.drawable.ic_continue_read_white_24dp)
             }
         }
-        bottomAppBar.setOnMenuItemClickListener {
-            when(it.itemId) {
-                R.id.action_favorite -> {
-                    if(presenter.manga != null) {
-                        presenter.favoriteOrNot()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.bottombar_menu_with_unfavorite, menu)
+        toolbarMenu = menu
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.action_favorite -> {
+                if(presenter.manga != null) {
+                    presenter.favoriteOrNot()
+                    if(toolbarMenu != null) {
+                        val item = toolbarMenu!!.findItem(R.id.action_favorite)
                         if (presenter.manga!!.favorite)  {
-                            bottomAppBar.replaceMenu(R.menu.bottombar_menu_with_unfavorite)
+                            item.setIcon(R.drawable.ic_favorite_white_24dp)
                         } else {
-                            bottomAppBar.replaceMenu(R.menu.bottombar_menu_with_favorite)
+                            item.setIcon(R.drawable.ic_favorite_border_white_24dp)
                         }
-                        //presenter.manga!!.favorite = !presenter.manga!!.favorite
                     }
                 }
-                R.id.action_download -> {
-                    val intent = ChaptersActivity.createIntent(this@DetailActivity, adapter!!.getChapters())
-                    startActivityForResult(intent, REQUEST_CODE_DOWNLOAD)
-                }
             }
-            return@setOnMenuItemClickListener true
+            R.id.action_download -> {
+                val intent = ChaptersActivity.createIntent(this@DetailActivity, adapter!!.getChapters())
+                startActivityForResult(intent, REQUEST_CODE_DOWNLOAD)
+            }
         }
+        return true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -126,48 +144,29 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
             }
         }
     }
-    private fun hideProgressBar() {
-        chaptersProgressBar.gone()
-        chaptersRecyclerView.visible()
-    }
 
     fun onMangaLoadCompleted(manga: Manga) {
-        finishRefreshLayout()
         setManga(manga)
         presenter.restartPager()
     }
 
     private fun setManga(manga: Manga) {
-        mangaInfoTitle.text = manga.title
-        Glide.with(this).load(manga).into(mangaInfoCover)
+        presenter.manga = manga
+        headerItem = HeaderItem(manga, this)
         Glide.with(this).load(manga).into(mangaBackCover)
-        mangaInfoAuthor.text = manga.author
-        var statusString = ""
-        when(manga.status) {
-            SManga.ONGOING -> statusString += getString(R.string.string_manga_statu_ongoing)
-            SManga.COMPLETED -> statusString += getString(R.string.string_manga_statu_completed)
-            SManga.UNKNOWN -> statusString += getString(R.string.string_manga_statu_unknown)
-        }
-        mangaInfoStatus.text = statusString
-        mangaInfoDescription.text = manga.description
-        if(manga.genre != null && manga.genre!!.isNotBlank()) mangaGenresTags.setTags(manga.genre?.split(", "))
-        // set favorite
-        if (manga.favorite)  {
-            bottomAppBar.replaceMenu(R.menu.bottombar_menu_with_unfavorite)
-        } else {
-            bottomAppBar.replaceMenu(R.menu.bottombar_menu_with_favorite)
+        if(toolbarMenu != null) {
+            val item = toolbarMenu!!.findItem(R.id.action_favorite)
+            if (manga.favorite)  {
+                item.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite_white_24dp)
+            } else {
+                item.icon = ContextCompat.getDrawable(this, R.drawable.ic_favorite_border_white_24dp)
+            }
         }
         setFAB(manga)
     }
 
     private fun setMangaLastUpdated(manga: Manga) {
-        var updateLabel = ""
-        updateLabel += if(manga.last_update != 0L) {
-            DateFormat.getDateInstance(DateFormat.SHORT).format(Date(manga.last_update))
-        } else {
-            getString(R.string.unknown)
-        }
-        mangaInfoUpdated.text = updateLabel
+        adapter?.setMangaLastUpdated(manga)
     }
 
     private fun setFAB(manga: Manga) {
@@ -175,18 +174,12 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
     }
 
     fun onMangaFetchError() {
-        finishRefreshLayout()
-        hideProgressBar()
         showSnackbar(R.string.snackbar_result_empty)
     }
 
-    private fun finishRefreshLayout() {
-        detailRefreshLayout.finishRefresh()
-    }
 
     private fun showSnackbar(resId: Int) {
-        Snackbar.make(detailRefreshLayout, getString(resId), Snackbar.LENGTH_SHORT)
-                .apply {view.layoutParams = (view.layoutParams as ViewGroup.MarginLayoutParams).apply {setMargins(leftMargin, topMargin, rightMargin, bottomAppBar.height + fab.height)}}
+        Snackbar.make(detailRootView, getString(resId), Snackbar.LENGTH_SHORT)
                 .show()
     }
 
@@ -222,14 +215,14 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         val manga = presenter.manga ?: return
         loadItem?.status = LoadItem.IDLE
         manga.last_update = chapters.maxBy { it.chapter.date_updated }?.chapter?.date_updated ?: 0L
-        setMangaLastUpdated(manga)
-        finishRefreshLayout()
-        hideProgressBar()
         if(page == 1) {
             adapter.clear()
             resetLoadItem()
+            adapter.onLoadMoreComplete(listOf(headerItem) + chapters)
+        } else {
+            adapter.onLoadMoreComplete(chapters)
         }
-        adapter.onLoadMoreComplete(chapters)
+        setMangaLastUpdated(manga)
     }
 
     private fun resetLoadItem() {
@@ -254,15 +247,12 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
     }
 
     fun onAddPageError(throwable: Throwable) {
-        finishRefreshLayout()
-        chaptersProgressBar.gone()
         adapter?.onLoadMoreComplete(null)
         adapter?.endlessTargetCount = 1
         if(throwable is NoMoreResultException) {
             showSnackbar(R.string.snackbar_result_empty)
         } else {
             chaptersRecyclerView.gone()
-            emptyChapters.visible()
             showSnackbar(R.string.snackbar_result_empty)
         }
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="top.rechinx.meow">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,9 +14,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeBlue">
+        android:theme="@style/AppThemeBlue"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.home.MainActivity">
             <intent-filter>
             <action android:name="android.intent.action.MAIN" />

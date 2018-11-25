@@ -21,6 +21,7 @@ class LoadItem: AbstractFlexibleItem<LoadItem.ViewHolder>() {
 
     override fun bindViewHolder(adapter: FlexibleAdapter<IFlexible<RecyclerView.ViewHolder>>, holder: LoadItem.ViewHolder, position: Int, payloads: MutableList<Any>?) {
         holder.itemView.apply {
+            loadButton.setLoadColor()
             if (status == IDLE) {
                 loadButton.visible()
                 loadButton.setOnClickListener { (adapter as DetailAdapter).onLoadMoreListener.onLoadMore() }

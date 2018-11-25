@@ -32,7 +32,7 @@
     <string name="title_search_filter">搜索过滤</string>
     <string name="detail_empty_chapter">当前没有章节</string>
     <string name="detail_chapters">章节</string>
-    <string name="detail_manga_information">信息</string>
+    <string name="detail_manga_information">作品简介</string>
     <string name="detail_manga_info_status">状态</string>
     <string name="detail_manga_info_date_loading">加载中</string>
     <string name="detail_manga_info_date_updated">更新时间</string>

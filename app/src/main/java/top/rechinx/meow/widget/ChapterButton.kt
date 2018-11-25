@@ -17,6 +17,7 @@ class ChapterButton @JvmOverloads constructor(context: Context, attrs: Attribute
     private var normalColor: Int = 0
     private var accentColor: Int = 0
     private var download: Boolean = false
+    private var loadColor: Int = 0
 
     init {
         init(context, attrs)
@@ -26,6 +27,7 @@ class ChapterButton @JvmOverloads constructor(context: Context, attrs: Attribute
         val typedArray = context.theme.obtainStyledAttributes(
                 attrs, R.styleable.ChapterButton, 0, 0)
         accentColor = typedArray.getColor(R.styleable.ChapterButton_selected_color, Color.BLACK)
+        loadColor = typedArray.getColor(R.styleable.ChapterButton_strokeColor, Color.BLACK)
         normalColor = -0x76000000
         typedArray.recycle()
 
@@ -65,6 +67,15 @@ class ChapterButton @JvmOverloads constructor(context: Context, attrs: Attribute
             initColorDrawableState()
             initDrawableState()
         }
+    }
+
+    fun setLoadColor() {
+        val normalDrawable = GradientDrawable()
+        normalDrawable.setStroke(Utility.dpToPixel(1f, context).toInt(), loadColor)
+        normalDrawable.cornerRadius = Utility.dpToPixel(18f, context)
+        normalDrawable.setColor(loadColor)
+        setBackgroundDrawable(normalDrawable)
+        setTextColor(Color.WHITE)
     }
 
     companion object {

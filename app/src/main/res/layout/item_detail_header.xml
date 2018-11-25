@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/mangaInfoCover"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                tools:src="@mipmap/ic_launcher"
+                tools:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/mangaInfoTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/mangaInfoCover"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:paddingTop="16dp"
+                tools:text="Title"/>
+
+            <TextView
+                android:id="@+id/mangaInfoAuthorLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mangaInfoTitle"
+                android:layout_toRightOf="@id/mangaInfoCover"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingTop="16dp"
+                android:text="@string/detail_manga_info_author"
+                android:textColor="@color/trans_light_black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/mangaInfoAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mangaInfoTitle"
+                android:layout_toRightOf="@id/mangaInfoAuthorLabel"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:textColor="@color/trans_light_black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/mangaInfoUpdatedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mangaInfoAuthorLabel"
+                android:layout_toRightOf="@id/mangaInfoCover"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingTop="16dp"
+                android:text="@string/detail_manga_info_date_updated"
+                android:textColor="@color/trans_light_black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/mangaInfoUpdated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mangaInfoAuthorLabel"
+                android:layout_toRightOf="@id/mangaInfoUpdatedLabel"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:text="@string/detail_manga_info_date_loading"
+                android:textColor="@color/trans_light_black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/mangaInfoStatusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mangaInfoUpdatedLabel"
+                android:layout_toRightOf="@id/mangaInfoCover"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingTop="16dp"
+                android:text="@string/detail_manga_info_status"
+                android:textColor="@color/trans_light_black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/mangaInfoStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mangaInfoUpdatedLabel"
+                android:layout_toRightOf="@id/mangaInfoStatusLabel"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:textColor="@color/trans_light_black"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/detail_manga_information"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/mangaInfoDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:paddingTop="8dp"
+                android:textColor="@color/trans_light_black"
+                android:textSize="14sp" />
+
+            <me.gujun.android.taggroup.TagGroup
+                android:id="@+id/mangaGenresTags"
+                style="@style/TagGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                app:atg_backgroundColor="@android:color/transparent"
+                app:atg_borderColor="@color/colorPrimary"
+                app:atg_borderStrokeWidth="1dp"
+                app:atg_textColor="@color/colorPrimary" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/detail_chapters"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp" />
+</LinearLayout>

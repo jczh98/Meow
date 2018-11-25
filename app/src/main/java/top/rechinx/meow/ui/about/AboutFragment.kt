@@ -1,16 +1,11 @@
 package top.rechinx.meow.ui.about
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.activity_about.*
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.custom_toolbar.*
+import kotlinx.android.synthetic.main.fragment_about.*
 import top.rechinx.meow.R
-import top.rechinx.meow.ui.base.BaseActivity
-import top.rechinx.meow.ui.base.BaseFragment
 import top.rechinx.meow.ui.setting.SettingsActivity
 
 class AboutFragment: Fragment() {
@@ -19,7 +14,7 @@ class AboutFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.activity_about, container, false)
+        return inflater.inflate(R.layout.fragment_about, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
