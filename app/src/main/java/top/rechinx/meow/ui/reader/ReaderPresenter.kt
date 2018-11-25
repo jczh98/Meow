@@ -1,5 +1,6 @@
 package top.rechinx.meow.ui.reader
 
+import android.os.Bundle
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -180,6 +181,30 @@ class ReaderPresenter : BasePresenter<ReaderActivity>(), KoinComponent{
             currentChapters.unref()
             saveChapterProgress(currentChapters.currChapter)
             saveChapterHistory(currentChapters.currChapter)
+        }
+    }
+
+    /**
+     * Called when the presenter is created. It retrieves the saved active chapter if the process
+     * was restored.
+     */
+    override fun onCreate(savedState: Bundle?) {
+        super.onCreate(savedState)
+        if (savedState != null) {
+            chapterId = savedState.getLong(::chapterId.name, -1)
+        }
+    }
+
+    /**
+     * Called when the presenter instance is being saved. It saves the currently active chapter
+     * id and the last page read.
+     */
+    override fun onSave(state: Bundle?) {
+        super.onSave(state)
+        val currentChapter = getCurrentChapter()
+        if (currentChapter != null) {
+            currentChapter.requestedPage = currentChapter.chapter.last_page_read
+            state?.putLong(::chapterId.name, currentChapter.chapter.id)
         }
     }
 
