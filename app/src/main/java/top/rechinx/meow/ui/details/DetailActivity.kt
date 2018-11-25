@@ -8,18 +8,13 @@ import android.view.Menu
 import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import android.view.View
-import android.view.ViewGroup
-import android.widget.GridLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.scwang.smartrefresh.header.MaterialHeader
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.item_task.*
 import top.rechinx.meow.R
-import top.rechinx.meow.core.source.model.SManga
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.database.model.Task
@@ -32,10 +27,7 @@ import top.rechinx.meow.ui.details.items.HeaderItem
 import top.rechinx.meow.ui.details.items.LoadItem
 import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.rikka.ext.gone
-import top.rechinx.rikka.ext.visible
 import top.rechinx.rikka.mvp.MvpAppCompatActivityWithoutReflection
-import java.text.DateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
@@ -108,7 +100,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.bottombar_menu_with_unfavorite, menu)
+        menuInflater.inflate(R.menu.menu_detail, menu)
         toolbarMenu = menu
         return super.onCreateOptionsMenu(menu)
     }
