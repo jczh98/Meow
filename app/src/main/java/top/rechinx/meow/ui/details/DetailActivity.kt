@@ -17,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.scwang.smartrefresh.header.MaterialHeader
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.item_task.*
 import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.SManga
 import top.rechinx.meow.data.database.model.Chapter
@@ -92,9 +93,11 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         fab.setOnClickListener {
             if(presenter.manga?.last_read_chapter_id != -1L) {
                 for(index in 0 until adapter?.itemCount!!) {
-                    val chapterItem = adapter?.getItem(index) as ChapterItem
-                    if(chapterItem.chapter.id == presenter.manga?.last_read_chapter_id ) {
-                        startReader(chapterItem.chapter, true)
+                    val item = adapter?.getItem(index)
+                    if(item is ChapterItem) {
+                        if(item.chapter.id == presenter.manga?.last_read_chapter_id ) {
+                            startReader(item.chapter, true)
+                        }
                     }
                 }
             } else {
@@ -194,8 +197,13 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
     private fun startReader(position: Int, isContinued: Boolean = false) {
         val adapter = adapter ?: return
         if(position == -1) {
-            val chapterItem = adapter.getItem(adapter.itemCount - 1) as ChapterItem
-            startReader(chapterItem.chapter)
+            val lastItem = adapter.getItem(adapter.itemCount - 1)
+            if(lastItem is LoadItem) {
+                val chapterItem = adapter.getItem(adapter.itemCount - 2) as ChapterItem
+                startReader(chapterItem.chapter)
+            } else {
+                startReader((lastItem as ChapterItem).chapter)
+            }
         } else {
             val chapterItem = adapter.getItem(position) as ChapterItem
             startReader(chapterItem.chapter)
