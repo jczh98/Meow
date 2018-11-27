@@ -2,6 +2,7 @@ package top.rechinx.meow.ui.filter
 
 import android.os.Bundle
 import eu.davidea.flexibleadapter.items.IFlexible
+import eu.davidea.flexibleadapter.items.ISectionable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -15,9 +16,7 @@ import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.repository.CataloguePager
 import top.rechinx.meow.support.log.L
-import top.rechinx.meow.ui.filter.items.CatalogueItem
-import top.rechinx.meow.ui.filter.items.HeaderItem
-import top.rechinx.meow.ui.filter.items.SelectItem
+import top.rechinx.meow.ui.filter.items.*
 import top.rechinx.rikka.mvp.BasePresenter
 
 class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComponent {
@@ -88,19 +87,34 @@ class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComp
         return mapNotNull {
             when (it) {
                 is Filter.Header -> HeaderItem(it)
+                is Filter.Separator -> SeparatorItem(it)
+                is Filter.CheckBox -> CheckboxItem(it)
+                is Filter.TriState -> TriStateItem(it)
+                is Filter.Text -> TextItem(it)
                 is Filter.Select<*> -> SelectItem(it)
-//                is Filter.Group<*> -> {
-//                    val group = GroupItem(it)
-//                    val subItems = it.state.mapNotNull {
-//                        when (it) {
-//                            is Filter.Select<*> -> SelectSectionItem(it)
-//                            else -> null
-//                        } as? ISectionable<*, *>
-//                    }
-//                    subItems.forEach { it.header = group }
-//                    group.subItems = subItems
-//                    group
-//                }
+                is Filter.Group<*> -> {
+                    val group = GroupItem(it)
+                    val subItems = it.state.mapNotNull {
+                        when (it) {
+                            is Filter.CheckBox -> CheckboxSectionItem(it)
+                            is Filter.TriState -> TriStateSectionItem(it)
+                            is Filter.Text -> TextSectionItem(it)
+                            is Filter.Select<*> -> SelectSectionItem(it)
+                            else -> null
+                        } as? ISectionable<*, *>
+                    }
+                    subItems.forEach { it.header = group }
+                    group.subItems = subItems
+                    group
+                }
+                is Filter.Sort -> {
+                    val group = SortGroup(it)
+                    val subItems = it.values.map {
+                        SortItem(it, group)
+                    }
+                    group.subItems = subItems
+                    group
+                }
             }
         }
     }

@@ -14,4 +14,5 @@
     <color name="md_red_500">#F44336</color>
     <color name="rippleColorLight">#1F000000</color>
     <color name="dialogLight">#FFFFFFFF</color>
+    <color name="textColorPrimaryDark">#FFFFFFFF</color>
 </resources>

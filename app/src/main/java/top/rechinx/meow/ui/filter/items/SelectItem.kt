@@ -14,7 +14,7 @@ import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.Filter
 import top.rechinx.meow.support.log.L
 
-class SelectItem(val filter: Filter.Select<*>) : AbstractFlexibleItem<SelectItem.Holder>() {
+open class SelectItem(val filter: Filter.Select<*>) : AbstractFlexibleItem<SelectItem.Holder>() {
 
     override fun getLayoutRes(): Int {
         return R.layout.item_navigation_spinner

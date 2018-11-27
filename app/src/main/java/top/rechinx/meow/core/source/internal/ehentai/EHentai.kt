@@ -18,31 +18,29 @@ import java.net.URLEncoder
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class EHentai: HttpSource() {
+class EHentai : HttpSource() {
 
     override val baseUrl: String
         get() = "https://e-hentai.org"
 
-    fun GET(url: String, page: Int? = null, additionalHeaders: Headers? = null, cache: Boolean = true)
-        = Request.Builder()
-                .url(page?.let {
-                    addParam(url, "page", (it - 1).toString())
-                } ?: url)
-                .headers(additionalHeaders?.let {
-                    val headers = headers.newBuilder()
-                    it.toMultimap().forEach { (t, u) ->
-                        u.forEach {
-                            headers.add(t, it)
-                        }
+    fun GET(url: String, page: Int? = null, additionalHeaders: Headers? = null, cache: Boolean = true) = Request.Builder()
+            .url(page?.let {
+                addParam(url, "page", (it - 1).toString())
+            } ?: url)
+            .headers(additionalHeaders?.let {
+                val headers = headers.newBuilder()
+                it.toMultimap().forEach { (t, u) ->
+                    u.forEach {
+                        headers.add(t, it)
                     }
-                    headers.build()
-                } ?: headers)
-                .cacheControl(if (!cache) CacheControl.FORCE_NETWORK else CacheControl.Builder().maxAge(10, TimeUnit.MINUTES).build())
-                .build()
+                }
+                headers.build()
+            } ?: headers)
+            .cacheControl(if (!cache) CacheControl.FORCE_NETWORK else CacheControl.Builder().maxAge(10, TimeUnit.MINUTES).build())
+            .build()
 
 
-    fun addParam(url: String, param: String, value: String)
-            = Uri.parse(url)
+    fun addParam(url: String, param: String, value: String) = Uri.parse(url)
             .buildUpon()
             .appendQueryParameter(param, value)
             .toString()
@@ -77,17 +75,14 @@ class EHentai: HttpSource() {
         buildCookies(cookies)
     }
 
-    fun buildSettings(settings: List<String?>)
-            = settings.filterNotNull().joinToString(separator = "-")
+    fun buildSettings(settings: List<String?>) = settings.filterNotNull().joinToString(separator = "-")
 
-    fun buildCookies(cookies: Map<String, String>)
-            = cookies.entries.map {
+    fun buildCookies(cookies: Map<String, String>) = cookies.entries.map {
         "${URLEncoder.encode(it.key, "UTF-8")}=${URLEncoder.encode(it.value, "UTF-8")}"
     }.joinToString(separator = "; ", postfix = ";")
 
 
-    fun commonMangaParse(doc: Document)
-            = with(doc) {
+    fun commonMangaParse(doc: Document) = with(doc) {
         //Parse mangas
         val parsedMangas = select(".gtr0,.gtr1").map {
             //fav = it.select(".itd .it3 > .i[id]").attr("title"),
@@ -129,9 +124,9 @@ class EHentai: HttpSource() {
     override fun searchMangaRequest(query: String, page: Int, filters: FilterList): Request {
         val uri = Uri.parse("$baseUrl$QUERY_PREFIX").buildUpon()
         uri.appendQueryParameter("f_search", query)
-//        filters.forEach {
-//            if (it is UriFilter) it.addToUri(uri)
-//        }
+        filters.forEach {
+            if (it is UriFilter) it.addToUri(uri)
+        }
         return GET(uri.toString(), page)
     }
 
@@ -213,20 +208,18 @@ class EHentai: HttpSource() {
         }
     }
 
-    override fun fetchChapters(page: Int, cid: String): Observable<PagedList<SChapter>>
-            = Observable.just(PagedList(listOf(SChapter.create().apply {
-                            url = cid
-                            name = "Chapter"
-                            chapter_number = "1"
-                        }),false))
+    override fun fetchChapters(page: Int, cid: String): Observable<PagedList<SChapter>> = Observable.just(PagedList(listOf(SChapter.create().apply {
+        url = cid
+        name = "Chapter"
+        chapter_number = "1"
+    }), false))
 
 
-    override fun fetchMangaPages(chapter: SChapter): Observable<List<MangaPage>>
-            = fetchChapterPage(chapter, "$baseUrl/${chapter.url}").map {
-                it.mapIndexed { i, s ->
-                    MangaPage(i, s, null)
-                }
-            }
+    override fun fetchMangaPages(chapter: SChapter): Observable<List<MangaPage>> = fetchChapterPage(chapter, "$baseUrl/${chapter.url}").map {
+        it.mapIndexed { i, s ->
+            MangaPage(i, s, null)
+        }
+    }
 
     private fun fetchChapterPage(chapter: SChapter, np: String,
                                  pastUrls: List<String> = emptyList()): Observable<List<String>> {
@@ -240,30 +233,26 @@ class EHentai: HttpSource() {
         }
     }
 
-    private fun parseChapterPage(response: Element)
-            = with(response) {
+    private fun parseChapterPage(response: Element) = with(response) {
         select(".gdtm a").map {
             Pair(it.child(0).attr("alt").toInt(), it.attr("href"))
         }.sortedBy(Pair<Int, String>::first).map { it.second }
     }
-    private fun nextPageUrl(element: Element)
-            = element.select("a[onclick=return false]").last()?.let {
+
+    private fun nextPageUrl(element: Element) = element.select("a[onclick=return false]").last()?.let {
         if (it.text() == ">") it.attr("href") else null
     }
+
     private fun chapterPageCall(np: String) = client.newCall(chapterPageRequest(np)).asObservableSuccess()
     private fun chapterPageRequest(np: String) = GET(np, null, headers)
 
-    override fun chaptersRequest(page: Int, cid: String): Request
-            = throw UnsupportedOperationException("Unused method was called somehow!")
+    override fun chaptersRequest(page: Int, cid: String): Request = throw UnsupportedOperationException("Unused method was called somehow!")
 
-    override fun chaptersParse(response: Response): PagedList<SChapter>
-        = throw UnsupportedOperationException("Unused method was called somehow!")
+    override fun chaptersParse(response: Response): PagedList<SChapter> = throw UnsupportedOperationException("Unused method was called somehow!")
 
-    override fun mangaPagesRequest(chapter: SChapter): Request
-        = throw UnsupportedOperationException("Unused method was called somehow!")
+    override fun mangaPagesRequest(chapter: SChapter): Request = throw UnsupportedOperationException("Unused method was called somehow!")
 
-    override fun mangaPagesParse(response: Response): List<MangaPage>
-        = throw UnsupportedOperationException("Unused method was called somehow!")
+    override fun mangaPagesParse(response: Response): List<MangaPage> = throw UnsupportedOperationException("Unused method was called somehow!")
 
     override fun imageUrlParse(response: Response): String = with(response.asJsoup()) {
         val currentImage = getElementById("img").attr("src")
@@ -296,7 +285,74 @@ class EHentai: HttpSource() {
     }
 
 
-    override fun getFilterList() = FilterList()
+    //Filters
+    override fun getFilterList() = FilterList(
+            GenreGroup(),
+            AdvancedGroup()
+    )
+
+    class GenreOption(name: String, val genreId: String) : Filter.CheckBox(name, false), UriFilter {
+        override fun addToUri(builder: Uri.Builder) {
+            builder.appendQueryParameter("f_" + genreId, if (state) "1" else "0")
+        }
+    }
+
+    class GenreGroup : UriGroup<GenreOption>("Genres", listOf(
+            GenreOption("Dōjinshi", "doujinshi"),
+            GenreOption("Manga", "manga"),
+            GenreOption("Artist CG", "artistcg"),
+            GenreOption("Game CG", "gamecg"),
+            GenreOption("Western", "western"),
+            GenreOption("Non-H", "non-h"),
+            GenreOption("Image Set", "imageset"),
+            GenreOption("Cosplay", "cosplay"),
+            GenreOption("Asian Porn", "asianporn"),
+            GenreOption("Misc", "misc")
+    ))
+
+    class AdvancedOption(name: String, val param: String, defValue: Boolean = false) : Filter.CheckBox(name, defValue), UriFilter {
+        override fun addToUri(builder: Uri.Builder) {
+            if (state)
+                builder.appendQueryParameter(param, "on")
+        }
+    }
+
+    class RatingOption : Filter.Select<String>("Minimum Rating", arrayOf(
+            "Any",
+            "2 stars",
+            "3 stars",
+            "4 stars",
+            "5 stars"
+    )), UriFilter {
+        override fun addToUri(builder: Uri.Builder) {
+            if (state > 0) builder.appendQueryParameter("f_srdd", Integer.toString(state + 1))
+        }
+    }
+
+    //Explicit type arg for listOf() to workaround this: KT-16570
+    class AdvancedGroup : UriGroup<Filter<*>>("Advanced Options", listOf<Filter<*>>(
+            AdvancedOption("Search Gallery Name", "f_sname", true),
+            AdvancedOption("Search Gallery Tags", "f_stags", true),
+            AdvancedOption("Search Gallery Description", "f_sdesc"),
+            AdvancedOption("Search Torrent Filenames", "f_storr"),
+            AdvancedOption("Only Show Galleries With Torrents", "f_sto"),
+            AdvancedOption("Search Low-Power Tags", "f_sdt1"),
+            AdvancedOption("Search Downvoted Tags", "f_sdt2"),
+            AdvancedOption("Show Expunged Galleries", "f_sh"),
+            RatingOption()
+    ))
+
+    interface UriFilter {
+        fun addToUri(builder: Uri.Builder)
+    }
+
+    open class UriGroup<V>(name: String, state: List<V>) : Filter.Group<V>(name, state), UriFilter {
+        override fun addToUri(builder: Uri.Builder) {
+            state.forEach {
+                if (it is UriFilter) it.addToUri(builder)
+            }
+        }
+    }
 
     override val name: String
         get() = "E-Hentai"
