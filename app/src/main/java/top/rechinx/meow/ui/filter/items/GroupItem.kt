@@ -34,9 +34,9 @@ class GroupItem(val filter: Filter.Group<*>) : AbstractExpandableHeaderItem<Grou
         holder.title.text = filter.name
 
         holder.icon.setImageResource(if (isExpanded)
-            R.drawable.ic_expand_more_white_24dp
+            R.drawable.ic_expand_more_black_24dp
         else
-            R.drawable.ic_chevron_right_white_24dp)
+            R.drawable.ic_chevron_right_black_24dp)
 
         holder.itemView.setOnClickListener(holder)
 

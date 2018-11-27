@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?attr/listPreferredItemHeightSmall"
-    android:background="?colorPrimary"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:paddingLeft="?attr/listPreferredItemPaddingLeft"
@@ -19,7 +18,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/textColorPrimaryDark"
+        android:textColor="@color/material_grey_700"
         tools:text="Header"/>
 
     <ImageView
