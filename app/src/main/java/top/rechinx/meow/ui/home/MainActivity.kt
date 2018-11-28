@@ -70,7 +70,6 @@ class MainActivity: BaseActivity(), MaterialSearchView.OnQueryTextListener, Bott
         when(item.itemId) {
             R.id.drawer_main -> {
                 supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                         .hide(sourceFragment)
                         .hide(aboutFragment)
                         .show(homeFragment)
@@ -79,7 +78,6 @@ class MainActivity: BaseActivity(), MaterialSearchView.OnQueryTextListener, Bott
             }
             R.id.drawer_source -> {
                 supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                         .hide(homeFragment)
                         .hide(aboutFragment)
                         .show(sourceFragment)
@@ -88,7 +86,6 @@ class MainActivity: BaseActivity(), MaterialSearchView.OnQueryTextListener, Bott
             }
             R.id.drawer_about -> {
                 supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                         .hide(homeFragment)
                         .hide(sourceFragment)
                         .show(aboutFragment)

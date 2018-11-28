@@ -56,6 +56,11 @@ class ResultPresenter(val query: String): BasePresenter<ResultActivity>(), KoinC
     }
 
     fun search(isLoadMore: Boolean) {
+        if(stateArray.isEmpty()) {
+            Observable.just(1)
+                    .subscribeFirst({view, _ ->
+                        view.onLoadError() })
+        }
         for(obj in stateArray) {
             val source = obj.source
             if(source != null) {
