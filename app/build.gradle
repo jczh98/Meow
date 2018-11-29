@@ -146,6 +146,12 @@ dependencies {
     // ReactiveNetwork
     implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.0'
 
+    // StateView
+    implementation 'com.github.nukc.stateview:library:1.5.4'
+
+    // material-dialogs
+    implementation 'com.afollestad.material-dialogs:core:2.0.0-rc2'
+
     // Stetho
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
