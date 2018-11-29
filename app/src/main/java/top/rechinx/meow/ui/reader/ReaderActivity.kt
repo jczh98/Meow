@@ -5,10 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import io.reactivex.disposables.CompositeDisposable
@@ -89,6 +86,14 @@ class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
 
         })
         setMenuVisibility(menuVisible)
+    }
+
+    /**
+     * Dispatches a key event. If the viewer doesn't handle it, call the default implementation.
+     */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        val handled = viewer?.handleKeyEvent(event) ?: false
+        return handled || super.dispatchKeyEvent(event)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

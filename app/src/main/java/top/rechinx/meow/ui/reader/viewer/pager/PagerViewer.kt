@@ -103,6 +103,34 @@ abstract class PagerViewer(val activity: ReaderActivity) : BaseViewer {
         }
     }
 
+    /**
+     * Moves to the page at the top (or previous).
+     */
+    protected open fun moveUp() {
+        moveToPrevious()
+    }
+
+    /**
+     * Moves to the page at the bottom (or next).
+     */
+    protected open fun moveDown() {
+        moveToNext()
+    }
+
+    /**
+     * Moves to the next page.
+     */
+    open fun moveToNext() {
+        moveRight()
+    }
+
+    /**
+     * Moves to the previous page.
+     */
+    open fun moveToPrevious() {
+        moveLeft()
+    }
+
     private fun onPageSelected(page: ReaderPage, position: Int) {
         val pages = page.chapter.pages!!
         activity.onPageSelected(page)
@@ -149,7 +177,26 @@ abstract class PagerViewer(val activity: ReaderActivity) : BaseViewer {
     }
 
     override fun handleKeyEvent(event: KeyEvent): Boolean {
-        return false
+        val isUp = event.action == KeyEvent.ACTION_UP
+
+        when (event.keyCode) {
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                if(activity.menuVisible) {
+                    return false
+                } else if(isUp) {
+                    moveDown()
+                }
+            }
+            KeyEvent.KEYCODE_VOLUME_UP -> {
+                if(activity.menuVisible) {
+                    return false
+                } else if(isUp) {
+                    moveUp()
+                }
+            }
+            else -> return false
+        }
+        return true
     }
 
     override fun handleGenericMotionEvent(event: MotionEvent): Boolean {

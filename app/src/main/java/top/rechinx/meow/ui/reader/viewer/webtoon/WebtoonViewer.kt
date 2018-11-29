@@ -137,7 +137,26 @@ class WebtoonViewer(val activity: ReaderActivity): BaseViewer {
     }
 
     override fun handleKeyEvent(event: KeyEvent): Boolean {
-        return false
+        val isUp = event.action == KeyEvent.ACTION_UP
+
+        when (event.keyCode) {
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                if (activity.menuVisible) {
+                    return false
+                } else if (isUp) {
+                    scrollDown()
+                }
+            }
+            KeyEvent.KEYCODE_VOLUME_UP -> {
+                if (activity.menuVisible) {
+                    return false
+                } else if (isUp) {
+                    scrollUp()
+                }
+            }
+            else -> return false
+        }
+        return true
     }
 
     override fun handleGenericMotionEvent(event: MotionEvent): Boolean {

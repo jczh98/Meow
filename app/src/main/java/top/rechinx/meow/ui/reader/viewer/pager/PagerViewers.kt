@@ -12,4 +12,17 @@ class R2LPagerViewer(activity: ReaderActivity): PagerViewer(activity) {
 
     override fun createPager(): Pager = Pager(activity)
 
+    /**
+     * Moves to the next page. On a R2L pager the next page is the one at the left.
+     */
+    override fun moveToNext() {
+        moveLeft()
+    }
+
+    /**
+     * Moves to the previous page. On a R2L pager the previous page is the one at the right.
+     */
+    override fun moveToPrevious() {
+        moveRight()
+    }
 }
