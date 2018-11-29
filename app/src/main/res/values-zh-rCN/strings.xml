@@ -58,4 +58,5 @@
     <string name="string_manga_statu_ongoing">连载中</string>
     <string name="title_activity_detail">漫画详情</string>
     <string name="title_activity_task">下载任务</string>
+    <string name="dialog_preview">预览</string>
 </resources>

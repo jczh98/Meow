@@ -65,7 +65,7 @@
     <string name="channel_downloader">Downloader</string>
     <string name="download_queue_error">An error occurred while downloading chapters. You can try again in the downloads section</string>
     <string name="download_notifier_text_only_wifi">No wifi connection available</string>
-    <string name="download_notifier_no_network">No network connection available</string>
+    <string name="download_notifier_no_network" translatable="false">No network connection available</string>
     <string name="tab_download_complete">DownloadCompleted</string>
     <string name="tab_download_queue">DownloadQueue</string>
     <string name="task_parse">Parsing</string>
@@ -82,4 +82,5 @@
     <string name="label_pause_all">Pause All</string>
     <string name="label_play_all">Start All</string>
     <string name="drawer_extension">Extension</string>
+    <string name="dialog_preview">Preview</string>
 </resources>
