@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.google.android.material.button.MaterialButton
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import top.rechinx.meow.R
@@ -143,7 +144,7 @@ class WebtoonTransitionHolder(
             text = context.getString(R.string.transition_pages_error, error.message)
         }
 
-        val retryBtn = AppCompatButton(context).apply {
+        val retryBtn = MaterialButton(context).apply {
             wrapContent()
             setText(R.string.action_retry)
             setOnClickListener {

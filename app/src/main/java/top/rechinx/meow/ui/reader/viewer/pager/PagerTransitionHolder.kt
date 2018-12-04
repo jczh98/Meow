@@ -9,6 +9,7 @@ import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -144,10 +145,14 @@ class PagerTransitionHolder(
     }
 
     private fun setLoading() {
+        val progress = ProgressBar(context, null, android.R.attr.progressBarStyle)
+
         val textView = AppCompatTextView(context).apply {
             wrapContent()
             setText(R.string.transition_pages_loading)
         }
+
+        pagesContainer.addView(progress)
         pagesContainer.addView(textView)
     }
 
