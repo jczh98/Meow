@@ -43,10 +43,6 @@ class HistoryFragment: MvpFragment<HistoryPresenter>(),
                 .withDefaultMode(SelectableAdapter.Mode.MULTI)
         adapter.addListener(this)
         recyclerView.adapter = adapter
-    }
-
-    override fun onResume() {
-        super.onResume()
         presenter.load()
     }
 

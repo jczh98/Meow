@@ -17,20 +17,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeBlue"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.home.MainActivity">
+        <activity android:name=".ui.home.MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.result.ResultActivity" />
-        <activity android:name=".ui.details.DetailActivity" />
+        <activity android:name=".ui.result.ResultActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".ui.details.DetailActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".ui.reader.ReaderActivity" />
         <activity android:name=".ui.setting.SettingsActivity" />
-        <activity android:name=".ui.filter.FilterActivity" />
+        <activity android:name=".ui.filter.FilterActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".ui.details.chapters.ChaptersActivity" />
-        <activity android:name=".ui.task.TaskActivity" />
+        <activity android:name=".ui.task.TaskActivity"
+            android:launchMode="singleTop"/>
         <service android:name=".data.download.DownloadService"
             android:exported="false" />
     </application>

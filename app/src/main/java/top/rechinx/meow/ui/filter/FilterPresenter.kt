@@ -9,6 +9,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import timber.log.Timber
 import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.core.source.model.Filter
@@ -28,6 +29,8 @@ class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComp
     private lateinit var pager: CataloguePager
 
     private var pagerDisposable: Disposable? = null
+
+    private var pageDisposable: Disposable? = null
 
     var sourceFilters = FilterList()
         set(value) {
@@ -50,7 +53,9 @@ class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComp
 
     fun restartPager(query: String = this.query, filters: FilterList = this.appliedFilters) {
         pager = CataloguePager(source, query, filters)
-        pager.results
+
+        pagerDisposable?.let { remove(it) }
+        pagerDisposable = pager.results
                 .observeOn(Schedulers.io())
                 .map {
                     it.first to it.second.map {
@@ -74,7 +79,8 @@ class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComp
 
    fun requestNext() {
         if(!hasNextPage()) return
-        Observable.defer { pager.requestNext() }
+        pageDisposable?.let { remove(it) }
+        pageDisposable = Observable.defer { pager.requestNext() }
                 .subscribeFirst({ _, _ -> }, FilterActivity::onAddPageError)
     }
 

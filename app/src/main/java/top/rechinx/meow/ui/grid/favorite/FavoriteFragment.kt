@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.fragment_grid.*
+import timber.log.Timber
 import top.rechinx.meow.R
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.ui.base.BaseAdapter
@@ -33,10 +34,6 @@ class FavoriteFragment: MvpFragment<FavoritePresenter>(),
     fun initViews() {
         adapter.addListener(this)
         recyclerView.adapter = adapter
-    }
-
-    override fun onResume() {
-        super.onResume()
         presenter.load()
     }
 

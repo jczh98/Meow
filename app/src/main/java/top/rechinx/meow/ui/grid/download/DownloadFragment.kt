@@ -38,10 +38,6 @@ class DownloadFragment: MvpFragment<DownloadPresenter>(),
         actionModeHelper = ActionModeHelper(adapter, R.menu.menu_grid, this)
                 .withDefaultMode(SelectableAdapter.Mode.MULTI)
         recyclerView.adapter = adapter
-    }
-
-    override fun onResume() {
-        super.onResume()
         presenter.load()
     }
 

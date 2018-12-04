@@ -17,6 +17,7 @@ import eu.davidea.flexibleadapter.items.IFlexible
 import kotlinx.android.synthetic.main.activity_filter.*
 import kotlinx.android.synthetic.main.custom_filter_sidesheet.view.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
+import timber.log.Timber
 import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.exception.NoMoreResultException
@@ -47,6 +48,8 @@ class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>(),
     private var progressItem: ProgressItem? = null
 
     private var snack: Snackbar? = null
+
+    private var oldPosition = RecyclerView.NO_POSITION
 
     override fun createPresenter(): FilterPresenter {
         return FilterPresenter(sourceId)
