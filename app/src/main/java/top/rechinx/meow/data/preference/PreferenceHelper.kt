@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Environment
 import com.f2prateek.rx.preferences2.Preference
 import com.f2prateek.rx.preferences2.RxSharedPreferences
-import top.rechinx.meow.R
 import top.rechinx.meow.global.Constants
 import java.io.File
 
@@ -24,7 +23,7 @@ class PreferenceHelper(context: Context) {
 
     fun pageTransitions() = rxPrefs.getBoolean(Constants.PREF_ENABLE_TRANSITIONS, true)
 
-    fun readerMode() = rxPrefs.getString(Constants.PREF_READER_MODE, "0")
+    fun readerMode() = prefs.getInt(Constants.PREF_READER_MODE, 1)
 
     fun hiddenReaderInfo() = rxPrefs.getBoolean(Constants.PREF_HIDE_READER_INFO, false)
 
@@ -39,9 +38,13 @@ class PreferenceHelper(context: Context) {
 
     fun downloadsDirectory() = rxPrefs.getString(Constants.PREF_DOWNLOAD_DIRECTORY, defaultDownloadsDir.toString())
 
+    fun enableVolumeKeys() = rxPrefs.getBoolean(Constants.PREF_ENABLE_VOLUME_KEYS, false)
+
+    fun readWithVolumeKeysInverted() = rxPrefs.getBoolean(Constants.PREF_READ_WITH_VOLUME_KEYS_INVERTED, false)
+
     companion object {
 
-        private const val PREFERENCES_NAME = "meow_preferences"
+        const val PREFERENCES_NAME = "meow_preferences"
     }
 
 }

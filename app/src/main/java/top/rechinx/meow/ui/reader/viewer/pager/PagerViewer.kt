@@ -181,17 +181,17 @@ abstract class PagerViewer(val activity: ReaderActivity) : BaseViewer {
 
         when (event.keyCode) {
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                if(activity.menuVisible) {
+                if (!config.volumeKeysEnabled || activity.menuVisible) {
                     return false
-                } else if(isUp) {
-                    moveDown()
+                } else if (isUp) {
+                    if (!config.volumeKeysInverted) moveDown() else moveUp()
                 }
             }
             KeyEvent.KEYCODE_VOLUME_UP -> {
-                if(activity.menuVisible) {
+                if (!config.volumeKeysEnabled || activity.menuVisible) {
                     return false
-                } else if(isUp) {
-                    moveUp()
+                } else if (isUp) {
+                    if (!config.volumeKeysInverted) moveUp() else moveDown()
                 }
             }
             else -> return false

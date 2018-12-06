@@ -13,6 +13,20 @@ class WebtoonConfig: KoinComponent {
 
     private val disposables = CompositeDisposable()
 
+    var volumeKeysEnabled = false
+        private set
+
+    var volumeKeysInverted = false
+        private set
+
+    init {
+        preference.enableVolumeKeys()
+                .register({ volumeKeysEnabled = it })
+
+        preference.readWithVolumeKeysInverted()
+                .register({ volumeKeysInverted = it })
+    }
+
     fun unsubscribe() {
         disposables.clear()
     }

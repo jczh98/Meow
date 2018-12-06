@@ -83,4 +83,13 @@
     <string name="label_play_all">Start All</string>
     <string name="drawer_extension">Extension</string>
     <string name="dialog_preview">Preview</string>
+    <string name="pref_full_screen">Full screen read</string>
+    <string name="pref_page_transitions">Page transitions</string>
+    <string name="pref_allow_volume_keys">Allow volume keys</string>
+    <string name="setting_sheet_hide_info">Hide reader infomation</string>
+    <string name="setting_sheet_category_page">Pager</string>
+    <string name="setting_sheet_category_webtoon">Webtoon</string>
+    <string name="setting_sheet_fullscreen">Fullscreen</string>
+    <string name="pref_download">Download</string>
+    <string name="pref_download_directory">Download directory</string>
 </resources>

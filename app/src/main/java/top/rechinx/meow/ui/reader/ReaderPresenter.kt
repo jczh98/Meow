@@ -12,6 +12,7 @@ import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.database.model.Manga
+import top.rechinx.meow.data.preference.PreferenceHelper
 import top.rechinx.meow.data.repository.ChapterRepository
 import top.rechinx.meow.data.repository.MangaRepository
 import top.rechinx.meow.support.log.L
@@ -29,6 +30,7 @@ class ReaderPresenter : BasePresenter<ReaderActivity>(), KoinComponent{
     private val sourceManager: SourceManager by inject()
     private val mangaRepository: MangaRepository by inject()
     private val chapterRepository: ChapterRepository by inject()
+    private val preferences: PreferenceHelper by inject()
 
     var manga: Manga? = null
         private set
@@ -208,7 +210,11 @@ class ReaderPresenter : BasePresenter<ReaderActivity>(), KoinComponent{
         }
     }
 
+    /**
+     * Returns the viewer position used by this manga or the default one.
+     */
     fun getMangaViewer(): Int {
-        return manga?.viewer ?: 0
+        val manga = manga ?: return preferences.readerMode()
+        return if(manga.viewer == 0) preferences.readerMode() else manga.viewer
     }
 }

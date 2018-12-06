@@ -4,7 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import top.rechinx.meow.core.extension.model.Extension
 import top.rechinx.meow.core.extension.model.LoadResult
 import top.rechinx.rikka.ext.launchNow
@@ -88,7 +89,7 @@ internal class ExtensionInstallReceiver(private val listener: Listener) :
     private suspend fun getExtensionFromIntent(context: Context, intent: Intent?): LoadResult {
         val pkgName = getPackageNameFromIntent(intent) ?:
                 return LoadResult.Error("Package name not found")
-        return async { ExtensionLoader.loadExtensionFromPkgName(context, pkgName) }.await()
+        return GlobalScope.async { ExtensionLoader.loadExtensionFromPkgName(context, pkgName) }.await()
     }
 
     /**

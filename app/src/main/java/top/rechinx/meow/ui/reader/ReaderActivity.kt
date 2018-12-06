@@ -28,6 +28,7 @@ import top.rechinx.meow.ui.reader.viewer.BaseViewer
 import top.rechinx.meow.ui.reader.viewer.pager.L2RPagerViewer
 import top.rechinx.meow.ui.reader.viewer.pager.R2LPagerViewer
 import top.rechinx.meow.ui.reader.viewer.webtoon.WebtoonViewer
+import top.rechinx.rikka.ext.gone
 import top.rechinx.rikka.ext.visible
 import top.rechinx.rikka.mvp.MvpAppCompatActivity
 import top.rechinx.rikka.mvp.factory.RequiresPresenter
@@ -246,10 +247,21 @@ class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
         init {
             disposable += preference.fullscreen().asObservable()
                     .subscribe { setFullScreen(it) }
+
+            disposable += preference.hiddenReaderInfo().asObservable()
+                    .subscribe { enableReaderInfo(!it) }
         }
 
         fun destroy() {
             disposable.clear()
+        }
+
+        private fun enableReaderInfo(enable: Boolean) {
+            if (enable) {
+                readerInfoLayout.visible()
+            } else {
+                readerInfoLayout.gone()
+            }
         }
 
         private fun setFullScreen(enable: Boolean) {

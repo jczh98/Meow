@@ -141,17 +141,17 @@ class WebtoonViewer(val activity: ReaderActivity): BaseViewer {
 
         when (event.keyCode) {
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                if (activity.menuVisible) {
+                if (!config.volumeKeysEnabled || activity.menuVisible) {
                     return false
                 } else if (isUp) {
-                    scrollDown()
+                    if (!config.volumeKeysInverted) scrollDown() else scrollUp()
                 }
             }
             KeyEvent.KEYCODE_VOLUME_UP -> {
-                if (activity.menuVisible) {
+                if (!config.volumeKeysEnabled || activity.menuVisible) {
                     return false
                 } else if (isUp) {
-                    scrollUp()
+                    if (!config.volumeKeysInverted) scrollUp() else scrollDown()
                 }
             }
             else -> return false

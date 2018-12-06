@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import dalvik.system.PathClassLoader
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import top.rechinx.meow.core.extension.model.Extension
 import top.rechinx.meow.core.extension.model.LoadResult
 import top.rechinx.meow.core.source.HttpSource

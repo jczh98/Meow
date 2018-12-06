@@ -59,4 +59,13 @@
     <string name="title_activity_detail">漫画详情</string>
     <string name="title_activity_task">下载任务</string>
     <string name="dialog_preview">预览</string>
+    <string name="pref_full_screen">全屏</string>
+    <string name="pref_page_transitions">翻页过渡动画</string>
+    <string name="pref_allow_volume_keys">音量键控制</string>
+    <string name="setting_sheet_hide_info">隐藏右下角信息</string>
+    <string name="setting_sheet_category_page">翻页模式</string>
+    <string name="setting_sheet_category_webtoon">Webtoon</string>
+    <string name="setting_sheet_fullscreen">全屏</string>
+    <string name="pref_download_directory">下载目录</string>
+    <string name="pref_download">下载设置</string>
 </resources>

@@ -11,4 +11,6 @@ object Constants {
     const val PREF_ENABLE_TRANSITIONS = "pref_enable_transitions"
     const val PREF_DOWNLOAD_DIRECTORY = "pref_download_directory"
     const val PREF_DOWNLOAD_ONLY_WIFI = "pref_download_only_wifi"
+    const val PREF_ENABLE_VOLUME_KEYS = "pref_enable_volume_keys"
+    const val PREF_READ_WITH_VOLUME_KEYS_INVERTED = "pref_read_with_volume_keys_inverted"
 }

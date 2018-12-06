@@ -118,7 +118,13 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
         when(task.state) {
             Task.STATE_FINISH -> {
                 val chapter = chapterDao.getChapter(task.chapterId)
-                chapter?.let { startReader(it) }
+                chapter?.let {
+                    if (it.id == presenter.manga?.last_read_chapter_id) {
+                        startReader(it, true)
+                    } else {
+                        startReader(it)
+                    }
+                }
             }
             Task.STATE_PAUSE, Task.STATE_ERROR -> {
                 task.chapter = chapterDao.getChapter(task.chapterId)

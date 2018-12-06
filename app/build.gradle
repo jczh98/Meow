@@ -41,8 +41,8 @@ dependencies {
     implementation project(':library:Rikka:rikka')
 
     // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.2"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.22.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
 
     // Support Library
     def androidx_version = '1.0.0'
@@ -52,6 +52,7 @@ dependencies {
     implementation "androidx.vectordrawable:vectordrawable:$androidx_version"
     implementation "com.google.android.material:material:$androidx_version"
     implementation "androidx.cardview:cardview:$androidx_version"
+    implementation "androidx.preference:preference:$androidx_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
@@ -150,7 +151,8 @@ dependencies {
     implementation 'com.github.nukc.stateview:library:1.5.4'
 
     // material-dialogs
-    implementation 'com.afollestad.material-dialogs:core:2.0.0-rc2'
+    implementation 'com.afollestad.material-dialogs:core:2.0.0-rc3'
+    implementation 'com.afollestad.material-dialogs:files:2.0.0-rc3'
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'

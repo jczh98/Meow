@@ -3,9 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:clipToPadding="false"
     android:orientation="vertical"
     android:padding="@dimen/material_component_dialogs_padding_around_content_area">
+
+    <!-- General preferences -->
 
     <TextView
         android:id="@+id/general"
@@ -42,6 +45,82 @@
         app:layout_constraintLeft_toRightOf="@id/verticalcenter"
         app:layout_constraintRight_toRightOf="@id/spinnerEnd" />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/hideInfoSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/setting_sheet_hide_info"
+        android:textColor="?android:attr/textColorSecondary"
+        app:layout_constraintTop_toBottomOf="@id/viewerSelectionSpinner" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/fullscreenSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/setting_sheet_fullscreen"
+        android:textColor="?android:attr/textColorSecondary"
+        app:layout_constraintTop_toBottomOf="@id/hideInfoSwitch" />
+
+
+    <androidx.legacy.widget.Space
+        android:id="@+id/endGeneralPreferences"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/fullscreenSwitch" />
+
+    <!-- Pager preferences -->
+
+    <TextView
+        android:id="@+id/pager"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/setting_sheet_category_page"
+        android:textColor="?attr/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/endGeneralPreferences" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/pageTransitions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/pref_page_transitions"
+        android:textColor="?android:attr/textColorSecondary"
+        app:layout_constraintTop_toBottomOf="@id/pager" />
+
+    <!-- Webtoon preferences -->
+
+    <TextView
+        android:id="@+id/webtoon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/setting_sheet_category_webtoon"
+        android:textColor="?attr/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/endGeneralPreferences" />
+
+    <!-- Groups of preferences -->
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/pagerGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="pager,pageTransitions"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/webtooGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="webtoon" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/verticalcenter"

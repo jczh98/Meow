@@ -15,9 +15,21 @@ class PagerConfig(private val viewer: PagerViewer) : KoinComponent {
     var usePageTransitions = false
         private set
 
+    var volumeKeysEnabled = false
+        private set
+
+    var volumeKeysInverted = false
+        private set
+
     init {
         preference.pageTransitions()
-                .register({usePageTransitions = it})
+                .register({ usePageTransitions = it })
+
+        preference.enableVolumeKeys()
+                .register({ volumeKeysEnabled = it })
+
+        preference.readWithVolumeKeysInverted()
+                .register({ volumeKeysInverted = it })
     }
 
     private fun <T> Preference<T>.register(

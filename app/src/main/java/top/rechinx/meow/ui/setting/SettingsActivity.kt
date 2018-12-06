@@ -14,7 +14,7 @@ class SettingsActivity: BaseActivity() {
 
     override fun initViews() {
         customToolbar?.setNavigationOnClickListener { finish() }
-        val fragmentTransaction = fragmentManager.beginTransaction()
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frameContainer, MainSettingsFragment()).commit()
     }
 

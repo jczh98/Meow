@@ -93,7 +93,7 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
                     }
                 }
             } else {
-                startReader(-1, false)
+                startReader(-1)
                 (it as FloatingActionButton).setImageResource(R.drawable.ic_continue_read_white_24dp)
             }
         }
@@ -186,7 +186,11 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
         return true
     }
 
-    private fun startReader(position: Int, isContinued: Boolean = false) {
+    /**
+     * start reader from clicked position
+     * @param position item's position
+     */
+    private fun startReader(position: Int) {
         val adapter = adapter ?: return
         if(position == -1) {
             val lastItem = adapter.getItem(adapter.itemCount - 1)
@@ -198,10 +202,21 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
             }
         } else {
             val chapterItem = adapter.getItem(position) as ChapterItem
+            if(presenter.manga?.last_read_chapter_id != -1L) {
+                if(chapterItem.chapter.id == presenter.manga?.last_read_chapter_id) {
+                    startReader(chapterItem.chapter, true)
+                    return
+                }
+            }
             startReader(chapterItem.chapter)
         }
     }
 
+    /**
+     * start reader activity
+     * @param chapter started chapter
+     * @param isContinued whether this chapter has been read
+     */
     private fun startReader(chapter: Chapter, isContinued: Boolean = false) {
         val manga = presenter.manga ?: return
         presenter.markedAsHistory(manga)
