@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_about.*
 import top.rechinx.meow.R
+import top.rechinx.meow.ui.extension.ExtensionActivity
 import top.rechinx.meow.ui.setting.SettingsActivity
 
 class AboutFragment: Fragment() {
@@ -37,6 +38,11 @@ class AboutFragment: Fragment() {
         return when(item.itemId) {
             R.id.action_settings -> {
                 val intent = Intent(activity, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.action_extension -> {
+                val intent = Intent(activity, ExtensionActivity::class.java)
                 startActivity(intent)
                 true
             }

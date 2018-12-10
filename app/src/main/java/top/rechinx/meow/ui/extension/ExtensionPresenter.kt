@@ -6,10 +6,9 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import top.rechinx.meow.core.extension.ExtensionManager
-import top.rechinx.meow.support.log.L
 import top.rechinx.rikka.mvp.BasePresenter
 
-class ExtensionPresenter: BasePresenter<ExtensionFragment>(), KoinComponent {
+class ExtensionPresenter: BasePresenter<ExtensionActivity>(), KoinComponent {
 
     private val extensionManager: ExtensionManager by inject()
 

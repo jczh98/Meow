@@ -36,6 +36,8 @@
         <activity android:name=".ui.details.chapters.ChaptersActivity" />
         <activity android:name=".ui.task.TaskActivity"
             android:launchMode="singleTop"/>
+        <activity android:name=".ui.extension.ExtensionActivity"
+            android:launchMode="singleTop"/>
         <service android:name=".data.download.DownloadService"
             android:exported="false" />
     </application>
