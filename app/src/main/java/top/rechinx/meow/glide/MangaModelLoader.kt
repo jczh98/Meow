@@ -6,12 +6,10 @@ import com.bumptech.glide.load.Options
 import com.bumptech.glide.load.model.*
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
-import top.rechinx.meow.core.network.NetworkHelper
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.cache.CoverCache
 import top.rechinx.meow.data.database.model.Manga
-import top.rechinx.meow.support.log.L
 import java.io.File
 import java.io.InputStream
 

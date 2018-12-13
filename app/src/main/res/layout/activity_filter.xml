@@ -24,7 +24,8 @@
                 <com.miguelcatalan.materialsearchview.MaterialSearchView
                     android:id="@+id/filterSearchView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:hint="@string/specific_search_hint"/>
             </FrameLayout>
 
             <LinearLayout

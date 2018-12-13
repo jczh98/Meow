@@ -2,16 +2,13 @@ package top.rechinx.meow.widget
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
 import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
-import androidx.core.content.ContextCompat
 import top.rechinx.meow.utils.Utility
 import top.rechinx.meow.R
-import top.rechinx.meow.support.log.L
 import top.rechinx.rikka.theme.utils.ThemeUtils
 import top.rechinx.rikka.theme.widgets.Tintable
 

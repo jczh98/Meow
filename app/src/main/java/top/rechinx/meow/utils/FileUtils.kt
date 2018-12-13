@@ -3,7 +3,6 @@ package top.rechinx.meow.utils
 import android.content.Context
 import io.reactivex.Observable
 import top.rechinx.meow.App
-import top.rechinx.meow.support.log.L
 import java.io.*
 import java.nio.charset.Charset
 
@@ -58,7 +57,6 @@ object FileUtils {
         try {
             var files = manager.list("sites")
             for(file in files) {
-                L.d(file)
                 var ins = manager.open("sites/$file")
                 var outFile = File(app.getBasePath(), file)
                 var ous = FileOutputStream(outFile)

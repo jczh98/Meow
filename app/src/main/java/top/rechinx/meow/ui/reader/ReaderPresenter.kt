@@ -2,27 +2,24 @@ package top.rechinx.meow.ui.reader
 
 import android.os.Bundle
 import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import timber.log.Timber
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.preference.PreferenceHelper
 import top.rechinx.meow.data.repository.ChapterRepository
 import top.rechinx.meow.data.repository.MangaRepository
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.reader.loader.ChapterLoader
 import top.rechinx.meow.ui.reader.model.ReaderChapter
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import top.rechinx.meow.ui.reader.model.ViewerChapters
 import top.rechinx.rikka.mvp.BasePresenter
 import top.rechinx.rikka.rxbus.RxBus
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class ReaderPresenter : BasePresenter<ReaderActivity>(), KoinComponent{
@@ -55,7 +52,7 @@ class ReaderPresenter : BasePresenter<ReaderActivity>(), KoinComponent{
             mangaRepository.getManga(mangaId)
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext { loadInit(it, initialChapterId, isContinued) }
-                    .subscribeFirst({_, _ -> }, {_, e -> L.d(e.message)})
+                    .subscribeFirst({_, _ -> }, {_, e -> Timber.d(e.message)})
     }
 
     fun loadInit(manga: Manga, initialChapterId: Long, isContinued: Boolean) {
@@ -74,7 +71,7 @@ class ReaderPresenter : BasePresenter<ReaderActivity>(), KoinComponent{
                 .flatMap { getLoadObservable(loader!!, it, isContinued) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeFirst({_, _ -> }, {_, e -> L.d(e.message)})
+                .subscribeFirst({_, _ -> }, {_, e -> Timber.d(e.message)})
     }
 
     private fun getLoadObservable(loader: ChapterLoader, chapter: ReaderChapter, isContinued: Boolean = false): Observable<ViewerChapters> {

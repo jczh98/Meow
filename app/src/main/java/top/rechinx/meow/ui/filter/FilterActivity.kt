@@ -67,6 +67,8 @@ class FilterActivity: BaseMvpActivityWithoutReflection<FilterPresenter>(),
         filterDrawer.addDrawerListener(drawerToggle)
         initSideSheet()
         initRecyclerView()
+        // setting search hint
+        filterSearchView.setHint(getString(R.string.specific_search_hint).format(presenter.source.name))
         filterSearchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if(query.isEmpty()) {

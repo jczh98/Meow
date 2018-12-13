@@ -79,4 +79,6 @@
     <string name="drawer_palette">主题风格</string>
     <string name="color_green_light">早苗绿·改</string>
     <string name="title_activity_theme">主题风格</string>
+    <string name="global_search_hint">全局搜索</string>
+    <string name="specific_search_hint">搜索 %s</string>
 </resources>

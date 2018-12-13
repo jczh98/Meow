@@ -2,15 +2,9 @@ package top.rechinx.meow.core.extension
 
 import android.content.Context
 import com.jakewharton.rxrelay2.BehaviorRelay
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 import top.rechinx.meow.core.extension.model.Extension
 import top.rechinx.meow.core.extension.model.LoadResult
-import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
-import top.rechinx.meow.support.log.L
 
 class ExtensionManager(private val context: Context,
                        private val sourceManager: SourceManager) {

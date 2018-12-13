@@ -3,7 +3,7 @@ package top.rechinx.meow.ui.reader.viewer.pager
 import androidx.viewpager.widget.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
-import top.rechinx.meow.support.log.L
+import timber.log.Timber
 import top.rechinx.meow.ui.reader.model.ChapterTransition
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import top.rechinx.meow.ui.reader.model.ViewerChapters
@@ -91,7 +91,7 @@ class PagerViewerAdapter(private val viewer: PagerViewer) : ViewPagerAdapter() {
             if (position != -1) {
                 return position
             } else {
-                L.d("Position for ${view.item} not found")
+                Timber.d("Position for ${view.item} not found")
             }
         }
         return PagerAdapter.POSITION_NONE

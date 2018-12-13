@@ -12,7 +12,6 @@ import eu.davidea.flexibleadapter.items.IFlexible
 import eu.davidea.viewholders.FlexibleViewHolder
 import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.Filter
-import top.rechinx.meow.support.log.L
 
 open class SelectItem(val filter: Filter.Select<*>) : AbstractFlexibleItem<SelectItem.Holder>() {
 

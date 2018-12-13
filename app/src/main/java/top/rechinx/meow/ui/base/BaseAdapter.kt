@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
-import top.rechinx.meow.support.log.L
 
 abstract class BaseAdapter<T>: RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

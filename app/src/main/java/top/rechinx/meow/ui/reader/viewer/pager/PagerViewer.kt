@@ -5,9 +5,6 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import top.rechinx.meow.R
-import top.rechinx.meow.support.log.L
-import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.meow.ui.reader.model.ChapterTransition
 import top.rechinx.meow.ui.reader.model.ReaderPage

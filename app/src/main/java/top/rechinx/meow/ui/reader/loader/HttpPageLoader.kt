@@ -8,10 +8,10 @@ import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import timber.log.Timber
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.model.MangaPage
 import top.rechinx.meow.data.cache.ChapterCache
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.reader.model.ReaderChapter
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import java.util.concurrent.PriorityBlockingQueue
@@ -38,7 +38,7 @@ class HttpPageLoader(private val chapter: ReaderChapter,
                 .subscribe({
                 }, {
                     if(it !is InterruptedException) {
-                        L.e(it.message)
+                        Timber.e(it.message)
                     }
                 })
     }

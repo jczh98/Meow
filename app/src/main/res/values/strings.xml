@@ -110,5 +110,7 @@
     <string name="color_red">Red</string>
     <string name="drawer_palette">Theme</string>
     <string name="color_green_light">Green Light</string>
+    <string name="global_search_hint">Global Search</string>
+    <string name="specific_search_hint">Search %s</string>
 
 </resources>

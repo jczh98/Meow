@@ -9,8 +9,6 @@ import kotlinx.coroutines.runBlocking
 import top.rechinx.meow.core.extension.model.Extension
 import top.rechinx.meow.core.extension.model.LoadResult
 import top.rechinx.meow.core.source.HttpSource
-import top.rechinx.meow.core.source.Source
-import top.rechinx.meow.support.log.L
 import java.lang.Exception
 
 object ExtensionLoader {

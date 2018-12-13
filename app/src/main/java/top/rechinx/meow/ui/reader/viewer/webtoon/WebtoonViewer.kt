@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.WebtoonLayoutManager
 import io.reactivex.disposables.CompositeDisposable
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.meow.ui.reader.model.ChapterTransition
 import top.rechinx.meow.ui.reader.model.ReaderPage

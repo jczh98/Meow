@@ -9,7 +9,6 @@ import android.os.IBinder
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_task.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
@@ -21,12 +20,10 @@ import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.database.model.Task
 import top.rechinx.meow.data.download.DownloadService
 import top.rechinx.meow.global.Extras
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.base.BaseAdapter
 import top.rechinx.meow.ui.base.BaseMvpActivity
 import top.rechinx.meow.ui.details.DetailActivity
 import top.rechinx.meow.ui.reader.ReaderActivity
-import top.rechinx.rikka.mvp.MvpAppCompatActivity
 import top.rechinx.rikka.mvp.factory.RequiresPresenter
 import kotlin.collections.ArrayList
 

@@ -7,15 +7,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
-import top.rechinx.meow.R
 import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.preference.PreferenceHelper
-import top.rechinx.meow.data.repository.CataloguePager
-import top.rechinx.meow.exception.NoMoreResultException
-import top.rechinx.meow.support.log.L
 import top.rechinx.rikka.mvp.BasePresenter
 import java.lang.Exception
 import java.util.*

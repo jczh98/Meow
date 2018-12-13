@@ -9,14 +9,12 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
-import timber.log.Timber
 import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.core.source.model.Filter
 import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.data.repository.CataloguePager
-import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.filter.items.*
 import top.rechinx.rikka.mvp.BasePresenter
 
@@ -70,7 +68,6 @@ class FilterPresenter(sourceId: Long): BasePresenter<FilterActivity>(), KoinComp
                     view.onAddPage(page, mangas)
                 }, { _, error ->
                     error.printStackTrace()
-                    L.d(error.message)
                 })
 
         // request first page
