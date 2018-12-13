@@ -28,16 +28,13 @@
         app:layout_constraintRight_toRightOf="parent" />
 
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <top.rechinx.meow.widget.TintBottomNavigationView
         android:id="@+id/bottomNavigation"
-        style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutView"
         android:layout_gravity="bottom"
-        android:background="@color/white"
-        app:itemIconTint="@drawable/bottom_navigation_colors"
-        app:itemTextColor="@drawable/bottom_navigation_colors"
+        android:background="@color/window_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

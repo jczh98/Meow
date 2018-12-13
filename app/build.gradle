@@ -36,7 +36,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-
     // Rikka
     implementation project(':library:Rikka:rikka')
 
@@ -47,12 +46,12 @@ dependencies {
     // Support Library
     def androidx_version = '1.0.0'
     implementation "androidx.appcompat:appcompat:$androidx_version"
-    implementation "androidx.constraintlayout:constraintlayout:$androidx_version"
     implementation "androidx.legacy:legacy-support-v4:$androidx_version"
     implementation "androidx.vectordrawable:vectordrawable:$androidx_version"
     implementation "com.google.android.material:material:$androidx_version"
     implementation "androidx.cardview:cardview:$androidx_version"
     implementation "androidx.preference:preference:$androidx_version"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
@@ -66,10 +65,8 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
 
-
     // Okhttp
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
@@ -86,7 +83,6 @@ dependencies {
     implementation "androidx.room:room-rxjava2:2.0.0-alpha1"
     implementation "androidx.room:room-runtime:2.0.0-alpha1"
     kapt "androidx.room:room-compiler:2.0.0-alpha1"
-    implementation "androidx.room:room-rxjava2:2.0.0-alpha1"
 
     // SmartRefreshLayout
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
@@ -124,15 +120,12 @@ dependencies {
 
     // Gson
     implementation 'com.google.code.gson:gson:2.8.5'
-    
+
     // DiskLruCache
     implementation 'com.jakewharton:disklrucache:2.0.2'
 
     // Okio
     implementation 'com.squareup.okio:okio:1.14.0'
-
-    // AndroidTagGroup
-    implementation 'me.gujun.android.taggroup:library:1.4@aar'
 
     // FlexibleAdapter
     implementation 'eu.davidea:flexible-adapter:5.1.0'
@@ -156,7 +149,7 @@ dependencies {
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
-    
+
     // Stetho
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'

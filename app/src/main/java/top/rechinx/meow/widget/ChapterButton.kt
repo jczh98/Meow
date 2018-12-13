@@ -8,11 +8,14 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
 import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
+import androidx.core.content.ContextCompat
 import top.rechinx.meow.utils.Utility
 import top.rechinx.meow.R
 import top.rechinx.meow.support.log.L
+import top.rechinx.rikka.theme.utils.ThemeUtils
+import top.rechinx.rikka.theme.widgets.Tintable
 
-class ChapterButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : AppCompatTextView(context, attrs, defStyle) {
+class ChapterButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : AppCompatTextView(context, attrs, defStyle), Tintable {
 
     private var normalColor: Int = 0
     private var accentColor: Int = 0
@@ -26,9 +29,12 @@ class ChapterButton @JvmOverloads constructor(context: Context, attrs: Attribute
     private fun init(context: Context, attrs: AttributeSet?) {
         val typedArray = context.theme.obtainStyledAttributes(
                 attrs, R.styleable.ChapterButton, 0, 0)
-        accentColor = typedArray.getColor(R.styleable.ChapterButton_selected_color, Color.BLACK)
-        loadColor = typedArray.getColor(R.styleable.ChapterButton_strokeColor, Color.BLACK)
-        normalColor = -0x76000000
+        accentColor = ThemeUtils.getColorById(context, R.color.theme_color_primary)
+        loadColor = accentColor
+        //accentColor = typedArray.getColor(R.styleable.ChapterButton_selected_color, Color.BLACK)
+        //loadColor = typedArray.getColor(R.styleable.ChapterButton_strokeColor, Color.BLACK)
+        normalColor = typedArray.getColor(R.styleable.ChapterButton_normalColor, Color.BLACK)
+
         typedArray.recycle()
 
         isClickable = true
@@ -76,6 +82,12 @@ class ChapterButton @JvmOverloads constructor(context: Context, attrs: Attribute
         normalDrawable.setColor(loadColor)
         setBackgroundDrawable(normalDrawable)
         setTextColor(Color.WHITE)
+    }
+
+    override fun tint() {
+        accentColor = ThemeUtils.getColor(context, resources.getColor(R.color.theme_color_primary))
+        loadColor = accentColor
+        invalidate()
     }
 
     companion object {

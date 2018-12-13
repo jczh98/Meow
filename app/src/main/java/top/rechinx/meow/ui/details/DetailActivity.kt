@@ -3,15 +3,18 @@ package top.rechinx.meow.ui.details
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import eu.davidea.flexibleadapter.FlexibleAdapter
 import kotlinx.android.synthetic.main.activity_detail.*
 import top.rechinx.meow.R
@@ -21,16 +24,19 @@ import top.rechinx.meow.data.database.model.Task
 import top.rechinx.meow.data.download.DownloadService
 import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.global.Extras
+import top.rechinx.meow.ui.base.BaseMvpActivity
+import top.rechinx.meow.ui.base.BaseMvpActivityWithoutReflection
 import top.rechinx.meow.ui.details.chapters.ChaptersActivity
 import top.rechinx.meow.ui.details.items.ChapterItem
 import top.rechinx.meow.ui.details.items.HeaderItem
 import top.rechinx.meow.ui.details.items.LoadItem
 import top.rechinx.meow.ui.reader.ReaderActivity
+import top.rechinx.rikka.ext.getResourceColor
 import top.rechinx.rikka.ext.gone
 import top.rechinx.rikka.mvp.MvpAppCompatActivityWithoutReflection
-import kotlin.collections.ArrayList
+import top.rechinx.rikka.theme.utils.ThemeUtils
 
-class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
+class DetailActivity: BaseMvpActivityWithoutReflection<DetailPresenter>(),
         FlexibleAdapter.OnItemClickListener, FlexibleAdapter.EndlessScrollListener {
 
     val sourceId: Long by lazy { intent.getLongExtra(Extras.EXTRA_SOURCE, 0) }
@@ -60,6 +66,8 @@ class DetailActivity: MvpAppCompatActivityWithoutReflection<DetailPresenter>(),
             setSupportActionBar(toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
+        val colorDrawable = ColorDrawable(ThemeUtils.getColorById(this, R.color.theme_color_primary))
+        collapsing_toolbar_layout.contentScrim = colorDrawable
         supportActionBar?.title = getString(R.string.title_activity_detail)
         toolbar?.setNavigationOnClickListener { finish() }
         chaptersRecyclerView.setHasFixedSize(true)

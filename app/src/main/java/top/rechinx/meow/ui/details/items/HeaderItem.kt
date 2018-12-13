@@ -16,6 +16,7 @@ import top.rechinx.meow.core.source.model.SManga
 import top.rechinx.rikka.ext.gone
 import java.text.DateFormat
 import java.util.*
+import top.rechinx.rikka.theme.utils.ThemeUtils
 
 class HeaderItem(val manga: Manga, val context: Context) : AbstractFlexibleItem<HeaderItem.Holder>() {
 
@@ -38,6 +39,13 @@ class HeaderItem(val manga: Manga, val context: Context) : AbstractFlexibleItem<
     override fun getLayoutRes(): Int = R.layout.item_detail_header
 
     class Holder(private val view: View, private val adapter: DetailAdapter) : FlexibleViewHolder(view, adapter) {
+
+        init {
+            view.apply {
+                mangaGenresTags.setBorderColor(ThemeUtils.getColorById(context, R.color.theme_color_primary))
+                mangaGenresTags.setTextColor(ThemeUtils.getColorById(context, R.color.theme_color_primary))
+            }
+        }
 
         fun bind(manga: Manga, context: Context) {
             view.apply {

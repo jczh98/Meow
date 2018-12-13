@@ -8,12 +8,13 @@ import kotlinx.android.synthetic.main.custom_progress_bar.*
 import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
 import top.rechinx.meow.core.extension.model.Extension
+import top.rechinx.meow.ui.base.BaseMvpActivity
 import top.rechinx.rikka.ext.gone
 import top.rechinx.rikka.mvp.MvpAppCompatActivity
 import top.rechinx.rikka.mvp.factory.RequiresPresenter
 
 @RequiresPresenter(ExtensionPresenter::class)
-class ExtensionActivity: MvpAppCompatActivity<ExtensionPresenter>() {
+class ExtensionActivity: BaseMvpActivity<ExtensionPresenter>() {
 
     private lateinit var adapter: ExtensionAdapter
 

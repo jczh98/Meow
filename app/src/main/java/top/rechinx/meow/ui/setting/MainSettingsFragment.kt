@@ -33,6 +33,7 @@ class MainSettingsFragment: PreferenceFragmentCompat() {
         val screen = preferenceManager.createPreferenceScreen(getThemedContext())
         preferenceScreen = screen
         preferenceScreen.apply {
+
             preferenceCategory {
                 titleRes = R.string.pref_reader_settings
 

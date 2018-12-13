@@ -22,10 +22,11 @@ import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.glide.GlideApp
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.ui.base.BaseAdapter
+import top.rechinx.meow.ui.base.BaseMvpActivityWithoutReflection
 import top.rechinx.meow.ui.details.DetailActivity
 import top.rechinx.rikka.mvp.MvpAppCompatActivityWithoutReflection
 
-class ResultActivity: MvpAppCompatActivityWithoutReflection<ResultPresenter>(), BaseAdapter.OnItemClickListener, BaseAdapter.OnItemLongClickListener {
+class ResultActivity: BaseMvpActivityWithoutReflection<ResultPresenter>(), BaseAdapter.OnItemClickListener, BaseAdapter.OnItemLongClickListener {
 
     private val layoutManager = LinearLayoutManager(this)
     private val query: String by lazy { intent.getStringExtra(Extras.EXTRA_KEYWORD) }

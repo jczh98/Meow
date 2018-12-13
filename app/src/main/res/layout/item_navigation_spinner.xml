@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?attr/listPreferredItemHeightSmall"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingLeft="?attr/listPreferredItemPaddingLeft"
     android:paddingRight="?attr/listPreferredItemPaddingRight"
     android:background="?attr/selectableItemBackground"
@@ -12,7 +12,9 @@
         android:id="@+id/navViewItemText"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textColor="?android:textColorPrimary"
+        tools:text="Title"/>
 
     <Spinner
         android:id="@+id/navViewItem"

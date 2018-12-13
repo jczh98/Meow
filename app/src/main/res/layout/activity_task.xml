@@ -20,13 +20,14 @@
                 android:clipChildren="false"
                 android:clipToPadding="false"/>
         </LinearLayout>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <top.rechinx.rikka.theme.widgets.TintFloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_gravity="bottom|end"
-            android:src="@drawable/ic_launch_white_24dp"
+            app:backgroundTint="@color/theme_color_primary"
+            app:srcCompat="@drawable/ic_launch_white_24dp"
             app:layout_behavior="top.rechinx.meow.widget.ScrollAwareFABBehavior"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </FrameLayout>

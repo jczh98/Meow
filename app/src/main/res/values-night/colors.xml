@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- default theme color settings -->
+    <color name="theme_color_primary">#1a1919</color>
+    <color name="theme_color_primary_dark">#000000</color>
+    <color name="theme_color_primary_trans">#88000000</color>
+
+    <color name="text_primary_color">#eaeaea</color>
+    <color name="text_secondary_color">#c9c2c2</color>
+    <color name="window_background">#2d2d2d</color>
+
+    <color name="backgroundLight">#504f4f</color>
+</resources>

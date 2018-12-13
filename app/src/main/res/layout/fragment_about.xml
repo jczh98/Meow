@@ -3,15 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/layoutView"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RelativeLayout
+
+        <top.rechinx.rikka.theme.widgets.TintRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="?attr/colorPrimary">
+            android:background="@color/theme_color_primary">
             <TextView
                 android:id="@+id/appName"
                 android:layout_width="wrap_content"
@@ -30,7 +32,8 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/white"
                 android:textSize="14sp"/>
-        </RelativeLayout>
+        </top.rechinx.rikka.theme.widgets.TintRelativeLayout>
+
         <LinearLayout
             android:id="@+id/update"
             android:orientation="vertical"
@@ -40,20 +43,25 @@
             android:padding="16dp"
             android:clickable="true"
             android:background="?android:attr/selectableItemBackground">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp"
                 android:text="@string/about_update"/>
+
             <TextView
                 android:id="@+id/updateSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="2dp"
                 android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
                 android:text="@string/about_update_summary"/>
+
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/resourceBtn"
             android:orientation="vertical"
@@ -74,6 +82,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="2dp"
                 android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
                 android:text="@string/about_resource_url"/>
         </LinearLayout>
     </LinearLayout>

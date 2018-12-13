@@ -1,6 +1,10 @@
 package top.rechinx.meow.ui.about
 
+import android.app.Activity
+import android.app.ActivityManager
 import android.content.Intent
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -8,6 +12,16 @@ import kotlinx.android.synthetic.main.fragment_about.*
 import top.rechinx.meow.R
 import top.rechinx.meow.ui.extension.ExtensionActivity
 import top.rechinx.meow.ui.setting.SettingsActivity
+import top.rechinx.rikka.theme.utils.ThemeUtils
+import top.rechinx.meow.ui.home.MainActivity
+import android.os.Build.VERSION.SDK_INT
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import timber.log.Timber
+import top.rechinx.meow.ui.setting.ThemeActivity
+import top.rechinx.meow.utils.ThemeHelper
+
+
 
 class AboutFragment: Fragment() {
 
@@ -32,6 +46,7 @@ class AboutFragment: Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.menu_about, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -46,9 +61,30 @@ class AboutFragment: Fragment() {
                 startActivity(intent)
                 true
             }
+            R.id.action_theme -> {
+                startActivityForResult(Intent(activity, ThemeActivity::class.java), REFRESH_THEME)
+                true
+            }
             else -> {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK) {
+            when(requestCode) {
+                REFRESH_THEME -> {
+                    (activity as MainActivity).refreshTheme()
+                }
+            }
+        }
+    }
+
+    companion object {
+
+        const val REFRESH_THEME = 777
+
     }
 }

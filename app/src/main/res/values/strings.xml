@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Meow</string>
+
+    <!-- Tag Group -->
+    <string name="add_tag">Add Tag</string>
+
     <string name="drawer_main">Home</string>
     <string name="empty_for_search">keyword cannot be empty</string>
     <string name="favorite">Favorite</string>
@@ -92,4 +96,19 @@
     <string name="setting_sheet_fullscreen">Fullscreen</string>
     <string name="pref_download">Download</string>
     <string name="pref_download_directory">Download directory</string>
+    <string name="pref_theme_settings">Theme setting</string>
+    <string name="filter_reset">reset</string>
+    <string name="filter_search">search</string>
+    <string name="title_activity_theme">Theme style</string>
+    <string name="color_pink">Pink</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_black">Black</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_green">Green</string>
+    <string name="color_yellow">Yellow</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_red">Red</string>
+    <string name="drawer_palette">Theme</string>
+    <string name="color_green_light">Green Light</string>
+
 </resources>

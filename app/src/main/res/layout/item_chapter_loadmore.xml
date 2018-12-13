@@ -16,8 +16,8 @@
         android:ellipsize="end"
         android:background="@drawable/btn_status_selector"
         android:text="@string/text_chapter_load_more"
-        app:selected_color="@color/colorPrimary"
-        app:strokeColor="@color/colorAccent"
+        app:selected_color="@color/theme_color_primary"
+        app:strokeColor="@color/theme_color_primary_trans"
         />
     <ProgressBar
         android:id="@+id/itemProgressLoad"

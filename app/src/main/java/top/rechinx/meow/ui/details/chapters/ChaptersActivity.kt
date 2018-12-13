@@ -12,9 +12,10 @@ import kotlinx.android.synthetic.main.custom_toolbar.*
 import top.rechinx.meow.R
 import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.global.Extras
+import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.base.BaseAdapter
 
-class ChaptersActivity: AppCompatActivity(), BaseAdapter.OnItemClickListener {
+class ChaptersActivity: BaseActivity(), BaseAdapter.OnItemClickListener {
 
     private val list by lazy { intent.getParcelableArrayListExtra<Chapter>(Extras.EXTRA_CHAPTERS) }
 

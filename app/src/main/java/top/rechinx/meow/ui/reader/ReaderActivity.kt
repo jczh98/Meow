@@ -21,6 +21,7 @@ import top.rechinx.meow.data.database.model.Chapter
 import top.rechinx.meow.data.database.model.Manga
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.data.preference.PreferenceHelper
+import top.rechinx.meow.ui.base.BaseMvpActivity
 import top.rechinx.meow.ui.reader.model.ReaderChapter
 import top.rechinx.meow.ui.reader.model.ReaderPage
 import top.rechinx.meow.ui.reader.model.ViewerChapters
@@ -34,7 +35,7 @@ import top.rechinx.rikka.mvp.MvpAppCompatActivity
 import top.rechinx.rikka.mvp.factory.RequiresPresenter
 
 @RequiresPresenter(ReaderPresenter::class)
-class ReaderActivity: MvpAppCompatActivity<ReaderPresenter>() {
+class ReaderActivity: BaseMvpActivity<ReaderPresenter>() {
 
     var viewer: BaseViewer? = null
         private set

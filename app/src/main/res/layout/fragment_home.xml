@@ -5,20 +5,21 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <top.rechinx.rikka.theme.widgets.TintAppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.google.android.material.tabs.TabLayout
+
+        <top.rechinx.rikka.theme.widgets.TintTabLayout
             android:id="@+id/homeTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:tabIndicatorColor="@android:color/white"
-            app:tabTextColor="@android:color/white"
-            app:tabSelectedTextColor="@android:color/white"
+            android:background="@color/theme_color_primary"
+            app:textAllCaps="false"
+            app:tabTextColor="@color/white"
+            app:tabIndicatorColor="@color/white"
             app:tabGravity="fill"
             app:tabMode="fixed" />
-    </com.google.android.material.appbar.AppBarLayout>
+    </top.rechinx.rikka.theme.widgets.TintAppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/homeViewPager"

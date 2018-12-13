@@ -40,13 +40,13 @@
 
         <include layout="@layout/custom_toolbar" />
 
-        <LinearLayout
+        <top.rechinx.rikka.theme.widgets.TintLinearLayout
             android:id="@+id/readerMenuBottom"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="bottom"
             android:gravity="center"
-            android:background="?colorPrimary"
+            android:background="@color/theme_color_primary"
             android:orientation="horizontal"
             android:descendantFocusability="blocksDescendants">
 
@@ -80,7 +80,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_skip_next_white_24dp"/>
 
-        </LinearLayout>
+        </top.rechinx.rikka.theme.widgets.TintLinearLayout>
 
     </FrameLayout>
 

@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <top.rechinx.rikka.theme.widgets.TintAppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="256dp"
@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:background="@color/material_grey_700"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorPrimary"
+            app:contentScrim="?colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false">
 
@@ -32,14 +32,14 @@
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop" />
 
-            <androidx.appcompat.widget.Toolbar
+            <top.rechinx.rikka.theme.widgets.TintToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    </top.rechinx.rikka.theme.widgets.TintAppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         app:behavior_overlapTop="56dp"
@@ -57,12 +57,13 @@
         android:horizontalSpacing="0dp"
         android:fastScrollEnabled="true"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <top.rechinx.rikka.theme.widgets.TintFloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_gravity="bottom|end"
+        app:backgroundTint="@color/theme_color_primary"
         app:layout_behavior="top.rechinx.meow.widget.ScrollAwareFABBehavior"/>
 
 

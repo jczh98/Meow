@@ -68,4 +68,15 @@
     <string name="setting_sheet_fullscreen">全屏</string>
     <string name="pref_download_directory">下载目录</string>
     <string name="pref_download">下载设置</string>
+    <string name="color_pink">少女粉</string>
+    <string name="color_blue">天空蓝</string>
+    <string name="color_black">夜间模式</string>
+    <string name="color_purple">基佬紫</string>
+    <string name="color_green">早苗绿</string>
+    <string name="color_yellow">咸蛋黄</string>
+    <string name="color_orange">千代橙</string>
+    <string name="color_red">姨妈红</string>
+    <string name="drawer_palette">主题风格</string>
+    <string name="color_green_light">早苗绿·改</string>
+    <string name="title_activity_theme">主题风格</string>
 </resources>

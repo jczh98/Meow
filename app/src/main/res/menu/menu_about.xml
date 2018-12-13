@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/action_theme"
+        android:icon="@drawable/ic_palette_white_24dp"
+        android:title="@string/drawer_palette"
+        app:showAsAction="always"/>
+
     <item android:id="@+id/action_extension"
         android:icon="@drawable/ic_extension_white_24dp"
         android:title="@string/drawer_extension"

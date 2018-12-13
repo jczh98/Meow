@@ -23,6 +23,7 @@ import top.rechinx.meow.data.download.DownloadService
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.support.log.L
 import top.rechinx.meow.ui.base.BaseAdapter
+import top.rechinx.meow.ui.base.BaseMvpActivity
 import top.rechinx.meow.ui.details.DetailActivity
 import top.rechinx.meow.ui.reader.ReaderActivity
 import top.rechinx.rikka.mvp.MvpAppCompatActivity
@@ -30,7 +31,7 @@ import top.rechinx.rikka.mvp.factory.RequiresPresenter
 import kotlin.collections.ArrayList
 
 @RequiresPresenter(TaskPresenter::class)
-class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemClickListener {
+class TaskActivity: BaseMvpActivity<TaskPresenter>(), BaseAdapter.OnItemClickListener {
 
     val mangaId by lazy { intent.getLongExtra(Extras.EXTRA_MANGA_ID, -1) }
 
@@ -66,7 +67,7 @@ class TaskActivity: MvpAppCompatActivity<TaskPresenter>(), BaseAdapter.OnItemCli
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_task, menu)
         return true
     }

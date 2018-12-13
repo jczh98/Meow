@@ -22,6 +22,7 @@ import top.rechinx.meow.R
 import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.exception.NoMoreResultException
 import top.rechinx.meow.global.Extras
+import top.rechinx.meow.ui.base.BaseMvpActivityWithoutReflection
 import top.rechinx.meow.ui.details.DetailActivity
 import top.rechinx.meow.ui.filter.items.CatalogueItem
 import top.rechinx.meow.ui.filter.items.ProgressItem
@@ -29,7 +30,7 @@ import top.rechinx.rikka.ext.gone
 import top.rechinx.rikka.ext.visible
 import top.rechinx.rikka.mvp.MvpAppCompatActivityWithoutReflection
 
-class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>(),
+class FilterActivity: BaseMvpActivityWithoutReflection<FilterPresenter>(),
         FlexibleAdapter.EndlessScrollListener,
         FlexibleAdapter.OnItemClickListener {
 
@@ -127,9 +128,9 @@ class FilterActivity: MvpAppCompatActivityWithoutReflection<FilterPresenter>(),
         supportActionBar?.title = String.format(getString(R.string.search_result_title), query)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.filter_menu, menu)
-        filterSearchView.setMenuItem(menu?.findItem(R.id.action_search))
+        filterSearchView.setMenuItem(menu.findItem(R.id.action_search))
         return super.onCreateOptionsMenu(menu)
     }
 
