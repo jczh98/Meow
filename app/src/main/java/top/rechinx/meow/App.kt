@@ -71,7 +71,7 @@ class App: Application(), ThemeUtils.switchColor {
 
     private fun getTheme(context: Context): String? {
         return when {
-            ThemeHelper.getTheme(context) == ThemeHelper.THEME_BLUE -> "blue"
+            ThemeHelper.getTheme(context) == ThemeHelper.THEME_PURPLE -> "purple"
             ThemeHelper.getTheme(context) == ThemeHelper.THEME_PINK -> "pink"
             ThemeHelper.getTheme(context) == ThemeHelper.THEME_GREEN -> "green"
             ThemeHelper.getTheme(context) == ThemeHelper.THEME_GREEN_LIGHT -> "green_light"
