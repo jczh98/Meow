@@ -1,5 +1,7 @@
 # Meow for Android
 
+[![Build Status](https://www.travis-ci.org/ReChinX/Meow.svg?branch=master)](https://travis-ci.org/ReChinX/Meow)
+
 Another comic reader client for Android.
 
 You can download release version from here: <https://github.com/ReChinX/Meow/releases>
