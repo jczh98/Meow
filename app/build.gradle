@@ -6,7 +6,23 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+def keystorePropertiesFile = rootProject.file(".travis/keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def keyStoreFile = file(keystoreProperties['storeFileLocal'])
+if (!keyStoreFile.exists()){
+    keyStoreFile = file(keystoreProperties['storeFileCI'])
+}
+
 android {
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPwd']
+            storeFile keyStoreFile
+            storePassword keystoreProperties['storePwd']
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "top.rechinx.meow"
@@ -22,6 +38,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -33,15 +50,15 @@ kotlin {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Rikka
     implementation project(':library:Rikka:rikka')
 
     // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
 
     // Support Library
     def androidx_version = '1.0.0'
@@ -57,11 +74,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
 
     // Paging
-    implementation "android.arch.paging:runtime:2.0.0"
-    implementation "android.arch.paging:rxjava2:2.0.0"
+    implementation 'android.arch.paging:runtime:2.0.0'
+    implementation 'android.arch.paging:rxjava2:2.0.0'
 
     // Rxjava
-    implementation "io.reactivex.rxjava2:rxjava:2.1.14"
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.14'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
 
@@ -70,7 +87,7 @@ dependencies {
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-    implementation "com.github.bumptech.glide:okhttp3-integration:4.8.0"
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
 
     // DiscreteSeekBar
@@ -80,8 +97,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.1.4'
 
     // Room
-    implementation "androidx.room:room-rxjava2:2.0.0-alpha1"
-    implementation "androidx.room:room-runtime:2.0.0-alpha1"
+    implementation 'androidx.room:room-rxjava2:2.0.0-alpha1'
+    implementation 'androidx.room:room-runtime:2.0.0-alpha1'
     kapt "androidx.room:room-compiler:2.0.0-alpha1"
 
     // SmartRefreshLayout

@@ -7,3 +7,6 @@
 /captures
 .externalNativeBuild
 /app/build
+/.travis/keystore.properties
+/.travis/meow.keystore
+/app/release
