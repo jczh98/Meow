@@ -18,11 +18,13 @@ android:
   - google-gdk-license-.+
 before_install:
 - chmod +x gradlew
-- openssl aes-256-cbc -K $encrypted_ce6de0293363_key -iv $encrypted_ce6de0293363_iv -in "$PWD/.travis/keystore.properties.enc" -out "$PWD/.travis/keystore.properties" -d
-- openssl aes-256-cbc -K $encrypted_ce6de0293363_key -iv $encrypted_ce6de0293363_iv -in "$PWD/.travis/meow.keystore.enc" -out "$PWD/.travis/meow.keystore" -d
+- openssl aes-256-cbc -K $encrypted_ce6de0293363_key -iv $encrypted_ce6de0293363_iv
+  -in .travis/keystore.properties.enc -out .travis/keystore.properties -d
+- openssl aes-256-cbc -K $encrypted_ce6de0293363_key -iv $encrypted_ce6de0293363_iv
+  -in .travis/meow.keystore.enc -out .travis/meow.keystore -d
 script:
 - "./gradlew assembleRelease"
-- "mv $HOME/app/release/app-release.apk $HOME/app/release/meow-$TRAVIS_TAG.apk"
+- mv $HOME/app/release/app-release.apk $HOME/app/release/meow-$TRAVIS_TAG.apk
 before_cache:
 - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
