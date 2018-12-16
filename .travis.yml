@@ -18,9 +18,8 @@ android:
   - google-gdk-license-.+
 before_install:
 - openssl aes-256-cbc -K $encrypted_ce6de0293363_key -iv $encrypted_ce6de0293363_iv
-  -in meow.keystore.enc -out .travis/meow.keystore -d
-- openssl aes-256-cbc -K $encrypted_ce6de0293363_key -iv $encrypted_ce6de0293363_iv
-  -in keystore.properties.enc -out .travis/keystore.properties -d
+  -in .travis/secrets.tar.enc -out .travis/secrets.tar -d
+- tar xvf .travis/secrets.tar.enc -C .travis/
 - chmod +x gradlew
 script:
 - "./gradlew assembleRelease"
