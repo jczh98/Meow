@@ -11,6 +11,8 @@ android:
 
     - android-28
 
+    - android-27
+
     - extra-android-m2repository
 
     - extra-android-support
