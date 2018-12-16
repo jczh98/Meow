@@ -23,7 +23,7 @@ before_install:
 - chmod +x gradlew
 script:
 - "./gradlew assembleRelease"
-- mv $HOME/app/release/app-release.apk $HOME/app/release/meow-$TRAVIS_TAG.apk
+- mv app/release/app-release.apk app/release/meow-$TRAVIS_TAG.apk
 before_cache:
 - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -34,7 +34,7 @@ cache:
 deploy:
   provider: releases
   api_key: "${GITHUB_TOKEN}"
-  file: "$HOME/app/release/*.apk"
+  file: app/release/*.apk
   skip_cleanup: true
   on:
     tags: true
