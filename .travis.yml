@@ -22,6 +22,7 @@ before_install:
 - tar xvf .travis/secrets.tar
 - chmod +x gradlew
 script:
+- "chmod +x .travis/build.sh"
 - ".travis/build.sh"
 before_cache:
 - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
