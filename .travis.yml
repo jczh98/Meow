@@ -22,8 +22,7 @@ before_install:
 - tar xvf .travis/secrets.tar
 - chmod +x gradlew
 script:
-- "./gradlew assembleRelease"
-- "mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/meow-$TRAVIS_TAG.apk"
+- ".travis/build.sh"
 before_cache:
 - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -34,7 +33,7 @@ cache:
 deploy:
   provider: releases
   api_key: "${GITHUB_TOKEN}"
-  file: "app/build/outputs/apk/release/meow-*.apk"
+  file: meow-*.apk
   skip_cleanup: true
   on:
     tags: true
