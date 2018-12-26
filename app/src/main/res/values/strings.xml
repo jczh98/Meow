@@ -56,22 +56,6 @@
     <string name="title_search_filter">Search Filter</string>
     <string name="text_chapter_load_more">load more chapters</string>
     <string name="action_download">download</string>
-    <string name="chapter_downloading_progress">Downloading (%1$d/%2$d)</string>
-    <string name="chapter_paused">Paused</string>
-    <string name="download_notifier_download_paused">Download paused</string>
-    <string name="action_resume">Resume</string>
-    <string name="action_clear">Clear</string>
-    <string name="update_check_notification_download_complete">Download complete</string>
-    <string name="download_notifier_downloader_title">Downloader</string>
-    <string name="download_notifier_unkown_error">An unexpected error occurred while downloading chapter</string>
-    <string name="channel_common">Common</string>
-    <string name="channel_library">Library</string>
-    <string name="channel_downloader">Downloader</string>
-    <string name="download_queue_error">An error occurred while downloading chapters. You can try again in the downloads section</string>
-    <string name="download_notifier_text_only_wifi">No wifi connection available</string>
-    <string name="download_notifier_no_network" translatable="false">No network connection available</string>
-    <string name="tab_download_complete">DownloadCompleted</string>
-    <string name="tab_download_queue">DownloadQueue</string>
     <string name="task_parse">Parsing</string>
     <string name="task_pause">Pausing</string>
     <string name="task_wait">Waiting</string>
@@ -90,13 +74,12 @@
     <string name="pref_full_screen">Full screen read</string>
     <string name="pref_page_transitions">Page transitions</string>
     <string name="pref_allow_volume_keys">Allow volume keys</string>
-    <string name="setting_sheet_hide_info">Hide reader infomation</string>
+    <string name="setting_sheet_hide_info">Hide reader information</string>
     <string name="setting_sheet_category_page">Pager</string>
     <string name="setting_sheet_category_webtoon">Webtoon</string>
     <string name="setting_sheet_fullscreen">Fullscreen</string>
     <string name="pref_download">Download</string>
     <string name="pref_download_directory">Download directory</string>
-    <string name="pref_theme_settings">Theme setting</string>
     <string name="filter_reset">reset</string>
     <string name="filter_search">search</string>
     <string name="title_activity_theme">Theme style</string>

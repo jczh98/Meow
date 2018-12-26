@@ -81,4 +81,16 @@
     <string name="title_activity_theme">主题风格</string>
     <string name="global_search_hint">全局搜索</string>
     <string name="specific_search_hint">搜索 %s</string>
+    <string name="add_tag">添加标签</string>
+    <string name="about_resource_url">https://github.com/ReChinX/Meow</string>
+    <string name="transition_pages_error">加载失败: %1$s</string>
+    <string name="action_download">下载</string>
+    <string name="label_delete">删除</string>
+    <string name="label_select_all">选择全部</string>
+    <string name="message_delete_success">删除成功</string>
+    <string name="label_pause_all">暂停所有任务</string>
+    <string name="label_play_all">开始所有任务</string>
+    <string name="drawer_extension">扩展</string>
+    <string name="filter_reset">重置</string>
+    <string name="filter_search">搜索</string>
 </resources>
