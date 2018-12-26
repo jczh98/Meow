@@ -12,5 +12,5 @@ else
 
     export ARTIFACT="meow-${TRAVIS_TAG}.apk"
 
-    mv app/build/outputs/apk/debug/app-release.apk $ARTIFACT
+    mv app/build/outputs/apk/release/app-release.apk $ARTIFACT
 fi
