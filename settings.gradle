@@ -1,1 +1,1 @@
-include ':app', ':library:DirectionalViewPager', ':library:Rikka:rikka'
+include ':app', ':library:DirectionalViewPager', ':library:Rikka:rikka', ':client'

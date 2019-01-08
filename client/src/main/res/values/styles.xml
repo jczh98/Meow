@@ -1,0 +1,59 @@
+<resources>
+
+    <!--==========-->
+    <!--Base Theme-->
+    <!--==========-->
+    <style name="Theme.App" parent="Theme.Cyanea.Light.NoActionBar">
+        <item name="actionBarTheme">@style/Theme.App.ActionBar.Light</item>
+    </style>
+
+    <!--========-->
+    <!--Toolbars-->
+    <!--========-->
+    <style name="Theme.App.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+    <style name="Theme.App.ActionBar.Light" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
+    <!--===============-->
+    <!--Text Appearance-->
+    <!--===============-->
+    <style name="TextAppearance.App" parent="@android:style/TextAppearance">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.App.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1" />
+
+    <style name="TextAppearance.App.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2" />
+
+    <style name="TextAppearance.App.Body1" parent="TextAppearance.MaterialComponents.Body1" />
+
+    <style name="TextAppearance.App.Body1.Light">
+        <item name="android:textColor">@color/textColorPrimaryInverse</item>
+    </style>
+
+    <style name="TextAppearance.App.Body1.Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.App.Body2" parent="TextAppearance.MaterialComponents.Body2" />
+
+    <style name="TextAppearance.App.Body2.Light">
+        <item name="android:textColor">@color/textColorPrimaryInverse</item>
+    </style>
+
+    <style name="TextAppearance.App.Body2.Secondary">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button" />
+
+    <style name="TextAppearance.App.Caption" parent="TextAppearance.MaterialComponents.Caption" />
+
+    <style name="TextAppearance.App.Caption.Light">
+        <item name="android:textColor">@color/textColorPrimaryInverse</item>
+    </style>
+
+    <style name="TextAppearance.App.Overline" parent="TextAppearance.MaterialComponents.Overline" />
+</resources>
