@@ -14,10 +14,20 @@
         android:id="@+id/navigation_catalogs"
         android:name="top.rechinx.meow.ui.catalogs.CatalogsFragment"
         android:label="fragment_catalogs"
-        tools:layout="@layout/fragment_catalogs" />
+        tools:layout="@layout/fragment_catalogs" >
+        <action
+            android:id="@+id/action_catalogs_to_catalog_browse"
+            app:destination="@id/navigation_catalog_browse" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_about"
         android:name="top.rechinx.meow.ui.about.AboutFragment"
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/navigation_catalog_browse"
+        android:name="top.rechinx.meow.ui.catalogbrowse.CatalogBrowseFragment"
+        android:label="fragment_catalog_browse"
+        tools:layout="@layout/fragment_catalog_browse"/>
 </navigation>

@@ -1,8 +1,15 @@
 package top.rechinx.meow.core.source
 
+import android.app.Application
+import android.content.Context
+import okhttp3.Cache
 import top.rechinx.meow.core.StubSource
+import top.rechinx.meow.core.network.Http
+import top.rechinx.meow.core.source.internal.Dmzj
+import top.rechinx.meow.core.source.internal.TestSource
+import java.io.File
 
-class SourceManager {
+class SourceManager(private val dependencies: Dependencies) {
 
     private val sourcesMap = mutableMapOf<Long, Source>()
 
@@ -37,6 +44,10 @@ class SourceManager {
         sourcesMap.remove(source.id)
     }
 
-    private fun createInternalSources(): List<Source> = listOf(
-    )
+    private fun createInternalSources(): List<Source> {
+        return listOf(
+                Dmzj(dependencies),
+                TestSource(dependencies)
+        )
+    }
 }

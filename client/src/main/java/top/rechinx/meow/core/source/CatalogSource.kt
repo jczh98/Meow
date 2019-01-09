@@ -10,16 +10,12 @@ interface CatalogSource : Source {
     /**
      * Returns an observable with all popular mangas in [page]
      *
-     * @param page request page
      */
     fun fetchPopularMangas(page: Int): Observable<PagedList<MangaInfo>>
 
     /**
-     * Returns an observable with all mangas which satisfies the query conditions
+     * Returns an observable with all mangas which satisfies the query conditions [filters] and [query] in [page]
      *
-     * @param query keyword for query a manga
-     * @param page request page
-     * @param filters filters for query a manga
      */
     fun fetchSearchMangas(query: String, page: Int, filters: FilterList) : Observable<PagedList<MangaInfo>>
 
