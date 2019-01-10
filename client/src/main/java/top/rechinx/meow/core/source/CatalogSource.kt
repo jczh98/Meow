@@ -8,16 +8,16 @@ import top.rechinx.meow.core.source.model.PagedList
 interface CatalogSource : Source {
 
     /**
-     * Returns an observable with all popular mangas in [page]
+     * Returns a list with all popular mangas in [page]
      *
      */
-    fun fetchPopularMangas(page: Int): Observable<PagedList<MangaInfo>>
+    fun fetchPopularMangas(page: Int): PagedList<MangaInfo>
 
     /**
-     * Returns an observable with all mangas which satisfies the query conditions [filters] and [query] in [page]
+     * Returns a list with all mangas which satisfies the query conditions [filters] and [query] in [page]
      *
      */
-    fun fetchSearchMangas(query: String, page: Int, filters: FilterList) : Observable<PagedList<MangaInfo>>
+    fun fetchSearchMangas(query: String, page: Int, filters: FilterList) : PagedList<MangaInfo>
 
     /**
      * Returns all filters for current source

@@ -7,6 +7,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 import top.rechinx.meow.core.source.Dependencies
 import top.rechinx.meow.core.source.HttpSource
+import top.rechinx.meow.core.source.ext.callWithClient
+import top.rechinx.meow.core.source.ext.checkIfSuccess
 import top.rechinx.meow.core.source.model.*
 
 class TestSource(dependencies: Dependencies): HttpSource(dependencies) {
@@ -20,7 +22,37 @@ class TestSource(dependencies: Dependencies): HttpSource(dependencies) {
             .addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 ")
             .build()
 
-    override fun searchMangaRequest(query: String, page: Int, filterList: FilterList): Request {
+    override fun fetchPopularMangas(page: Int): PagedList<MangaInfo> {
+        val request = GET("http://v2.api.dmzj.com/classify/0/0/${page-1}.json")
+        val response = client.newCall(request).execute().checkIfSuccess()
+        return commonMangaParse(response)
+    }
+
+    override fun fetchSearchMangas(query: String, page: Int, filters: FilterList): PagedList<MangaInfo> {
+        val request = searchMangaRequest(query, page, filters)
+        val response = client.newCall(request).execute().checkIfSuccess()
+        return commonMangaParse(response)
+    }
+
+    override fun fetchMangaInfo(manga: MangaInfo): MangaInfo {
+        val request = mangaInfoRequest(manga)
+        val response = request.callWithClient(client)
+        return mangaInfoParse(response)
+    }
+
+    override fun fetchChapterList(manga: MangaInfo, page: Int): PagedList<ChapterInfo> {
+        val request = chapterInfoRequest(manga, page)
+        val response = request.callWithClient(client)
+        return chapterInfoParse(response)
+    }
+
+    override fun fetchPageList(chapter: ChapterInfo): List<PageInfo> {
+        val request = pageInfoListRequest(chapter)
+        val response = request.callWithClient(client)
+        return pageInfoListParse(response)
+    }
+
+    private fun searchMangaRequest(query: String, page: Int, filterList: FilterList): Request {
         if(query != "") {
             if(page > 1) return GET("http://www.baidu.com")
             val uri = Uri.parse("http://s.acg.dmzj.com/comicsum/search.php").buildUpon()
@@ -45,8 +77,6 @@ class TestSource(dependencies: Dependencies): HttpSource(dependencies) {
             return  GET("http://v2.api.dmzj.com/classify/$params/$order/${page-1}.json")
         }
     }
-
-    override fun searchMangaParse(response: Response): PagedList<MangaInfo> = commonMangaParse(response)
 
     private fun commonMangaParse(response: Response): PagedList<MangaInfo> {
         val res = response.body()!!.string()
@@ -103,13 +133,10 @@ class TestSource(dependencies: Dependencies): HttpSource(dependencies) {
         return PagedList(ret, arr.length() != 0)
     }
 
-    override fun popularMangaRequest(page: Int): Request = GET("http://v2.api.dmzj.com/classify/0/0/${page-1}.json")
 
-    override fun popularMangaParse(response: Response): PagedList<MangaInfo> = commonMangaParse(response)
+    private fun mangaInfoRequest(mangaInfo: MangaInfo): Request = GET(mangaInfo.key)
 
-    override fun mangaInfoRequest(mangaInfo: MangaInfo): Request = GET(mangaInfo.key)
-
-    override fun mangaInfoParse(response: Response): MangaInfo {
+    private fun mangaInfoParse(response: Response): MangaInfo {
         val obj = JSONObject(response.body()!!.string())
 
         val title = obj.getString("title")
@@ -146,9 +173,9 @@ class TestSource(dependencies: Dependencies): HttpSource(dependencies) {
         )
     }
 
-    override fun chapterInfoRequest(mangaInfo: MangaInfo, page: Int): Request = GET(mangaInfo.key)
+    private fun chapterInfoRequest(mangaInfo: MangaInfo, page: Int): Request = GET(mangaInfo.key)
 
-    override fun chapterInfoParse(response: Response): PagedList<ChapterInfo> {
+    private fun chapterInfoParse(response: Response): PagedList<ChapterInfo> {
         val obj = JSONObject(response.body()!!.string())
         val ret = ArrayList<ChapterInfo>()
         val cid = obj.getString("id")
@@ -169,9 +196,9 @@ class TestSource(dependencies: Dependencies): HttpSource(dependencies) {
         return PagedList(ret, false)
     }
 
-    override fun pageInfoListRequest(chapter: ChapterInfo): Request = GET(baseUrl + chapter.key)
+    private fun pageInfoListRequest(chapter: ChapterInfo): Request = GET(baseUrl + chapter.key)
 
-    override fun pageInfoListParse(response: Response): List<PageInfo> {
+    private fun pageInfoListParse(response: Response): List<PageInfo> {
         val obj = JSONObject(response.body()!!.string())
         val arr = obj.getJSONArray("page_url")
         val ret = ArrayList<PageInfo>(arr.length())

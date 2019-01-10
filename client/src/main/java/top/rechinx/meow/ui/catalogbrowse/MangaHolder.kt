@@ -11,8 +11,15 @@ import top.rechinx.meow.glide.GlideApp
 import top.rechinx.meow.rikka.ext.inflate
 
 class MangaHolder(
-        parent: ViewGroup
+        parent: ViewGroup,
+        adapter: CatalogBrowseAdapter
 ) : RecyclerView.ViewHolder(parent.inflate(R.layout.item_manga_grid)) {
+
+    init {
+        itemView.setOnClickListener {
+            adapter.handleClick(adapterPosition)
+        }
+    }
 
     fun bind(manga: Manga) {
         itemView.apply {

@@ -22,24 +22,20 @@ interface Source {
     val name: String
 
     /**
-     * Returns an observable with a manga info
+     * Returns a model of [MangaInfo]
      *
-     * @param manga the manga needed to query
      */
-    fun fetchMangaInfo(manga: MangaInfo) : Observable<MangaInfo>
+    fun fetchMangaInfo(manga: MangaInfo) : MangaInfo
 
     /**
-     * Returns an observable with chapters in [page] page
+     * Returns a list of [ChapterInfo] with [page]
      *
-     * @param manga the manga needed to query
-     * @param page the current page
      */
-    fun fetchChapterList(manga: MangaInfo, page: Int) : Observable<PagedList<ChapterInfo>>
+    fun fetchChapterList(manga: MangaInfo, page: Int) : PagedList<ChapterInfo>
 
     /**
-     * Returns an observable with list of pages the [chapter] has
+     * Returns a list of [PageInfo]
      *
-     * @param chapter the chapter needed to query
      */
-    fun fetchPageList(chapter: ChapterInfo) : Observable<List<PageInfo>>
+    fun fetchPageList(chapter: ChapterInfo) : List<PageInfo>
 }

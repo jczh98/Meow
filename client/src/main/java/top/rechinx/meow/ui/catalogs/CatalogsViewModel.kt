@@ -4,21 +4,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.addTo
 import top.rechinx.meow.data.catalog.model.Catalog
 import top.rechinx.meow.data.catalog.model.InternalCatalog
 import top.rechinx.meow.domain.catalog.interactor.GetLocalCatalogs
 import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.rikka.rx.RxSchedulers
+import top.rechinx.meow.rikka.rx.RxViewModel
 
 class CatalogsViewModel(
         private val getLocalCatalogs: GetLocalCatalogs,
         private val schedulers: RxSchedulers
-) : ViewModel() {
+) : RxViewModel() {
 
     private val localCatalogsLiveData: MutableLiveData<Resource<List<Catalog>>> = MutableLiveData()
 
     init {
-        fetchDatas()
+        fetchDatas().addTo(disposables)
     }
 
     fun getLocalCatalogs() = localCatalogsLiveData

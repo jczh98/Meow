@@ -1,13 +1,7 @@
 package top.rechinx.meow.core.source
 
-import android.app.Application
-import android.content.Context
-import okhttp3.Cache
-import top.rechinx.meow.core.StubSource
-import top.rechinx.meow.core.network.Http
 import top.rechinx.meow.core.source.internal.Dmzj
 import top.rechinx.meow.core.source.internal.TestSource
-import java.io.File
 
 class SourceManager(private val dependencies: Dependencies) {
 

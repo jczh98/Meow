@@ -8,7 +8,13 @@ import top.rechinx.meow.domain.manga.model.Manga
 
 interface MangaRepository {
 
+    /**
+     * Save manga from [mangaInfo] and return the manga which comes from database
+     */
     fun saveAndReturnManga(mangaInfo: MangaInfo, sourceId: Long) : Single<Manga>
 
+    /**
+     * Get manga by [key] and [sourceId]
+     */
     fun getManga(key: String, sourceId: Long): Maybe<Manga>
 }

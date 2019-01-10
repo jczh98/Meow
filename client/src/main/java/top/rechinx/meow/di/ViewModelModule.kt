@@ -9,5 +9,5 @@ import top.rechinx.meow.ui.catalogs.CatalogsViewModel
 val viewModelModule = module {
     viewModel { AboutViewModel() }
     viewModel { CatalogsViewModel(get(), get()) }
-    viewModel { CatalogBrowseViewModel(get(), get(), get()) }
+    viewModel { (id: Long) -> CatalogBrowseViewModel(id, get(), get(), get()) }
 }

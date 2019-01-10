@@ -17,7 +17,7 @@ class GetMangasListFromSource(
 
     fun interact(source: CatalogSource, page: Int): Single<PagedList<Manga>> {
         return Single.defer {
-            val sourceMangaList = source.fetchPopularMangas(page).blockingFirst()
+            val sourceMangaList = source.fetchPopularMangas(page)
 
             Flowable.fromIterable(sourceMangaList.list)
                     .concatMapSingle { getOrAddManga.interact(it, source.id) }

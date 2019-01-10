@@ -15,4 +15,7 @@
     <string name="about_update_summary">Click to check update</string>
     <string name="about_resource">Source code</string>
     <string name="about_resource_url">https://github.com/ReChinX/Meow</string>
+
+    <!-- Misc -->
+    <string name="no_more_results">No more rersults</string>
 </resources>

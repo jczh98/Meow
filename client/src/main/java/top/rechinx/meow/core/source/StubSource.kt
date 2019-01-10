@@ -1,4 +1,4 @@
-package top.rechinx.meow.core
+package top.rechinx.meow.core.source
 
 import io.reactivex.Observable
 import top.rechinx.meow.core.source.Source
@@ -13,16 +13,16 @@ class StubSource(override val id: Long) : Source {
     override val name: String
         get() = id.toString()
 
-    override fun fetchMangaInfo(manga: MangaInfo): Observable<MangaInfo> {
-        return Observable.error(Exception())
+    override fun fetchMangaInfo(manga: MangaInfo): MangaInfo {
+        throw Exception()
     }
 
-    override fun fetchChapterList(manga: MangaInfo, page: Int): Observable<PagedList<ChapterInfo>> {
-        return Observable.error(Exception())
+    override fun fetchChapterList(manga: MangaInfo, page: Int): PagedList<ChapterInfo> {
+        throw Exception()
     }
 
-    override fun fetchPageList(chapter: ChapterInfo): Observable<List<PageInfo>> {
-        return Observable.error(Exception())
+    override fun fetchPageList(chapter: ChapterInfo): List<PageInfo> {
+        throw Exception()
     }
 
 }
