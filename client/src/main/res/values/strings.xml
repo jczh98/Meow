@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Meow</string>
+
+    <!-- Activities, fragments and menu titles -->
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_catalogs">Catalogs</string>
+    <string name="title_about">About</string>
+    <string name="title_history">History</string>
+    <string name="title_palette">Palette</string>
+    <string name="title_settings">Settings</string>
+
+    <!-- About -->
+    <string name="about_update">Check update</string>
+    <string name="about_update_summary">Click to check update</string>
+    <string name="about_resource">Source code</string>
+    <string name="about_resource_url">https://github.com/ReChinX/Meow</string>
+
+    <!-- Misc -->
+    <string name="no_more_results">No more rersults</string>
+    <string name="add_tag">Add tag</string>
+    
+    <!-- Manga info -->
+    <string name="manga_info_author">Author</string>
+    <string name="manga_info_date_updated">Date updated</string>
+    <string name="manga_info_date_loading">Loading</string>
+    <string name="manga_info_status">Status</string>
+    <string name="manga_description">Description</string>
+    <string name="manga_info_chapters">Chapters</string>
+    <string name="string_manga_status_ongoing">Ongoing</string>
+    <string name="string_manga_status_completed">Completed</string>
+    <string name="string_manga_status_unknown">Unknown</string>
+</resources>
