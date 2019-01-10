@@ -26,6 +26,7 @@ import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.ui.base.*
 import top.rechinx.meow.ui.catalogs.CatalogBinder
 import top.rechinx.meow.ui.catalogs.CatalogsFragment
+import top.rechinx.meow.ui.manga.MangaInfoActivity
 
 class CatalogBrowseFragment : Fragment(),
         EndlessRecyclerViewScrollListener.Callback,
@@ -95,7 +96,7 @@ class CatalogBrowseFragment : Fragment(),
     }
 
     override fun onMangaClick(manga: Manga) {
-        findNavController().navigateUp()
+        startActivity(MangaInfoActivity.createIntent(activity!!, manga))
     }
 
     override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {

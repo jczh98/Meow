@@ -43,3 +43,38 @@ internal fun MangaEntity.convertToManga(): Manga {
             downloaded = downloaded
     )
 }
+
+internal fun Manga.convertToEntity(): MangaEntity {
+    return MangaEntity(
+            id = id,
+            source = source,
+            key = key,
+            title = title,
+            artist = artist,
+            author = author,
+            description = description,
+            genres = genres,
+            status = status,
+            cover = cover,
+            favorite = favorite,
+            last_chapter_id = last_chapter_id,
+            lastUpdate = lastUpdate,
+            viewer = viewer,
+            last_chapter_key = last_chapter_key,
+            viewed = viewed,
+            downloaded = downloaded
+    )
+}
+
+internal fun Manga.convertToInfo(): MangaInfo {
+    return MangaInfo(
+            key = key,
+            title = title,
+            artist = artist,
+            author = author,
+            description = description,
+            genres = genres,
+            status = status,
+            cover = cover
+    )
+}

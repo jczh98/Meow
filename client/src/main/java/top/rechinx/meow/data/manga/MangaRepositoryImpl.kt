@@ -1,5 +1,6 @@
 package top.rechinx.meow.data.manga
 
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import timber.log.Timber
@@ -29,5 +30,16 @@ internal class MangaRepositoryImpl(
                 .map {
                     it.convertToManga()
                 }
+    }
+
+    override fun getManga(id: Long): Maybe<Manga> {
+        return mangaDao.queryManga(id)
+                .map { it.convertToManga() }
+    }
+
+    override fun updateManga(manga: Manga): Completable {
+        return Completable.fromCallable {
+            mangaDao.updateManga(manga.convertToEntity())
+        }
     }
 }

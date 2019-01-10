@@ -8,10 +8,10 @@ abstract class BaseActivity: CyaneaAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutRes())
-        setUpViews()
+        setUpViews(savedInstanceState)
     }
 
-    open fun setUpViews() {
+    open fun setUpViews(savedInstanceState: Bundle?) {
 
     }
 

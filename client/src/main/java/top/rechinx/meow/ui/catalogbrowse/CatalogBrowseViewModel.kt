@@ -35,7 +35,6 @@ class CatalogBrowseViewModel(
                 .subscribeOn(schedulers.io)
                 .observeOn(schedulers.main)
                 .subscribe({
-                    Timber.d("FUCK ENTER ${it.list[0].title}")
                     mangaListLiveData.postValue(Resource.Success(it))
                 }, {
                     mangaListLiveData.postValue(Resource.Error(it.message))

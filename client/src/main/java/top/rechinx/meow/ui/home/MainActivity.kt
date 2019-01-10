@@ -1,5 +1,6 @@
 package top.rechinx.meow.ui.home
 
+import android.os.Bundle
 import android.view.View
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -13,8 +14,8 @@ class MainActivity : BaseActivity(), CyaneaViewProcessor.Provider {
 
     override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment).navigateUp()
 
-    override fun setUpViews() {
-        super.setUpViews()
+    override fun setUpViews(savedInstanceState: Bundle?) {
+        super.setUpViews(savedInstanceState)
         navigation.setupWithNavController(findNavController(R.id.nav_host_fragment))
     }
 

@@ -18,4 +18,16 @@
 
     <!-- Misc -->
     <string name="no_more_results">No more rersults</string>
+    <string name="add_tag">Add tag</string>
+    
+    <!-- Manga info -->
+    <string name="manga_info_author">Author</string>
+    <string name="manga_info_date_updated">Date updated</string>
+    <string name="manga_info_date_loading">Loading</string>
+    <string name="manga_info_status">Status</string>
+    <string name="manga_description">Description</string>
+    <string name="manga_info_chapters">Chapters</string>
+    <string name="string_manga_status_ongoing">Ongoing</string>
+    <string name="string_manga_status_completed">Completed</string>
+    <string name="string_manga_status_unknown">Unknown</string>
 </resources>
