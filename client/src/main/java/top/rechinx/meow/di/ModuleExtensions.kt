@@ -16,6 +16,11 @@ inline fun <reified B, reified P : Provider<B>> Module.bindProvider(): Binding<B
     return bind(B::class.java).toProvider(P::class.java)
 }
 
+inline fun <reified B, reified P : Provider<B>> Module.bindProviderInstance(instance: P): Binding<B>
+.BoundStateForProviderInstanceBinding {
+    return bind(B::class.java).toProviderInstance(instance)
+}
+
 inline fun <reified B, reified D : B> Module.bindTo(): Binding<B>.BoundStateForClassBinding {
     return bind(B::class.java).to(D::class.java)
 }

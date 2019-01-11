@@ -23,9 +23,6 @@ class CatalogBrowseViewModel @Inject constructor(
         private val schedulers: RxSchedulers
 ) : RxViewModel() {
 
-    init {
-        Timber.d("FUCK your ${params.sourceId}")
-    }
     val mangaListLiveData : MutableLiveData<Resource<PagedList<Manga>>> = MutableLiveData()
 
     val mangaList: ArrayList<Manga> = ArrayList()

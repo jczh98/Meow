@@ -2,13 +2,11 @@ package top.rechinx.meow.ui.catalogbrowse
 
 import toothpick.config.Module
 import top.rechinx.meow.di.bindInstance
+import top.rechinx.meow.di.bindProviderInstance
 
 class CatalogBrowseModule(catalogBrowseFragment: CatalogBrowseFragment) : Module() {
 
     init {
-        val params = CatalogBrowseParams().also {
-            it.sourceId = catalogBrowseFragment.sourceId
-        }
-        bindInstance(params)
+        bindProviderInstance(CatalogBrowseParamsProvider(catalogBrowseFragment.sourceId))
     }
 }

@@ -57,10 +57,6 @@ class CatalogBrowseFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //val factory = BaseViewModelProviderFactory(this)
-        //viewModel = ViewModelProviders.of(this, factory).get(CatalogBrowseViewModel::class.java)
-
         viewModel = getViewModel()
 
         // Setup toolbar
