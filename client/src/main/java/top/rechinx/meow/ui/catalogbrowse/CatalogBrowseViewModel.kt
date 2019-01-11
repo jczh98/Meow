@@ -14,22 +14,27 @@ import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.rikka.rx.RxSchedulers
 import top.rechinx.meow.rikka.rx.RxViewModel
+import javax.inject.Inject
 
-class CatalogBrowseViewModel(
-        private val sourceId: Long,
+class CatalogBrowseViewModel @Inject constructor(
+        private val params: CatalogBrowseParams,
         private val sourceManager: SourceManager,
         private val getMangasListFromSource: GetMangasListFromSource,
         private val schedulers: RxSchedulers
 ) : RxViewModel() {
 
+    init {
+        Timber.d("FUCK your ${params.sourceId}")
+    }
     val mangaListLiveData : MutableLiveData<Resource<PagedList<Manga>>> = MutableLiveData()
 
     val mangaList: ArrayList<Manga> = ArrayList()
 
     var page = 1
 
+    val source = sourceManager.getOrStub(params.sourceId) as CatalogSource
+
     fun loadMore() {
-        val source = sourceManager.getOrStub(sourceId) as CatalogSource
         mangaListLiveData.postValue(Resource.Loading())
         getMangasListFromSource.interact(source, page++)
                 .subscribeOn(schedulers.io)

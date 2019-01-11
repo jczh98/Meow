@@ -7,18 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_catalog_browse.*
 import me.drakeet.multitype.Items
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import timber.log.Timber
+import toothpick.Scope
+import toothpick.Toothpick
+import toothpick.config.Module
 import top.rechinx.meow.R
 import top.rechinx.meow.core.source.SourceManager
+import top.rechinx.meow.di.AppScope
+import top.rechinx.meow.di.bindInstance
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.rikka.ext.gone
 import top.rechinx.meow.rikka.ext.visible
@@ -26,27 +30,25 @@ import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.ui.base.*
 import top.rechinx.meow.ui.catalogs.CatalogBinder
 import top.rechinx.meow.ui.catalogs.CatalogsFragment
+import top.rechinx.meow.ui.catalogs.CatalogsViewModel
 import top.rechinx.meow.ui.manga.MangaInfoActivity
+import javax.inject.Inject
 
-class CatalogBrowseFragment : Fragment(),
+class CatalogBrowseFragment : BaseFragment(),
         EndlessRecyclerViewScrollListener.Callback,
         CatalogBrowseAdapter.Listener {
 
-    private val sourceId: Long by lazy {
+    val sourceId: Long by lazy {
         arguments?.getLong(CatalogsFragment.CATALOG_SOURCE_ID) ?: -1
     }
 
-    private val viewModel by viewModel<CatalogBrowseViewModel> {
-        parametersOf(sourceId)
-    }
-
-    private val sourceManager by inject<SourceManager>()
-
-    private val source by lazy {
-        sourceManager.getOrStub(sourceId)
-    }
+    private lateinit var viewModel: CatalogBrowseViewModel
 
     private lateinit var adapter: CatalogBrowseAdapter
+
+    override fun getModule(): Module? {
+        return CatalogBrowseModule(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -56,8 +58,13 @@ class CatalogBrowseFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //val factory = BaseViewModelProviderFactory(this)
+        //viewModel = ViewModelProviders.of(this, factory).get(CatalogBrowseViewModel::class.java)
+
+        viewModel = getViewModel()
+
         // Setup toolbar
-        catalogbrowse_toolbar.title = source.name
+        catalogbrowse_toolbar.title = viewModel.source.name
         catalogbrowse_toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }

@@ -14,20 +14,24 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaredrummler.cyanea.Cyanea
 import kotlinx.android.synthetic.main.fragment_manga_info.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import toothpick.config.Module
 import top.rechinx.meow.R
 import top.rechinx.meow.domain.chapter.model.Chapter
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.glide.GlideApp
 import top.rechinx.meow.rikka.misc.Resource
+import top.rechinx.meow.ui.base.BaseFragment
+import top.rechinx.meow.ui.base.getSharedViewModel
+import top.rechinx.meow.ui.base.viewModel
 
-class MangaInfoFragment : Fragment() {
+class MangaInfoFragment : BaseFragment() {
 
-    private val viewModel by sharedViewModel<MangaInfoViewModel>()
+    private lateinit var viewModel: MangaInfoViewModel
 
     private lateinit var adapter: MangaInfoAdapter
+
+    override fun getModule(): Module? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -36,6 +40,8 @@ class MangaInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = getSharedViewModel()
 
         toolbar.setNavigationOnClickListener {
             activity?.finish()

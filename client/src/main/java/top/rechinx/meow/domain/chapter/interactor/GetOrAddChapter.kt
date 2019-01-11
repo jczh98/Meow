@@ -4,8 +4,9 @@ import io.reactivex.Single
 import top.rechinx.meow.core.source.model.ChapterInfo
 import top.rechinx.meow.domain.chapter.model.Chapter
 import top.rechinx.meow.domain.chapter.repository.ChapterRepository
+import javax.inject.Inject
 
-class GetOrAddChapter(
+class GetOrAddChapter @Inject constructor(
         private val chapterRepository: ChapterRepository
 ) {
 

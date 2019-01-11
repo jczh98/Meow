@@ -12,13 +12,10 @@ import com.jaredrummler.cyanea.Cyanea
 import com.jaredrummler.cyanea.prefs.CyaneaSettingsActivity
 import com.jaredrummler.cyanea.utils.ColorUtils
 import kotlinx.android.synthetic.main.fragment_about.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import top.rechinx.meow.R
 
 
 class AboutFragment : Fragment() {
-
-    private val viewModel by viewModel<AboutViewModel>()
 
     private var version: String? = null
 

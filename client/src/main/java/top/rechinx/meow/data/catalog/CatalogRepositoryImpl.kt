@@ -6,9 +6,10 @@ import top.rechinx.meow.core.source.Source
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.catalog.model.InternalCatalog
 import top.rechinx.meow.domain.catalog.repository.CatalogRepository
+import javax.inject.Inject
 
 
-internal class CatalogRepositoryImpl(
+internal class CatalogRepositoryImpl @Inject constructor(
         private val sourceManager: SourceManager
 ) : CatalogRepository {
 

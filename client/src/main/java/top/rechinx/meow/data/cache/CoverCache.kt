@@ -1,10 +1,14 @@
 package top.rechinx.meow.data.cache
 
+import android.app.Application
 import android.content.Context
 import top.rechinx.meow.utils.DiskUtil
 import java.io.File
+import javax.inject.Inject
 
-class CoverCache(val context: Context) {
+class CoverCache @Inject constructor(
+        val context: Application
+) {
 
     private val cacheDir = context.getExternalFilesDir("covers") ?:
             File(context.filesDir, "covers").also { it.mkdirs() }

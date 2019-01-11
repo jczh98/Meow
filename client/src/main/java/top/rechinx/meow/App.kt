@@ -2,17 +2,34 @@ package top.rechinx.meow
 
 import android.app.Application
 import com.jaredrummler.cyanea.Cyanea
-import org.koin.android.ext.android.startKoin
 import timber.log.Timber
-import top.rechinx.meow.di.appModule
-import top.rechinx.meow.di.interactorModule
-import top.rechinx.meow.di.repositoryModule
-import top.rechinx.meow.di.viewModelModule
+import toothpick.Toothpick
+import toothpick.configuration.Configuration
+import toothpick.registries.FactoryRegistryLocator
+import toothpick.registries.MemberInjectorRegistryLocator
+import toothpick.smoothie.module.SmoothieApplicationModule
+import top.rechinx.meow.di.*
 
 class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        // Dependency injection
+        val config = if (BuildConfig.DEBUG) {
+            Configuration.forDevelopment()
+        } else {
+            Configuration.forProduction()
+        }
+        Toothpick.setConfiguration(config.disableReflection())
+        FactoryRegistryLocator.setRootRegistry(FactoryRegistry())
+        MemberInjectorRegistryLocator.setRootRegistry(MemberInjectorRegistry())
+        val scope = Toothpick.openScope(AppScope)
+        scope.installModules(
+                SmoothieApplicationModule(this),
+                ApplicationModule,
+                DataModule
+        )
 
         // For timber
         if (BuildConfig.DEBUG) {
@@ -21,12 +38,5 @@ class App : Application() {
 
         // Configure for cyanea
         Cyanea.init(this, resources)
-
-        // Configure for Koin
-        startKoin(this, listOf(
-                appModule,
-                viewModelModule,
-                repositoryModule,
-                interactorModule))
     }
 }

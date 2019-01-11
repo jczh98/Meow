@@ -8,16 +8,18 @@ import android.view.View
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.jaredrummler.cyanea.inflator.CyaneaViewProcessor
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import timber.log.Timber
+import toothpick.config.Module
 import top.rechinx.meow.R
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.global.Extras
 import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.base.getCyaneaViewProcessors
+import top.rechinx.meow.ui.base.viewModel
 
 class MangaInfoActivity : BaseActivity(), CyaneaViewProcessor.Provider {
+
+    override fun getModule(): Module? = null
 
     private val mangaId by lazy {
         intent.getLongExtra(Extras.EXTRA_MANGA_ID, 0)

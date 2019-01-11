@@ -1,5 +1,6 @@
 package top.rechinx.meow.data.cache
 
+import android.app.Application
 import android.content.Context
 import android.text.format.Formatter
 import com.google.gson.Gson
@@ -9,8 +10,11 @@ import top.rechinx.meow.rikka.ext.saveTo
 import top.rechinx.meow.utils.DiskUtil
 import java.io.File
 import java.io.IOException
+import javax.inject.Inject
 
-class ChapterCache(val context: Context) {
+internal class ChapterCache @Inject constructor(
+        val context: Application
+) {
 
     companion object {
 

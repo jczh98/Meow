@@ -2,8 +2,11 @@ package top.rechinx.meow.core.source
 
 import top.rechinx.meow.core.source.internal.Dmzj
 import top.rechinx.meow.core.source.internal.TestSource
+import javax.inject.Inject
 
-class SourceManager(private val dependencies: Dependencies) {
+class SourceManager @Inject constructor(
+        private val dependencies: Dependencies
+) {
 
     private val sourcesMap = mutableMapOf<Long, Source>()
 

@@ -11,8 +11,9 @@ import top.rechinx.meow.data.manga.mapper.convertToManga
 import top.rechinx.meow.data.manga.model.MangaEntity
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.domain.manga.repository.MangaRepository
+import javax.inject.Inject
 
-internal class MangaRepositoryImpl(
+internal class MangaRepositoryImpl @Inject constructor(
         private val mangaDao: MangaDao
 ) : MangaRepository {
 

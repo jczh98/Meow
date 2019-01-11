@@ -14,8 +14,9 @@ import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.rikka.rx.RxSchedulers
 import top.rechinx.meow.rikka.rx.RxViewModel
+import javax.inject.Inject
 
-class MangaInfoViewModel(
+class MangaInfoViewModel @Inject constructor(
         private val getManga: GetManga,
         private val updateManga: UpdateManga,
         private val fetchChaptersFromSource: FetchChaptersFromSource,

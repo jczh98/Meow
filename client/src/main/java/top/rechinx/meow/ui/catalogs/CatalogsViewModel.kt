@@ -11,8 +11,9 @@ import top.rechinx.meow.domain.catalog.interactor.GetLocalCatalogs
 import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.rikka.rx.RxSchedulers
 import top.rechinx.meow.rikka.rx.RxViewModel
+import javax.inject.Inject
 
-class CatalogsViewModel(
+class CatalogsViewModel @Inject constructor(
         private val getLocalCatalogs: GetLocalCatalogs,
         private val schedulers: RxSchedulers
 ) : RxViewModel() {

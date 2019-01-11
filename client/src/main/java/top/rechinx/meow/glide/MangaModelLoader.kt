@@ -4,30 +4,31 @@ import android.util.LruCache
 import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher
 import com.bumptech.glide.load.Options
 import com.bumptech.glide.load.model.*
-import org.koin.core.Koin
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.cache.CoverCache
+import top.rechinx.meow.di.AppScope
 import top.rechinx.meow.domain.manga.model.Manga
 import java.io.File
 import java.io.InputStream
+import javax.inject.Inject
 
-class MangaModelLoader: ModelLoader<Manga, InputStream>, KoinComponent {
-
-    private val sourceManager: SourceManager by inject()
-
-    private val coverCache: CoverCache by inject()
+class MangaModelLoader(
+        private val sourceManager: SourceManager,
+        private val coverCache: CoverCache
+): ModelLoader<Manga, InputStream> {
 
     private val cachedHeaders = hashMapOf<Long, LazyHeaders>()
 
     private val lruCache = LruCache<GlideUrl, File>(100)
 
-    class Factory : ModelLoaderFactory<Manga, InputStream> {
+    class Factory(
+            private val sourceManager: SourceManager,
+            private val coverCache: CoverCache
+    ) : ModelLoaderFactory<Manga, InputStream> {
 
         override fun build(multiFactory: MultiModelLoaderFactory): ModelLoader<Manga, InputStream> {
-            return MangaModelLoader()
+            return MangaModelLoader(sourceManager, coverCache)
         }
 
         override fun teardown() {}

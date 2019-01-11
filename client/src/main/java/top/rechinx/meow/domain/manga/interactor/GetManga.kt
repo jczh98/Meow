@@ -3,8 +3,9 @@ package top.rechinx.meow.domain.manga.interactor
 import io.reactivex.Maybe
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.domain.manga.repository.MangaRepository
+import javax.inject.Inject
 
-class GetManga(
+class GetManga @Inject constructor(
         private val mangaRepository: MangaRepository
 ) {
 

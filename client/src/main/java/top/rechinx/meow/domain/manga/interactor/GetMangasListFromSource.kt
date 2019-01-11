@@ -10,8 +10,9 @@ import top.rechinx.meow.core.source.model.PagedList
 import top.rechinx.meow.data.manga.mapper.convertToEntity
 import top.rechinx.meow.data.manga.model.MangaEntity
 import top.rechinx.meow.domain.manga.model.Manga
+import javax.inject.Inject
 
-class GetMangasListFromSource(
+class GetMangasListFromSource @Inject constructor(
         private val getOrAddManga: GetOrAddManga
 ) {
 

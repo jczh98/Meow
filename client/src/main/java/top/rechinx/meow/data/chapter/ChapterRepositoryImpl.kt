@@ -8,8 +8,9 @@ import top.rechinx.meow.data.chapter.mapper.convertToChapter
 import top.rechinx.meow.data.chapter.mapper.convertToEntity
 import top.rechinx.meow.domain.chapter.model.Chapter
 import top.rechinx.meow.domain.chapter.repository.ChapterRepository
+import javax.inject.Inject
 
-class ChapterRepositoryImpl(
+internal class ChapterRepositoryImpl @Inject constructor(
         private val chapterDao: ChapterDao
 ) : ChapterRepository {
 

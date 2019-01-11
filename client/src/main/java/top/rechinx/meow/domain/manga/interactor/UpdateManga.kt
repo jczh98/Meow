@@ -6,8 +6,9 @@ import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.core.source.model.MangaInfo
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.domain.manga.repository.MangaRepository
+import javax.inject.Inject
 
-class UpdateManga(
+class UpdateManga @Inject constructor(
         private val mangaRepository: MangaRepository,
         private val sourceManager: SourceManager
 ) {

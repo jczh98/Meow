@@ -8,8 +8,9 @@ import top.rechinx.meow.core.source.model.PagedList
 import top.rechinx.meow.data.manga.mapper.convertToInfo
 import top.rechinx.meow.domain.chapter.model.Chapter
 import top.rechinx.meow.domain.manga.model.Manga
+import javax.inject.Inject
 
-class FetchChaptersFromSource(
+class FetchChaptersFromSource @Inject constructor(
         private val getOrAddChapter: GetOrAddChapter
 ) {
 

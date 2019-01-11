@@ -12,20 +12,27 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_catalogs.*
 import me.drakeet.multitype.MultiTypeAdapter
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import toothpick.config.Module
 import top.rechinx.meow.R
 import top.rechinx.meow.data.catalog.model.Catalog
 import top.rechinx.meow.data.catalog.model.LocalCatalog
 import top.rechinx.meow.rikka.misc.Resource
+import top.rechinx.meow.ui.base.BaseFragment
+import top.rechinx.meow.ui.base.getViewModel
+import top.rechinx.meow.ui.base.viewModel
 
-class CatalogsFragment : Fragment(), CatalogAdapter.Listener {
+class CatalogsFragment : BaseFragment(), CatalogAdapter.Listener {
 
     companion object {
         const val CATALOG_SOURCE_ID = "catalog_source_id"
     }
 
-    private val viewModel by viewModel<CatalogsViewModel>()
+    override fun getModule(): Module? {
+        return null
+    }
+
+    private lateinit var viewModel: CatalogsViewModel
 
     private lateinit var adapter : CatalogAdapter
 
@@ -37,6 +44,8 @@ class CatalogsFragment : Fragment(), CatalogAdapter.Listener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = getViewModel()
+
         adapter = CatalogAdapter(this)
         adapter.register(Catalog::class.java, CatalogBinder(adapter))
 
