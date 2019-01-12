@@ -36,13 +36,3 @@ abstract class BaseActivity: CyaneaAppCompatActivity() {
         Toothpick.closeScope(this)
     }
 }
-
-@Suppress("UNCHECKED_CAST")
-inline fun <reified T : ViewModel> BaseActivity.viewModel() = lazy {
-    val factory = object : ViewModelProvider.Factory {
-        override fun <R : ViewModel?> create(modelClass: Class<R>): R {
-            return scope.getInstance(T::class.java) as R
-        }
-    }
-    ViewModelProviders.of(this, factory).get(T::class.java)
-}

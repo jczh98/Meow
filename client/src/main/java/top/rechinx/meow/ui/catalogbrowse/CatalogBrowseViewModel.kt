@@ -26,7 +26,7 @@ import top.rechinx.meow.rikka.rx.RxViewModel
 import top.rechinx.meow.rikka.rx.scanWithPrevious
 import javax.inject.Inject
 
-class CatalogBrowseViewModel @Inject constructor(
+class CatalogBrowseViewModel(
         private val params: CatalogBrowseParams,
         private val sourceManager: SourceManager,
         private val getMangasListFromSource: GetMangasListFromSource,

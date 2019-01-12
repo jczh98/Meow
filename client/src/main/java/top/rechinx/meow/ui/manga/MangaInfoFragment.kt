@@ -20,6 +20,7 @@ import top.rechinx.meow.R
 import top.rechinx.meow.domain.chapter.model.Chapter
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.glide.GlideApp
+import top.rechinx.meow.global.Extras
 import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.rikka.viewmodel.getSharedViewModel
 import top.rechinx.meow.ui.base.BaseFragment
@@ -29,10 +30,16 @@ import javax.inject.Provider
 
 class MangaInfoFragment : BaseFragment() {
 
-    @Inject lateinit var vmProvider: Provider<MangaInfoViewModel>
+    private val mangaId: Long by lazy {
+        arguments?.getLong(Extras.EXTRA_MANGA_ID, 0) ?: 0
+    }
 
-    private val viewModel: MangaInfoViewModel by lazy {
-        getSharedViewModel(vmProvider)
+    @Inject lateinit var factorys: MangaInfoViewModelFactory
+
+    private val viewModel by lazy {
+        getSharedViewModel<MangaInfoViewModel> {
+            factorys.create(mangaId)
+        }
     }
 
     private lateinit var adapter: MangaInfoAdapter
@@ -59,23 +66,14 @@ class MangaInfoFragment : BaseFragment() {
     }
 
     private fun initSubscriptions() {
-        viewModel.mangaLiveData.observe(this, Observer { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    setLoading()
-                }
-                is Resource.Success -> {
-                    viewModel.fetchChapters(resource.value)
-                    ///setManga(resource.value)
-                    adapter = MangaInfoAdapter(resource.value)
-                }
+        viewModel.stateLiveData.observe(this, Observer { (state, prevState) ->
+            if (state.manga != null && state.manga !== prevState?.manga) {
+                adapter = MangaInfoAdapter(state.manga!!)
+                viewModel.loadChapters()
             }
-        })
-        viewModel.chaptersLiveData.observe(this, Observer { resource ->
-            when (resource) {
-                is Resource.Success -> {
-                    setManga(viewModel.manga, resource.value)
-                }
+            if (state.manga != null && (state.chapters !== prevState?.chapters || state.isLoading != prevState.isLoading
+                    || state.hasNextPage != prevState.hasNextPage)) {
+                setManga(state.manga, state.chapters)
             }
         })
     }
@@ -105,4 +103,14 @@ class MangaInfoFragment : BaseFragment() {
         adapter.submitList(newItems)
     }
 
+    companion object {
+
+        fun newInstance(mangaId: Long): MangaInfoFragment{
+            val fragment = MangaInfoFragment()
+            val bundle = Bundle()
+            bundle.putLong(Extras.EXTRA_MANGA_ID, mangaId)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
 }

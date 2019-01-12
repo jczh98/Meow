@@ -20,7 +20,6 @@ import top.rechinx.meow.data.catalog.model.LocalCatalog
 import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.rikka.viewmodel.getViewModel
 import top.rechinx.meow.ui.base.BaseFragment
-import top.rechinx.meow.ui.base.viewModel
 import javax.inject.Inject
 import javax.inject.Provider
 
