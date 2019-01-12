@@ -14,6 +14,7 @@ import toothpick.config.Module
 import top.rechinx.meow.R
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.rikka.ext.gone
+import top.rechinx.meow.rikka.ext.visibleIf
 import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.ui.base.*
 import top.rechinx.meow.ui.catalogs.CatalogsFragment
@@ -73,19 +74,12 @@ class CatalogBrowseFragment : BaseFragment(),
         recycler.addOnScrollListener(endlessListener)
 
         initSubscriptions()
-
-        viewModel.loadMore()
     }
 
     private fun initSubscriptions() {
-        viewModel.mangaListLiveData.observe(this, Observer { resource ->
-            when(resource) {
-                is Resource.Success -> {
-                    viewModel.mangaList.addAll(resource.value.list)
-                    adapter.submitList(viewModel.mangaList, true, !resource.value.hasNextPage)
-                    progress.gone()
-                }
-            }
+        viewModel.stateLiveData.observe(this, Observer { state ->
+                adapter.submitList(state.mangas, state.isLoading, !state.hasMorePages)
+                progress.gone()
         })
     }
 
