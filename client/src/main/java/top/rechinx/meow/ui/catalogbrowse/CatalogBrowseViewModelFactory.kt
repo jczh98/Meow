@@ -12,7 +12,7 @@ class CatalogBrowseViewModelFactory @Inject constructor(
         private val schedulers: RxSchedulers
 ) {
 
-    fun createa(params: CatalogBrowseParams): CatalogBrowseViewModel {
+    fun create(params: CatalogBrowseParams): CatalogBrowseViewModel {
         return CatalogBrowseViewModel(params, sourceManager, getMangasListFromSource, schedulers)
     }
 

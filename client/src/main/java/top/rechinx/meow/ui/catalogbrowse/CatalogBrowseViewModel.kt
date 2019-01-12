@@ -20,8 +20,10 @@ import top.rechinx.meow.domain.manga.interactor.GetMangasListFromSource
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.domain.manga.model.MangasPage
 import top.rechinx.meow.rikka.misc.Resource
+import top.rechinx.meow.rikka.rx.Dispatcher
 import top.rechinx.meow.rikka.rx.RxSchedulers
 import top.rechinx.meow.rikka.rx.RxViewModel
+import top.rechinx.meow.rikka.rx.scanWithPrevious
 import javax.inject.Inject
 
 class CatalogBrowseViewModel @Inject constructor(
@@ -33,7 +35,7 @@ class CatalogBrowseViewModel @Inject constructor(
 
     private val actions = PublishRelay.create<CatalogBrowseAction>()
 
-    val stateLiveData: MutableLiveData<CatalogBrowseViewState> = MutableLiveData()
+    val stateLiveData: MutableLiveData<Dispatcher<CatalogBrowseViewState>> = MutableLiveData()
 
     val source = sourceManager.getOrStub(params.sourceId) as CatalogSource
 
@@ -49,6 +51,7 @@ class CatalogBrowseViewModel @Inject constructor(
                 )
                 .distinctUntilChanged()
                 .observeOn(schedulers.main)
+                .scanWithPrevious()
                 .subscribe(stateLiveData::postValue)
                 .addTo(disposables)
     }

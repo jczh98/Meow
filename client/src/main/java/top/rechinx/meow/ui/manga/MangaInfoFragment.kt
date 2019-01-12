@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaredrummler.cyanea.Cyanea
 import kotlinx.android.synthetic.main.fragment_manga_info.*
-import me.tatarka.injectedvmprovider.InjectedViewModelProviders
 import timber.log.Timber
 import toothpick.config.Module
 import top.rechinx.meow.R

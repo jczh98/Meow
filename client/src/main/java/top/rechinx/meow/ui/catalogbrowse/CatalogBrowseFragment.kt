@@ -9,13 +9,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_catalog_browse.*
-import me.tatarka.injectedvmprovider.InjectedViewModelProviders
 import toothpick.config.Module
 import top.rechinx.meow.R
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.rikka.ext.gone
 import top.rechinx.meow.rikka.ext.visibleIf
-import top.rechinx.meow.rikka.misc.Resource
+import top.rechinx.meow.rikka.viewmodel.getViewModel
 import top.rechinx.meow.ui.base.*
 import top.rechinx.meow.ui.catalogs.CatalogsFragment
 import top.rechinx.meow.ui.manga.MangaInfoActivity
@@ -32,10 +31,9 @@ class CatalogBrowseFragment : BaseFragment(),
     @Inject lateinit var factorys: CatalogBrowseViewModelFactory
 
     private val viewModel by lazy {
-        InjectedViewModelProviders.of(this)
-                .get(CatalogBrowseViewModel::class.java.name) {
-                    factorys.createa(CatalogBrowseParams(sourceId))
-                }
+        getViewModel<CatalogBrowseViewModel> {
+            factorys.create(CatalogBrowseParams(sourceId))
+        }
     }
 
     private lateinit var adapter: CatalogBrowseAdapter
@@ -77,9 +75,11 @@ class CatalogBrowseFragment : BaseFragment(),
     }
 
     private fun initSubscriptions() {
-        viewModel.stateLiveData.observe(this, Observer { state ->
-                adapter.submitList(state.mangas, state.isLoading, !state.hasMorePages)
-                progress.gone()
+        viewModel.stateLiveData.observe(this, Observer { (state, prevState) ->
+            if (state.isLoading != prevState?.isLoading) {
+                progress.visibleIf { state.isLoading && state.mangas.isEmpty() }
+            }
+            adapter.submitList(state.mangas, state.isLoading, !state.hasMorePages)
         })
     }
 
