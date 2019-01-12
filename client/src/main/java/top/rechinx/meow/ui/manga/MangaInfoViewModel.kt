@@ -24,6 +24,9 @@ class MangaInfoViewModel @Inject constructor(
         private val schedulers: RxSchedulers
 ) : RxViewModel() {
 
+    init {
+        Timber.d("FUCK enter")
+    }
     val mangaLiveData: MutableLiveData<Resource<Manga>> = MutableLiveData()
 
     val chaptersLiveData: MutableLiveData<Resource<List<Chapter>>> = MutableLiveData()

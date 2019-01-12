@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaredrummler.cyanea.Cyanea
 import kotlinx.android.synthetic.main.fragment_manga_info.*
+import me.tatarka.injectedvmprovider.InjectedViewModelProviders
 import timber.log.Timber
 import toothpick.config.Module
 import top.rechinx.meow.R
@@ -21,13 +22,19 @@ import top.rechinx.meow.domain.chapter.model.Chapter
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.glide.GlideApp
 import top.rechinx.meow.rikka.misc.Resource
+import top.rechinx.meow.rikka.viewmodel.getSharedViewModel
 import top.rechinx.meow.ui.base.BaseFragment
-import top.rechinx.meow.ui.base.getSharedViewModel
 import top.rechinx.meow.ui.base.viewModel
+import javax.inject.Inject
+import javax.inject.Provider
 
 class MangaInfoFragment : BaseFragment() {
 
-    private lateinit var viewModel: MangaInfoViewModel
+    @Inject lateinit var vmProvider: Provider<MangaInfoViewModel>
+
+    private val viewModel: MangaInfoViewModel by lazy {
+        getSharedViewModel(vmProvider)
+    }
 
     private lateinit var adapter: MangaInfoAdapter
 
@@ -40,8 +47,6 @@ class MangaInfoFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = getSharedViewModel()
 
         toolbar.setNavigationOnClickListener {
             activity?.finish()

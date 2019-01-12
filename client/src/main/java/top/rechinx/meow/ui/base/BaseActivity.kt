@@ -20,6 +20,7 @@ abstract class BaseActivity: CyaneaAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Toothpick.inject(this, scope)
         setContentView(getLayoutRes())
         setUpViews(savedInstanceState)
     }

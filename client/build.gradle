@@ -116,4 +116,7 @@ dependencies {
 
     // RxRelay
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0'
+
+    // injectedvmprovider
+    implementation 'me.tatarka.injectedvmprovider:injectedvmprovider-extensions:2.0'
 }

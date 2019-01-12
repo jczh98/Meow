@@ -1,36 +1,22 @@
 package top.rechinx.meow.ui.catalogbrowse
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_catalog_browse.*
-import me.drakeet.multitype.Items
-import timber.log.Timber
-import toothpick.Scope
-import toothpick.Toothpick
+import me.tatarka.injectedvmprovider.InjectedViewModelProviders
 import toothpick.config.Module
 import top.rechinx.meow.R
-import top.rechinx.meow.core.source.SourceManager
-import top.rechinx.meow.di.AppScope
-import top.rechinx.meow.di.bindInstance
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.rikka.ext.gone
-import top.rechinx.meow.rikka.ext.visible
 import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.ui.base.*
-import top.rechinx.meow.ui.catalogs.CatalogBinder
 import top.rechinx.meow.ui.catalogs.CatalogsFragment
-import top.rechinx.meow.ui.catalogs.CatalogsViewModel
 import top.rechinx.meow.ui.manga.MangaInfoActivity
 import javax.inject.Inject
 
@@ -42,7 +28,14 @@ class CatalogBrowseFragment : BaseFragment(),
         arguments?.getLong(CatalogsFragment.CATALOG_SOURCE_ID) ?: -1
     }
 
-    private lateinit var viewModel: CatalogBrowseViewModel
+    @Inject lateinit var factorys: CatalogBrowseViewModelFactory
+
+    private val viewModel by lazy {
+        InjectedViewModelProviders.of(this)
+                .get(CatalogBrowseViewModel::class.java.name) {
+                    factorys.createa(CatalogBrowseParams(sourceId))
+                }
+    }
 
     private lateinit var adapter: CatalogBrowseAdapter
 
@@ -57,8 +50,6 @@ class CatalogBrowseFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = getViewModel()
-
         // Setup toolbar
         catalogbrowse_toolbar.title = viewModel.source.name
         catalogbrowse_toolbar.setNavigationOnClickListener {
