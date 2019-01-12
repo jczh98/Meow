@@ -84,6 +84,9 @@ class MangaInfoViewModel(
                                 )
                             }
                 }
+                .doOnNext {
+                    loadChapters()
+                }
     }
 
     private fun loadChaptersSideEffect(

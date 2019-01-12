@@ -12,4 +12,15 @@ data class MangaInfoViewState(
         val currentPage: Int = 0,
         val hasNextPage: Boolean = true,
         val error: Throwable? = null
-)
+) {
+    override fun toString(): String {
+        return "MangaInfoViewState(" +
+                "source=${source?.name}, " +
+                "manga=${manga?.title}, " +
+                "chapters=${chapters.size}, " +
+                "isLoading=$isLoading, " +
+                "currentPage=$currentPage, " +
+                "hasNextPage=$hasNextPage, " +
+                "error=${error?.message})"
+    }
+}

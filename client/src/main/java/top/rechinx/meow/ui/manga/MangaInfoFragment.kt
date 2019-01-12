@@ -24,7 +24,6 @@ import top.rechinx.meow.global.Extras
 import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.rikka.viewmodel.getSharedViewModel
 import top.rechinx.meow.ui.base.BaseFragment
-import top.rechinx.meow.ui.base.viewModel
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -67,18 +66,18 @@ class MangaInfoFragment : BaseFragment() {
 
     private fun initSubscriptions() {
         viewModel.stateLiveData.observe(this, Observer { (state, prevState) ->
-            if (state.manga != null && state.manga !== prevState?.manga) {
-                adapter = MangaInfoAdapter(state.manga!!)
-                viewModel.loadChapters()
+            if (state.isLoading != prevState?.isLoading) {
+                setLoading(state.isLoading)
             }
             if (state.manga != null && (state.chapters !== prevState?.chapters || state.isLoading != prevState.isLoading
                     || state.hasNextPage != prevState.hasNextPage)) {
+                adapter = MangaInfoAdapter(state.manga)
                 setManga(state.manga, state.chapters)
             }
         })
     }
 
-    private fun setLoading() {
+    private fun setLoading(isLoading: Boolean) {
 
     }
 
