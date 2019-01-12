@@ -13,9 +13,10 @@ import toothpick.config.Module
 import top.rechinx.meow.R
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.global.Extras
+import top.rechinx.meow.rikka.viewmodel.getViewModel
 import top.rechinx.meow.ui.base.BaseActivity
 import top.rechinx.meow.ui.base.getCyaneaViewProcessors
-import top.rechinx.meow.ui.base.viewModel
+import javax.inject.Inject
 
 class MangaInfoActivity : BaseActivity(), CyaneaViewProcessor.Provider {
 
@@ -25,10 +26,13 @@ class MangaInfoActivity : BaseActivity(), CyaneaViewProcessor.Provider {
         intent.getLongExtra(Extras.EXTRA_MANGA_ID, 0)
     }
 
-    private val viewModel by viewModel<MangaInfoViewModel>()
+    @Inject lateinit var factorys: MangaInfoViewModelFactory
 
-    override fun onSupportNavigateUp()
-            = findNavController(R.id.manga_nav_host_fragment).navigateUp()
+    private val viewModel by lazy {
+        getViewModel<MangaInfoViewModel> {
+            factorys.create(mangaId)
+        }
+    }
 
     override fun getLayoutRes(): Int
             = R.layout.activity_manga_info
@@ -37,7 +41,11 @@ class MangaInfoActivity : BaseActivity(), CyaneaViewProcessor.Provider {
 
     override fun setUpViews(savedInstanceState: Bundle?) {
         super.setUpViews(savedInstanceState)
-        viewModel.mangaId = mangaId
+        //viewModel.mangaId = mangaId
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, MangaInfoFragment.newInstance(mangaId))
+                .commit()
     }
 
     companion object {
