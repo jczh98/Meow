@@ -1,5 +1,6 @@
 package top.rechinx.meow.domain.manga.interactor
 
+import io.reactivex.Maybe
 import io.reactivex.Single
 import timber.log.Timber
 import top.rechinx.meow.core.source.model.MangaInfo

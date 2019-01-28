@@ -7,15 +7,24 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.custom_catalogbrowse_filters_sheet.*
+import kotlinx.android.synthetic.main.custom_catalogbrowse_filters_sheet.view.*
 import kotlinx.android.synthetic.main.fragment_catalog_browse.*
-import toothpick.config.Module
+import me.drakeet.multitype.Items
+import me.drakeet.multitype.MultiTypeAdapter
+import timber.log.Timber
 import top.rechinx.meow.R
+import top.rechinx.meow.core.source.model.Filter
+import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.rikka.ext.gone
 import top.rechinx.meow.rikka.ext.visibleIf
 import top.rechinx.meow.rikka.viewmodel.getViewModel
 import top.rechinx.meow.ui.base.*
+import top.rechinx.meow.ui.catalogbrowse.filters.FiltersBottomSheetDialog
+import top.rechinx.meow.ui.catalogbrowse.filters.SelectItemBinder
 import top.rechinx.meow.ui.catalogs.CatalogsFragment
 import top.rechinx.meow.ui.manga.MangaInfoActivity
 import javax.inject.Inject
@@ -28,19 +37,18 @@ class CatalogBrowseFragment : BaseFragment(),
         arguments?.getLong(CatalogsFragment.CATALOG_SOURCE_ID) ?: -1
     }
 
-    @Inject lateinit var factorys: CatalogBrowseViewModelFactory
+    @Inject lateinit var vmFactory: CatalogBrowseViewModel.Factory
 
     private val viewModel by lazy {
         getViewModel<CatalogBrowseViewModel> {
-            factorys.create(CatalogBrowseParams(sourceId))
+            vmFactory.create(CatalogBrowseParams(sourceId))
         }
     }
 
     private lateinit var adapter: CatalogBrowseAdapter
 
-    override fun getModule(): Module? {
-        return CatalogBrowseModule(this)
-    }
+    private lateinit var filtersAdapter: MultiTypeAdapter
+    private var filtersItems = Items()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -56,7 +64,6 @@ class CatalogBrowseFragment : BaseFragment(),
         }
 
         adapter = CatalogBrowseAdapter(this)
-
         recycler.setHasFixedSize(true)
         recycler.adapter = adapter
         val layoutManager = GridLayoutManager(activity, 2).apply {
@@ -71,7 +78,45 @@ class CatalogBrowseFragment : BaseFragment(),
         val endlessListener = EndlessRecyclerViewScrollListener(layoutManager, this)
         recycler.addOnScrollListener(endlessListener)
 
+        // Fab
+        fab.setOnClickListener {
+            showFilters()
+        }
+
+        // Initialize filters adapter
+        filtersAdapter = MultiTypeAdapter(filtersItems)
+        filtersAdapter.register(Filter.Select::class.java, SelectItemBinder())
+
         initSubscriptions()
+    }
+
+    private fun showFilters() {
+        val view = view ?: return
+
+        val dialog = FiltersBottomSheetDialog(view.context)
+
+        val filtersView = layoutInflater.inflate(R.layout.custom_catalogbrowse_filters_sheet, null)
+
+        filtersView.filter_button_close.setOnClickListener { dialog.cancel() }
+        filtersView.filter_button_reset.setOnClickListener { resetFilters() }
+        filtersView.filter_button_search.setOnClickListener { applyFilters() }
+
+        filtersView.filters_recycler.layoutManager = LinearLayoutManager(view.context)
+        filtersView.filters_recycler.adapter = filtersAdapter
+
+        dialog.setContentView(filtersView)
+        dialog.show()
+    }
+
+    private fun applyFilters() {
+        viewModel.setFilters(FilterList(
+                filtersItems.map {
+            it as Filter.Select<*>
+        }))
+    }
+
+    private fun resetFilters() {
+
     }
 
     private fun initSubscriptions() {
@@ -79,6 +124,8 @@ class CatalogBrowseFragment : BaseFragment(),
             if (state.isLoading != prevState?.isLoading) {
                 progress.visibleIf { state.isLoading && state.mangas.isEmpty() }
             }
+            filtersItems = Items(state.filters)
+            filtersAdapter.items = filtersItems
             adapter.submitList(state.mangas, state.isLoading, !state.hasMorePages)
         })
     }

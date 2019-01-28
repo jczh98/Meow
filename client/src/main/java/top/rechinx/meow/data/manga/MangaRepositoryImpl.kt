@@ -13,16 +13,16 @@ import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.domain.manga.repository.MangaRepository
 import javax.inject.Inject
 
-internal class MangaRepositoryImpl @Inject constructor(
+class MangaRepositoryImpl @Inject constructor(
         private val mangaDao: MangaDao
 ) : MangaRepository {
 
     override fun saveAndReturnManga(mangaInfo: MangaInfo, sourceId: Long): Single<Manga> {
         val newManga = mangaInfo.convertToEntity(sourceId)
-        return Single.create{
+        return Single.create {
             val insertedId = mangaDao.insertManga(newManga)
-            newManga.copy(id = insertedId)
-            it.onSuccess(newManga.convertToManga())
+            val dbManga = newManga.copy(id = insertedId)
+            it.onSuccess(dbManga.convertToManga())
         }
     }
 

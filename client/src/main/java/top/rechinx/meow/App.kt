@@ -2,34 +2,17 @@ package top.rechinx.meow
 
 import android.app.Application
 import com.jaredrummler.cyanea.Cyanea
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 import timber.log.Timber
-import toothpick.Toothpick
-import toothpick.configuration.Configuration
-import toothpick.registries.FactoryRegistryLocator
-import toothpick.registries.MemberInjectorRegistryLocator
-import toothpick.smoothie.module.SmoothieApplicationModule
 import top.rechinx.meow.di.*
 
-class App : Application() {
+class App : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
 
-        // Dependency injection
-        val config = if (BuildConfig.DEBUG) {
-            Configuration.forDevelopment()
-        } else {
-            Configuration.forProduction()
-        }
-        Toothpick.setConfiguration(config.disableReflection())
-        FactoryRegistryLocator.setRootRegistry(FactoryRegistry())
-        MemberInjectorRegistryLocator.setRootRegistry(MemberInjectorRegistry())
-        val scope = Toothpick.openScope(AppScope)
-        scope.installModules(
-                SmoothieApplicationModule(this),
-                ApplicationModule,
-                DataModule
-        )
+        INSTANCE = this
 
         // For timber
         if (BuildConfig.DEBUG) {
@@ -38,5 +21,23 @@ class App : Application() {
 
         // Configure for cyanea
         Cyanea.init(this, resources)
+    }
+
+    private val androidInjector: AndroidInjector<out DaggerApplication> by lazy {
+        DaggerAppComponent.builder()
+                .application(this)
+                .build()
+    }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication>
+        = androidInjector
+
+    fun appComponent() = androidInjector as DaggerAppComponent
+
+    companion object {
+        @Volatile
+        private var INSTANCE: App? = null
+
+        fun get() = INSTANCE!!
     }
 }

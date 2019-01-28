@@ -19,12 +19,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [toothpick_registry_package_name: 'top.rechinx.meow']
-            }
-        }
     }
 
     buildTypes {
@@ -82,6 +76,18 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"
     implementation "android.arch.navigation:navigation-ui-ktx:$nav_version"
 
+    // Dagger2
+    def dagger_version = "2.16"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    // Assisted Injection
+    compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.3.2'
+    kapt 'com.squareup.inject:assisted-inject-processor-dagger2:0.3.2'
+
     // Cyanea
     implementation 'com.jaredrummler:cyanea:1.0.1'
 
@@ -106,14 +112,12 @@ dependencies {
     // DiskLruCache
     implementation 'com.jakewharton:disklrucache:2.0.2'
 
-    // Toothpick
-    implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:1.1.3'
-    implementation 'com.github.stephanenicolas.toothpick:smoothie:1.1.3'
-    kapt 'com.github.stephanenicolas.toothpick:toothpick-compiler:1.1.3'
-
     // RxRedux
     implementation 'com.freeletics.rxredux:rxredux:1.0.1'
 
     // RxRelay
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0'
+
+    // Injected ViewModel Provider
+    implementation 'me.tatarka.injectedvmprovider:injectedvmprovider-extensions:2.0'
 }

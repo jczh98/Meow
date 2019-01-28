@@ -1,6 +1,6 @@
 package top.rechinx.meow.core.source.model
 
-sealed class Filter<T>(val name: String, val value: T) {
+sealed class Filter<T>(val name: String, var value: T) {
 
     /**
      * Basic Filters

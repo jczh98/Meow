@@ -9,7 +9,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.jaredrummler.cyanea.inflator.CyaneaViewProcessor
 import timber.log.Timber
-import toothpick.config.Module
 import top.rechinx.meow.R
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.global.Extras
@@ -20,17 +19,15 @@ import javax.inject.Inject
 
 class MangaInfoActivity : BaseActivity(), CyaneaViewProcessor.Provider {
 
-    override fun getModule(): Module? = null
-
     private val mangaId by lazy {
         intent.getLongExtra(Extras.EXTRA_MANGA_ID, 0)
     }
 
-    @Inject lateinit var factorys: MangaInfoViewModelFactory
+    @Inject lateinit var vmFactory: MangaInfoViewModel.Factory
 
     private val viewModel by lazy {
         getViewModel<MangaInfoViewModel> {
-            factorys.create(mangaId)
+            vmFactory.create(mangaId)
         }
     }
 

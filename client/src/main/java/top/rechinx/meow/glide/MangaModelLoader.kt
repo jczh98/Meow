@@ -7,11 +7,9 @@ import com.bumptech.glide.load.model.*
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.cache.CoverCache
-import top.rechinx.meow.di.AppScope
 import top.rechinx.meow.domain.manga.model.Manga
 import java.io.File
 import java.io.InputStream
-import javax.inject.Inject
 
 class MangaModelLoader(
         private val sourceManager: SourceManager,

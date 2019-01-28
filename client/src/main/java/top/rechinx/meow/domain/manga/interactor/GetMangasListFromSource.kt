@@ -4,6 +4,7 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.Function
 import io.reactivex.rxkotlin.flatMapIterable
+import timber.log.Timber
 import top.rechinx.meow.core.source.CatalogSource
 import top.rechinx.meow.core.source.model.MangaInfo
 import top.rechinx.meow.core.source.model.PagedList

@@ -9,7 +9,7 @@ import top.rechinx.meow.domain.catalog.repository.CatalogRepository
 import javax.inject.Inject
 
 
-internal class CatalogRepositoryImpl @Inject constructor(
+class CatalogRepositoryImpl @Inject constructor(
         private val sourceManager: SourceManager
 ) : CatalogRepository {
 

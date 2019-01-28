@@ -12,7 +12,7 @@ import java.io.File
 import java.io.IOException
 import javax.inject.Inject
 
-internal class ChapterCache @Inject constructor(
+class ChapterCache @Inject constructor(
         val context: Application
 ) {
 

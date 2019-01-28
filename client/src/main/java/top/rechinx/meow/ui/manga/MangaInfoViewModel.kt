@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import com.freeletics.rxredux.StateAccessor
 import com.freeletics.rxredux.reduxStore
 import com.jakewharton.rxrelay2.PublishRelay
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.addTo
@@ -24,14 +26,19 @@ import top.rechinx.meow.rikka.rx.RxViewModel
 import top.rechinx.meow.rikka.rx.scanWithPrevious
 import javax.inject.Inject
 
-class MangaInfoViewModel(
-        private val mangaId: Long,
+class MangaInfoViewModel @AssistedInject constructor(
+        @Assisted private val mangaId: Long,
         private val getManga: GetManga,
         private val updateManga: UpdateManga,
         private val fetchChaptersFromSource: FetchChaptersFromSource,
         private val sourceManager: SourceManager,
         private val schedulers: RxSchedulers
 ) : RxViewModel() {
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(mangaId: Long): MangaInfoViewModel
+    }
 
     private val actions = PublishRelay.create<MangaInfoAction>()
 

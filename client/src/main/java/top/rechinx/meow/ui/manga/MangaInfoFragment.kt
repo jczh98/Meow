@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaredrummler.cyanea.Cyanea
 import kotlinx.android.synthetic.main.fragment_manga_info.*
 import timber.log.Timber
-import toothpick.config.Module
 import top.rechinx.meow.R
 import top.rechinx.meow.domain.chapter.model.Chapter
 import top.rechinx.meow.domain.manga.model.Manga
@@ -33,17 +32,15 @@ class MangaInfoFragment : BaseFragment() {
         arguments?.getLong(Extras.EXTRA_MANGA_ID, 0) ?: 0
     }
 
-    @Inject lateinit var factorys: MangaInfoViewModelFactory
+    @Inject lateinit var vmFactory: MangaInfoViewModel.Factory
 
     private val viewModel by lazy {
         getSharedViewModel<MangaInfoViewModel> {
-            factorys.create(mangaId)
+            vmFactory.create(mangaId)
         }
     }
 
     private lateinit var adapter: MangaInfoAdapter
-
-    override fun getModule(): Module? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {

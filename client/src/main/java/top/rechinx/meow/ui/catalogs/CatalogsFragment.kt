@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_catalogs.*
 import me.drakeet.multitype.MultiTypeAdapter
+import me.tatarka.injectedvmprovider.InjectedViewModelProviders
 import timber.log.Timber
-import toothpick.config.Module
 import top.rechinx.meow.R
 import top.rechinx.meow.data.catalog.model.Catalog
 import top.rechinx.meow.data.catalog.model.LocalCatalog
@@ -30,11 +30,7 @@ class CatalogsFragment : BaseFragment(), CatalogAdapter.Listener {
         const val CATALOG_SOURCE_ID = "catalog_source_id"
     }
 
-    override fun getModule(): Module? {
-        return null
-    }
-
-    @Inject lateinit var  vmProvider: Provider<CatalogsViewModel>
+    @Inject lateinit var vmProvider: Provider<CatalogsViewModel>
 
     private val viewModel: CatalogsViewModel by lazy {
         getViewModel(vmProvider)

@@ -30,4 +30,10 @@
     <string name="string_manga_status_ongoing">Ongoing</string>
     <string name="string_manga_status_completed">Completed</string>
     <string name="string_manga_status_unknown">Unknown</string>
+
+    <!-- Custom filters -->
+    <string name="string_custom_filter">Custom Filter</string>
+    <string name="action_close">Close</string>
+    <string name="action_reset">Reset</string>
+    <string name="action_search">Search</string>
 </resources>

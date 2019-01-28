@@ -1,13 +1,32 @@
 package top.rechinx.meow.ui.catalogbrowse
 
+import top.rechinx.meow.core.source.model.Filter
+import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.core.source.model.PagedList
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.domain.manga.model.MangasPage
+import top.rechinx.meow.ui.catalogbrowse.filters.QueryMode
 
 sealed class CatalogBrowseAction {
 
     object LoadMore : CatalogBrowseAction()
 
+    sealed class SetQueryMode : CatalogBrowseAction() {
+        object Listing : SetQueryMode()
+        data class Search(val query: String) : SetQueryMode()
+        data class Filters(val filters: FilterList) : SetQueryMode()
+    }
+
+    data class QueryModeUpdated(val mode: QueryMode) : CatalogBrowseAction() {
+        override fun reduce(state: CatalogBrowseViewState) =
+                state.copy(
+                        queryMode = mode,
+                        mangas = emptyList(),
+                        currentPage = 0,
+                        hasMorePages = true,
+                        isLoading = false
+                )
+    }
 
     data class PageReceived(val page: MangasPage) : CatalogBrowseAction() {
         override fun reduce(state: CatalogBrowseViewState) =

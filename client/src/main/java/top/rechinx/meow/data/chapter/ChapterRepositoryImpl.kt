@@ -10,7 +10,7 @@ import top.rechinx.meow.domain.chapter.model.Chapter
 import top.rechinx.meow.domain.chapter.repository.ChapterRepository
 import javax.inject.Inject
 
-internal class ChapterRepositoryImpl @Inject constructor(
+class ChapterRepositoryImpl @Inject constructor(
         private val chapterDao: ChapterDao
 ) : ChapterRepository {
 
