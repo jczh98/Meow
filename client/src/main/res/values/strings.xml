@@ -30,10 +30,35 @@
     <string name="string_manga_status_ongoing">Ongoing</string>
     <string name="string_manga_status_completed">Completed</string>
     <string name="string_manga_status_unknown">Unknown</string>
+    <string name="string_error">Whoops! Something went wrong</string>
+    <string name="string_button_retry">Retry</string>
+    <string name="string_empty">No Results Found</string>
 
     <!-- Custom filters -->
     <string name="string_custom_filter">Custom Filter</string>
     <string name="action_close">Close</string>
     <string name="action_reset">Reset</string>
     <string name="action_search">Search</string>
+
+    <!-- Reader Settings -->
+    <string name="setting_sheet_select_viewer">Selecting viewer </string>
+    <string name="setting_sheet_category_general">General</string>
+    <string name="setting_sheet_hide_info">Hide reader information</string>
+    <string name="setting_sheet_category_page">Pager</string>
+    <string name="setting_sheet_category_webtoon">Webtoon</string>
+    <string name="setting_sheet_fullscreen">Fullscreen</string>
+    <string name="pref_page_transitions">Page transitions</string>
+    <string name="default_viewer">Default</string>
+    <string name="left_to_right_viewer">Left to right</string>
+    <string name="right_to_left_viewer">Right to left</string>
+    <string name="webtoon_viewer">Webtoon</string>
+    <string name="action_retry">Retrt</string>
+    <string name="transition_finished">Finished:</string>
+    <string name="transition_current">Current:</string>
+    <string name="transition_next">Next:</string>
+    <string name="transition_previous">Previous:</string>
+    <string name="transition_no_next">There\'s no next chapter</string>
+    <string name="transition_no_previous">There\'s no previous chapter</string>
+    <string name="transition_pages_loading">Loading pages…</string>
+    <string name="transition_pages_error">Failed to load pages: %1$s</string>
 </resources>

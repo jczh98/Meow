@@ -5,6 +5,7 @@ import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.core.source.model.PagedList
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.domain.manga.model.MangasPage
+import top.rechinx.meow.ui.catalogbrowse.filters.FilterWrapper
 import top.rechinx.meow.ui.catalogbrowse.filters.QueryMode
 
 sealed class CatalogBrowseAction {
@@ -14,7 +15,7 @@ sealed class CatalogBrowseAction {
     sealed class SetQueryMode : CatalogBrowseAction() {
         object Listing : SetQueryMode()
         data class Search(val query: String) : SetQueryMode()
-        data class Filters(val filters: FilterList) : SetQueryMode()
+        data class Filters(val filters: List<FilterWrapper<*>>) : SetQueryMode()
     }
 
     data class QueryModeUpdated(val mode: QueryMode) : CatalogBrowseAction() {

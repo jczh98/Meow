@@ -28,3 +28,11 @@ internal fun ChapterInfo.convertToEntity(mangaId: Long): ChapterEntity {
             dateUpload
     )
 }
+
+internal fun Chapter.convertToChapterInfo(): ChapterInfo {
+    return ChapterInfo(
+            key,
+            name,
+            0
+    )
+}

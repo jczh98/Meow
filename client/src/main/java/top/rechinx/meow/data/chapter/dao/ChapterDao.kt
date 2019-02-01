@@ -22,4 +22,6 @@ interface ChapterDao {
     @Query("SELECT * FROM ChapterEntity WHERE id = :id")
     fun queryChapter(id: Long): Maybe<ChapterEntity>
 
+    @Query("SELECT * FROM ChapterEntity WHERE mangaId = :mangaId")
+    fun getChapters(mangaId: Long) : Maybe<List<ChapterEntity>>
 }

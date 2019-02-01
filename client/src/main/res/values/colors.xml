@@ -66,4 +66,8 @@
     <!-- Red -->
     <color name="md_red_500">#F44336</color>
 
+    <!--=============-->
+    <!-- Misc Colors -->
+    <!--=============-->
+    <color name="trans_light_black">#88000000</color>
 </resources>

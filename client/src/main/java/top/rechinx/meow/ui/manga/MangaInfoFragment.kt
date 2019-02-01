@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jaredrummler.cyanea.Cyanea
+import com.kennyc.view.MultiStateView
 import kotlinx.android.synthetic.main.fragment_manga_info.*
 import timber.log.Timber
 import top.rechinx.meow.R
@@ -23,10 +24,11 @@ import top.rechinx.meow.global.Extras
 import top.rechinx.meow.rikka.misc.Resource
 import top.rechinx.meow.rikka.viewmodel.getSharedViewModel
 import top.rechinx.meow.ui.base.BaseFragment
+import top.rechinx.meow.ui.reader.ReaderActivity
 import javax.inject.Inject
 import javax.inject.Provider
 
-class MangaInfoFragment : BaseFragment() {
+class MangaInfoFragment : BaseFragment(), MangaInfoAdapter.Listener {
 
     private val mangaId: Long by lazy {
         arguments?.getLong(Extras.EXTRA_MANGA_ID, 0) ?: 0
@@ -66,10 +68,14 @@ class MangaInfoFragment : BaseFragment() {
             if (state.isLoading != prevState?.isLoading) {
                 setLoading(state.isLoading)
             }
+            if (state.error != prevState?.error) {
+                multi_state_view.viewState = MultiStateView.VIEW_STATE_ERROR
+            }
             if (state.manga != null && (state.chapters !== prevState?.chapters || state.isLoading != prevState.isLoading
                     || state.hasNextPage != prevState.hasNextPage)) {
-                adapter = MangaInfoAdapter(state.manga)
+                adapter = MangaInfoAdapter(state.manga, this@MangaInfoFragment)
                 setManga(state.manga, state.chapters)
+                multi_state_view.viewState = MultiStateView.VIEW_STATE_CONTENT
             }
         })
     }
@@ -97,6 +103,12 @@ class MangaInfoFragment : BaseFragment() {
 
         val newItems = listOf(manga) + chapters
         adapter.submitList(newItems)
+    }
+
+    override fun onChapterClick(chapter: Chapter) {
+        startActivity(ReaderActivity.createIntent(requireContext(),
+                viewModel.stateLiveData.value?.first?.manga!!,
+                chapter))
     }
 
     companion object {

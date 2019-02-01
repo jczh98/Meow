@@ -118,6 +118,21 @@ dependencies {
     // RxRelay
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.0'
 
-    // Injected ViewModel Provider
-    implementation 'me.tatarka.injectedvmprovider:injectedvmprovider-extensions:2.0'
+    // MultiStateView
+    implementation 'com.github.Kennyc1012:MultiStateView:1.3.2'
+
+    // Lives
+    implementation 'com.snakydesign.livedataextensions:lives:1.2.1'
+
+    // DiscreteSeekBar
+    implementation 'org.adw.library:discrete-seekbar:1.0.1'
+
+    // PhotoView
+    implementation 'com.github.chrisbanes:PhotoView:2.1.4'
+
+    // system ui helper
+    implementation 'me.zhanghai.android.systemuihelper:library:1.0.0'
+
+    // rxsharedpreference
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 }

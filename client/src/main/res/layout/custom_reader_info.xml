@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reader_info"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    android:background="@color/trans_light_black">
+    <TextView
+        android:id="@+id/chapter_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/md_white_1000"
+        android:textSize="12sp"/>
+    <TextView
+        android:id="@+id/page_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textColor="@color/md_white_1000"
+        android:textSize="12sp"/>
+    <top.rechinx.meow.ui.widget.MiniClockText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textColor="@color/md_white_1000"
+        android:textSize="12sp"/>
+    <TextView
+        android:id="@+id/battery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textColor="@color/md_white_1000"
+        android:textSize="12sp"/>
+</LinearLayout>

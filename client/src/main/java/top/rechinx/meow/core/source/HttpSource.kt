@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import top.rechinx.meow.core.network.asObservableSuccess
+import top.rechinx.meow.core.network.newCallWithProgress
 import top.rechinx.meow.core.source.model.*
 import java.security.MessageDigest
 
@@ -58,4 +59,31 @@ abstract class HttpSource(private val dependencies: Dependencies) : CatalogSourc
      */
     override fun toString() = name
 
+
+    fun fetchImage(page: PageInfo): Observable<Response> {
+        return client.newCallWithProgress(imageRequest(page), page)
+                .asObservableSuccess()
+    }
+
+    open fun fetchImageUrl(page: PageInfo): Observable<String> {
+        return client.newCall(imageUrlRequest(page))
+                .asObservableSuccess()
+                .map { imageUrlParse(it) }
+    }
+
+    protected abstract fun imageUrlParse(response: Response): String
+
+    open fun imageUrlRequest(page: PageInfo): Request {
+        return Request.Builder()
+                .url(page.url)
+                .headers(headers)
+                .build()
+    }
+
+    protected open fun imageRequest(page: PageInfo): Request {
+        return Request.Builder()
+                .url(page.imageUrl!!)
+                .headers(headers)
+                .build()
+    }
 }

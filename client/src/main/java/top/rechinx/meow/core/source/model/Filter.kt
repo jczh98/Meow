@@ -1,6 +1,19 @@
 package top.rechinx.meow.core.source.model
 
-sealed class Filter<T>(val name: String, var value: T) {
+sealed class Filter<T>(val name: String, val initialValue: T) {
+
+    /**
+     * The value of this filter
+     */
+    var value = initialValue
+
+    /**
+     * Whether this filter has been updated. If this method returns true, the catalog won't receive
+     * this filter when performing a search.
+     */
+    open fun isDefaultValue(): Boolean {
+        return initialValue == value
+    }
 
     /**
      * Basic Filters

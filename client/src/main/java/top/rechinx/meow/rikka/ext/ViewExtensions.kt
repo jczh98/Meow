@@ -21,6 +21,14 @@ inline fun View.gone() {
     visibility = View.GONE
 }
 
+fun View.wrapContent() {
+    layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+}
+
+fun View.matchContent() {
+    layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+}
+
 /**
  * Set view visibility by check condition [block]
  */

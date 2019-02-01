@@ -90,6 +90,7 @@ class MangaInfoViewModel @AssistedInject constructor(
                                         MangaInfoAction.MangaInitialized(source, it)
                                 )
                             }
+                            .onErrorReturn(MangaInfoAction::LoadingError)
                 }
                 .doOnNext {
                     loadChapters()
@@ -126,6 +127,7 @@ class MangaInfoViewModel @AssistedInject constructor(
                                 )))
                             }
                             .startWith(MangaInfoAction.Loading(true))
+                            .onErrorReturn(MangaInfoAction::LoadingError)
                 }
     }
 

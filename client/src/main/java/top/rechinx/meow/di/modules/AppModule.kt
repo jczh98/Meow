@@ -16,6 +16,7 @@ import io.reactivex.schedulers.Schedulers.io
 import top.rechinx.meow.core.source.Dependencies
 import top.rechinx.meow.core.source.SourceManager
 import top.rechinx.meow.data.cache.ChapterCache
+import top.rechinx.meow.data.preference.PreferenceHelper
 import top.rechinx.meow.di.GlideComponent
 
 
@@ -56,4 +57,8 @@ object AppModule {
             context: Application
     ) : ChapterCache = ChapterCache(context)
 
+    @JvmStatic @Provides @Singleton
+    fun providePreferences(
+            context: Application
+    ) : PreferenceHelper = PreferenceHelper(context)
 }

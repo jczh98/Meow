@@ -9,22 +9,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.custom_catalogbrowse_filters_sheet.*
 import kotlinx.android.synthetic.main.custom_catalogbrowse_filters_sheet.view.*
 import kotlinx.android.synthetic.main.fragment_catalog_browse.*
 import me.drakeet.multitype.Items
-import me.drakeet.multitype.MultiTypeAdapter
-import timber.log.Timber
 import top.rechinx.meow.R
-import top.rechinx.meow.core.source.model.Filter
-import top.rechinx.meow.core.source.model.FilterList
 import top.rechinx.meow.domain.manga.model.Manga
-import top.rechinx.meow.rikka.ext.gone
 import top.rechinx.meow.rikka.ext.visibleIf
 import top.rechinx.meow.rikka.viewmodel.getViewModel
 import top.rechinx.meow.ui.base.*
+import top.rechinx.meow.ui.catalogbrowse.filters.FiltersAdapter
 import top.rechinx.meow.ui.catalogbrowse.filters.FiltersBottomSheetDialog
-import top.rechinx.meow.ui.catalogbrowse.filters.SelectItemBinder
 import top.rechinx.meow.ui.catalogs.CatalogsFragment
 import top.rechinx.meow.ui.manga.MangaInfoActivity
 import javax.inject.Inject
@@ -47,8 +41,7 @@ class CatalogBrowseFragment : BaseFragment(),
 
     private lateinit var adapter: CatalogBrowseAdapter
 
-    private lateinit var filtersAdapter: MultiTypeAdapter
-    private var filtersItems = Items()
+    private lateinit var filtersAdapter: FiltersAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -84,8 +77,7 @@ class CatalogBrowseFragment : BaseFragment(),
         }
 
         // Initialize filters adapter
-        filtersAdapter = MultiTypeAdapter(filtersItems)
-        filtersAdapter.register(Filter.Select::class.java, SelectItemBinder())
+        filtersAdapter = FiltersAdapter()
 
         initSubscriptions()
     }
@@ -109,14 +101,12 @@ class CatalogBrowseFragment : BaseFragment(),
     }
 
     private fun applyFilters() {
-        viewModel.setFilters(FilterList(
-                filtersItems.map {
-            it as Filter.Select<*>
-        }))
+        viewModel.setFilters(filtersAdapter.items)
     }
 
     private fun resetFilters() {
-
+        filtersAdapter.items.forEach { it.reset() }
+        filtersAdapter.notifyDataSetChanged()
     }
 
     private fun initSubscriptions() {
@@ -124,8 +114,7 @@ class CatalogBrowseFragment : BaseFragment(),
             if (state.isLoading != prevState?.isLoading) {
                 progress.visibleIf { state.isLoading && state.mangas.isEmpty() }
             }
-            filtersItems = Items(state.filters)
-            filtersAdapter.items = filtersItems
+            filtersAdapter.updateItems(state.filters)
             adapter.submitList(state.mangas, state.isLoading, !state.hasMorePages)
         })
     }

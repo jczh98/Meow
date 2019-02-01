@@ -51,4 +51,11 @@
     <declare-styleable name="Themes">
         <attr name="tagGroupStyle" format="reference" />
     </declare-styleable>
+
+    <!--========-->
+    <!--DirectionalViewPager-->
+    <!--========-->
+    <declare-styleable name="DirectionalViewPager">
+        <attr name="android:orientation" />
+    </declare-styleable>
 </resources>

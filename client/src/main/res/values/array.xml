@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="viewers_selector">
+        <item>@string/default_viewer</item>
+        <item>@string/left_to_right_viewer</item>
+        <item>@string/right_to_left_viewer</item>
+        <item>@string/webtoon_viewer</item>
+    </string-array>
+</resources>

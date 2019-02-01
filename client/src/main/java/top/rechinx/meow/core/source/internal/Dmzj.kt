@@ -208,6 +208,8 @@ class Dmzj(dependencies: Dependencies): HttpSource(dependencies) {
         return ret
     }
 
+    override fun imageUrlParse(response: Response): String
+            = throw UnsupportedOperationException("Unused method was called somehow!")
 
     override fun getFilterList(): FilterList = FilterList(
             SortFilter(),

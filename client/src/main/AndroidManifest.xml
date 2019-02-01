@@ -28,6 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.manga.MangaInfoActivity"/>
+        <activity android:name=".ui.reader.ReaderActivity"/>
     </application>
 
 </manifest>

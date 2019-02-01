@@ -3,4 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="touch_raise">18dp</dimen>
+    <!-- Material Design guildelines. -->
+    <dimen name="material_layout_keylines_screen_edge_margin">16dp</dimen>
+    <dimen name="material_component_dialogs_padding_around_content_area">24dp</dimen>
 </resources>

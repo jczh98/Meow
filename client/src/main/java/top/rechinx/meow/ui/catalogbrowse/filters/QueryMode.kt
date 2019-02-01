@@ -1,9 +1,10 @@
 package top.rechinx.meow.ui.catalogbrowse.filters
 
+import top.rechinx.meow.core.source.model.Filter
 import top.rechinx.meow.core.source.model.FilterList
 
 /**
- * Query mode which is [Listing] or [Filter]
+ * Query mode which is [Listing] or [FilterMode]
  */
 sealed class QueryMode {
 
@@ -17,6 +18,6 @@ sealed class QueryMode {
     /**
      * Querty to use filtering the catalog with genres, categories and so on
      */
-    data class Filter(val filters: FilterList) : QueryMode()
+    data class FilterMode(val filters: List<Filter<*>>) : QueryMode()
 
 }

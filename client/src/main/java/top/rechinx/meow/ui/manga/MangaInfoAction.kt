@@ -35,5 +35,10 @@ sealed class MangaInfoAction {
                 state.copy(isLoading = isLoading)
     }
 
+    data class LoadingError(val error: Throwable) : MangaInfoAction() {
+        override fun reduce(state: MangaInfoViewState) =
+                state.copy(error = error, isLoading = false)
+    }
+
     open fun reduce(state: MangaInfoViewState) = state
 }

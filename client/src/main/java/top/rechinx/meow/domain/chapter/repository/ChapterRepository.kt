@@ -9,5 +9,7 @@ interface ChapterRepository {
 
     fun getChapter(chapterKey: String, mangaId: Long): Maybe<Chapter>
 
+    fun getChapters(mangaId: Long): Maybe<List<Chapter>>
+
     fun saveAndLoadChapter(chapterInfo: ChapterInfo, mangaId: Long): Single<Chapter>
 }

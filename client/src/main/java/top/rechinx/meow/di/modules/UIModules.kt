@@ -9,6 +9,7 @@ import top.rechinx.meow.ui.catalogs.CatalogsFragment
 import top.rechinx.meow.ui.home.MainActivity
 import top.rechinx.meow.ui.manga.MangaInfoActivity
 import top.rechinx.meow.ui.manga.MangaInfoFragment
+import top.rechinx.meow.ui.reader.ReaderActivity
 
 /**
  * For MainActivity with fragments
@@ -58,3 +59,18 @@ abstract class MangaInfoActivityModule {
 
 @Module
 abstract class MangaInfoFragmentModule
+
+/**
+ * For ReaderActivity
+ */
+@Module
+abstract class ReaderActivityModule {
+
+    @Binds abstract fun providesActivity(readerActivity: ReaderActivity): FragmentActivity
+
+    @Module
+    abstract class ReaderActivityBuilder {
+        @ContributesAndroidInjector(modules = [ReaderActivityModule::class, AssistedInjectModule::class])
+        abstract fun contributeReaderActivity(): ReaderActivity
+    }
+}

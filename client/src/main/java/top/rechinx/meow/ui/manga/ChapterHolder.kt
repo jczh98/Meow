@@ -13,9 +13,15 @@ import top.rechinx.meow.domain.chapter.model.Chapter
 
 class ChapterHolder(
         view: View,
+        val adapter: MangaInfoAdapter,
         val theme: Theme
         ) : RecyclerView.ViewHolder(view) {
 
+    init {
+        itemView.setOnClickListener {
+            adapter.handleClick(adapterPosition)
+        }
+    }
     fun bind(chapter: Chapter) {
         itemView.apply {
             chapter_button.customTextColor = theme.normalColor

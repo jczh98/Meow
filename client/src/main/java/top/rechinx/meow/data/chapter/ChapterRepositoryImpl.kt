@@ -19,13 +19,22 @@ class ChapterRepositoryImpl @Inject constructor(
                 .map { it.convertToChapter() }
     }
 
+    override fun getChapters(mangaId: Long): Maybe<List<Chapter>> {
+        return chapterDao.getChapters(mangaId)
+                .map { list ->
+                    list.map {
+                        it.convertToChapter()
+                    }
+                }
+    }
+
     override fun saveAndLoadChapter(chapterInfo: ChapterInfo, mangaId: Long): Single<Chapter> {
         val newChapter = chapterInfo.convertToEntity(mangaId)
 
         return Single.create {
             val insertedId = chapterDao.insertChapter(newChapter)
-            newChapter.copy(id = insertedId)
-            it.onSuccess(newChapter.convertToChapter())
+            val dbChapter = newChapter.copy(id = insertedId)
+            it.onSuccess(dbChapter.convertToChapter())
         }
     }
 

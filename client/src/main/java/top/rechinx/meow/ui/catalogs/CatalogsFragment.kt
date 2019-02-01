@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_catalogs.*
 import me.drakeet.multitype.MultiTypeAdapter
-import me.tatarka.injectedvmprovider.InjectedViewModelProviders
 import timber.log.Timber
 import top.rechinx.meow.R
 import top.rechinx.meow.data.catalog.model.Catalog

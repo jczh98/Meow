@@ -10,7 +10,8 @@ import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.rikka.ext.inflate
 
 class MangaInfoAdapter(
-        private val manga: Manga
+        private val manga: Manga,
+        private val listener: Listener? = null
 ) : ListAdapter<Any, RecyclerView.ViewHolder>(Diff()) {
 
     init {
@@ -34,6 +35,7 @@ class MangaInfoAdapter(
             )
             VIEWTYPE_CHAPTER -> ChapterHolder(
                     parent.inflate(R.layout.item_chapter),
+                    this,
                     ChapterHolder.Theme(parent.context)
             )
             else -> error("Unknown view holder for view type $viewType")
@@ -62,6 +64,20 @@ class MangaInfoAdapter(
         }
     }
 
+    /**
+     * Handles a user click on the element at the given [position]. The click is delegated to the
+     * [listener] of this adapter.
+     */
+    fun handleClick(position: Int) {
+        val item = getItem(position)
+        when (item) {
+            is Manga -> {}
+            is Chapter -> listener?.onChapterClick(item)
+            else -> error("Unknown item type of this $position")
+        }
+    }
+
+
     private class Diff : DiffUtil.ItemCallback<Any>() {
 
         override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
@@ -75,6 +91,18 @@ class MangaInfoAdapter(
         override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
             return true
         }
+    }
+
+    /**
+     * Listener used to delegate clicks on this adapter.
+     */
+    interface Listener {
+
+        /**
+         * Called when this [chapter] was clicked.
+         */
+        fun onChapterClick(chapter: Chapter)
+
     }
 
     companion object {

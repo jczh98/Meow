@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?attr/listPreferredItemHeightSmall"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="?attr/listPreferredItemPaddingLeft"
     android:paddingRight="?attr/listPreferredItemPaddingRight"
     android:background="?attr/selectableItemBackground"
@@ -10,19 +11,40 @@
 
     <TextView
         android:id="@+id/nav_text"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:textColor="?android:textColorPrimary"
-        tools:text="Title"/>
+        app:layout_constraintBaseline_toBaselineOf="@id/nav_item"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/verticalcenter"
+        tools:text="Title" />
 
     <Spinner
         android:id="@+id/nav_item"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginEnd="8dp"
         android:layout_weight="1"
         android:gravity="center_vertical|start"
         android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/verticalcenter"
+        app:layout_constraintRight_toRightOf="@id/spinnerEnd"/>
 
-</LinearLayout>
+    <androidx.legacy.widget.Space
+        android:id="@+id/spinnerEnd"
+        android:layout_width="16dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toRightOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalcenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

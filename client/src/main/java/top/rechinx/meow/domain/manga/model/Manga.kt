@@ -16,7 +16,7 @@ data class Manga(
         val favorite: Boolean = false,
         val lastUpdate: Long = 0,
         val initialized: Boolean = false,
-        val viewer: Int = 0,
+        var viewer: Int = 0,
         val last_chapter_key: String = "",
         val last_chapter_id: Long = 0,
         val viewed: Boolean = false,

@@ -44,6 +44,8 @@ class ClientGlideModule : AppGlideModule() {
 
         registry.append(InternalCatalog::class.java, Drawable::class.java, internalCatalogFactory)
         registry.append(Manga::class.java, InputStream::class.java, mangaFactory)
+        registry.append(InputStream::class.java, InputStream::class.java, PassthroughModelLoader
+                .Factory())
     }
 
     override fun isManifestParsingEnabled(): Boolean {

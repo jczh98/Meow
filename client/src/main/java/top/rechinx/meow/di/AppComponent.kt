@@ -17,7 +17,8 @@ import javax.inject.Singleton
             RepositoryModule::class,
             DatabaseModule::class,
             MainActivityModule.MainActivityBuilder::class,
-            MangaInfoActivityModule.MangaInfoActivityBuilder::class
+            MangaInfoActivityModule.MangaInfoActivityBuilder::class,
+            ReaderActivityModule.ReaderActivityBuilder::class
         ]
 )
 interface AppComponent : AndroidInjector<App> {
