@@ -8,7 +8,7 @@ import top.rechinx.meow.ui.reader.viewer.BaseViewer
 data class ReaderViewState(
         val source: CatalogSource? = null,
         val manga: Manga? = null,
-        val viewer: BaseViewer? = null,
+        val viewer: Int = 0,
         val chapters: ViewerChapters? = null
 ) {
     override fun toString(): String {
@@ -16,6 +16,6 @@ data class ReaderViewState(
                 "source=${source?.name}, " +
                 "manga=${manga?.title}, " +
                 "chapters=${chapters?.currChapter?.chapter?.name}, " +
-                "viewer=${manga?.viewer})"
+                "viewer=${viewer})"
     }
 }

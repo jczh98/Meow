@@ -9,6 +9,7 @@
     <string name="title_history">History</string>
     <string name="title_palette">Palette</string>
     <string name="title_settings">Settings</string>
+    <string name="title_reader_settings">Settings</string>
 
     <!-- About -->
     <string name="about_update">Check update</string>

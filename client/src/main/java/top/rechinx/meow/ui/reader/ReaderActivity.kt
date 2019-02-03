@@ -5,8 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
@@ -77,15 +76,16 @@ class ReaderActivity : BaseActivity() {
         viewModel.stateLiveData
                 .scanWithPrevious()
                 .observe(this, Observer { (state, prevState) ->
-                    if (state.manga != null) {
+                    if (state.manga !== null) {
                         if (state.manga !== prevState?.manga) {
+                            viewModel.loadInitialChapter()
+                        }
+                        if (state.viewer != prevState?.viewer) {
                             setManga(state.manga)
                         }
                     }
                     if (state.manga != null && state.chapters != null) {
-                        if (state.chapters !== prevState?.chapters) {
-                            setChapters(state.chapters)
-                        }
+                        setChapters(state.chapters)
                     }
                 })
     }
@@ -134,6 +134,27 @@ class ReaderActivity : BaseActivity() {
 
         })
         setMenuVisibility(menuVisible)
+    }
+
+    /**
+     * Dispatches a key event. If the viewer doesn't handle it, call the default implementation.
+     */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        val handled = viewer?.handleKeyEvent(event) ?: false
+        return handled || super.dispatchKeyEvent(event)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.reader, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings -> ReaderSetting(this, preferences).show()
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

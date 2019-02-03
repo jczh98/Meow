@@ -9,7 +9,7 @@ sealed class ReaderAction {
 
     object InitializeManga : ReaderAction()
 
-    data class LoadChapter(val chapter: ReaderChapter) : ReaderAction()
+    data class LoadChapter(val chapter: ReaderChapter, val continued: Boolean = false) : ReaderAction()
 
     data class PreloadChapter(val chapter: ReaderChapter) : ReaderAction()
 
@@ -28,14 +28,17 @@ sealed class ReaderAction {
         override fun reduce(state: ReaderViewState): ReaderViewState =
                 state.copy(
                         manga = manga,
-                        chapters = chapters
+                        chapters = chapters,
+                        viewer = manga.viewer
                 )
     }
+
     data class MangaInitialized(val source: CatalogSource, val manga: Manga) : ReaderAction() {
         override fun reduce(state: ReaderViewState) =
                 state.copy(
                         source = source,
-                        manga = manga
+                        manga = manga,
+                        viewer = manga.viewer
                 )
     }
 

@@ -103,10 +103,6 @@ class ReaderViewModel @AssistedInject constructor(
                                 )
                             }
                 }
-                .doOnNext { action ->
-                    val chapter = chapterList.first{ chapterId == it.chapter.id}
-                    loadNewChapter(chapter)
-                }
     }
 
     private fun setChaptersSideEffects(
@@ -114,11 +110,15 @@ class ReaderViewModel @AssistedInject constructor(
             stateFn: StateAccessor<ReaderViewState>
     ): Observable<ReaderAction> {
         return actions.ofType(ReaderAction.LoadChapter::class.java)
+                .filter {
+                    val state = stateFn()
+                    state.source != null && state.manga != null
+                }
                 .switchMap {
                     val state = stateFn()
                     val source = state.source!!
                     val manga = state.manga!!
-                    loadChapter.interact(manga, source, it.chapter, params.isContinue)
+                    loadChapter.interact(manga, source, it.chapter, it.continued)
                             .andThen(Observable.fromCallable {
                                 val chapterPos = chapterList.indexOf(it.chapter)
                                 ViewerChapters(it.chapter,
@@ -140,23 +140,20 @@ class ReaderViewModel @AssistedInject constructor(
             stateFn: StateAccessor<ReaderViewState>
     ): Observable<ReaderAction> {
         return actions.ofType(ReaderAction.PreloadChapter::class.java)
+                .filter {
+                    val state = stateFn()
+                    state.source != null && state.manga != null
+                }
                 .switchMap {
                     val state = stateFn()
                     val manga = state.manga!!
                     val source = state.source!!
                     loadChapter.interact(manga, source, it.chapter, false)
-                            .andThen(Observable.fromCallable {
-                                val chapterPos = chapterList.indexOf(it.chapter)
-                                ViewerChapters(it.chapter,
-                                        chapterList.getOrNull(chapterPos - 1),
-                                        chapterList.getOrNull(chapterPos + 1))
-                            })
-                            .observeOn(schedulers.main)
-                            .flatMap { newChapters ->
-                                val oldChapters = stateLiveData.value?.chapters
-                                newChapters.ref()
-                                oldChapters?.unref()
-                                Observable.just<ReaderAction>(ReaderAction.SetChapters(newChapters))
+                            .doOnComplete { stateLiveData.value?.let(stateLiveData::postValue) }
+                            .onErrorComplete()
+                            .toObservable<ReaderAction>()
+                            .flatMap {
+                                Observable.just(ReaderAction.ChapterPreloaded)
                             }
                 }
     }
@@ -169,17 +166,17 @@ class ReaderViewModel @AssistedInject constructor(
                 .switchMap {
                     val state = stateFn()
                     val manga = state.manga!!
+                    val currChapters = state.chapters!!
                     manga.viewer = it.viewer
-                    updateManga.interact(manga)
-                            .observeOn(schedulers.main)
-                            .subscribe()
-                    Observable.timer(250, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                    Observable.timer(250, TimeUnit.MILLISECONDS, schedulers.main)
+                            .concatMap {
+                                updateManga.interact(manga)
+                                        .observeOn(schedulers.main)
+                                        .toObservable()
+                            }
                             .flatMap {
-                                val currChapters = stateLiveData.value?.chapters ?: error("current chapters is null")
-                                // Save current page
                                 val currChapter = currChapters.currChapter
                                 currChapter.requestedPage = currChapter.chapter.progress
-
                                 Observable.just<ReaderAction>(
                                         ReaderAction.MangaViewerChanged(manga, currChapters)
                                 )
@@ -216,14 +213,19 @@ class ReaderViewModel @AssistedInject constructor(
     }
 
     fun getMangaViewer(): Int {
-        val manga = manga ?: return preferences.readerMode()
-        return if(manga.viewer == 0) preferences.readerMode() else manga.viewer
+        val viewer = stateLiveData.value?.viewer ?: return preferences.readerMode()
+        return if(viewer == 0) preferences.readerMode() else viewer
     }
 
-    private fun loadNewChapter(chapter: ReaderChapter) {
+    fun loadInitialChapter() {
+        val chapter = chapterList.first{ chapterId == it.chapter.id}
+        loadNewChapter(chapter, params.isContinue)
+    }
+
+    private fun loadNewChapter(chapter: ReaderChapter, continued: Boolean = false) {
         Timber.d("Loading ${chapter.chapter.name}")
 
-        actions.accept(ReaderAction.LoadChapter(chapter))
+        actions.accept(ReaderAction.LoadChapter(chapter, continued))
     }
 
     private fun onChapterChanged(fromChapter: ReaderChapter, toChapter: ReaderChapter) {

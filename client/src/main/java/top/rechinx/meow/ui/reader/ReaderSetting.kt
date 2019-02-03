@@ -47,7 +47,7 @@ class ReaderSetting(val activity: ReaderActivity,
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 activity.viewModel.setMangaViewer(position)
-                when (activity.viewModel.getMangaViewer()) {
+                when (position) {
                     1, 2 -> initPagerPreferences()
                     3 -> initWebtoonPreferences()
                 }
