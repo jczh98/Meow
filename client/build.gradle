@@ -45,6 +45,7 @@ dependencies {
     implementation "androidx.cardview:cardview:$androidx_version"
     implementation "androidx.preference:preference:$androidx_version"
     implementation "androidx.core:core-ktx:$androidx_version"
+    implementation "androidx.palette:palette:$androidx_version"
     implementation "androidx.core:core-ktx:1.0.1"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     implementation 'com.google.android.material:material:1.0.0'

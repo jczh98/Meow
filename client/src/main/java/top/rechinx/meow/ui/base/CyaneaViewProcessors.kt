@@ -25,7 +25,7 @@ fun Activity.getCyaneaViewProcessors(): Array<CyaneaViewProcessor<*>> {
 /**
  * CyaneaViewProcessor for [Toolbar]
  */
-private class ToolbarViewProcessor : CyaneaViewProcessor<Toolbar>() {
+class ToolbarViewProcessor : CyaneaViewProcessor<Toolbar>() {
     override fun getType(): Class<Toolbar> = Toolbar::class.java
 
     override fun process(view: Toolbar, attrs: AttributeSet?, cyanea: Cyanea) {

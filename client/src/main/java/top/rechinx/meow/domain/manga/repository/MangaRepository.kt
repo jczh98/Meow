@@ -1,6 +1,7 @@
 package top.rechinx.meow.domain.manga.repository
 
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import top.rechinx.meow.core.source.model.MangaInfo
@@ -28,4 +29,14 @@ interface MangaRepository {
      * Update manga information
      */
     fun updateManga(manga: Manga): Completable
+
+    /**
+     * Subscribe manga
+     */
+    fun subscribeManga(manga: Manga, flag: Boolean = true): Maybe<Manga>
+
+    /**
+     * Get manga list which are subscribed
+     */
+    fun getSubscribedMangaList(): Flowable<List<Manga>>
 }

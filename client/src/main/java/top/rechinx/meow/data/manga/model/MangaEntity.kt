@@ -23,5 +23,6 @@ data class MangaEntity(
         @ColumnInfo val last_chapter_key: String = "",
         @ColumnInfo val last_chapter_id: Long = 0,
         @ColumnInfo val viewed: Boolean = false,
-        @ColumnInfo val downloaded: Boolean = false
+        @ColumnInfo val downloaded: Boolean = false,
+        @ColumnInfo val subscribed: Boolean = false
 )

@@ -70,4 +70,6 @@
     <!-- Misc Colors -->
     <!--=============-->
     <color name="trans_light_black">#88000000</color>
+    <color name="ripple_light">#50ffffff</color>
+    <color name="ripple_light_stroke">#70ffffff</color>
 </resources>

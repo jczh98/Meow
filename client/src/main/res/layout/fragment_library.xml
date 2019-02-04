@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context="top.rechinx.meow.ui.library.LibraryFragment">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/catalogs_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="?actionBarTheme"
+        app:title="@string/title_library" />
+
+    <top.rechinx.meow.ui.widget.AutofitRecyclerView
+        android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="library" />
+        android:padding="2dp"
+        android:clipToPadding="false"
+        android:columnWidth="180dp"
+        tools:listitem="@layout/item_manga_grid" />
 
-</FrameLayout>
+</LinearLayout>

@@ -10,6 +10,7 @@ import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.ofType
 import timber.log.Timber
 import top.rechinx.meow.core.source.CatalogSource
 import top.rechinx.meow.core.source.SourceManager
@@ -17,6 +18,7 @@ import top.rechinx.meow.domain.chapter.interactor.FetchChaptersFromSource
 import top.rechinx.meow.domain.chapter.model.Chapter
 import top.rechinx.meow.domain.chapter.model.ChaptersPage
 import top.rechinx.meow.domain.manga.interactor.GetManga
+import top.rechinx.meow.domain.manga.interactor.SubscribeManga
 import top.rechinx.meow.domain.manga.interactor.UpdateManga
 import top.rechinx.meow.domain.manga.model.Manga
 import top.rechinx.meow.rikka.misc.Resource
@@ -31,6 +33,7 @@ class MangaInfoViewModel @AssistedInject constructor(
         private val getManga: GetManga,
         private val updateManga: UpdateManga,
         private val fetchChaptersFromSource: FetchChaptersFromSource,
+        private val subscribeManga: SubscribeManga,
         private val sourceManager: SourceManager,
         private val schedulers: RxSchedulers
 ) : RxViewModel() {
@@ -50,7 +53,8 @@ class MangaInfoViewModel @AssistedInject constructor(
                         initialState = getInitialViewState(),
                         sideEffects = listOf(
                                 ::mangaInitialized,
-                                ::loadChaptersSideEffect
+                                ::loadChaptersSideEffect,
+                                ::changeSubscribeSideEffect
                         ),
                         reducer = { state, action -> action.reduce(state) }
                 )
@@ -131,8 +135,33 @@ class MangaInfoViewModel @AssistedInject constructor(
                 }
     }
 
+    private fun changeSubscribeSideEffect(
+            actions: Observable<MangaInfoAction>,
+            stateFn: StateAccessor<MangaInfoViewState>
+    ): Observable<MangaInfoAction> {
+        return actions.ofType<MangaInfoAction.ChangeSubscribeStatus>()
+                .flatMap {  _ ->
+                    val manga = stateFn().manga!!
+                    subscribeManga.interact(manga, !manga.subscribed)
+                            .doOnSubscribe {
+                                Timber.w("Changed manga status of subscription")
+                            }
+                            .toObservable()
+                            .flatMap {
+                                Observable.just(MangaInfoAction.MangaContentChanged(it))
+                            }
+                }
+    }
+
     fun loadChapters() {
         actions.accept(MangaInfoAction.LoadChapters)
+    }
+
+    /**
+     * Subscribe or not the manga
+     */
+    fun subscribeManga() {
+        actions.accept(MangaInfoAction.ChangeSubscribeStatus)
     }
 
 }

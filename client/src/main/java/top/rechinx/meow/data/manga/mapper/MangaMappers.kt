@@ -40,7 +40,8 @@ internal fun MangaEntity.convertToManga(): Manga {
             viewer = viewer,
             last_chapter_key = last_chapter_key,
             viewed = viewed,
-            downloaded = downloaded
+            downloaded = downloaded,
+            subscribed = subscribed
     )
 }
 
@@ -62,7 +63,8 @@ internal fun Manga.convertToEntity(): MangaEntity {
             viewer = viewer,
             last_chapter_key = last_chapter_key,
             viewed = viewed,
-            downloaded = downloaded
+            downloaded = downloaded,
+            subscribed = subscribed
     )
 }
 

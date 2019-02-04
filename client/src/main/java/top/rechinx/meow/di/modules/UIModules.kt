@@ -7,6 +7,7 @@ import dagger.android.ContributesAndroidInjector
 import top.rechinx.meow.ui.catalogbrowse.CatalogBrowseFragment
 import top.rechinx.meow.ui.catalogs.CatalogsFragment
 import top.rechinx.meow.ui.home.MainActivity
+import top.rechinx.meow.ui.library.LibraryFragment
 import top.rechinx.meow.ui.manga.MangaInfoActivity
 import top.rechinx.meow.ui.manga.MangaInfoFragment
 import top.rechinx.meow.ui.reader.ReaderActivity
@@ -23,6 +24,9 @@ abstract class MainActivityModule {
     @ContributesAndroidInjector(modules = [CatalogsFragmentModule::class])
     abstract fun contributeCatalogsFragment(): CatalogsFragment
 
+    @ContributesAndroidInjector(modules = [LibraryFragmentModule::class])
+    abstract fun contributeLibraryFragment(): LibraryFragment
+
     @ContributesAndroidInjector(modules = [CatalogBrowseFragmentModule::class, AssistedInjectModule::class])
     abstract fun contributeCatalogBrowseFragment(): CatalogBrowseFragment
 
@@ -32,6 +36,9 @@ abstract class MainActivityModule {
         abstract fun contributeMainActivity(): MainActivity
     }
 }
+
+@Module
+abstract class LibraryFragmentModule
 
 @Module
 abstract class CatalogsFragmentModule

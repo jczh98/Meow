@@ -20,5 +20,6 @@ data class Manga(
         val last_chapter_key: String = "",
         val last_chapter_id: Long = 0,
         val viewed: Boolean = false,
-        val downloaded: Boolean = false
+        val downloaded: Boolean = false,
+        var subscribed: Boolean = false
 )

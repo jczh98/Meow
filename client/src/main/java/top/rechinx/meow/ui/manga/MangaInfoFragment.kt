@@ -52,15 +52,29 @@ class MangaInfoFragment : BaseFragment(), MangaInfoAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        toolbar.inflateMenu(R.menu.manga_info_menu)
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_subscribe -> handleSubscribe()
+            }
+            true
+        }
         toolbar.setNavigationOnClickListener {
             activity?.finish()
         }
+
+        // Constraint menu icon of Toolbar
+        Cyanea.instance.tint(toolbar.menu, requireActivity())
 
         // Constraint attribution contentScrim of CollapsingToolbarLayout
         collapsing_toolbar_layout.contentScrim =
                 ColorDrawable(Cyanea.instance.primary)
 
         initSubscriptions()
+    }
+
+    private fun handleSubscribe() {
+        viewModel.subscribeManga()
     }
 
     private fun initSubscriptions() {
@@ -71,6 +85,9 @@ class MangaInfoFragment : BaseFragment(), MangaInfoAdapter.Listener {
             if (state.error != prevState?.error) {
                 multi_state_view.viewState = MultiStateView.VIEW_STATE_ERROR
             }
+            if (state.manga != null && state.manga !== prevState?.manga) {
+                renderManga(state.manga)
+            }
             if (state.manga != null && (state.chapters !== prevState?.chapters || state.isLoading != prevState.isLoading
                     || state.hasNextPage != prevState.hasNextPage)) {
                 adapter = MangaInfoAdapter(state.manga, this@MangaInfoFragment)
@@ -80,11 +97,24 @@ class MangaInfoFragment : BaseFragment(), MangaInfoAdapter.Listener {
         })
     }
 
+    private fun renderManga(manga: Manga) {
+        val subscribeItem = toolbar.menu.findItem(R.id.action_subscribe)
+        if (manga.subscribed) {
+            subscribeItem.setIcon(R.drawable.ic_favorite_white_24dp)
+        } else {
+            subscribeItem.setIcon(R.drawable.ic_favorite_border_white_24dp)
+        }
+
+        // Constraint menu icon of Toolbar
+        Cyanea.instance.tint(toolbar.menu, requireActivity())
+    }
+
     private fun setLoading(isLoading: Boolean) {
 
     }
 
     private fun setManga(manga: Manga, chapters: List<Chapter>) {
+        renderManga(manga)
         toolbar.title = manga.title
         GlideApp.with(view!!)
                 .load(manga)

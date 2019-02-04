@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="@android:integer/config_mediumAnimTime" android:exitFadeDuration="@android:integer/config_mediumAnimTime">
+    <item android:drawable="@color/ripple_light" android:state_pressed="true" />
+    <item android:state_focused="true">
+        <shape>
+            <solid android:color="@color/ripple_light" />
+            <stroke android:color="@color/ripple_light_stroke" />
+        </shape>
+    </item>
+    <item android:drawable="@android:color/transparent" />
+</selector>

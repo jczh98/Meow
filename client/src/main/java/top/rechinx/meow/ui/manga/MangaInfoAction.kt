@@ -12,6 +12,8 @@ sealed class MangaInfoAction {
 
     object InitializeManga : MangaInfoAction()
 
+    object ChangeSubscribeStatus : MangaInfoAction()
+
     data class MangaInitialized(val source: CatalogSource, val manga: Manga) : MangaInfoAction() {
         override fun reduce(state: MangaInfoViewState) =
                 state.copy(
@@ -20,6 +22,12 @@ sealed class MangaInfoAction {
                 )
     }
 
+    data class MangaContentChanged(val manga: Manga) : MangaInfoAction() {
+        override fun reduce(state: MangaInfoViewState) =
+                state.copy(
+                        manga = manga
+                )
+    }
     data class PageReceived(val page: ChaptersPage) : MangaInfoAction() {
         override fun reduce(state: MangaInfoViewState) =
                 state.copy(

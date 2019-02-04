@@ -1,6 +1,7 @@
 package top.rechinx.meow.data.manga
 
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import timber.log.Timber
@@ -42,5 +43,22 @@ class MangaRepositoryImpl @Inject constructor(
         return Completable.fromCallable {
             mangaDao.updateManga(manga.convertToEntity())
         }
+    }
+
+    override fun subscribeManga(manga: Manga, flag: Boolean): Maybe<Manga> {
+        return Maybe.create {
+            val newManga = manga.copy(subscribed = flag)
+            mangaDao.updateManga(newManga.convertToEntity())
+            it.onSuccess(newManga)
+        }
+    }
+
+    override fun getSubscribedMangaList(): Flowable<List<Manga>> {
+        return mangaDao.querySubscribedMangaList()
+                .map { list ->
+                    list.map {
+                        it.convertToManga()
+                    }
+                }
     }
 }

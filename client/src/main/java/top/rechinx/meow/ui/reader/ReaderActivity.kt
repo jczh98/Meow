@@ -9,6 +9,8 @@ import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
+import com.jaredrummler.cyanea.Cyanea
+import com.jaredrummler.cyanea.inflator.CyaneaViewProcessor
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.activity_reader.*
@@ -29,13 +31,14 @@ import top.rechinx.meow.rikka.ext.visible
 import top.rechinx.meow.rikka.livedata.scanWithPrevious
 import top.rechinx.meow.rikka.viewmodel.getViewModel
 import top.rechinx.meow.ui.base.BaseActivity
+import top.rechinx.meow.ui.base.ToolbarViewProcessor
 import top.rechinx.meow.ui.reader.viewer.BaseViewer
 import top.rechinx.meow.ui.reader.viewer.pager.L2RPagerViewer
 import top.rechinx.meow.ui.reader.viewer.pager.R2LPagerViewer
 import top.rechinx.meow.ui.reader.viewer.webtoon.WebtoonViewer
 import javax.inject.Inject
 
-class ReaderActivity : BaseActivity() {
+class ReaderActivity : BaseActivity(), CyaneaViewProcessor.Provider {
 
     private val mangaId by lazy { intent.getLongExtra(Extras.EXTRA_MANGA_ID, -1L) }
     private val chapterId by lazy { intent.getLongExtra(Extras.EXTRA_CHAPTER_ID, -1L) }
@@ -68,9 +71,14 @@ class ReaderActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         config = ReaderConfig()
+
         initializeMenu()
         initSubscriptions()
     }
+
+    override fun getViewProcessors(): Array<CyaneaViewProcessor<out View>> = arrayOf(
+                ToolbarViewProcessor()
+        )
 
     private fun initSubscriptions() {
         viewModel.stateLiveData
@@ -133,6 +141,11 @@ class ReaderActivity : BaseActivity() {
             }
 
         })
+        // TODO()
+        // Constraint chapter button icon color
+        Cyanea.instance.tinter.tint(left_chapter)
+        Cyanea.instance.tinter.tint(right_chapter)
+
         setMenuVisibility(menuVisible)
     }
 
@@ -146,6 +159,8 @@ class ReaderActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.reader, menu)
+        // Constraint menu icon of Toolbar
+        Cyanea.instance.tint(menu, this)
         return true
     }
 
