@@ -6,16 +6,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/catalogbrowse_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="?actionBarTheme"
-        app:navigationIcon="?attr/homeAsUpIndicator" />
-
     <FrameLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:background="?colorPrimary"
+            android:layout_width="match_parent"
+            android:theme="?actionBarTheme"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator" />
+
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/specific_search_hint"/>
+    </FrameLayout>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -24,16 +36,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="2dp"
+            android:clipChildren="false"
             android:clipToPadding="false"
             android:columnWidth="130dp"
-            tools:listitem="@layout/item_manga_grid" />
+            tools:listitem="@layout/item_manga_grid"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
 
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            tools:visibility="gone"/>
+            tools:visibility="visible"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
@@ -44,6 +59,6 @@
             android:src="@drawable/ic_filter_white_24dp"
             app:layout_behavior="top.rechinx.meow.ui.widget.ScrollAwareFABBehavior"/>
 
-    </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>

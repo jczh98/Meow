@@ -154,4 +154,10 @@ class CatalogBrowseViewModel @AssistedInject constructor(
         actions.accept(CatalogBrowseAction.SetQueryMode.Filters(filters))
     }
 
+    /**
+     * Emits an action to update query mode to [QueryMode.Search]
+     */
+    fun search(query: String) {
+        actions.accept(CatalogBrowseAction.QueryModeUpdated(QueryMode.Search(query)))
+    }
 }

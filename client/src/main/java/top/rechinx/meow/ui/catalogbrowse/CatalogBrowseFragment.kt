@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.miguelcatalan.materialsearchview.MaterialSearchView
 import kotlinx.android.synthetic.main.custom_catalogbrowse_filters_sheet.view.*
 import kotlinx.android.synthetic.main.fragment_catalog_browse.*
 import me.drakeet.multitype.Items
@@ -51,10 +53,27 @@ class CatalogBrowseFragment : BaseFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Setup toolbar
-        catalogbrowse_toolbar.title = viewModel.source.name
-        catalogbrowse_toolbar.setNavigationOnClickListener {
+        setToolbarTitle()
+        toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
+        toolbar.inflateMenu(R.menu.catalogue_browse_menu)
+
+        // Inflate menu to search view
+        val menuItem = toolbar.menu.findItem(R.id.action_search)
+        search_view.setMenuItem(menuItem)
+        search_view.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query.isNullOrBlank()) return false
+                setToolbarTitle(query)
+                viewModel.search(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
 
         adapter = CatalogBrowseAdapter(this)
         recycler.setHasFixedSize(true)
@@ -102,6 +121,8 @@ class CatalogBrowseFragment : BaseFragment(),
 
     private fun applyFilters() {
         viewModel.setFilters(filtersAdapter.items)
+        // Clear search data
+        setToolbarTitle()
     }
 
     private fun resetFilters() {
@@ -117,6 +138,14 @@ class CatalogBrowseFragment : BaseFragment(),
             filtersAdapter.updateItems(state.filters)
             adapter.submitList(state.mangas, state.isLoading, !state.hasMorePages)
         })
+    }
+
+    private fun setToolbarTitle(query: String? = null) {
+        if (query.isNullOrBlank()) {
+            toolbar.title = viewModel.source.name
+        } else {
+            toolbar.title = getString(R.string.search_result_title).format(query)
+        }
     }
 
     override fun onMangaClick(manga: Manga) {
