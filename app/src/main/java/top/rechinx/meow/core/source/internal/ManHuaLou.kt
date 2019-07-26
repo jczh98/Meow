@@ -21,9 +21,7 @@ class ManHuaLou:HttpSource() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun imageUrlParse(response: Response): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun imageUrlParse(response: Response): String  = throw UnsupportedOperationException("Unused method was called somehow!")
 
     private fun GET(url: String) = Request.Builder()
             .url(url)
