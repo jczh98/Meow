@@ -32,7 +32,7 @@ class ManHuaLou:HttpSource() {
         } else{
             val params = filters.map { (it as UriPartFilter).getUrl() }.joinToString("-")
             if("" != params){
-                return GET("$baseUrl/list/${params}_$page/")
+                return GET("$baseUrl/list/$params/$page/")
             }
             return GET("$baseUrl/list_$page/")
         }
@@ -43,12 +43,13 @@ class ManHuaLou:HttpSource() {
 
     private fun commonMangaParse(response: Response): PagedList<SManga> {
         val res = response.body()!!.string()
-        val ret = Jsoup.parse(res).select("#contList li").map { node -> SManga.create().apply {
+        val doc = Jsoup.parse(res)
+        val ret = doc.select("#contList li").map { node -> SManga.create().apply {
             title = node.selectFirst("p").text()
             thumbnail_url  = node.selectFirst("img").attr("src")
             url = node.selectFirst("a").attr("href")
         } }
-        return PagedList(ret, true)
+        return PagedList(ret, doc.select(".next") != null && doc.select(".next.disabled") == null)
     }
     override fun popularMangaRequest(page: Int): Request
             = GET("$baseUrl/list_$page/")
@@ -66,14 +67,14 @@ class ManHuaLou:HttpSource() {
         title = doc.selectFirst(".book-title").text()
         thumbnail_url = doc.selectFirst(".cover .pic").attr("src")
         author = doc.selectFirst("ul.detail-list.cf > li:nth-of-type(2) > span:nth-of-type(2) > a").text()
-        status = when(doc.selectFirst(".status a").text()) {
+        status = when(doc.selectFirst("li.status a").text()) {
             "已完结" -> SManga.COMPLETED
             "连载中" -> SManga.ONGOING
             else -> SManga.UNKNOWN
         }
         genre = doc.select("ul.detail-list.cf > li:nth-child(2) > span:nth-child(1) > a")
                 .map{ node -> node.text() }.joinToString(", ")
-        description = doc.selectFirst("#intro-all > p").text()
+        description = doc.selectFirst("#intro-all > p").text()+ "\n\n" + doc.selectFirst("li.status").text()
     }
 
     override fun chaptersRequest(page: Int, url: String): Request
