@@ -8,6 +8,8 @@ import org.jsoup.Jsoup
 
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.model.*
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class ManHuaLou:HttpSource() {
@@ -74,18 +76,21 @@ class ManHuaLou:HttpSource() {
         }
         genre = doc.select("ul.detail-list.cf > li:nth-child(2) > span:nth-child(1) > a")
                 .map{ node -> node.text() }.joinToString(", ")
-        description = doc.selectFirst("#intro-all > p").text()+ "\n\n" + doc.selectFirst("li.status").text()
+        description = doc.selectFirst("#intro-all > p").text()
     }
 
     override fun chaptersRequest(page: Int, url: String): Request
             = GET(url)
 
     override fun chaptersParse(response: Response): PagedList<SChapter> {
-        val res = response.body()!!.string()
-        val ret = Jsoup.parse(res).select(".chapter-body.clearfix a").map { node -> SChapter.create().apply {
+        val doc = Jsoup.parse(response.body()!!.string())
+        val ret = doc.select(".chapter-body.clearfix a").map { node -> SChapter.create().apply {
             name = node.text()
             url = node.attr("href")
         } }
+        doc.selectFirst("li.status .red").text().let {
+            ret[0].date_updated = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).parse(it).time
+        }
         return PagedList(ret.reversed(), false)
     }
 
