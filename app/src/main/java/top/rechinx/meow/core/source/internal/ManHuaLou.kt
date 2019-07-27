@@ -49,7 +49,7 @@ class ManHuaLou:HttpSource() {
             thumbnail_url  = node.selectFirst("img").attr("src")
             url = node.selectFirst("a").attr("href")
         } }
-        return PagedList(ret, doc.select(".next") != null && doc.select(".next.disabled") == null)
+        return PagedList(ret, doc.selectFirst(".next") != null && doc.selectFirst(".next.disabled") == null)
     }
     override fun popularMangaRequest(page: Int): Request
             = GET("$baseUrl/list_$page/")
