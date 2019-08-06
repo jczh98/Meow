@@ -7,8 +7,7 @@ import org.jsoup.Jsoup
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.model.*
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Locale
 
 class Tohomh:HttpSource() {
 
