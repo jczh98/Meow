@@ -66,7 +66,7 @@ class U17:HttpSource() {
     override fun chaptersParse(response: Response): PagedList<SChapter> {
         val doc = Jsoup.parse(response.body()!!.string())
         val ret = doc.select("#chapter li").map { node -> SChapter.create().apply {
-            name = when(node.selectFirst("a").attr("class")){
+            name = when(node.selectFirst("a").className()){
                 "vip_chapter" -> "🔒" + node.text()
                 else -> node.text()
             }
