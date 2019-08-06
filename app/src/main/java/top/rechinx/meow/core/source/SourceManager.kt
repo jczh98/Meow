@@ -4,6 +4,7 @@ import android.content.Context
 import top.rechinx.meow.core.source.internal.Bilibili
 import top.rechinx.meow.core.source.internal.Dmzj
 import top.rechinx.meow.core.source.internal.ManHuaLou
+import top.rechinx.meow.core.source.internal.U17
 import top.rechinx.meowo.core.source.internal.Tohomh
 
 class SourceManager(private val context: Context) {
@@ -42,7 +43,8 @@ class SourceManager(private val context: Context) {
             Dmzj(),
             ManHuaLou(),
             Tohomh(),
-            Bilibili()
+            Bilibili(),
+            U17()
             //Shuhui(),
             //EHentai()
     )
