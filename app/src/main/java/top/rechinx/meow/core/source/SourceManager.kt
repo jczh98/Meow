@@ -1,6 +1,7 @@
 package top.rechinx.meow.core.source
 
 import android.content.Context
+import top.rechinx.meow.core.source.internal.Bilibili
 import top.rechinx.meow.core.source.internal.Dmzj
 import top.rechinx.meow.core.source.internal.ManHuaLou
 import top.rechinx.meowo.core.source.internal.Tohomh
@@ -40,7 +41,8 @@ class SourceManager(private val context: Context) {
     private fun createInternalSources(): List<Source> = listOf(
             Dmzj(),
             ManHuaLou(),
-            Tohomh()
+            Tohomh(),
+            Bilibili()
             //Shuhui(),
             //EHentai()
     )

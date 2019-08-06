@@ -62,8 +62,7 @@ class ManHuaLou:HttpSource() {
     override fun mangaInfoRequest(url: String): Request
             = GET(url)
 
-    override fun mangaInfoParse(response: Response): SManga
-            = SManga.create().apply {
+    override fun mangaInfoParse(response: Response): SManga = SManga.create().apply {
         val res = response.body()!!.string()
         val doc = Jsoup.parse(res)
         title = doc.selectFirst(".book-title").text()
