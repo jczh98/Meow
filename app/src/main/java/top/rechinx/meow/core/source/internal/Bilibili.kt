@@ -90,6 +90,7 @@ class Bilibili:HttpSource() {
         title = data.getString("title")
         thumbnail_url = data.getString("vertical_cover")
         url = data.getInt("id").toString()
+
         val tmp = ArrayList<String>()
         val authors = data.getJSONArray("author_name")
         for (j in 0 until authors.length()) {
@@ -147,12 +148,16 @@ class Bilibili:HttpSource() {
 
         val data = json.getJSONObject("data")
         val path = data.getString("path")
+        var host = "https://i0.hdslb.com"
+        if(data.has("host") && ""!=data.getString("host")){
+            host = data.getString("host")
+        }
         val m = Regex("^/bfs/manga/(\\d+)/(\\d+)").find(path)!!
         val cid = m.groupValues[1].toInt()
         val epid = m.groupValues[2].toInt()
 
         var bytes = client.newCall(Request.Builder()
-                .url("https://i0.hdslb.com$path")
+                .url(host+path)
                 .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36")
                 .build()).execute().body()!!.bytes()
         bytes = bytes.sliceArray(9 until bytes.size)
