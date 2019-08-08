@@ -1,10 +1,7 @@
 package top.rechinx.meow.core.source
 
 import android.content.Context
-import top.rechinx.meow.core.source.internal.Bilibili
-import top.rechinx.meow.core.source.internal.Dmzj
-import top.rechinx.meow.core.source.internal.ManHuaLou
-import top.rechinx.meow.core.source.internal.U17
+import top.rechinx.meow.core.source.internal.*
 import top.rechinx.meowo.core.source.internal.Tohomh
 
 class SourceManager(private val context: Context) {
@@ -44,7 +41,8 @@ class SourceManager(private val context: Context) {
             ManHuaLou(),
             Tohomh(),
             Bilibili(),
-            U17()
+            U17(),
+            Tencent()
             //Shuhui(),
             //EHentai()
     )
