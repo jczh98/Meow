@@ -50,10 +50,10 @@ class Tencent:HttpSource() {
             thumbnail_url = it.selectFirst(".works-cover img").attr("src")
             author = it.selectFirst(".works-intro-digi em").text()
 //            status = when(it.selectFirst(".comic_infor_status span").text()) {
-////                "已完结" -> SManga.COMPLETED
-////                "连载中" -> SManga.ONGOING
-////                else -> SManga.UNKNOWN
-////            }
+//                "已完结" -> SManga.COMPLETED
+//                "连载中" -> SManga.ONGOING
+//                else -> SManga.UNKNOWN
+//            }
             genre = it.select(".works-intro-tags a")
                     .map{ node -> node.text() }.joinToString(", ")
             description = it.selectFirst(".works-intro-short").text()

@@ -6,7 +6,7 @@ import org.json.JSONObject
 import top.rechinx.meow.core.source.HttpSource
 import top.rechinx.meow.core.source.model.*
 
-class Manhuatai:HttpSource() {
+class ManHuaTai:HttpSource() {
     override val name = "漫画台"
     override val baseUrl = "http://getcomicinfo-globalapi.yyhao.com"
 
@@ -75,10 +75,14 @@ class Manhuatai:HttpSource() {
         for(i in 0 until chapters.length()){
             val chapter =  chapters.getJSONObject(i)
             ret.add(SChapter.create().apply {
-                name = when(chapter.getInt("islock")) {
-                    1 -> "🔒" + chapter.getString("chapter_name")
-                    else -> chapter.getString("chapter_name")
-                }
+                name = when(chapter.has("isbuy") && chapter.getInt("isbuy") == 1) {
+                    true -> "💰"
+                    else -> ""
+                } + when(chapter.getInt("islock")) {
+                    1 -> "🔒"
+                    else -> ""
+                } + chapter.getString("chapter_name")
+
                 url = response.request().url().toString()+"&chapter="+i.toString()
                 chapter_number = i.toString()
                 date_updated = 1000 * chapter.getLong("create_date")
@@ -104,9 +108,6 @@ class Manhuatai:HttpSource() {
                     return ret
                 }
     }
-
-    override fun headersBuilder()
-            = super.headersBuilder().add("Referer", baseUrl)!!
 
     override fun imageUrlParse(response: Response): String  = throw UnsupportedOperationException("Unused method was called somehow!")
 
