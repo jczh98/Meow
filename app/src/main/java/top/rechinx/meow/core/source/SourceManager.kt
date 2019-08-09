@@ -42,7 +42,8 @@ class SourceManager(private val context: Context) {
             Tohomh(),
             Bilibili(),
             U17(),
-            Tencent()
+            Tencent(),
+            Manhuatai()
             //Shuhui(),
             //EHentai()
     )
