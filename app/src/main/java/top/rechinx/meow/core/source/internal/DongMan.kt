@@ -56,7 +56,7 @@ class DongMan:HttpSource() {
             val split = href.lastIndexOf("=") + 1
             val half = href.substring(0,split)
             val ret = ArrayList<SChapter>()
-            for(i in href.substring(split).toInt() .. 1){
+            for(i in href.substring(split).toInt() downTo 1){
                 ret.add(SChapter.create().apply {
                     name = i.toString()
                     url = half + i
