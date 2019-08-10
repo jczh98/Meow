@@ -83,7 +83,7 @@ class U17:HttpSource() {
                 .getJSONArray("chapter_list")
                 .let {
                     val ret = ArrayList<SChapter>()
-                    for(i in it.length() downTo 0){
+                    for(i in (it.length()-1) downTo 0){
                         val chapter =  it.getJSONObject(i)
                         ret.add(SChapter.create().apply {
                             name = when(chapter.getInt("type")) {
