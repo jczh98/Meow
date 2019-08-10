@@ -41,10 +41,11 @@ class SourceManager(private val context: Context) {
             ManHuaLou(),
             Tohomh(),
             Bilibili(),
-            U17(),
+            //U17www(),
             Tencent(),
             ManHuaTai(),
-            DongMan()
+            DongMan(),
+            U17()
             //Shuhui(),
             //EHentai()
     )
