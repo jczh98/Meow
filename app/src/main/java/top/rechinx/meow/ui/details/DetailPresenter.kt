@@ -68,6 +68,7 @@ class DetailPresenter(val sourceId: Long, val url: String): BasePresenter<Detail
         pager = ChapterPager(source, url)
         pager.results.observeOn(Schedulers.io())
                 .map {
+                    chapterDao.deleteChapters(manga?.id!!)
                     it.first to it.second.map { chapter -> networkToLocalChapter(chapter, manga?.id!!) }
                 }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -117,6 +118,7 @@ class DetailPresenter(val sourceId: Long, val url: String): BasePresenter<Detail
     }
 
     fun networkToLocalChapter(sChapter: SChapter, mangaId: Long): Chapter {
+        /*
         var localChapter = chapterDao.getChapter(sChapter.url!!, mangaId)
         if(localChapter == null) {
             val newChapter = Chapter.create().apply {
@@ -128,6 +130,15 @@ class DetailPresenter(val sourceId: Long, val url: String): BasePresenter<Detail
             localChapter = newChapter
         }
         return localChapter
+        */
+
+        val newChapter = Chapter.create().apply {
+            manga_id = mangaId
+        }
+        newChapter.copyFrom(sChapter)
+        val insertedId = chapterDao.insertChapter(newChapter)
+        newChapter.id = insertedId
+        return newChapter
     }
 
     /**
