@@ -24,9 +24,6 @@ interface ChapterDao {
     @Query("SELECT * FROM Chapter WHERE id = :chapterId")
     fun getChapter(chapterId: Long): Chapter?
 
-    @Query("DELETE FROM Chapter WHERE manga_id = :mangaId")
-    fun deleteChapters(mangaId: Long)
-
     @Delete
     fun deleteChapters(list: List<Chapter>)
 
