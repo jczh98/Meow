@@ -26,6 +26,8 @@
     <string name="about_update_summary">Click to check update</string>
     <string name="about_resource">Source code</string>
     <string name="about_resource_url">https://github.com/ReChinX/Meow</string>
+    <string name="about_fork">Fork</string>
+    <string name="about_fork_url">https://github.com/mabDc/Meow</string>
     <string name="string_manga_statu_ongoing">Ongoing</string>
     <string name="string_manga_statu_completed">Completed</string>
     <string name="string_manga_statu_unknown">Unknown</string>

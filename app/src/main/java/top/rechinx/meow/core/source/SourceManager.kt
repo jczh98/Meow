@@ -45,7 +45,8 @@ class SourceManager(private val context: Context) {
             Tencent(),
             ManHuaTai(),
             DongMan(),
-            U17()
+            U17(),
+            ManHuaDui()
             //Shuhui(),
             //EHentai()
     )

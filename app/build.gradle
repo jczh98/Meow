@@ -6,21 +6,27 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
-def keystorePropertiesFile = rootProject.file(".travis/keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-def keyStoreFile = file(keystoreProperties['storeFileLocal'])
-if (!keyStoreFile.exists()){
-    keyStoreFile = file(keystoreProperties['storeFileCI'])
-}
+//def keystorePropertiesFile = rootProject.file(".travis/keystore.properties")
+//def keystoreProperties = new Properties()
+//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+//def keyStoreFile = file(keystoreProperties['storeFileLocal'])
+//if (!keyStoreFile.exists()){
+//    keyStoreFile = file(keystoreProperties['storeFileCI'])
+//}
 
 android {
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
     signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPwd']
-            storeFile keyStoreFile
-            storePassword keystoreProperties['storePwd']
+        myConfig {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
     compileSdkVersion 28
@@ -28,8 +34,8 @@ android {
         applicationId "top.rechinx.meow"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 6
-        versionName "1.0.6"
+        versionCode 8
+        versionName "1.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -38,7 +44,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.myConfig
         }
         debug {
             applicationIdSuffix ".debug"

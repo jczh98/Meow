@@ -22,6 +22,7 @@
     <string name="about_update">检查更新</string>
     <string name="about_update_summary">点击检查更新</string>
     <string name="about_resource">源代码</string>
+    <string name="about_fork">分支</string>
     <string name="text_chapter_load_more">加载更多章节</string>
     <string name="task_parse">正在解析</string>
     <string name="task_pause">暂停中</string>
