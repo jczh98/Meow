@@ -68,12 +68,14 @@ class ResultPresenter(val query: String): BasePresenter<ResultActivity>(), KoinC
                                         try {
                                             if(it.list.isEmpty()) throw Exception()
                                             for(item in it.list) {
-                                                val manga = Manga()
-                                                manga.copyFrom(item)
-                                                manga.sourceId = source.id
-                                                manga.sourceName = source.name
-                                                emitter.onNext(manga)
-                                                Thread.sleep(Random().nextInt(200).toLong())
+                                                if(item.title != null && item.title!!.contains(query)){
+                                                    val manga = Manga()
+                                                    manga.copyFrom(item)
+                                                    manga.sourceId = source.id
+                                                    manga.sourceName = source.name
+                                                    emitter.onNext(manga)
+                                                    Thread.sleep(Random().nextInt(200).toLong())
+                                                }
                                             }
                                             emitter.onComplete()
                                         } catch (e: Exception) {

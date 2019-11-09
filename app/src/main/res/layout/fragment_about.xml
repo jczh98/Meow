@@ -85,5 +85,28 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:text="@string/about_resource_url"/>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/resourceBtn"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"
+                android:text="@string/about_fork"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:text="@string/about_fork_url"/>
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

@@ -16,7 +16,7 @@ class Dmzj: HttpSource() {
 
     private fun GET(url: String) = Request.Builder()
             .url(url)
-            .addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 ")
+            .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36")
             .build()
 
     override fun searchMangaRequest(query: String, page: Int, filterList: FilterList): Request {
