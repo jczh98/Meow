@@ -46,8 +46,8 @@ class ManHuaDui:HttpSource() {
     override fun mangaInfoParse(response: Response): SManga = SManga.create().apply {
         val dom = Jsoup.parse(response.body()!!.string())
         title = dom.selectFirst("h1").text()
-//        thumbnail_url = infoElement.selectFirst(".cover img").attr("src")
-//        author = infoElement.selectFirst(".subtitle").text().substringAfter("：").trim()
+        thumbnail_url = dom.selectFirst("#Cover img").attr("src")
+        author = dom.selectFirst(".txtItme").text().substringAfter("：").trim()
 //        status = when(infoElement.selectFirst("span:nth-of-type(1) span").text()) {
 //            "连载中" -> SManga.ONGOING
 //            "完结" -> SManga.COMPLETED
@@ -55,7 +55,7 @@ class ManHuaDui:HttpSource() {
 //        }
 //        genre = infoElement.select(".tip a")
 //                .map{ node -> node.text() }.joinToString(", ")
-//        description = infoElement.select("p.content").text()
+        description = dom.select("#full-des").text()
     }
 
     override fun chaptersRequest(page: Int, url: String): Request = GET(url)
@@ -64,7 +64,7 @@ class ManHuaDui:HttpSource() {
         val doc = Jsoup.parse(response.body()!!.string())
         val ret = doc.select("#chapter-list-1 a").map { node -> SChapter.create().apply {
             name = node.text()
-            url = node.attr("href")
+            url = "https://m.manhuadui.com${node.attr("href")}"
         } }
         return PagedList(ret, false)
     }
@@ -80,7 +80,7 @@ class ManHuaDui:HttpSource() {
             val ret = ArrayList<MangaPage>(len)
             val sp = response.request().url().url().toString().split(".html")
             for ( i in 1 .. len){
-                ret.add(MangaPage(i, "${sp[0]}-${i + 1}.html", ""))
+                ret.add(MangaPage(i, "${sp[0]}-$i.html", ""))
             }
             return ret
         }
