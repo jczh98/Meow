@@ -66,7 +66,7 @@ class ManHuaDui:HttpSource() {
             name = node.text()
             url = "https://m.manhuadui.com${node.attr("href")}"
         } }
-        return PagedList(ret, false)
+        return PagedList(ret.reversed(), false)
     }
 
     override fun mangaPagesRequest(chapter: SChapter): Request = GET(chapter.url!!)
